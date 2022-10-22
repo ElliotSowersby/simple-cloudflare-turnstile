@@ -1,0 +1,39 @@
+.sct-accordion {
+  display: block;
+  margin: 25px 0;
+  padding: 12px;
+  background-color: #fff;
+  color: #444;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  font-size: 20px;
+  line-height: 20px;
+  font-weight: bold;
+  max-width: 420px;
+}
+.sct-active, .sct-accordion:hover {
+  background-color: #e1e1e1;
+}
+.sct-panel {
+  margin-top: -20px;
+  padding: 20px;
+  background-color: white;
+  display: none;
+  overflow: hidden;
+  max-width: calc(420px - 40px);
+}
+.sct-accordion:after {
+  content: '\25BC';
+  font-size: 13px;
+  color: #777;
+  float: right;
+  margin-left: 5px;
+}
+
+.sct-active:after {
+  content: "\25B2";
+}
