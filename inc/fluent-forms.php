@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if(get_option('cfturnstile_fluent')) {
-	
+
 	// Get turnstile field: Fluent Forms
 	add_action('fluentform_render_item_submit_button','cfturnstile_field_fluent_form');
 	function cfturnstile_field_fluent_form() {

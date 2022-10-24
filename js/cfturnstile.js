@@ -19,7 +19,7 @@ function turnstileWooResetCallback() {
     jQuery('.woocommerce-ResetPassword .button').css('opacity', '1');
 }
 function turnstileCheckoutCallback() {
-	
+
 }
 jQuery( document ).ready(function() {
 	jQuery( document.body ).on( 'checkout_error', function(){
@@ -54,4 +54,8 @@ function turnstileWPFCallback() {
 function turnstileFluentCallback() {
     jQuery('.fluentform .ff-btn-submit').css('pointer-events', 'auto');
     jQuery('.fluentform .ff-btn-submit').css('opacity', '1');
+}
+function turnstileGravityCallback() {
+    jQuery('.gform_button').css('pointer-events', 'auto');
+    jQuery('.gform_button').css('opacity', '1');
 }

@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if(get_option('cfturnstile_wpforms')) {
-	
+
 	// Get turnstile field: WP Forms
 	add_action('wpforms_display_submit_before','cfturnstile_field_wpf_form');
 	function cfturnstile_field_wpf_form() { cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback'); }
 
 	// WP Forms Check
-	add_action('wpforms_process_complete', 'cfturnstile_wpf_check', 10, 3);
-	function cfturnstile_wpf_check($fields, $entry, $form_data){
+	add_action('wpforms_process_before', 'cfturnstile_wpf_check', 10, 2);
+	function cfturnstile_wpf_check($entry, $form_data){
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
 			$check = cfturnstile_check();
 			$success = $check['success'];

@@ -7,29 +7,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_shortcode('cf7-simple-turnstile', 'cfturnstile_cf7_shortcode');
 add_filter( 'wpcf7_form_elements', 'do_shortcode' );
 function cfturnstile_cf7_shortcode() {
-	
+
 	ob_start();
-	
+
 	echo '<div class="cf7-cf-turnstile" style="margin-left: -2px; margin-top: -10px;">';
 	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback');
 	echo '<span class="wpcf7-form-control-wrap cf-turnstile" data-name="cf-turnstile" style="margin-top: -15px; display: block;">
 	<input type="hidden" name="cf-turnstile" value="" class="wpcf7-form-control"></span>';
 	echo '</div>';
-	
+
+  echo cfturnstile_force_render();
+
 	$thecontent = ob_get_contents();
 	ob_end_clean();
 
 	wp_reset_postdata();
-	
+
 	$thecontent = trim(preg_replace('/\s+/', ' ', $thecontent));
 	return $thecontent;
-	
+
 }
 
 // Validate form submission
 add_filter('wpcf7_validate', 'cfturnstile_cf7_verify_recaptcha', 20, 2);
 function cfturnstile_cf7_verify_recaptcha($result) {
-	
+
 	if (!class_exists('WPCF7_Submission')) { return $result; }
 
 	$_wpcf7 = ! empty($_POST['_wpcf7']) ? absint($_POST['_wpcf7']) : 0;
@@ -57,7 +59,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	}
 
 	return $result;
-	
+
 }
 
 // Add form tag

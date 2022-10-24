@@ -1,10 +1,10 @@
 === Simple Cloudflare Turnstile — The new user-friendly alternative to CAPTCHA ===
 Contributors: ElliotVS, RelyWP
-Tags: cloudflare,turnstile,captcha,woocommerce,spam
+Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LQ59TEPA5PTHE&source=url
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.7.0
+Stable Tag: 1.8.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -36,6 +36,7 @@ You can currently enable Turnstile on the following forms:
 - WPForms
 - Fluent Forms
 - Contact Form 7
+- Gravity Forms
 
 **Other Integrations**
 - Mailchimp for WordPress Forms
@@ -52,9 +53,9 @@ Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/">
 
 ## Getting Started ##
 
-Simply generate your site "key" and "secret" in Cloudflare, and add these to the plugin settings.
+Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
 
-Choose which forms you want it to show on, and set the theme to either dark or light.
+Next, select which forms Turnstile should be added to.
 
 A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
@@ -64,13 +65,13 @@ Yes, this plugin is completely free with no paid version, and it doesn't track y
 
 ## Languages ##
 
-Currently translated in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">3 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">click here</a>.
+Currently translated in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">4 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">click here</a>.
 
 == Installation ==
 
 1. Upload 'simple-cloudflare-turnstile' to the '/wp-content/plugins/' directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Customise plugin settings in WordPress admin at Settings > Cloudflare Turnstile 
+3. Customise plugin settings in WordPress admin at Settings > Cloudflare Turnstile
 
 == Screenshots ==
 
@@ -79,10 +80,15 @@ Currently translated in <a href="https://translate.wordpress.org/projects/wp-plu
 3. Example Turnstile on the WP Comments Form
 4. Example Turnstile on the WooCommerce My Account Page
 5. Example Turnstile on the WooCommerce Checkout Page
-6. Example Turnstile on Contact Form 7
+6. Example Turnstile on a Contact Form
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.8.0 - 24th October 2022 =
+- New: Added integration with "Gravity Forms" plugin. Simply enable it in the settings, and Turnstile will be added to all your forms.
+- Tweak: Added some code to ensure the Cloudflare widget is rendered when sites have certain optimisations enabled.
+- Fix: Fixed error with WPForms emails still being sent if Turnstile fails.
 
 = Version 1.7.0 - 22nd October 2022 =
 - New: Added integration with "Fluent Forms" plugin. Simply enable it in the settings, and Turnstile will be added to all your forms.

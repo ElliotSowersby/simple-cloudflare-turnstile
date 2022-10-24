@@ -18,13 +18,13 @@ function cfturnstile_mc4wp_shortcode() {
 // MC4WP Register Check
 add_action('mc4wp_form_errors', 'cfturnstile_mc4wp_register_check', 10, 2);
 function cfturnstile_mc4wp_register_check( $errors, $form ) {
-	
+
 	$post = get_post($form->ID);
-	
+
 	$mc4wp_text = do_shortcode( '[mc4wp_form id="' . $form->ID . '"]' );
 	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
 	if ( !has_shortcode( $post->post_content, 'mc4wp-simple-turnstile') ) { return $errors; }
-	
+
 	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
 		$check = cfturnstile_check();
 		$success = $check['success'];
@@ -34,9 +34,9 @@ function cfturnstile_mc4wp_register_check( $errors, $form ) {
 	} else {
 		$errors[] = 'cf_turnstile_error';
 	}
-	
+
 	return $errors;
-	
+
 }
 
 // MC4WP Error Message
