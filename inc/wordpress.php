@@ -40,47 +40,51 @@ if(get_option('cfturnstile_register')) {
 
 // WP Reset Check
 if(get_option('cfturnstile_reset')) {
-	add_action('lostpassword_form','cfturnstile_field');
-	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
-	function cfturnstile_wp_reset_check($validation_errors) {
-		if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
-			$check = cfturnstile_check();
-			$success = $check['success'];
-			if($success != true) {
-				$validation_errors->add( 'cfturnstile_error', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
-			}
-		}
-	}
+  if(!is_admin()) {
+  	add_action('lostpassword_form','cfturnstile_field');
+  	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
+  	function cfturnstile_wp_reset_check($validation_errors) {
+  		if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
+  			$check = cfturnstile_check();
+  			$success = $check['success'];
+  			if($success != true) {
+  				$validation_errors->add( 'cfturnstile_error', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+  			}
+  		}
+  	}
+  }
 }
 
 // WP Comment
 if(get_option('cfturnstile_comment')) {
-	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
-	// Create and display the turnstile field for comments.
-	function cfturnstile_field_comment( $submit_button, $args ) {
-		$key = esc_attr( get_option('cfturnstile_key') );
-		$theme = esc_attr( get_option('cfturnstile_theme') );
-		$submit_before = '';
-		$submit_after = '';
-		$callback = '';
-		if(get_option('cfturnstile_disable_button')) {
-			$callback = 'turnstileCommentCallback';
-		}
-		$submit_before .= '<div class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
-		if(get_option('cfturnstile_disable_button')) {
-			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
-			$submit_after .= "</div>";
-		}
-		return $submit_before . $submit_button . $submit_after;
-	}
-	// Comment Validation
-	add_action('preprocess_comment','cfturnstile_wp_comment_check', 10, 1);
-	function cfturnstile_wp_comment_check($commentdata) {
-		$check = cfturnstile_check();
-		$success = $check['success'];
-		if($success != true) {
-			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'advanced-google-recaptcha' ) . '</strong> ' . esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
-		}
-		return $commentdata;
-	}
+  if(!is_admin()) {
+  	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
+  	// Create and display the turnstile field for comments.
+  	function cfturnstile_field_comment( $submit_button, $args ) {
+    		$key = esc_attr( get_option('cfturnstile_key') );
+    		$theme = esc_attr( get_option('cfturnstile_theme') );
+    		$submit_before = '';
+    		$submit_after = '';
+    		$callback = '';
+    		if(get_option('cfturnstile_disable_button')) {
+    			$callback = 'turnstileCommentCallback';
+    		}
+    		$submit_before .= '<div class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
+    		if(get_option('cfturnstile_disable_button')) {
+    			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
+    			$submit_after .= "</div>";
+    		}
+    		return $submit_before . $submit_button . $submit_after;
+  	}
+  	// Comment Validation
+  	add_action('preprocess_comment','cfturnstile_wp_comment_check', 10, 1);
+  	function cfturnstile_wp_comment_check($commentdata) {
+  		$check = cfturnstile_check();
+  		$success = $check['success'];
+  		if($success != true) {
+  			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'advanced-google-recaptcha' ) . '</strong> ' . esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+  		}
+  		return $commentdata;
+  	}
+  }
 }

@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LQ59TEPA5PTHE&source=url
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.8.0
+Stable Tag: 1.8.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -84,6 +84,9 @@ Currently translated in <a href="https://translate.wordpress.org/projects/wp-plu
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.8.1 - 24th October 2022 =
+- Fix: Fixed issue with admins not being able to reply to comments in the admin area, when Turnstile was enabled on the comments form.
 
 = Version 1.8.0 - 24th October 2022 =
 - New: Added integration with "Gravity Forms" plugin. Simply enable it in the settings, and Turnstile will be added to all your forms.
