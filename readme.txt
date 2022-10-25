@@ -53,9 +53,11 @@ Cloudflare Turnstile delivers frustration-free, CAPTCHA-free web experiences to 
 
 Turnstile stops abuse and confirms visitors are real without the data privacy concerns or awful UX that CAPTCHA thrusts on users.
 
-Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/">https://www.cloudflare.com/en-gb/products/turnstile/</a>
+Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank">https://www.cloudflare.com/en-gb/products/turnstile/</a>
 
 ## Getting Started ##
+
+It's super quick and easy to get started with Cloudflare Turnstile!
 
 Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
 
@@ -63,19 +65,21 @@ Next, select which forms Turnstile should be added to.
 
 A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" target="_blank">setup guide</a>.
+
 ## Is it free to use? ##
 
 Yes, this plugin is completely free with no paid version, and it doesn't track your data. Cloudflare Turnstile is also a completely free service!
 
 ## Languages ##
 
-Currently translated in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">4 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">click here</a>.
+Currently translated in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">4 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
 
 ## Other Information ##
 
-* For support & suggestions, <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">create a new</a> support topic.
-* Follow the developer <a href="https://twitter.com/ElliotVS">@ElliotVS</a> on Twitter.
-* <a href="https://github.com/elliotvs/simple-cloudflare-turnstile">View on GitHub</a>
+* For help & suggestions, please <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank">create a support topic</a>.
+* Follow the developer <a href="https://twitter.com/ElliotVS" target="_blank">@ElliotVS</a> on Twitter.
+* <a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank">View on GitHub</a>
 
 == Installation ==
 
