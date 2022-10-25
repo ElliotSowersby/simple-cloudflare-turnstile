@@ -21,18 +21,21 @@ A user-friendly, privacy-preserving reCAPTCHA alternative.
 You can currently enable Turnstile on the following forms:
 
 **WordPress**
+
 * WordPress Login Form
 * WordPress Registration Form
 * WordPress Password Reset Form
 * WordPress Comments Form
 
 **WooCommerce**
+
 * WooCommerce Checkout
 * WooCommerce Login Form
 * WooCommerce Registration Form
 * WooCommerce Password Reset Form
 
 **Contact Form Plugins**
+
 * WPForms
 * Fluent Forms
 * Contact Form 7
