@@ -16,8 +16,6 @@ function cfturnstile_cf7_shortcode() {
 	<input type="hidden" name="cf-turnstile" value="" class="wpcf7-form-control"></span>';
 	echo '</div>';
 
-  echo cfturnstile_force_render();
-
 	$thecontent = ob_get_contents();
 	ob_end_clean();
 

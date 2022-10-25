@@ -12,7 +12,6 @@ if(get_option('cfturnstile_gravity')) {
     echo '</div><div style="margin-top: 10px; margin-bottom: -25px; padding-bottom: 0;">';
   	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback');
     echo "</div><div class='gform_page_footer top_label'>";
-    echo cfturnstile_force_render();
   	$thecontent = ob_get_contents();
   	ob_end_clean();
   	wp_reset_postdata();

@@ -18,7 +18,8 @@ function cfturnstile_register_settings() {
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_key' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_secret' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_theme' );
-	register_setting( 'cfturnstile-settings-group', 'cfturnstile_script' );
+	register_setting( 'cfturnstile-settings-group', 'cfturnstile_scripts' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_scripts_custom' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_disable_button' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_login' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_register' );
@@ -173,6 +174,32 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 			<td><input type="checkbox" name="cfturnstile_disable_button" <?php if(get_option('cfturnstile_disable_button')) { ?>checked<?php } ?>>
 			<i style="font-size: 10px;"><?php echo __( 'When enabled, the user will not be able to click submit until the Turnstile challenge is completed.', 'simple-cloudflare-turnstile' ); ?></i></td>
 		</tr>
+
+    <tr valign="top">
+			<th scope="row"><?php echo __( 'Where to load scripts?', 'simple-cloudflare-turnstile' ); ?></th>
+			<td>
+				<select name="cfturnstile_scripts" id="cfturnstile_scripts">
+					<option value="default"<?php if(!get_option('cfturnstile_scripts') || get_option('cfturnstile_scripts') == "default") { ?>selected<?php } ?>>
+						<?php esc_html_e( 'Auto Detect (Default)', 'simple-cloudflare-turnstile' ); ?>
+					</option>
+          <option value="custom"<?php if(get_option('cfturnstile_scripts') == "custom") { ?>selected<?php } ?>>
+						<?php esc_html_e( 'Custom Page IDs', 'simple-cloudflare-turnstile' ); ?>
+					</option>
+					<option value="all"<?php if(get_option('cfturnstile_scripts') == "all") { ?>selected<?php } ?>>
+						<?php esc_html_e( 'All Pages', 'simple-cloudflare-turnstile' ); ?>
+					</option>
+				</select>
+        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_default"><br/><?php echo __( '"Auto Detect" is perfect for most sites, so the scripts only load on pages that require them. A better option for performance optimisation.', 'simple-cloudflare-turnstile' ); ?></i>
+        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_custom"><br/><?php echo __( '"Custom Page IDs" lets you enter the specific page IDs that you want the scripts to load on yourself.', 'simple-cloudflare-turnstile' ); ?></i>
+        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_all"><br/><?php echo __( '"All Pages" loads the script everywhere. This may be needed if you are using custom addons to display forms, or if the Turnstile widget is not loading for some other reason.', 'simple-cloudflare-turnstile' ); ?></i>
+        <span class="section_cfturnstile_scripts_custom" style="display: none;">
+        <br/><br/>
+          <strong><?php echo __( 'Custom page IDs:', 'simple-cloudflare-turnstile' ); ?></strong><br/>
+          <input type="text" name="cfturnstile_scripts_custom" <?php if(get_option('cfturnstile_scripts_custom')) { ?>value="<?php echo get_option('cfturnstile_scripts_custom'); ?>"<?php } ?>>
+          <i style="font-size: 10px;"><?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?></i>
+        </span>
+      </td>
+    </tr>
 
 	</table>
 
@@ -478,6 +505,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 <p style="font-size: 15px;"><?php echo __( 'Find this plugin useful?', 'simple-cloudflare-turnstile' ); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank"><?php echo __( 'Please submit a review', 'simple-cloudflare-turnstile' ); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank">⭐️⭐️⭐️⭐️⭐️</a></p>
 
 <p style="font-size: 15px;"><?php echo __( 'Need help? Have a suggestion?', 'simple-cloudflare-turnstile' ); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile" target="_blank"><?php echo __( 'Create a new support topic.', 'simple-cloudflare-turnstile' ); ?></a></p>
+
+<p style="font-size: 12px;"><a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank"><?php echo __( 'View on GitHub', 'simple-cloudflare-turnstile' ); ?></a><a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank" style="text-decoration: none;"><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px;"></span></a></p>
 
 </div>
 

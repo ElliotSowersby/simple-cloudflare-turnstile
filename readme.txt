@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LQ59TEPA5PTHE&source=url
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.8.1
+Stable Tag: 1.8.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -21,27 +21,27 @@ A user-friendly, privacy-preserving reCAPTCHA alternative.
 You can currently enable Turnstile on the following forms:
 
 **WordPress**
-- WordPress Login Form
-- WordPress Registration Form
-- WordPress Password Reset Form
-- WordPress Comments Form
+* WordPress Login Form
+* WordPress Registration Form
+* WordPress Password Reset Form
+* WordPress Comments Form
 
 **WooCommerce**
-- WooCommerce Checkout
-- WooCommerce Login Form
-- WooCommerce Registration Form
-- WooCommerce Password Reset Form
+* WooCommerce Checkout
+* WooCommerce Login Form
+* WooCommerce Registration Form
+* WooCommerce Password Reset Form
 
 **Contact Form Plugins**
-- WPForms
-- Fluent Forms
-- Contact Form 7
-- Gravity Forms
+* WPForms
+* Fluent Forms
+* Contact Form 7
+* Gravity Forms
 
 **Other Integrations**
-- Mailchimp for WordPress Forms
-- BuddyPress Registration Form
-- bbPress Create Topic & Reply Forms
+* Mailchimp for WordPress Forms
+* BuddyPress Registration Form
+* bbPress Create Topic & Reply Forms
 
 ## What is Cloudflare Turnstile? ##
 
@@ -67,11 +67,23 @@ Yes, this plugin is completely free with no paid version, and it doesn't track y
 
 Currently translated in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">4 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/">click here</a>.
 
+## Other Information ##
+
+* For support & suggestions, <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">create a new</a> support topic.
+* Follow the developer <a href="https://twitter.com/ElliotVS">@ElliotVS</a> on Twitter for news.
+* <a href="https://github.com/elliotvs/simple-cloudflare-turnstile">View on GitHub</a>
+
 == Installation ==
 
 1. Upload 'simple-cloudflare-turnstile' to the '/wp-content/plugins/' directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Customise plugin settings in WordPress admin at Settings > Cloudflare Turnstile
+3. Visit the plugin settings in WordPress admin menu at "Settings > Cloudflare Turnstile".
+4. You will need to generate a "Site Key" and "Site Secret" in your Cloudflare account, then enter these in the settings page.
+5. Select which forms you want to enable Turnstile on, and finally click "Save Changes".
+6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
+7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
+
+https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Screenshots ==
 
@@ -84,6 +96,13 @@ Currently translated in <a href="https://translate.wordpress.org/projects/wp-plu
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.8.3 - 25th October 2022 =
+- New: Added a third "Custom Page IDs" option to the "Where to load scripts?" setting. This lets you enter the specific page IDs that you want the scripts to load on.
+
+= Version 1.8.2 - 24th October 2022 =
+- New: Added option to select where the Turnstile script is loaded. Either "Auto Detect" or "All Pages".
+- Tweak: "Auto Detect" will also load the required scripts on blog posts that include forms.
 
 = Version 1.8.1 - 24th October 2022 =
 - Fix: Fixed issue with admins not being able to reply to comments in the admin area, when Turnstile was enabled on the comments form.

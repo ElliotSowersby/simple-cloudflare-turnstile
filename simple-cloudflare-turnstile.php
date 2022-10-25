@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Simple Cloudflare Turnstile
 * Description: Easily add Cloudflare Turnstile to your WordPress and WooCommerce forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.8.1
+* Version: 1.8.3
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -42,8 +42,8 @@ function cfturnstile_settings_link_plugin( $actions, $plugin_file ) {
 
 // Enqueue admin scripts
 function cfturnstile_admin_script_enqueue() {
-	wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.1', true);
-	wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.1');
+	wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.2', true);
+	wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.2');
 	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
 add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
@@ -52,6 +52,7 @@ add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
 function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 	$key = esc_attr( get_option('cfturnstile_key') );
 	$theme = esc_attr( get_option('cfturnstile_theme') );
+  do_action("cfturnstile_before_field");
 	?>
 	<div id="cf-turnstile" class="cf-turnstile" <?php if(get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo $callback; ?>"<?php } ?>
 	data-sitekey="<?php echo sanitize_text_field($key); ?>"
@@ -62,7 +63,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 	<style><?php echo $button_id; ?> { pointer-events: none; opacity: 0.5; }</style><?php } ?>
 	<br/>
 	<?php
-  echo cfturnstile_force_render();
+  do_action("cfturnstile_after_field");
 }
 
 if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
@@ -88,12 +89,13 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
 	}
 
   // Force Re-Render Turnstile
+  add_action("cfturnstile_after_field", "cfturnstile_force_render");
   function cfturnstile_force_render() {
     ?>
     <script>
     jQuery(document).ready(function() {
       turnstile.remove('#cf-turnstile');
-      turnstile.render('#cf-turnstile', { sitekey: '<?php echo sanitize_text_field(get_option('cfturnstile_key') ); ?>', });
+      turnstile.render('#cf-turnstile', { sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>', });
     });
     </script>
     <?php
@@ -102,17 +104,26 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
 	// Check if page needs to load scripts
 	function cfturnstile_check_page() {
 		global $post;
-		if( is_single() && get_option('cfturnstile_comment') ) return true;
-		if( ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) && (is_checkout() || is_account_page()) ) return true;
-		if((is_object($post) || is_a($post, 'WP_Post')) && is_page()) {
-			if( get_option('cfturnstile_bp_register') && !is_user_logged_in() ) return true;
-			if( has_shortcode( $post->post_content, 'contact-form-7') ) return true;
-			if( has_shortcode( $post->post_content, 'mc4wp_form') || has_block('mailchimp-for-wp/form') ) return true;
-			if( get_option('cfturnstile_wpforms') && ( has_shortcode( $post->post_content, 'wpforms') || has_block('wpforms/form-selector') ) ) return true;
-			if( get_option('cfturnstile_fluent') && ( has_shortcode( $post->post_content, 'fluentform') || has_block('fluentfom/guten-block') ) ) return true;
-      if( get_option('cfturnstile_gravity') && ( has_shortcode( $post->post_content, 'gravityform') || has_block('gravityforms/form') ) ) return true;
+    if(!empty(get_option('cfturnstile_scripts')) && get_option('cfturnstile_scripts') == "custom") {
+      if( is_single() || is_page() ) {
+        $pages = preg_replace('/\s+/', '', get_option('cfturnstile_scripts_custom'));
+        $pages = explode (",",$pages);
+        if(in_array($post->ID, $pages)) return true;
+      }
+    } else {
+      if(!empty(get_option('cfturnstile_scripts')) && get_option('cfturnstile_scripts') == "all") return true;
+  		if( is_single() && get_option('cfturnstile_comment') ) return true;
+  		if( ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) && (is_checkout() || is_account_page()) ) return true;
+  		if( is_single() || is_page() ) {
+  			if( get_option('cfturnstile_bp_register') && !is_user_logged_in() ) return true;
+  			if( has_shortcode( $post->post_content, 'contact-form-7') ) return true;
+  			if( has_shortcode( $post->post_content, 'mc4wp_form') || has_block('mailchimp-for-wp/form') ) return true;
+  			if( get_option('cfturnstile_wpforms') && ( has_shortcode( $post->post_content, 'wpforms') || has_block('wpforms/form-selector') ) ) return true;
+  			if( get_option('cfturnstile_fluent') && ( has_shortcode( $post->post_content, 'fluentform') || has_block('fluentfom/guten-block') ) ) return true;
+        if( get_option('cfturnstile_gravity') && ( has_shortcode( $post->post_content, 'gravityform') || has_block('gravityforms/form') ) ) return true;
+      }
     }
-		return false;
+    return false;
 	}
 
 	// Checks Turnstile Captcha POST is Valid
