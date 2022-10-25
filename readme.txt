@@ -22,19 +22,19 @@ You can currently enable Turnstile on the following forms:
 
 **WordPress**
 
-* WordPress Login Form
-* WordPress Registration Form
-* WordPress Password Reset Form
-* WordPress Comments Form
+* Login Form
+* Registration Form
+* Password Reset Form
+* Comments Form
 
 **WooCommerce**
 
-* WooCommerce Checkout
-* WooCommerce Login Form
-* WooCommerce Registration Form
-* WooCommerce Password Reset Form
+* Checkout
+* Login Form
+* Registration Form
+* Password Reset Form
 
-**Contact Form Plugins**
+**Form Plugins**
 
 * WPForms
 * Fluent Forms
@@ -42,6 +42,7 @@ You can currently enable Turnstile on the following forms:
 * Gravity Forms
 
 **Other Integrations**
+
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
@@ -73,7 +74,7 @@ Currently translated in <a href="https://translate.wordpress.org/projects/wp-plu
 ## Other Information ##
 
 * For support & suggestions, <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">create a new</a> support topic.
-* Follow the developer <a href="https://twitter.com/ElliotVS">@ElliotVS</a> on Twitter for news.
+* Follow the developer <a href="https://twitter.com/ElliotVS">@ElliotVS</a> on Twitter.
 * <a href="https://github.com/elliotvs/simple-cloudflare-turnstile">View on GitHub</a>
 
 == Installation ==
