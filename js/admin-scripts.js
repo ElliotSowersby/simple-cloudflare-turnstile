@@ -18,10 +18,14 @@ for (i = 0; i < acc.length; i++) {
 jQuery( document ).ready(function() {
 	jQuery('#cfturnstile_scripts').change(function(){
 		jQuery('.section_cfturnstile_scripts_default').hide();
+		jQuery('.section_cfturnstile_scripts_autocustom').hide();
 		jQuery('.section_cfturnstile_scripts_custom').hide();
 		jQuery('.section_cfturnstile_scripts_all').hide();
 		if(jQuery(this).find(":selected").val() == "default") {
 			jQuery('.section_cfturnstile_scripts_default').show();
+		}
+		if(jQuery(this).find(":selected").val() == "autocustom") {
+			jQuery('.section_cfturnstile_scripts_autocustom').show();
 		}
 		if(jQuery(this).find(":selected").val() == "custom") {
 			jQuery('.section_cfturnstile_scripts_custom').show();

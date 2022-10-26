@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Simple Cloudflare Turnstile
 * Description: Easily add Cloudflare Turnstile to your WordPress and WooCommerce forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.8.3
+* Version: 1.8.4
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -15,40 +15,55 @@
 // Include Admin Options
 include( plugin_dir_path( __FILE__ ) . 'inc/admin-options.php');
 
-// On activate redirect to settings page
+/**
+ * On activate redirect to settings page
+ */
 register_activation_hook(__FILE__, function () {
-    add_option('cfturnstile_do_activation_redirect', true);
+  add_option('cfturnstile_do_activation_redirect', true);
 	add_option('cfturnstile_tested', 'no');
 });
 add_action('admin_init', function () {
-    if (get_option('cfturnstile_do_activation_redirect', false)) {
-        delete_option('cfturnstile_do_activation_redirect');
-        exit( wp_redirect("options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php") );
-    }
+  if (get_option('cfturnstile_do_activation_redirect', false)) {
+    delete_option('cfturnstile_do_activation_redirect');
+    exit( wp_redirect("options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php") );
+  }
 });
 
-// Plugin List - Settings Link
+/**
+ * Plugin List - Settings Link
+ *
+ * @param array $actions
+ * @param string $plugin_file
+ * @return array
+ */
 add_filter( 'plugin_action_links', 'cfturnstile_settings_link_plugin', 10, 5 );
 function cfturnstile_settings_link_plugin( $actions, $plugin_file ) {
-	static $plugin;
-	if (!isset($plugin))
-		$plugin = plugin_basename(__FILE__);
-	if ($plugin == $plugin_file) {
-		$settings = array('settings' => '<a href="options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php">' . __( 'Settings', 'simple-cloudflare-turnstile' ) . '</a>');
-    	$actions = array_merge($settings, $actions);
-	}
-	return $actions;
+  static $plugin;
+  if (!isset($plugin))
+    $plugin = plugin_basename(__FILE__);
+  if ($plugin == $plugin_file) {
+    $settings = array('settings' => '<a href="options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php">' . __( 'Settings', 'simple-cloudflare-turnstile' ) . '</a>');
+    $actions = array_merge($settings, $actions);
+  }
+  return $actions;
 }
 
-// Enqueue admin scripts
+/**
+ * Enqueue admin scripts
+ */
 function cfturnstile_admin_script_enqueue() {
-	wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.2', true);
-	wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.2');
-	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
+  wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.4', true);
+  wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.4');
+  wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
 add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
 
-// Create turnstile field template.
+/**
+ * Create turnstile field template.
+ *
+ * @param int $button_id
+ * @param string $callback
+ */
 function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 	$key = esc_attr( get_option('cfturnstile_key') );
 	$theme = esc_attr( get_option('cfturnstile_theme') );
@@ -68,27 +83,31 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 
 if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
 
-	// Enqueue turnstile script
-	function cfturnstile_script_enqueue() {
+  /**
+   * Enqueue turnstile scripts
+   */
+  function cfturnstile_script_enqueue() {
     if( !wp_script_is( 'cfturnstile-js', 'enqueued' ) ) {
-		    wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.1', false);
+  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.1', false);
     }
     if( !wp_script_is( 'cfturnstile', 'enqueued' ) ) {
   	   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
     }
   }
-	add_action("wp_enqueue_scripts", "cfturnstile_script");
-	function cfturnstile_script() {
-		if ( cfturnstile_check_page() ) {
-			cfturnstile_script_enqueue();
-		}
-	}
-	add_action("login_enqueue_scripts", "cfturnstile_script_login");
-	function cfturnstile_script_login() {
-		cfturnstile_script_enqueue();
-	}
+  add_action("wp_enqueue_scripts", "cfturnstile_script");
+  function cfturnstile_script() {
+  	if ( cfturnstile_check_page() ) {
+  	   cfturnstile_script_enqueue();
+  	}
+  }
+  add_action("login_enqueue_scripts", "cfturnstile_script_login");
+  function cfturnstile_script_login() {
+    cfturnstile_script_enqueue();
+  }
 
-  // Force Re-Render Turnstile
+  /**
+   * Force Re-Render Turnstile
+   */
   add_action("cfturnstile_after_field", "cfturnstile_force_render");
   function cfturnstile_force_render() {
     ?>
@@ -101,16 +120,17 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
     <?php
   }
 
-	// Check if page needs to load scripts
+  /**
+   * Check if page needs to load scripts
+   *
+   * @return bool
+   */
 	function cfturnstile_check_page() {
 		global $post;
     if(!empty(get_option('cfturnstile_scripts')) && get_option('cfturnstile_scripts') == "custom") {
-      if( is_single() || is_page() ) {
-        $pages = preg_replace('/\s+/', '', get_option('cfturnstile_scripts_custom'));
-        $pages = explode (",",$pages);
-        if(in_array($post->ID, $pages)) return true;
-      }
+      return cfturnstile_check_page_custom();
     } else {
+      if(!empty(get_option('cfturnstile_scripts')) && get_option('cfturnstile_scripts') == "autocustom" && cfturnstile_check_page_custom()) return true;
       if(!empty(get_option('cfturnstile_scripts')) && get_option('cfturnstile_scripts') == "all") return true;
   		if( is_single() && get_option('cfturnstile_comment') ) return true;
   		if( ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) && (is_checkout() || is_account_page()) ) return true;
@@ -126,7 +146,27 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
     return false;
 	}
 
-	// Checks Turnstile Captcha POST is Valid
+  /**
+   * Check if current page is one of the custom pages set in the settings
+   *
+   * @return bool
+   */
+  function cfturnstile_check_page_custom() {
+		global $post;
+    if( is_single() || is_page() ) {
+      $pages = preg_replace('/\s+/', '', get_option('cfturnstile_scripts_custom'));
+      $pages = explode (",",$pages);
+      if(in_array($post->ID, $pages)) return true;
+    }
+    return false;
+	}
+
+  /**
+   * Checks Turnstile Captcha POST is Valid
+   *
+   * @param string $postdata
+   * @return bool
+   */
 	function cfturnstile_check($postdata = "") {
 
 		$results = array();
@@ -165,18 +205,26 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
 		}
 	}
 
-	// Create shortcode
-	add_shortcode('simple-turnstile', 'cfturnstile_shortcode');
-	function cfturnstile_shortcode() {
-		ob_start();
-		echo cfturnstile_field_show('', '');
-		$thecontent = ob_get_contents();
-		ob_end_clean();
-		wp_reset_postdata();
-		$thecontent = trim(preg_replace('/\s+/', ' ', $thecontent));
-		return $thecontent;
-	}
+  /**
+   * Create shortcode to display Turnstile widget
+   */
+  add_shortcode('simple-turnstile', 'cfturnstile_shortcode');
+  function cfturnstile_shortcode() {
+  	ob_start();
+  	echo cfturnstile_field_show('', '');
+  	$thecontent = ob_get_contents();
+  	ob_end_clean();
+  	wp_reset_postdata();
+  	$thecontent = trim(preg_replace('/\s+/', ' ', $thecontent));
+  	return $thecontent;
+  }
 
+  /**
+   * Gets the default Turnstile error message
+   *
+   * @param string $code
+   * @return string
+   */
 	function cfturnstile_error_message($code) {
 		switch ( $code ) {
 			case 'missing-input-secret':

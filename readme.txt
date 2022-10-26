@@ -1,10 +1,10 @@
 === Simple Cloudflare Turnstile — The new user-friendly alternative to CAPTCHA ===
 Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LQ59TEPA5PTHE&source=url
+Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.8.3
+Stable Tag: 1.8.4
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -91,6 +91,8 @@ Currently translated in <a href="https://translate.wordpress.org/projects/wp-plu
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" target="_blank">setup guide</a>.
+
 https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Screenshots ==
@@ -104,6 +106,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.8.4 - 26th October 2022 =
+- New: Added a fourth "Auto Detect + Custom Page IDs" option to the "Where to load scripts?" setting.
+- Improvement: Updated the admin settings page to only show settings/dropdowns for integrations that are available (plugins activated and installed). A compact list of the other available integrations is still visible at the bottom.
+- Dev: Updated some of the comments in the code to be more readable.
 
 = Version 1.8.3 - 25th October 2022 =
 - New: Added a third "Custom Page IDs" option to the "Where to load scripts?" setting. This lets you enter the specific page IDs that you want the scripts to load on.
