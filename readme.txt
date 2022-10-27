@@ -4,11 +4,11 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.8.4
+Stable Tag: 1.8.6
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Add Cloudflare Turnstile to WordPress, WooCommerce, Contact Forms & more. The user-friendly, privacy-preserving reCAPTCHA alternative.
+Add Cloudflare Turnstile to WordPress, WooCommerce, Contact Forms & more. The user-friendly, privacy-preserving reCAPTCHA alternative. 100% free!
 
 == Description ==
 
@@ -59,11 +59,10 @@ Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" 
 
 It's super quick and easy to get started with Cloudflare Turnstile!
 
-Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
-
-Next, select which forms Turnstile should be added to.
-
-A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
+1. Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
+2. Select which forms Turnstile should be added to and click save.
+3. Finally, click the "TEST API RESPONSE" button to make sure the Turnstile API response is working OK.
+4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
 For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" target="_blank">setup guide</a>.
 
@@ -106,6 +105,13 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.8.6 - 27th October 2022 =
+- New: Added a "Widget Location" option to the "WPForms" and "Gravity Forms" integrations, to choose if the widget is shown before or after the button.
+- Tweak: Updated alignment of Turnstile widget when displayed on frontend pages (moved 2px to left).
+
+= Version 1.8.5 - 27th October 2022 =
+- Tweak: It will now only try to re-render Turnstile widget explicitly (embedded JavaScript) if it can't currently find the Turnstile iFrame.
 
 = Version 1.8.4 - 26th October 2022 =
 - New: Added a fourth "Auto Detect + Custom Page IDs" option to the "Where to load scripts?" setting.

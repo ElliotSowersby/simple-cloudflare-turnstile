@@ -32,7 +32,9 @@ function cfturnstile_register_settings() {
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_woo_reset' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bp_register' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_wpforms' );
+	register_setting( 'cfturnstile-settings-group', 'cfturnstile_wpforms_pos' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity_pos' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_fluent' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_create' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_reply' );
@@ -337,6 +339,24 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 
 		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile' ); ?>
 
+    <table class="form-table" style="margin-bottom: -15px;">
+
+      <tr valign="top">
+  			<th scope="row"><?php echo __( 'Widget Location', 'simple-cloudflare-turnstile' ); ?></th>
+  			<td>
+  				<select name="cfturnstile_wpforms_pos">
+  					<option value="before"<?php if(!get_option('cfturnstile_wpforms_pos') || get_option('cfturnstile_wpforms_pos') == "before") { ?>selected<?php } ?>>
+  						<?php esc_html_e( 'Before Button', 'simple-cloudflare-turnstile' ); ?>
+  					</option>
+  					<option value="after"<?php if(get_option('cfturnstile_wpforms_pos') == "after") { ?>selected<?php } ?>>
+  						<?php esc_html_e( 'After Button', 'simple-cloudflare-turnstile' ); ?>
+  					</option>
+  				</select>
+  			</td>
+  		</tr>
+
+		</table>
+
 	</div>
   <?php
   } else {
@@ -360,6 +380,24 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 		</table>
 
 		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with Gravity Forms.', 'simple-cloudflare-turnstile' ); ?>
+
+    <table class="form-table" style="margin-bottom: -15px;">
+
+      <tr valign="top">
+  			<th scope="row"><?php echo __( 'Widget Location', 'simple-cloudflare-turnstile' ); ?></th>
+  			<td>
+  				<select name="cfturnstile_gravity_pos">
+  					<option value="before"<?php if(!get_option('cfturnstile_gravity_pos') || get_option('cfturnstile_gravity_pos') == "before") { ?>selected<?php } ?>>
+  						<?php esc_html_e( 'Before Button', 'simple-cloudflare-turnstile' ); ?>
+  					</option>
+  					<option value="after"<?php if(get_option('cfturnstile_gravity_pos') == "after") { ?>selected<?php } ?>>
+  						<?php esc_html_e( 'After Button', 'simple-cloudflare-turnstile' ); ?>
+  					</option>
+  				</select>
+  			</td>
+  		</tr>
+
+		</table>
 
 	</div>
   <?php

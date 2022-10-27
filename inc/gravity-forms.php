@@ -22,7 +22,11 @@ if(get_option('cfturnstile_gravity')) {
 	// Get turnstile field: Gravity Forms
 	add_action('gform_submit_button','cfturnstile_field_gravity_form', 10, 2);
 	function cfturnstile_field_gravity_form($button, $form) {
-    return do_shortcode('[gravity-simple-turnstile]') . $button;
+    if(!empty(get_option('cfturnstile_gravity_pos')) && get_option('cfturnstile_gravity_pos') == "after") {
+      return $button . do_shortcode('[gravity-simple-turnstile]');
+    } else {
+      return do_shortcode('[gravity-simple-turnstile]') . $button;
+    }
   }
 
   // Gravity Forms Check

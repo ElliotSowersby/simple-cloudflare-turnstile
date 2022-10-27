@@ -10,7 +10,7 @@ function cfturnstile_cf7_shortcode() {
 
 	ob_start();
 
-	echo '<div class="cf7-cf-turnstile" style="margin-left: -2px; margin-top: -10px;">';
+	echo '<div class="cf7-cf-turnstile" style="margin-top: -10px;">';
 	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback');
 	echo '<span class="wpcf7-form-control-wrap cf-turnstile" data-name="cf-turnstile" style="margin-top: -15px; display: block;">
 	<input type="hidden" name="cf-turnstile" value="" class="wpcf7-form-control"></span>';

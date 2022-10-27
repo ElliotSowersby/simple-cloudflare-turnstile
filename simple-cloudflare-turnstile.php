@@ -1,8 +1,8 @@
 <?php
 /**
 * Plugin Name: Simple Cloudflare Turnstile
-* Description: Easily add Cloudflare Turnstile to your WordPress and WooCommerce forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.8.4
+* Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
+* Version: 1.8.6
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -69,11 +69,10 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 	$theme = esc_attr( get_option('cfturnstile_theme') );
   do_action("cfturnstile_before_field");
 	?>
-	<div id="cf-turnstile" class="cf-turnstile" <?php if(get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo $callback; ?>"<?php } ?>
+	<div id="cf-turnstile" class="cf-turnstile" <?php if(get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>"<?php } ?>
 	data-sitekey="<?php echo sanitize_text_field($key); ?>"
 	data-theme="<?php echo sanitize_text_field($theme); ?>"
-	data-name="cf-turnstile"
-	<?php if(!is_page()) { ?> style="margin-left: -15px;"<?php } ?>></div>
+	data-name="cf-turnstile" style="<?php if(!is_page()) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if($button_id && get_option('cfturnstile_disable_button')) { ?>
 	<style><?php echo $button_id; ?> { pointer-events: none; opacity: 0.5; }</style><?php } ?>
 	<br/>
@@ -113,8 +112,12 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
     ?>
     <script>
     jQuery(document).ready(function() {
-      turnstile.remove('#cf-turnstile');
-      turnstile.render('#cf-turnstile', { sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>', });
+      if (jQuery('#cf-turnstile iframe').length <= 0) {
+        setTimeout(function() {
+          turnstile.remove('#cf-turnstile');
+          turnstile.render('#cf-turnstile', { sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>', });
+        }, 200);
+      }
     });
     </script>
     <?php

@@ -6,8 +6,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(get_option('cfturnstile_wpforms')) {
 
 	// Get turnstile field: WP Forms
-	add_action('wpforms_display_submit_before','cfturnstile_field_wpf_form');
-	function cfturnstile_field_wpf_form() { cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback'); }
+  if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") {
+    add_action('wpforms_display_submit_after','cfturnstile_field_wpf_form');
+  } else {
+    add_action('wpforms_display_submit_before','cfturnstile_field_wpf_form');
+  }
+	function cfturnstile_field_wpf_form() {
+    if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") { echo "<br/><br/>"; }
+    cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback');
+  }
 
 	// WP Forms Check
 	add_action('wpforms_process_before', 'cfturnstile_wpf_check', 10, 2);
