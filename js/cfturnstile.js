@@ -59,3 +59,16 @@ function turnstileGravityCallback() {
     jQuery('.gform_button').css('pointer-events', 'auto');
     jQuery('.gform_button').css('opacity', '1');
 }
+function turnstileWPDiscuzCallback() {
+    jQuery('.wc_comm_submit').css('pointer-events', 'auto');
+    jQuery('.wc_comm_submit').css('opacity', '1');
+}
+jQuery( document ).ready(function() {
+	jQuery( '.wc_comm_submit' ).click(function(){
+		if (document.getElementById('cf-turnstile')) {
+      setTimeout(function() {
+			     turnstile.reset('#cf-turnstile');
+      }, 2000);
+		}
+	});
+});

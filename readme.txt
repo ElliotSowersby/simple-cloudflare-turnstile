@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.8.6
+Stable Tag: 1.9.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,6 +46,7 @@ You can currently enable Turnstile on the following forms:
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
+* wpDiscuz Custom Comments Form
 
 ## What is Cloudflare Turnstile? ##
 
@@ -106,12 +107,15 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.9.0 - 28th October 2022 =
+- New: Added integration with "wpDiscuz" plugin.
+
 = Version 1.8.6 - 27th October 2022 =
 - New: Added a "Widget Location" option to the "WPForms" and "Gravity Forms" integrations, to choose if the widget is shown before or after the button.
 - Tweak: Updated alignment of Turnstile widget when displayed on frontend pages (moved 2px to left).
 
 = Version 1.8.5 - 27th October 2022 =
-- Tweak: It will now only try to re-render Turnstile widget explicitly (embedded JavaScript) if it can't currently find the Turnstile iFrame.
+- Tweak: It will now only try to re-render Turnstile widget explicitly (embedded JavaScript) if it can't currently find the Turnstile widget iFrame.
 
 = Version 1.8.4 - 26th October 2022 =
 - New: Added a fourth "Auto Detect + Custom Page IDs" option to the "Where to load scripts?" setting.

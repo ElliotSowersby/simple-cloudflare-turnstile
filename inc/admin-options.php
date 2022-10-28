@@ -250,7 +250,15 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 			<th scope="row">
 			<?php echo __( 'WordPress Comment', 'simple-cloudflare-turnstile' ); ?>
 			</th>
-			<td><input type="checkbox" name="cfturnstile_comment" <?php if(get_option('cfturnstile_comment')) { ?>checked<?php } ?>></td>
+			<td>
+        <input type="checkbox" name="cfturnstile_comment" <?php if(get_option('cfturnstile_comment')) { ?>checked<?php } ?>>
+        <?php if ( in_array( 'jetpack/jetpack.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+          <br/><i style="font-size: 10px;"><?php echo __( 'Due to Jetpack limitations, this does NOT currently work with Jetpack comments form enabled.', 'simple-cloudflare-turnstile' ); ?></i>
+        <?php } ?>
+        <?php if ( in_array( 'wpdiscuz/class.WpdiscuzCore.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+          <i style="font-size: 9px;"><?php echo __( 'Compatible with wpDiscuz!', 'simple-cloudflare-turnstile' ); ?> &#128077;</i>
+        <?php } ?>
+      </td>
 		</tr>
 
 	</table>
@@ -259,7 +267,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 
   <?php $not_installed = array(); ?>
 
-  <?php if ( class_exists( 'WooCommerce' ) ) { ?>
+  <?php // WooCommerce
+  if ( class_exists( 'WooCommerce' ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'WooCommerce Forms', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -308,7 +317,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'contact-form-7/wp-contact-form-7.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // Contact Form 7
+  if ( in_array( 'contact-form-7/wp-contact-form-7.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'Contact Form 7', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -322,7 +332,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'wpforms-lite/wpforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || in_array( 'wpforms/wpforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // WPForms
+  if ( in_array( 'wpforms-lite/wpforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || in_array( 'wpforms/wpforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'WPForms', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -337,7 +348,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 
 		</table>
 
-		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile' ); ?>
+		<?php echo __( 'When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile' ); ?>
 
     <table class="form-table" style="margin-bottom: -15px;">
 
@@ -364,7 +375,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'gravityforms/gravityforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // Gravity Forms
+  if ( in_array( 'gravityforms/gravityforms.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
   <button type="button" class="sct-accordion"><?php echo __( 'Gravity Forms', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -379,7 +391,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 
 		</table>
 
-		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with Gravity Forms.', 'simple-cloudflare-turnstile' ); ?>
+		<?php echo __( 'When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with Gravity Forms.', 'simple-cloudflare-turnstile' ); ?>
 
     <table class="form-table" style="margin-bottom: -15px;">
 
@@ -406,7 +418,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'fluentform/fluentform.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // Fluent Forms
+  if ( in_array( 'fluentform/fluentform.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'Fluent Forms', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -444,7 +457,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // BuddyPress
+  if ( in_array( 'buddypress/bp-loader.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'BuddyPress', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -466,7 +480,8 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   }
   ?>
 
-  <?php if ( in_array( 'bbpress/bbpress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+  <?php // bbPress
+  if ( in_array( 'bbpress/bbpress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
 	<button type="button" class="sct-accordion"><?php echo __( 'bbPress', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
@@ -516,6 +531,11 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
     array_push($not_installed, '<a href="https://wordpress.org/plugins/bbpress/" target="_blank">' . __( 'bbPress', 'simple-cloudflare-turnstile' ) . '</a>');
   }
   ?>
+
+  <?php // wpDiscuz
+  if ( !in_array( 'wpdiscuz/class.WpdiscuzCore.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+    array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . __( 'wpDiscuz', 'simple-cloudflare-turnstile' ) . '</a>');
+  } ?>
 
   <?php // List of plugins not installed
   if(!empty($not_installed)) { ?>
