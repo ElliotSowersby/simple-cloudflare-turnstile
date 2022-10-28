@@ -43,6 +43,7 @@ You can currently enable Turnstile on the following forms:
 
 **Other Integrations**
 
+* Elementor Pro Forms
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
