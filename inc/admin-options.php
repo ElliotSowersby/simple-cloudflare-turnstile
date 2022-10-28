@@ -36,6 +36,7 @@ function cfturnstile_register_settings() {
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity_pos' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_fluent' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_elementor' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_create' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_reply' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_guest_only' );
@@ -440,6 +441,32 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   <?php
   } else {
     array_push($not_installed, '<a href="https://wordpress.org/plugins/fluentform/" target="_blank">' . __( 'Fluent Forms', 'simple-cloudflare-turnstile' ) . '</a>');
+  }
+  ?>
+
+  <?php // Elementor Forms
+  if ( in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )
+  && in_array( 'elementor-pro/elementor-pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+	<button type="button" class="sct-accordion"><?php echo __( 'Elementor Forms', 'simple-cloudflare-turnstile' ); ?></button>
+	<div class="sct-panel">
+
+		<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+			<tr valign="top">
+				<th scope="row">
+				<?php echo __( 'Enable on all Elementor Forms', 'simple-cloudflare-turnstile' ); ?>
+				</th>
+				<td><input type="checkbox" name="cfturnstile_elementor" <?php if(get_option('cfturnstile_elementor')) { ?>checked<?php } ?>></td>
+			</tr>
+
+		</table>
+
+		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with Elementor Pro Forms.', 'simple-cloudflare-turnstile' ); ?>
+
+	</div>
+  <?php
+  } else {
+    array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . __( 'Elementor Forms', 'simple-cloudflare-turnstile' ) . '</a>');
   }
   ?>
 

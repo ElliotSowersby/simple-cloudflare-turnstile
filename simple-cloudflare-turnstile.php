@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Simple Cloudflare Turnstile
 * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.9.0
+* Version: 1.10.0
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -64,7 +64,8 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
 	data-theme="<?php echo sanitize_text_field($theme); ?>"
 	data-name="cf-turnstile" style="<?php if(!is_page()) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if($button_id && get_option('cfturnstile_disable_button')) { ?>
-	<style><?php echo $button_id; ?> { pointer-events: none; opacity: 0.5; }</style><?php } ?>
+	<style><?php echo $button_id; ?> { pointer-events: none; opacity: 0.5; }</style>
+  <?php } ?>
 	<br/>
 	<?php
   do_action("cfturnstile_after_field");
@@ -74,8 +75,8 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
  * Enqueue admin scripts
  */
 function cfturnstile_admin_script_enqueue() {
-  wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.4', true);
-  wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.4');
+  wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.5', true);
+  wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.5');
   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
 add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
@@ -87,12 +88,12 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
    */
   function cfturnstile_script_enqueue() {
     if( !wp_script_is( 'cfturnstile-js', 'enqueued' ) ) {
-  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.2', false);
+  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.7', false);
     }
     if( !wp_script_is( 'cfturnstile', 'enqueued' ) ) {
   	   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
     }
-    wp_enqueue_style( 'cfturnstile-css', plugins_url( '/css/cfturnstile.css', __FILE__ ), array(), '1.0');
+    wp_enqueue_style( 'cfturnstile-css', plugins_url( '/css/cfturnstile.css', __FILE__ ), array(), '1.1');
   }
   add_action("wp_enqueue_scripts", "cfturnstile_script");
   function cfturnstile_script() {
@@ -145,6 +146,10 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
   			if( get_option('cfturnstile_wpforms') && ( has_shortcode( $post->post_content, 'wpforms') || has_block('wpforms/form-selector') ) ) return true;
   			if( get_option('cfturnstile_fluent') && ( has_shortcode( $post->post_content, 'fluentform') || has_block('fluentfom/guten-block') ) ) return true;
         if( get_option('cfturnstile_gravity') && ( has_shortcode( $post->post_content, 'gravityform') || has_block('gravityforms/form') ) ) return true;
+        if( get_option('cfturnstile_elementor') && in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )
+          && Elementor\Plugin::instance()->db->is_built_with_elementor( get_the_ID() )
+          && (stripos(json_encode(get_post_meta( get_the_ID(), '_elementor_data' )), 'form_name') !== false)
+        ) { return true; }
       }
     }
     return false;
@@ -296,6 +301,12 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
   // Include WPDiscuz
 	if ( in_array( 'wpdiscuz/class.WpdiscuzCore.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		include( plugin_dir_path( __FILE__ ) . 'inc/wpdiscuz.php');
+	}
+
+  // Include Elementor Forms
+	if ( in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )
+  && in_array( 'elementor-pro/elementor-pro.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		include( plugin_dir_path( __FILE__ ) . 'inc/elementor.php');
 	}
 
 }
