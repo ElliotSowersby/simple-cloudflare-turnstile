@@ -17,7 +17,7 @@ if(get_option('cfturnstile_formidable')) {
     $check = cfturnstile_check();
     $success = $check['success'];
     if($success != true) {
-			$errors['cfturnstile_error'] = cfturnstile_failed_message();
+			$errors['cfturnstile_error'] = __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
 		}
     return $errors;
 	}
