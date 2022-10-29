@@ -36,6 +36,7 @@ function cfturnstile_register_settings() {
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_gravity_pos' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_fluent' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_formidable' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_elementor' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_create' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_reply' );
@@ -441,6 +442,31 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   <?php
   } else {
     array_push($not_installed, '<a href="https://wordpress.org/plugins/fluentform/" target="_blank">' . __( 'Fluent Forms', 'simple-cloudflare-turnstile' ) . '</a>');
+  }
+  ?>
+
+  <?php // Formidable Forms
+  if ( in_array( 'formidable/formidable.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+	<button type="button" class="sct-accordion"><?php echo __( 'Formidable Forms', 'simple-cloudflare-turnstile' ); ?></button>
+	<div class="sct-panel">
+
+		<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+			<tr valign="top">
+				<th scope="row">
+				<?php echo __( 'Enable on all Formidable Forms', 'simple-cloudflare-turnstile' ); ?>
+				</th>
+				<td><input type="checkbox" name="cfturnstile_formidable" <?php if(get_option('cfturnstile_formidable')) { ?>checked<?php } ?>></td>
+			</tr>
+
+		</table>
+
+		<?php echo __( 'When enabled, Turnstile will be added above the submit button, on ALL your forms created with Formidable Forms.', 'simple-cloudflare-turnstile' ); ?>
+
+	</div>
+  <?php
+  } else {
+    array_push($not_installed, '<a href="https://wordpress.org/plugins/formidable/" target="_blank">' . __( 'Formidable Forms', 'simple-cloudflare-turnstile' ) . '</a>');
   }
   ?>
 

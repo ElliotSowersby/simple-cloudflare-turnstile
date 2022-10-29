@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.10.0
+Stable Tag: 1.11.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -40,6 +40,7 @@ You can currently enable Turnstile on the following forms:
 * Fluent Forms
 * Contact Form 7
 * Gravity Forms
+* Formidable Forms
 
 **Other Integrations**
 
@@ -107,6 +108,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.11.0 - 29th October 2022 =
+- New: Added integration with "Formidable" forms. Simply enable it in the settings, and Turnstile will be added to all your forms.
 
 = Version 1.10.0 - 28th October 2022 =
 - New: Added integration with "Elementor" Pro forms. Simply enable it in the settings, and Turnstile will be added to all your forms.

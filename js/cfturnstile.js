@@ -62,6 +62,12 @@ function turnstileFluentCallback() {
     jQuery('.fluentform .ff-btn-submit').css('pointer-events', 'auto');
     jQuery('.fluentform .ff-btn-submit').css('opacity', '1');
 }
+/* Formidable Forms */
+function turnstileFormidableCallback() {
+    jQuery('.frm_forms .frm_button_submit').css('pointer-events', 'auto');
+    jQuery('.frm_forms .frm_button_submit').css('opacity', '1');
+}
+/* Gravity Forms */
 function turnstileGravityCallback() {
     jQuery('.gform_button').css('pointer-events', 'auto');
     jQuery('.gform_button').css('opacity', '1');

@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Simple Cloudflare Turnstile
 * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.10.0
+* Version: 1.11.0
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -88,7 +88,7 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
    */
   function cfturnstile_script_enqueue() {
     if( !wp_script_is( 'cfturnstile-js', 'enqueued' ) ) {
-  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.7', false);
+  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.8', false);
     }
     if( !wp_script_is( 'cfturnstile', 'enqueued' ) ) {
   	   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
@@ -145,6 +145,7 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
   			if( has_shortcode( $post->post_content, 'mc4wp_form') || has_block('mailchimp-for-wp/form') ) return true;
   			if( get_option('cfturnstile_wpforms') && ( has_shortcode( $post->post_content, 'wpforms') || has_block('wpforms/form-selector') ) ) return true;
   			if( get_option('cfturnstile_fluent') && ( has_shortcode( $post->post_content, 'fluentform') || has_block('fluentfom/guten-block') ) ) return true;
+        if( get_option('cfturnstile_formidable') && has_shortcode( $post->post_content, 'formidable') ) return true;
         if( get_option('cfturnstile_gravity') && ( has_shortcode( $post->post_content, 'gravityform') || has_block('gravityforms/form') ) ) return true;
         if( get_option('cfturnstile_elementor') && in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )
           && Elementor\Plugin::instance()->db->is_built_with_elementor( get_the_ID() )
@@ -286,6 +287,11 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
 	// Fluent Forms
 	if ( in_array( 'fluentform/fluentform.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 		include( plugin_dir_path( __FILE__ ) . 'inc/fluent-forms.php');
+	}
+
+  // Formidable Forms
+	if ( in_array( 'formidable/formidable.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		include( plugin_dir_path( __FILE__ ) . 'inc/formidable.php');
 	}
 
   // Gravity Forms
