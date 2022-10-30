@@ -81,6 +81,17 @@ function cfturnstile_admin_script_enqueue() {
 }
 add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
 
+/**
+ * Gets the custom Turnstile failed message
+ */
+function cfturnstile_failed_message($default = "") {
+  if(!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
+    return sanitize_text_field( get_option('cfturnstile_error_message') );
+  } else {
+    return __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
+  }
+}
+
 if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
 
   /**
@@ -228,17 +239,6 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
   	$thecontent = trim(preg_replace('/\s+/', ' ', $thecontent));
   	return $thecontent;
   }
-
-  /**
-   * Gets the custom Turnstile failed message
-   */
-	function cfturnstile_failed_message($default = "") {
-    if(!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
-      return sanitize_text_field( get_option('cfturnstile_error_message') );
-    } else {
-      return __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
-    }
-	}
 
   /**
    * Gets the official Turnstile error message
