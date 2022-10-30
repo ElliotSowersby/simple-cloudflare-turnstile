@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.12.0
+Stable Tag: 1.12.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -110,7 +110,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 == Changelog ==
 
 = Version 1.12.1 - 30th October 2022 =
-- Fix: Fixed a bug/issue on settings page for new installs.
+- Fix: Fixed a bug/issue on settings page for new installs (since last update).
 
 = Version 1.12.0 - 30th October 2022 =
 - New: Added "Disabled Form IDs" option for "Fluent Forms", "Gravity Forms", "WPForms", and "Formidable Forms" integrations.
