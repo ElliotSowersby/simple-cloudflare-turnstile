@@ -109,6 +109,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.12.1 - 30th October 2022 =
+- Fix: Fixed a bug/issue on settings page for new installs.
+
 = Version 1.12.0 - 30th October 2022 =
 - New: Added "Disabled Form IDs" option for "Fluent Forms", "Gravity Forms", "WPForms", and "Formidable Forms" integrations.
 - New: Added a "Widget Location" option to the "Formidable Forms" and "Elementor Forms" integrations.
