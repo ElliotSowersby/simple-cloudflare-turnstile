@@ -17,7 +17,7 @@ if(get_option('cfturnstile_comment')) {
     $check = cfturnstile_check();
     $success = $check['success'];
     if($success != true) {
-      wp_die( __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+      wp_die( cfturnstile_failed_message() );
     }
   }
 

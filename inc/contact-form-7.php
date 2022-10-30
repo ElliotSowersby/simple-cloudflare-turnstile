@@ -12,8 +12,7 @@ function cfturnstile_cf7_shortcode() {
 
 	echo '<div class="cf7-cf-turnstile" style="margin-top: -10px;">';
 	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback');
-	echo '<span class="wpcf7-form-control-wrap cf-turnstile" data-name="cf-turnstile" style="margin-top: -15px; display: block;">
-	<input type="hidden" name="cf-turnstile" value="" class="wpcf7-form-control"></span>';
+	echo '<span class="wpcf7-form-control-wrap cf-turnstile" data-name="cf-turnstile" style="margin-top: -15px; display: block;"></span>';
 	echo '</div>';
 
 	$thecontent = ob_get_contents();
@@ -42,7 +41,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
 	if (false === strpos($cf7_text, $cfturnstile_key)) { return $result; }
 
-	$message = __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
+	$message = cfturnstile_failed_message();
 
 	if (empty($data['cf-turnstile-response'])) {
 		$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);

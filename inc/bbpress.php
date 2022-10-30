@@ -51,10 +51,10 @@ function cfturnstile_bbpress_register_check(){
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
-				bbp_add_error( 'bbp_throw_error', esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+				bbp_add_error( 'bbp_throw_error', cfturnstile_failed_message() );
 			}
 		} else {
-			bbp_add_error( 'bbp_throw_error', esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+			bbp_add_error( 'bbp_throw_error', cfturnstile_failed_message() );
 		}
 
 	}

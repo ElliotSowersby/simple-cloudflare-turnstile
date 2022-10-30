@@ -30,7 +30,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
-				wc_add_notice( __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ), 'error');
+				wc_add_notice( cfturnstile_failed_message(), 'error');
 			}
 		}
 	}
@@ -46,7 +46,7 @@ if(get_option('cfturnstile_woo_login')) {
 				$check = cfturnstile_check();
 				$success = $check['success'];
 				if($success != true) {
-					$user = new WP_Error( 'authentication_failed', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+					$user = new WP_Error( 'authentication_failed', cfturnstile_failed_message() );
 				}
 			}
 			return $user;
@@ -63,7 +63,7 @@ if(get_option('cfturnstile_woo_register')) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
-				$validation_errors->add( 'cfturnstile_error', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
 			}
 		}
 	}
@@ -78,7 +78,7 @@ if(get_option('cfturnstile_woo_reset')) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
-				$validation_errors->add( 'cfturnstile_error', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
 			}
 		}
 	}

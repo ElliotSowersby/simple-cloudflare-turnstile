@@ -2,7 +2,7 @@
 /**
 * Plugin Name: Simple Cloudflare Turnstile
 * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
-* Version: 1.11.0
+* Version: 1.12.0
 * Author: Elliot Sowersby, RelyWP
 * Author URI: https://www.relywp.com
 * License: GPLv3 or later
@@ -75,8 +75,8 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false) {
  * Enqueue admin scripts
  */
 function cfturnstile_admin_script_enqueue() {
-  wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.5', true);
-  wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.5');
+  wp_enqueue_script( 'cfturnstile-admin-js', plugins_url( '/js/admin-scripts.js', __FILE__ ), array('jquery'), '2.7', true);
+  wp_enqueue_style( 'cfturnstile-admin-css', plugins_url( '/css/admin-style.css', __FILE__ ), array(), '2.7');
   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
 add_action( 'admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue' );
@@ -88,7 +88,7 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
    */
   function cfturnstile_script_enqueue() {
     if( !wp_script_is( 'cfturnstile-js', 'enqueued' ) ) {
-  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.8', false);
+  	   wp_enqueue_script( 'cfturnstile-js', plugins_url( '/js/cfturnstile.js', __FILE__ ), array('jquery'), '2.9', false);
     }
     if( !wp_script_is( 'cfturnstile', 'enqueued' ) ) {
   	   wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
@@ -148,7 +148,7 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
         if( get_option('cfturnstile_formidable') && has_shortcode( $post->post_content, 'formidable') ) return true;
         if( get_option('cfturnstile_gravity') && ( has_shortcode( $post->post_content, 'gravityform') || has_block('gravityforms/form') ) ) return true;
         if( get_option('cfturnstile_elementor') && in_array( 'elementor/elementor.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) )
-          && Elementor\Plugin::instance()->db->is_built_with_elementor( get_the_ID() )
+          && \Elementor\Plugin::$instance->documents->get( get_the_ID() )->is_built_with_elementor()
           && (stripos(json_encode(get_post_meta( get_the_ID(), '_elementor_data' )), 'form_name') !== false)
         ) { return true; }
       }
@@ -230,7 +230,18 @@ if(!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secre
   }
 
   /**
-   * Gets the default Turnstile error message
+   * Gets the custom Turnstile failed message
+   */
+	function cfturnstile_failed_message($default = "") {
+    if(!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
+      return sanitize_text_field( get_option('cfturnstile_error_message') );
+    } else {
+      return __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
+    }
+	}
+
+  /**
+   * Gets the official Turnstile error message
    *
    * @param string $code
    * @return string

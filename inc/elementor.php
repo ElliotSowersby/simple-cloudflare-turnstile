@@ -11,7 +11,11 @@ if(get_option('cfturnstile_elementor')) {
   	?>
     <script>
     jQuery(document).ready(function() {
-      jQuery('.elementor-form button[type=submit]').before('<div id="cf-turnstile" style="margin-left: -2px; margin-bottom: 10px;"></div><br/>');
+      <?php if(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "after") { ?>
+        jQuery('.elementor-form button[type=submit]').after('<div id="cf-turnstile" style="margin-left: -2px; margin-top: 10px;"></div><br/>');
+      <?php } else { ?>
+        jQuery('.elementor-form button[type=submit]').before('<div id="cf-turnstile" style="margin-left: -2px; margin-bottom: 10px;"></div><br/>');
+      <?php } ?>
       if (jQuery('.elementor-form #cf-turnstile iframe').length <= 0) {
         setTimeout(function() {
           turnstile.render('.elementor-form #cf-turnstile', {
@@ -36,7 +40,7 @@ if(get_option('cfturnstile_elementor')) {
   // Elementor Forms Check
   add_action('elementor_pro/forms/validation', 'cfturnstile_elementor_check', 10, 2);
   function cfturnstile_elementor_check($record, $ajax_handler){
-  	$error_message = __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
+  	$error_message = cfturnstile_failed_message();
     if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
       $check = cfturnstile_check();
       $success = $check['success'];

@@ -41,7 +41,7 @@ function cfturnstile_mc4wp_register_check( $errors, $form ) {
 
 // MC4WP Error Message
 function cfturnstile_mc4wp_error_message($messages) {
-  $messages['cf_turnstile_error'] = esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' );
+  $messages['cf_turnstile_error'] = cfturnstile_failed_message();
   return $messages;
 }
 

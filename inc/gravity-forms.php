@@ -19,29 +19,44 @@ if(get_option('cfturnstile_gravity')) {
   	return $thecontent;
   }
 
+  // Check if form should show Turnstile
+  function cfturnstile_gravity_form_disable($id) {
+    if(!empty(get_option('cfturnstile_gravity_disable')) && get_option('cfturnstile_gravity_disable')) {
+      $disabled = preg_replace('/\s+/', '', get_option('cfturnstile_gravity_disable'));
+      $disabled = explode (",",$disabled);
+      if(in_array($id, $disabled)) return true;
+    }
+    return false;
+  }
+
 	// Get turnstile field: Gravity Forms
 	add_action('gform_submit_button','cfturnstile_field_gravity_form', 10, 2);
 	function cfturnstile_field_gravity_form($button, $form) {
-    if(!empty(get_option('cfturnstile_gravity_pos')) && get_option('cfturnstile_gravity_pos') == "after") {
-      return $button . do_shortcode('[gravity-simple-turnstile]');
-    } else {
-      return do_shortcode('[gravity-simple-turnstile]') . $button;
+    if(!cfturnstile_gravity_form_disable($form['id'])) {
+      if(!empty(get_option('cfturnstile_gravity_pos')) && get_option('cfturnstile_gravity_pos') == "after") {
+        return $button . do_shortcode('[gravity-simple-turnstile]');
+      } else {
+        return do_shortcode('[gravity-simple-turnstile]') . $button;
+      }
     }
+    return $button;
   }
 
   // Gravity Forms Check
 	add_action('gform_pre_submission', 'cfturnstile_gravity_check', 10, 1);
 	function cfturnstile_gravity_check($form){
+    if(!cfturnstile_gravity_form_disable($form['id'])) {
   		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
   			$check = cfturnstile_check();
   			$success = $check['success'];
   			if($success != true) {
-          wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+          wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
   			}
   		} else {
-        wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+        wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
   		}
-      return $form;
+    }
+    return $form;
 	}
 
 }

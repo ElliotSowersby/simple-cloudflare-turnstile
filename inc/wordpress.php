@@ -16,7 +16,7 @@ if(get_option('cfturnstile_login')) {
 				$check = cfturnstile_check();
 				$success = $check['success'];
 				if($success != true) {
-					$user = new WP_Error( 'authentication_failed', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+					$user = new WP_Error( 'authentication_failed', cfturnstile_failed_message() );
 				}
 			}
 			return $user;
@@ -32,7 +32,7 @@ if(get_option('cfturnstile_register')) {
 		$check = cfturnstile_check();
 		$success = $check['success'];
 		if($success != true) {
-			$errors->add( 'cfturnstile_error', sprintf('<strong>%s</strong>: %s',__( 'ERROR', 'simple-cloudflare-turnstile' ), __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) ) );
+			$errors->add( 'cfturnstile_error', sprintf('<strong>%s</strong>: %s',__( 'ERROR', 'simple-cloudflare-turnstile' ), cfturnstile_failed_message() ) );
 		}
 		return $errors;
 	}
@@ -48,7 +48,7 @@ if(get_option('cfturnstile_reset')) {
   			$check = cfturnstile_check();
   			$success = $check['success'];
   			if($success != true) {
-  				$validation_errors->add( 'cfturnstile_error', __( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) );
+  				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
   			}
   		}
   	}
@@ -82,7 +82,7 @@ if(get_option('cfturnstile_comment')) {
   		$check = cfturnstile_check();
   		$success = $check['success'];
   		if($success != true) {
-  			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . esc_html__( 'Please verify that you are human.', 'simple-cloudflare-turnstile' ) . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+  			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
   		}
   		return $commentdata;
   	}

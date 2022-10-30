@@ -37,3 +37,24 @@
 .sct-active:after {
   content: "\25B2";
 }
+
+.cfturnstile-settings .form-table th {
+  font-size: 15px;
+}
+.cfturnstile-settings .sct-panel .form-table th {
+  width: 240px;
+}
+.cfturnstile-settings input[type="checkbox"] {
+  transform: scale(1.1);
+}
+
+.cfturnstile-settings .button.button-primary {
+  font-size: 15px;
+  padding: 5px 20px;
+}
+.sct-admin-promo-top .dashicons-star-filled {
+color: orange; margin-top: 5px; font-size: 12px; width: 12px;
+}
+.sct-admin-promo .dashicons-star-filled {
+color: orange; margin-top: 5px; font-size: 15px; width: 15px;
+}

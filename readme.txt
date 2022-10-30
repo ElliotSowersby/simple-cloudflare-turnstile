@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.0.3
-Stable Tag: 1.11.0
+Stable Tag: 1.12.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,13 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.12.0 - 30th October 2022 =
+- New: Added "Disabled Form IDs" option for "Fluent Forms", "Gravity Forms", "WPForms", and "Formidable Forms" integrations.
+- New: Added a "Widget Location" option to the "Formidable Forms" and "Elementor Forms" integrations.
+- New: Added option to set your own custom error message, shown when the user submits the form with a failed Turnstile challenge.
+- Tweak: A few small changes to the admin settings page.
+- Fix: Fixed "PHP Deprecated" warning with Elementor integration enabled.
 
 = Version 1.11.0 - 29th October 2022 =
 - New: Added integration with "Formidable" forms. Simply enable it in the settings, and Turnstile will be added to all your forms.
