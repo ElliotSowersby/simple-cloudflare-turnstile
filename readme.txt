@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.1.0
-Stable Tag: 1.12.2
+Stable Tag: 1.12.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -108,6 +108,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.12.3 - 2nd November 2022 =
+- Fix: Added check to see if jQuery is undefined, and fix error if so.
 
 = Version 1.12.2 - 2nd November 2022 =
 - Tweak: Removed "Where to load scripts?" option, since it will now accurately only load the scripts on pages that Turnstile is showing.
