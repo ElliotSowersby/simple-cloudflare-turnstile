@@ -206,36 +206,6 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 		</tr>
 
     <tr valign="top">
-			<th scope="row"><?php echo __( 'Where to load scripts?', 'simple-cloudflare-turnstile' ); ?></th>
-			<td>
-				<select style="width: 240px;" name="cfturnstile_scripts" id="cfturnstile_scripts">
-					<option value="default"<?php if(!get_option('cfturnstile_scripts') || get_option('cfturnstile_scripts') == "default") { ?>selected<?php } ?>>
-						<?php esc_html_e( 'Auto Detect (Default)', 'simple-cloudflare-turnstile' ); ?>
-					</option>
-          <option value="autocustom"<?php if(get_option('cfturnstile_scripts') == "autocustom") { ?>selected<?php } ?>>
-						<?php esc_html_e( 'Auto Detect + Custom Page IDs', 'simple-cloudflare-turnstile' ); ?>
-					</option>
-          <option value="custom"<?php if(get_option('cfturnstile_scripts') == "custom") { ?>selected<?php } ?>>
-						<?php esc_html_e( 'Custom Page IDs', 'simple-cloudflare-turnstile' ); ?>
-					</option>
-					<option value="all"<?php if(get_option('cfturnstile_scripts') == "all") { ?>selected<?php } ?>>
-						<?php esc_html_e( 'All Pages', 'simple-cloudflare-turnstile' ); ?>
-					</option>
-				</select>
-        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_default"><br/><?php echo __( '"Auto Detect" is perfect for most sites, so the scripts only load on pages that require them. A better option for performance optimisation.', 'simple-cloudflare-turnstile' ); ?></i>
-        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_autocustom"><br/><?php echo __( '"Auto Detect + Custom Page IDs" lets you enter the specific page IDs that you want the scripts to load on yourself, but will also auto-detect and load on other pages it knows requires them.', 'simple-cloudflare-turnstile' ); ?></i>
-        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_custom"><br/><?php echo __( '"Custom Page IDs" lets you enter the specific page IDs that you want the scripts to load on yourself.', 'simple-cloudflare-turnstile' ); ?></i>
-        <i style="font-size: 10px; display: none;" class="section_cfturnstile_scripts_all"><br/><?php echo __( '"All Pages" loads the script everywhere. This may be needed if you are using custom addons to display forms, or if the Turnstile widget is not loading for some other reason.', 'simple-cloudflare-turnstile' ); ?></i>
-        <span class="section_cfturnstile_scripts_autocustom section_cfturnstile_scripts_custom" style="display: none;">
-        <br/><br/>
-          <strong><?php echo __( 'Custom page IDs:', 'simple-cloudflare-turnstile' ); ?></strong><br/>
-          <input type="text" name="cfturnstile_scripts_custom" <?php if(get_option('cfturnstile_scripts_custom')) { ?>value="<?php echo get_option('cfturnstile_scripts_custom'); ?>"<?php } ?>>
-          <i style="font-size: 10px;"><?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?></i>
-        </span>
-      </td>
-    </tr>
-
-    <tr valign="top">
     <th scope="row"><?php echo __( 'Custom Error Message', 'simple-cloudflare-turnstile' ); ?></th>
     <td>
       <input type="text" style="width: 240px;" name="cfturnstile_error_message" value="<?php echo sanitize_text_field( get_option('cfturnstile_error_message') ); ?>" placeholder="<?php echo cfturnstile_failed_message(1); ?>" />

@@ -61,6 +61,7 @@ if(get_option('cfturnstile_comment')) {
   	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
   	// Create and display the turnstile field for comments.
   	function cfturnstile_field_comment( $submit_button, $args ) {
+        do_action("cfturnstile_enqueue_scripts");
     		$key = esc_attr( get_option('cfturnstile_key') );
     		$theme = esc_attr( get_option('cfturnstile_theme') );
     		$submit_before = '';
@@ -79,12 +80,14 @@ if(get_option('cfturnstile_comment')) {
   	// Comment Validation
   	add_action('preprocess_comment','cfturnstile_wp_comment_check', 10, 1);
   	function cfturnstile_wp_comment_check($commentdata) {
-  		$check = cfturnstile_check();
-  		$success = $check['success'];
-  		if($success != true) {
-  			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
-  		}
-  		return $commentdata;
+      if( !empty($_POST) ) {
+    		$check = cfturnstile_check();
+    		$success = $check['success'];
+    		if($success != true) {
+    			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+    		}
+    		return $commentdata;
+      }
   	}
   }
 }

@@ -8,6 +8,7 @@ if(get_option('cfturnstile_elementor')) {
   // Get turnstile field
   add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form');
   function cfturnstile_field_elementor_form() {
+    do_action("cfturnstile_enqueue_scripts");
   	?>
     <script>
     jQuery(document).ready(function() {
