@@ -109,7 +109,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
-= Version 1.12.3 - 2nd November 2022 =
+= Version 1.12.3 - 3rd November 2022 =
 - Fix: Added check to see if jQuery is undefined, and fix error if so.
 
 = Version 1.12.2 - 2nd November 2022 =
