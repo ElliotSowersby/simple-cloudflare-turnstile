@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.1.0
-Stable Tag: 1.12.4
+Stable Tag: 1.13.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,7 @@ You can currently enable Turnstile on the following forms:
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
 * wpDiscuz Custom Comments Form
+* Ultimate Member Forms
 
 ## What is Cloudflare Turnstile? ##
 
@@ -109,7 +110,12 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
-= Version 1.12.4 - 4th November 2022 =
+= Version 1.13.0 - 4th November 2022 =
+- New: Added integration with "Ultimate Member" login, register, and password reset forms.
+- Fix: Fixed Turnstile widget not showing on comments form for some sites that have certain optimisations enabled.
+- Fix: Fixed 'Unknown parameter passed to api.js: "?ver=..."' console warning that was showing.
+
+= Version 1.12.4 - 3rd November 2022 =
 - Fix: Fixed a bug with widget showing twice for contact form 7 on some sites.
 
 = Version 1.12.3 - 3rd November 2022 =

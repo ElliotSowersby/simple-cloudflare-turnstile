@@ -96,3 +96,8 @@ jQuery( document ).ready(function() {
 		}
 	});
 });
+/* Ultimate Member */
+function turnstileUMCallback() {
+    jQuery('#um-submit-btn').css('pointer-events', 'auto');
+    jQuery('#um-submit-btn').css('opacity', '1');
+}

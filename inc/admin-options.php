@@ -45,6 +45,9 @@ function cfturnstile_register_settings() {
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_formidable_disable' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_elementor' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_elementor_pos' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_um_login' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_um_register' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_um_password' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_create' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_reply' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bbpress_guest_only' );
@@ -677,6 +680,44 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
   <?php
   } else {
     array_push($not_installed, '<a href="https://wordpress.org/plugins/bbpress/" target="_blank">' . __( 'bbPress', 'simple-cloudflare-turnstile' ) . '</a>');
+  }
+  ?>
+
+  <?php // Ultimate Member
+  if ( in_array( 'ultimate-member/ultimate-member.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) { ?>
+	<button type="button" class="sct-accordion"><?php echo __( 'Ultimate Member', 'simple-cloudflare-turnstile' ); ?></button>
+	<div class="sct-panel">
+
+		<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+			<tr valign="top">
+				<th scope="row">
+				<?php echo __( 'UM Login Form', 'simple-cloudflare-turnstile' ); ?>
+				</th>
+				<td><input type="checkbox" name="cfturnstile_um_login" <?php if(get_option('cfturnstile_um_login')) { ?>checked<?php } ?>></td>
+			</tr>
+
+      <tr valign="top">
+				<th scope="row">
+				<?php echo __( 'UM Register Form', 'simple-cloudflare-turnstile' ); ?>
+				</th>
+				<td><input type="checkbox" name="cfturnstile_um_register" <?php if(get_option('cfturnstile_um_register')) { ?>checked<?php } ?>></td>
+			</tr>
+
+      <tr valign="top">
+				<th scope="row">
+				<?php echo __( 'UM Password Reset Form', 'simple-cloudflare-turnstile' ); ?>
+				</th>
+				<td><input type="checkbox" name="cfturnstile_um_password" <?php if(get_option('cfturnstile_um_password')) { ?>checked<?php } ?>></td>
+			</tr>
+
+		</table>
+
+	</div>
+
+  <?php
+  } else {
+    array_push($not_installed, '<a href="https://wordpress.org/plugins/ultimate-member/" target="_blank">' . __( 'Ultimate Member', 'simple-cloudflare-turnstile' ) . '</a>');
   }
   ?>
 

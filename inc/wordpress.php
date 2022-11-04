@@ -70,7 +70,7 @@ if(get_option('cfturnstile_comment')) {
     		if(get_option('cfturnstile_disable_button')) {
     			$callback = 'turnstileCommentCallback';
     		}
-    		$submit_before .= '<div class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
+    		$submit_before .= '<div id="cf-turnstile" class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
     		if(get_option('cfturnstile_disable_button')) {
     			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
     			$submit_after .= "</div>";
