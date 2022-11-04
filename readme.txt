@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.1.0
-Stable Tag: 1.13.0
+Stable Tag: 1.13.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,8 +48,8 @@ You can currently enable Turnstile on the following forms:
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
-* wpDiscuz Custom Comments Form
 * Ultimate Member Forms
+* wpDiscuz Custom Comments Form
 
 ## What is Cloudflare Turnstile? ##
 
@@ -90,7 +90,7 @@ Currently available in <a href="https://translate.wordpress.org/projects/wp-plug
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 3. Visit the plugin settings in WordPress admin menu at "Settings > Cloudflare Turnstile".
 4. You will need to generate a "Site Key" and "Site Secret" in your Cloudflare account, then enter these in the settings page.
-5. Select which forms you want to enable Turnstile on, and finally click "Save Changes".
+5. Select which forms you want to enable Turnstile on, then click the "Save Changes" button.
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
@@ -110,9 +110,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.13.1 - 4th November 2022 =
+- Fix: Fixed Turnstile widget not showing on comments form for some sites that have certain optimisations enabled.
+
 = Version 1.13.0 - 4th November 2022 =
 - New: Added integration with "Ultimate Member" login, register, and password reset forms.
-- Fix: Fixed Turnstile widget not showing on comments form for some sites that have certain optimisations enabled.
 - Fix: Fixed 'Unknown parameter passed to api.js: "?ver=..."' console warning that was showing.
 
 = Version 1.12.4 - 3rd November 2022 =

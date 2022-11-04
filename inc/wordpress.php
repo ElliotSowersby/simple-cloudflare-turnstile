@@ -58,6 +58,7 @@ if(get_option('cfturnstile_reset')) {
 // WP Comment
 if(get_option('cfturnstile_comment')) {
   if(!is_admin()) {
+    add_action("comment_form_after", "cfturnstile_force_render");
   	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
   	// Create and display the turnstile field for comments.
   	function cfturnstile_field_comment( $submit_button, $args ) {
