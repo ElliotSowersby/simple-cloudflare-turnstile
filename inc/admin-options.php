@@ -389,7 +389,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
     </table>
     <i style="font-size: 10px;">
       <?php echo sprintf (__( 'If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile' ), 'WPForms Form'); ?>
-      <?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
+      <?php echo __( 'Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
     </i>
 
 	</div>
@@ -445,7 +445,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
     </table>
     <i style="font-size: 10px;">
       <?php echo sprintf (__( 'If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile' ), 'Gravity Form'); ?>
-      <?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
+      <?php echo __( 'Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
     </i>
 
 	</div>
@@ -483,7 +483,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
     </table>
     <i style="font-size: 10px;">
       <?php echo sprintf (__( 'If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile' ), 'Fluent Form'); ?>
-      <?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
+      <?php echo __( 'Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
     </i>
 
 	</div>
@@ -538,7 +538,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
       </table>
       <i style="font-size: 10px;">
         <?php echo sprintf (__( 'If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile' ), 'Formidable Form'); ?>
-        <?php echo __( 'Seperate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
+        <?php echo __( 'Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile' ); ?>
       </i>
 
 		</table>
