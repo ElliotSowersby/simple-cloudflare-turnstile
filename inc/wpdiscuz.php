@@ -17,9 +17,9 @@ if(get_option('cfturnstile_comment')) {
     	?>
       <script>
       jQuery(document).ready(function() {
-        jQuery('#wpd-field-submit-<?php echo $uniqueId; ?>').before('<div id="cf-turnstile-<?php echo $uniqueId; ?>" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px;"></div><br/>');
-          turnstile.remove('#cf-turnstile-<?php echo $uniqueId; ?>');
-          turnstile.render('#cf-turnstile-<?php echo $uniqueId; ?>', {
+        jQuery('#wpd-field-submit-<?php echo $uniqueId; ?>').before('<div id="cf-turnstile-wpd-<?php echo $uniqueId; ?>" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px;"></div><br/>');
+          turnstile.remove('#cf-turnstile-wpd-<?php echo $uniqueId; ?>');
+          turnstile.render('#cf-turnstile-wpd-<?php echo $uniqueId; ?>', {
             sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
             <?php if(get_option('cfturnstile_disable_button')) { ?>
             callback: function(token) {

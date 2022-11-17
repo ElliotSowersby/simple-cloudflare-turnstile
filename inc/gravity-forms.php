@@ -7,10 +7,11 @@ if(get_option('cfturnstile_gravity')) {
 
   // Create shortcode
   add_shortcode('gravity-simple-turnstile', 'cfturnstile_gravity_shortcode');
-  function cfturnstile_gravity_shortcode() {
+  function cfturnstile_gravity_shortcode($atts) {
   	ob_start();
+    if(!empty($atts['id'])) { $unique_id = $atts['id']; } else { $unique_id = ""; }
     echo '</div><div style="margin-top: 10px; margin-bottom: -25px; padding-bottom: 0;">';
-  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback');
+  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', '', '-gf-' . $unique_id);
     echo "</div><div class='gform_page_footer top_label'>";
   	$thecontent = ob_get_contents();
   	ob_end_clean();
@@ -34,9 +35,9 @@ if(get_option('cfturnstile_gravity')) {
 	function cfturnstile_field_gravity_form($button, $form) {
     if(!cfturnstile_gravity_form_disable($form['id'])) {
       if(!empty(get_option('cfturnstile_gravity_pos')) && get_option('cfturnstile_gravity_pos') == "after") {
-        return $button . do_shortcode('[gravity-simple-turnstile]');
+        return $button . do_shortcode('[gravity-simple-turnstile id="'.$form['id'].'"]');
       } else {
-        return do_shortcode('[gravity-simple-turnstile]') . $button;
+        return do_shortcode('[gravity-simple-turnstile id="'.$form['id'].'"]') . $button;
       }
     }
     return $button;

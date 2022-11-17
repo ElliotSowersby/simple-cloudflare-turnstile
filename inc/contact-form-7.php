@@ -11,7 +11,7 @@ function cfturnstile_cf7_shortcode() {
 	ob_start();
 
 	echo '<div class="cf7-cf-turnstile" style="margin-top: -10px; margin-bottom: -15px;">';
-	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback');
+	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback', '', '-' . mt_rand());
 	echo '</div>';
 
 	$thecontent = ob_get_contents();
@@ -24,6 +24,19 @@ function cfturnstile_cf7_shortcode() {
 
 }
 
+// Add Turnstile to all CF7 forms at once.
+if ( ( !empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all') ) ) {
+  add_action( 'wpcf7_form_elements', 'cfturnstile_field_cf7', 10, 1 );
+  function cfturnstile_field_cf7( $content ) {
+  	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
+  	if (false === strpos($content, $cfturnstile_key)) {
+      return str_replace('<input type="submit"', cfturnstile_cf7_shortcode() . '<br/><input type="submit"', $content);
+    } else {
+      return $content;
+    }
+  }
+}
+
 // Validate form submission
 add_filter('wpcf7_validate', 'cfturnstile_cf7_verify_recaptcha', 20, 2);
 function cfturnstile_cf7_verify_recaptcha($result) {
@@ -34,25 +47,33 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	if (empty($_wpcf7)) { return $result; }
 
 	$post = WPCF7_Submission::get_instance();
-	$data = $post->get_posted_data();
 
-	$cf7_text = do_shortcode( '[contact-form-7 id="' . $_wpcf7 . '"]' );
-	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
-	if (false === strpos($cf7_text, $cfturnstile_key)) { return $result; }
+  if ( !empty( $post ) ) {
 
-	$message = cfturnstile_failed_message();
+  	$data = $post->get_posted_data();
 
-	if (empty($data['cf-turnstile-response'])) {
-		$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
-		return $result;
-	}
+  	$cf7_text = do_shortcode( '[contact-form-7 id="' . $_wpcf7 . '"]' );
+  	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
+  	if ( (empty(get_option('cfturnstile_cf7_all')) || !get_option('cfturnstile_cf7_all'))
+      && false === strpos($cf7_text, $cfturnstile_key)) {
+        return $result;
+    }
 
-	$check = cfturnstile_check();
-	$success = $check['success'];
-	if($success != true) {
-		$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
-		return $result;
-	}
+  	$message = cfturnstile_failed_message();
+
+  	if (empty($data['cf-turnstile-response'])) {
+  		$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
+  		return $result;
+  	}
+
+  	$check = cfturnstile_check();
+  	$success = $check['success'];
+  	if($success != true) {
+  		$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
+  		return $result;
+  	}
+
+  }
 
 	return $result;
 

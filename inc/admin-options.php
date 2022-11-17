@@ -32,6 +32,7 @@ function cfturnstile_register_settings() {
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_woo_register' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_woo_reset' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_bp_register' );
+  register_setting( 'cfturnstile-settings-group', 'cfturnstile_cf7_all' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_wpforms' );
 	register_setting( 'cfturnstile-settings-group', 'cfturnstile_wpforms_pos' );
   register_setting( 'cfturnstile-settings-group', 'cfturnstile_wpforms_disable' );
@@ -333,7 +334,20 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 	<button type="button" class="sct-accordion"><?php echo __( 'Contact Form 7', 'simple-cloudflare-turnstile' ); ?></button>
 	<div class="sct-panel">
 
-		<?php echo __( 'To add Turnstile to Contact Form 7, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile' ); ?>
+    <table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+    <tr valign="top">
+      <th scope="row">
+      <?php echo __( 'Enable on all CF7 Forms', 'simple-cloudflare-turnstile' ); ?>
+      </th>
+      <td><input type="checkbox" name="cfturnstile_cf7_all" <?php if(get_option('cfturnstile_cf7_all')) { ?>checked<?php } ?>></td>
+    </tr>
+
+    </table>
+
+    <br/>
+
+		<?php echo __( 'To add Turnstile to individual Contact Form 7 forms, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile' ); ?>
 		<br/><span style="color: red; font-size: 15px; font-weight: bold;">[cf7-simple-turnstile]</span>
 
   </div>
@@ -776,7 +790,7 @@ if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') !
 <p style="font-size: 15px;">- <?php echo __( 'Need help? Have a suggestion?', 'simple-cloudflare-turnstile' ); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile" target="_blank"><?php echo __( 'Create a support topic', 'simple-cloudflare-turnstile' ); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a></p>
 
 <p style="font-size: 15px;">
-  - <?php echo __( 'Want to support the developer?', 'simple-cloudflare-turnstile' ); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo __( 'Donate', 'simple-cloudflare-turnstile' ); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
+  - <?php echo __( 'Want to support the developer?', 'simple-cloudflare-turnstile' ); ?> <?php echo __( 'Feel free to', 'simple-cloudflare-turnstile' ); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo __( 'Donate', 'simple-cloudflare-turnstile' ); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
 </p>
 
 <br/>

@@ -4,19 +4,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Get turnstile field: Woo Login
-function cfturnstile_field_woo_login() { cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback'); }
+function cfturnstile_field_woo_login() { cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', '', '-woo-login'); }
 
 // Get turnstile field: Woo Register
-function cfturnstile_field_woo_register() { cfturnstile_field_show('.woocommerce-form-register__submit', 'turnstileWooRegisterCallback'); }
+function cfturnstile_field_woo_register() { cfturnstile_field_show('.woocommerce-form-register__submit', 'turnstileWooRegisterCallback', '', '-woo-register'); }
 
 // Get turnstile field: Woo Reset
-function cfturnstile_field_woo_reset() {cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback'); }
+function cfturnstile_field_woo_reset() {cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', '', '-woo-reset'); }
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {
 	$guest_only = esc_attr( get_option('cfturnstile_guest_only') );
 	if( !$guest_only || ($guest_only && !is_user_logged_in()) ) {
-		cfturnstile_field_show('', '');
+		cfturnstile_field_show('', '', '', '-woo-checkout');
 	}
 }
 

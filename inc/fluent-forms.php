@@ -19,7 +19,8 @@ if(get_option('cfturnstile_fluent')) {
 	add_action('fluentform_render_item_submit_button','cfturnstile_field_fluent_form', 10, 2);
 	function cfturnstile_field_fluent_form($item, $form) {
     if(!cfturnstile_fluent_form_disable($form->id)) {
-		    cfturnstile_field_show('.fluentform .ff-btn-submit', 'turnstileFluentCallback');
+      $unique_id = $form->id;
+		  cfturnstile_field_show('.fluentform .ff-btn-submit', 'turnstileFluentCallback', '', '-gf-' . $unique_id);
     }
 	}
 

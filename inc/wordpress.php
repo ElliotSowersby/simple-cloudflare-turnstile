@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Get turnstile field: WP
-function cfturnstile_field() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback'); }
+function cfturnstile_field() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', '', '-' . mt_rand()); }
 
 // WP Login Check
 if(get_option('cfturnstile_login')) {
@@ -65,17 +65,19 @@ if(get_option('cfturnstile_comment')) {
         do_action("cfturnstile_enqueue_scripts");
     		$key = esc_attr( get_option('cfturnstile_key') );
     		$theme = esc_attr( get_option('cfturnstile_theme') );
+        $unique_id = mt_rand();
     		$submit_before = '';
     		$submit_after = '';
     		$callback = '';
     		if(get_option('cfturnstile_disable_button')) {
     			$callback = 'turnstileCommentCallback';
     		}
-    		$submit_before .= '<div id="cf-turnstile" class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
+    		$submit_before .= '<div id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'"></div>';
     		if(get_option('cfturnstile_disable_button')) {
     			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
     			$submit_after .= "</div>";
     		}
+        $submit_after .= cfturnstile_force_render("-c-" . $unique_id);
     		return $submit_before . $submit_button . $submit_after;
   	}
   	// Comment Validation

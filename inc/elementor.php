@@ -6,20 +6,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(get_option('cfturnstile_elementor')) {
 
   // Get turnstile field
-  add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form');
-  function cfturnstile_field_elementor_form() {
+  add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form', 10, 2);
+  function cfturnstile_field_elementor_form($instance, $form) {
     do_action("cfturnstile_enqueue_scripts");
+    $id = strtolower(sanitize_text_field($instance['form_name']));
+    $id = preg_replace('/\s+/', '_', $id);
   	?>
     <script>
     jQuery(document).ready(function() {
       <?php if(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "after") { ?>
-        jQuery('.elementor-form button[type=submit]').after('<div id="cf-turnstile" style="margin-left: -2px; margin-top: 10px;"></div><br/>');
+        jQuery('.elementor-form button[type=submit]').after('<div id="cf-turnstile-em-<?php echo $id; ?>" style="margin-left: -2px; margin-top: 10px;"></div><br/>');
       <?php } else { ?>
-        jQuery('.elementor-form button[type=submit]').before('<div id="cf-turnstile" style="margin-left: -2px; margin-bottom: 10px;"></div><br/>');
+        jQuery('.elementor-form button[type=submit]').before('<div id="cf-turnstile-em-<?php echo $id; ?>" style="margin-left: -2px; margin-bottom: 10px;"></div><br/>');
       <?php } ?>
-      if (jQuery('.elementor-form #cf-turnstile iframe').length <= 0) {
+      if (jQuery('.elementor-form #cf-turnstile-em-<?php echo $id; ?> iframe').length <= 0) {
         setTimeout(function() {
-          turnstile.render('.elementor-form #cf-turnstile', {
+          turnstile.render('.elementor-form #cf-turnstile-em-<?php echo $id; ?>', {
             sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
             <?php if(get_option('cfturnstile_disable_button')) { ?>
             callback: function(token) {

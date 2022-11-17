@@ -24,7 +24,7 @@ if(get_option('cfturnstile_wpforms')) {
 	function cfturnstile_field_wpf_form($form_data) {
     if(!cfturnstile_wpf_form_disable($form_data['id'])) {
       if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") { echo "<br/><br/>"; }
-      cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback');
+      cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback', '', '-wpf-' . $form_data['id']);
     } else {
       return;
     }

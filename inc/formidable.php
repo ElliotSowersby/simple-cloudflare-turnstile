@@ -21,8 +21,10 @@ if(get_option('cfturnstile_formidable')) {
 
     if(!cfturnstile_formidable_form_disable($args['form']->id)) {
 
+      $unique_id = $args['form']->id;
+
     	ob_start();
-      cfturnstile_field_show('.frm_forms .frm_button_submit', 'turnstileFormidableCallback');
+      cfturnstile_field_show('.frm_forms .frm_button_submit', 'turnstileFormidableCallback', '', '-gf-' . $unique_id);
     	$cfturnstile = ob_get_contents();
     	ob_end_clean();
     	wp_reset_postdata();

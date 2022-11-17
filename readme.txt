@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.1
-Stable Tag: 1.13.2
+Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -109,6 +109,13 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.14.0 - 17th November 2022 =
+- New: Added option to enable Turnstile on ALL forms created with Contact Form 7, instead of having to add it individually.
+- Tweak: Implemented the new "data-retry-interval" attribute to speed up time it takes to retry on failure.
+- Tweak: Turnstile will now work better/correctly with multiple forms displayed on the same page.
+- Fix: Fixed error with Turnstile enabled on CF7 multi-step forms.
+- Other: Tested with WordPress 6.1.1
 
 = Version 1.13.2 - 11th November 2022 =
 - Fix: Changed the code for wpDiscuz integration, so Turnstile loads properly for comment replies, and only attempt to enqueue scripts once.
