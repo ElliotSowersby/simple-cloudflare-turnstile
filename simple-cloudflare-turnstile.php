@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.15.0
+ * Version: 1.15.1
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -46,6 +46,18 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
 		$actions = array_merge($settings, $actions);
 	}
 	return $actions;
+}
+
+/**
+ * Custom "is_plugin_active" function.
+ *
+ * @param string $plugin
+ * @return bool
+ */
+if ( !function_exists( 'cft_is_plugin_active' ) ) {
+	function cft_is_plugin_active( $plugin ) {
+		return in_array( $plugin, (array) get_option( 'active_plugins', array() ), true ) || ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin ) );
+	}
 }
 
 /**
@@ -204,62 +216,62 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	include(plugin_dir_path(__FILE__) . 'inc/wordpress.php');
 
 	// Include WooCommerce
-	if (is_plugin_active('woocommerce/woocommerce.php')) {
+	if (cft_is_plugin_active('woocommerce/woocommerce.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/woocommerce.php');
 	}
 
 	// Include Contact Form 7
-	if (is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
+	if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/contact-form-7.php');
 	}
 
 	// Include Buddypress
-	if (is_plugin_active('buddypress/bp-loader.php')) {
+	if (cft_is_plugin_active('buddypress/bp-loader.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/buddypress.php');
 	}
 
 	// Include MC4WP
-	if (is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) {
+	if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/mc4wp.php');
 	}
 
 	// Include WPForms
-	if (is_plugin_active('wpforms-lite/wpforms.php') || is_plugin_active('wpforms/wpforms.php')) {
+	if (cft_is_plugin_active('wpforms-lite/wpforms.php') || cft_is_plugin_active('wpforms/wpforms.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/wpforms.php');
 	}
 
 	// Fluent Forms
-	if (is_plugin_active('fluentform/fluentform.php')) {
+	if (cft_is_plugin_active('fluentform/fluentform.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/fluent-forms.php');
 	}
 
 	// Formidable Forms
-	if (is_plugin_active('formidable/formidable.php')) {
+	if (cft_is_plugin_active('formidable/formidable.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/formidable.php');
 	}
 
 	// Gravity Forms
-	if (is_plugin_active('gravityforms/gravityforms.php')) {
+	if (cft_is_plugin_active('gravityforms/gravityforms.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/gravity-forms.php');
 	}
 
 	// Include BBPress
-	if (is_plugin_active('bbpress/bbpress.php')) {
+	if (cft_is_plugin_active('bbpress/bbpress.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/bbpress.php');
 	}
 
 	// Include WPDiscuz
-	if (is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+	if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/wpdiscuz.php');
 	}
 
 	// Include Elementor Forms
-	if ( is_plugin_active('elementor/elementor.php') && is_plugin_active('elementor-pro/elementor-pro.php') ) {
+	if ( cft_is_plugin_active('elementor/elementor.php') && cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
 		include(plugin_dir_path(__FILE__) . 'inc/elementor.php');
 	}
 
 	// Include Ultimate Member
-	if (is_plugin_active('ultimate-member/ultimate-member.php')) {
+	if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/ultimate-member.php');
 	}
 

@@ -110,13 +110,16 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.15.1 - 26th November 2022 =
+- Fix: Fixed "Call to undefined function is_plugin_active()" error showing on some sites since last update.
+
 = Version 1.15.0 - 26th November 2022 =
 - New: Added option to choose where exactly the Turnstile widget is displayed on WooCommerce checkout. Also updated code so adding it directly before the place order button now works.
 - Tweak: Turnstile widget will now re-render on WooCommerce checkout, if any changes are made (checkout cart info reloads via js/ajax).
 - Tweak: Minified the inline script for rendering Turnstile, and this now uses vanila javascript instead of jQuery.
 - Tweak: Updated all forms to have completely unique Turnstile IDs, even if same form is displayed twice on same page (popups etc). This should prevent issues with Turnstile not loading properly on one of them.
 - Tweak: Integrations should now work properly on WordPress multisite installations.
-- Tweak: Implemented the new "data-retry-interval" attribute on WordPress comments.
+- Tweak: Implemented the new "data-retry-interval" attribute for Turnstile widget when displayed on WordPress comments.
 - Other: Removed some redundant code for the "cfturnstile_scripts" option that was removed previously.
 
 = Version 1.14.0 - 17th November 2022 =

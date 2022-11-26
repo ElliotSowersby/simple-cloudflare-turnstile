@@ -265,10 +265,10 @@ function cfturnstile_settings_page() {
 						</th>
 						<td>
 							<input type="checkbox" name="cfturnstile_comment" <?php if (get_option('cfturnstile_comment')) { ?>checked<?php } ?>>
-							<?php if (is_plugin_active('jetpack/jetpack.php')) { ?>
+							<?php if (cft_is_plugin_active('jetpack/jetpack.php')) { ?>
 								<br /><i style="font-size: 10px;"><?php echo __('Due to Jetpack limitations, this does NOT currently work with Jetpack comments form enabled.', 'simple-cloudflare-turnstile'); ?></i>
 							<?php } ?>
-							<?php if (is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { ?>
+							<?php if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { ?>
 								<i style="font-size: 9px;"><?php echo __('Compatible with wpDiscuz!', 'simple-cloudflare-turnstile'); ?> &#128077;</i>
 							<?php } ?>
 						</td>
@@ -352,7 +352,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Contact Form 7
-			if (is_plugin_active('contact-form-7/wp-contact-form-7.php')) { ?>
+			if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Contact Form 7', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -380,7 +380,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // WPForms
-			if (is_plugin_active('wpforms-lite/wpforms.php') || is_plugin_active('wpforms/wpforms.php')) { ?>
+			if (cft_is_plugin_active('wpforms-lite/wpforms.php') || cft_is_plugin_active('wpforms/wpforms.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('WPForms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -436,7 +436,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Gravity Forms
-			if (is_plugin_active('gravityforms/gravityforms.php')) { ?>
+			if (cft_is_plugin_active('gravityforms/gravityforms.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Gravity Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -492,7 +492,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Fluent Forms
-			if (is_plugin_active('fluentform/fluentform.php')) { ?>
+			if (cft_is_plugin_active('fluentform/fluentform.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Fluent Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -531,7 +531,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Formidable Forms
-			if (is_plugin_active('formidable/formidable.php')) { ?>
+			if (cft_is_plugin_active('formidable/formidable.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Formidable Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -588,8 +588,8 @@ function cfturnstile_settings_page() {
 
 			<?php // Elementor Forms
 			if (
-				is_plugin_active('elementor/elementor.php')
-				&& is_plugin_active('elementor-pro/elementor-pro.php')
+				cft_is_plugin_active('elementor/elementor.php')
+				&& cft_is_plugin_active('elementor-pro/elementor-pro.php')
 			) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
@@ -632,7 +632,7 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
-			<?php if (is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
+			<?php if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -647,7 +647,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // BuddyPress
-			if (is_plugin_active('buddypress/bp-loader.php')) { ?>
+			if (cft_is_plugin_active('buddypress/bp-loader.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('BuddyPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -670,7 +670,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // bbPress
-			if (is_plugin_active('bbpress/bbpress.php')) { ?>
+			if (cft_is_plugin_active('bbpress/bbpress.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('bbPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -722,7 +722,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Ultimate Member
-			if (is_plugin_active('ultimate-member/ultimate-member.php')) { ?>
+			if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Ultimate Member', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -760,7 +760,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // wpDiscuz
-			if (!is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+			if (!cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . __('wpDiscuz', 'simple-cloudflare-turnstile') . '</a>');
 			} ?>
 
