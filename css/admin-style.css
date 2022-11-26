@@ -15,7 +15,8 @@
   font-weight: bold;
   max-width: 420px;
 }
-.sct-active, .sct-accordion:hover {
+.sct-active,
+.sct-accordion:hover {
   background-color: #e1e1e1;
 }
 .sct-panel {
@@ -33,11 +34,9 @@
   float: right;
   margin-left: 5px;
 }
-
 .sct-active:after {
   content: "\25B2";
 }
-
 .cfturnstile-settings .form-table th {
   font-size: 15px;
 }
@@ -47,14 +46,19 @@
 .cfturnstile-settings input[type="checkbox"] {
   transform: scale(1.1);
 }
-
 .cfturnstile-settings .button.button-primary {
   font-size: 15px;
   padding: 5px 20px;
 }
 .sct-admin-promo-top .dashicons-star-filled {
-color: orange; margin-top: 5px; font-size: 12px; width: 12px;
+  color: orange;
+  margin-top: 5px;
+  font-size: 12px;
+  width: 12px;
 }
 .sct-admin-promo .dashicons-star-filled {
-color: orange; margin-top: 5px; font-size: 15px; width: 15px;
+  color: orange;
+  margin-top: 5px;
+  font-size: 15px;
+  width: 15px;
 }

@@ -20,26 +20,26 @@ function turnstileWooResetCallback() {
     jQuery('.woocommerce-ResetPassword .button').css('pointer-events', 'auto');
     jQuery('.woocommerce-ResetPassword .button').css('opacity', '1');
 }
-function turnstileCheckoutCallback() {
-
-}
 jQuery( document ).ready(function() {
-	jQuery( document.body ).on( 'checkout_error', function(){
-		if (document.getElementById('cf-turnstile')) {
-			turnstile.reset('#cf-turnstile');
-		}
+	jQuery( document.body ).on( 'checkout_error update_checkout updated_checkout applied_coupon_in_checkout removed_coupon_in_checkout', function(){
+        if(jQuery('#cf-turnstile-woo-checkout iframe').length <= 0) {
+            if(document.getElementById('cf-turnstile-woo-checkout')) {
+                turnstile.remove('#cf-turnstile-woo-checkout');
+                turnstile.render('#cf-turnstile-woo-checkout');
+            }
+        }
 	});
 });
-/ * CF7 */
+/* CF7 */
 function turnstileCF7Callback() {
     jQuery('.wpcf7-submit').css('pointer-events', 'auto');
     jQuery('.wpcf7-submit').css('opacity', '1');
 }
 jQuery( document ).ready(function() {
 	jQuery( ".wpcf7-form" ).on('submit', function() {
-		if (document.getElementById('cf-turnstile')) {
-			turnstile.reset('#cf-turnstile');
-		}
+        if (document.getElementsByClassName('cf-turnstile')) {
+		    turnstile.reset('.cf-turnstile');
+        }
 	});
 });
 /* MC4WP */

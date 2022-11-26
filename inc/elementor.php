@@ -9,8 +9,7 @@ if(get_option('cfturnstile_elementor')) {
   add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form', 10, 2);
   function cfturnstile_field_elementor_form($instance, $form) {
     do_action("cfturnstile_enqueue_scripts");
-    $id = strtolower(sanitize_text_field($instance['form_name']));
-    $id = preg_replace('/\s+/', '_', $id);
+    $id = mt_rand();
   	?>
     <script>
     jQuery(document).ready(function() {

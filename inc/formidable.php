@@ -21,7 +21,7 @@ if(get_option('cfturnstile_formidable')) {
 
     if(!cfturnstile_formidable_form_disable($args['form']->id)) {
 
-      $unique_id = $args['form']->id;
+      $unique_id = mt_rand();
 
     	ob_start();
       cfturnstile_field_show('.frm_forms .frm_button_submit', 'turnstileFormidableCallback', '', '-gf-' . $unique_id);

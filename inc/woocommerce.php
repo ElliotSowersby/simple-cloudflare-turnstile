@@ -16,13 +16,28 @@ function cfturnstile_field_woo_reset() {cfturnstile_field_show('.woocommerce-Res
 function cfturnstile_field_checkout() {
 	$guest_only = esc_attr( get_option('cfturnstile_guest_only') );
 	if( !$guest_only || ($guest_only && !is_user_logged_in()) ) {
+		if(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
+			echo "<br/>";
+		}
 		cfturnstile_field_show('', '', '', '-woo-checkout');
+		?>
+		<?php
 	}
 }
 
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
-	add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
+	if(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
+		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
+	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
+		add_action('woocommerce_review_order_after_payment', 'cfturnstile_field_checkout', 10);
+	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforebilling") {
+		add_action('woocommerce_before_checkout_billing_form', 'cfturnstile_field_checkout', 10);
+	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterbilling") {
+		add_action('woocommerce_after_checkout_billing_form', 'cfturnstile_field_checkout', 10);
+	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
+		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
+	}
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
 		$guest = esc_attr( get_option('cfturnstile_guest_only') );
