@@ -281,7 +281,7 @@ function cfturnstile_settings_page() {
 			<?php $not_installed = array(); ?>
 
 			<?php // WooCommerce
-			if (class_exists('WooCommerce')) { ?>
+			if (cft_is_plugin_active('woocommerce/woocommerce.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('WooCommerce Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 

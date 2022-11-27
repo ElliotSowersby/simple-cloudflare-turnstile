@@ -110,7 +110,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
-= Version 1.15.1 - 26th November 2022 =
+= Version 1.15.2 - 26th November 2022 =
 - Fix: Fixed "Call to undefined function is_plugin_active()" error showing on some sites since last update.
 
 = Version 1.15.0 - 26th November 2022 =
