@@ -110,8 +110,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.15.3 - 27th November 2022 =
+- Fix: Fixed Turnstile widget no longer rendering for some sites with certain optimisations enabled since 1.15.0 update.
+
 = Version 1.15.2 - 26th November 2022 =
-- Fix: Fixed "Call to undefined function is_plugin_active()" error showing on some sites since last update.
+- Fix: Fixed "Call to undefined function is_plugin_active()" error showing on some sites since 1.15.0 update.
 
 = Version 1.15.0 - 26th November 2022 =
 - New: Added option to choose where exactly the Turnstile widget is displayed on WooCommerce checkout. Also updated code so adding it directly before the place order button now works.
