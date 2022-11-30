@@ -110,6 +110,10 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.15.4 - 30th November 2022 =
+- Tweak: Implemented the new "data-retry-interval" attribute for Turnstile widget when displayed on Elementor forms.
+- Fix: Turnstile widget now works properly with multiple Elementor forms on the same page, as long as each form has a unique "name".
+
 = Version 1.15.3 - 27th November 2022 =
 - Fix: Fixed Turnstile widget no longer rendering for some sites with certain optimisations enabled since 1.15.0 update.
 
