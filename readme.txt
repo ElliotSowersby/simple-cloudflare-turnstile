@@ -41,6 +41,7 @@ You can currently enable Turnstile on the following forms:
 * Contact Form 7
 * Gravity Forms
 * Formidable Forms
+* Forminator Forms
 
 **Other Integrations**
 
@@ -109,6 +110,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.16.0 - 8th December 2022 =
+- New: Added integration the "Forminator" plugin.
+- Tweak: Added a check in the scripts for showing Turnstile on Elementor, to prevent a possible console error.
+- Fix: Fixed error with Turnstile widget not showing on Elementor forms with the "Before" option selected for "Widget Location".
 
 = Version 1.15.4 - 30th November 2022 =
 - Tweak: Implemented the new "data-retry-interval" attribute for Turnstile widget when displayed on Elementor forms.

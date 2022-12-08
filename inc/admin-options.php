@@ -43,6 +43,8 @@ function cfturnstile_register_settings() {
 	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable_pos');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable_disable');
+	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator');
+	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator_pos');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor_pos');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_um_login');
@@ -583,6 +585,49 @@ function cfturnstile_settings_page() {
 			<?php
 			} else {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/formidable/" target="_blank">' . __('Formidable Forms', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+			
+			<?php // Forminator Forms
+			if (cft_is_plugin_active('forminator/forminator.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo __('Forminator Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Enable on all Forminator Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_forminator" <?php if (get_option('cfturnstile_forminator')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo __('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Forminator Forms.', 'simple-cloudflare-turnstile'); ?>
+
+					<table class="form-table" style="margin-bottom: -15px;">
+
+						<tr valign="top">
+							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<select name="cfturnstile_forminator_pos">
+									<option value="before" <?php if (!get_option('cfturnstile_forminator_pos') || get_option('cfturnstile_forminator_pos') == "before") { ?>selected<?php } ?>>
+										<?php esc_html_e('Before Button', 'simple-cloudflare-turnstile'); ?>
+									</option>
+									<option value="after" <?php if (get_option('cfturnstile_forminator_pos') == "after") { ?>selected<?php } ?>>
+										<?php esc_html_e('After Button', 'simple-cloudflare-turnstile'); ?>
+									</option>
+								</select>
+							</td>
+						</tr>
+
+					</table>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/forminator/" target="_blank">' . __('Forminator Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 

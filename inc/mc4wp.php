@@ -44,5 +44,4 @@ function cfturnstile_mc4wp_error_message($messages) {
   $messages['cf_turnstile_error'] = cfturnstile_failed_message();
   return $messages;
 }
-
 add_filter('mc4wp_form_messages', 'cfturnstile_mc4wp_error_message');

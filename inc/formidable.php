@@ -24,7 +24,7 @@ if(get_option('cfturnstile_formidable')) {
       $unique_id = mt_rand();
 
     	ob_start();
-      cfturnstile_field_show('.frm_forms .frm_button_submit', 'turnstileFormidableCallback', '', '-gf-' . $unique_id);
+      cfturnstile_field_show('.frm_forms .frm_button_submit', 'turnstileFormidableCallback', '', '-fmdble-' . $unique_id);
     	$cfturnstile = ob_get_contents();
     	ob_end_clean();
     	wp_reset_postdata();

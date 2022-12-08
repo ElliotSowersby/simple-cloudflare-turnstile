@@ -251,6 +251,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		include(plugin_dir_path(__FILE__) . 'inc/formidable.php');
 	}
 
+	// Forminator Forms
+	if (cft_is_plugin_active('forminator/forminator.php')) {
+		include(plugin_dir_path(__FILE__) . 'inc/forminator.php');
+	}
+
 	// Gravity Forms
 	if (cft_is_plugin_active('gravityforms/gravityforms.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/gravity-forms.php');
