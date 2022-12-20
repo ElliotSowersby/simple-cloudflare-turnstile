@@ -31,7 +31,7 @@ if (get_option('cfturnstile_bbpress_reply')) {
 		$align = get_option('cfturnstile_bbpress_align');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
 			cfturnstile_field_show('#bbp_reply_submit', 'turnstileBBPressReplyCallback', '', '-bb-reply');
-			if ($align == "right") echo "<style>#bbpress-forums #cf-turnstile { float: right; }</style>";
+			if ($align == "right") echo "<style>#bbpress-forums .cf-turnstile { float: right; }</style>";
 		}
 	}
 

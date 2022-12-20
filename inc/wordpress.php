@@ -10,13 +10,14 @@ function cfturnstile_field() { cfturnstile_field_show('#wp-submit', 'turnstileWP
 if(get_option('cfturnstile_login')) {
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 		add_action('login_form','cfturnstile_field');
-		add_action('wp_authenticate_user', 'cfturnstile_wp_login_check', 10, 1);
+		add_action('authenticate', 'cfturnstile_wp_login_check', 21, 1);
 		function cfturnstile_wp_login_check($user){
-			if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
+			if ( is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {	return $user; } // Skip Errors
+			if(stripos($_SERVER["REQUEST_URI"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
 				$check = cfturnstile_check();
 				$success = $check['success'];
 				if($success != true) {
-					$user = new WP_Error( 'authentication_failed', cfturnstile_failed_message() );
+					$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
 				}
 			}
 			return $user;
@@ -29,6 +30,7 @@ if(get_option('cfturnstile_register')) {
 	add_action('register_form','cfturnstile_field');
 	add_action('registration_errors', 'cfturnstile_wp_register_check', 10, 3);
 	function cfturnstile_wp_register_check($errors, $sanitized_user_login, $user_email) {
+		if ( defined( 'XMLRPC_REQUEST' ) ) { return $errors; } // Skip XMLRPC
 		$check = cfturnstile_check();
 		$success = $check['success'];
 		if($success != true) {
@@ -44,7 +46,7 @@ if(get_option('cfturnstile_reset')) {
   	add_action('lostpassword_form','cfturnstile_field');
   	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
   	function cfturnstile_wp_reset_check($validation_errors) {
-  		if ( $GLOBALS['pagenow'] === 'wp-login.php' ) {
+		if(stripos($_SERVER["SCRIPT_NAME"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
   			$check = cfturnstile_check();
   			$success = $check['success'];
   			if($success != true) {

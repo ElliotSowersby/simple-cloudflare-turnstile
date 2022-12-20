@@ -51,6 +51,19 @@ if(get_option('cfturnstile_woo_checkout')) {
 	}
 }
 
+// Woo Checkout Pay Order Check
+if(get_option('cfturnstile_woo_checkout_pay')) {
+	add_action('woocommerce_pay_order_before_submit', 'cfturnstile_field_checkout', 10);
+	add_action('woocommerce_before_pay_action', 'cfturnstile_woo_checkout_pay_check', 10, 2);
+	function cfturnstile_woo_checkout_pay_check($order) {
+		$check = cfturnstile_check();
+		$success = $check['success'];
+		if($success != true) {
+			wc_add_notice( cfturnstile_failed_message(), 'error');
+		}
+	}
+}
+
 // Woo Login Check
 if(get_option('cfturnstile_woo_login')) {
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {

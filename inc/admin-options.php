@@ -27,6 +27,7 @@ function cfturnstile_register_settings() {
 	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_guest_only');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout_pos');
+	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout_pay');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_login');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_register');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_reset');
@@ -45,6 +46,7 @@ function cfturnstile_register_settings() {
 	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable_disable');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator_pos');
+	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator_disable');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor_pos');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_um_login');
@@ -325,6 +327,13 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top">
 							<th scope="row">
+								<?php echo __('WooCommerce Pay for Order', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_woo_checkout_pay" <?php if (get_option('cfturnstile_woo_checkout_pay')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
 								<?php echo __('WooCommerce Login', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_login" <?php if (get_option('cfturnstile_woo_login')) { ?>checked<?php } ?>></td>
@@ -566,20 +575,20 @@ function cfturnstile_settings_page() {
 							</td>
 						</tr>
 
-						<table class="form-table" style="margin-bottom: -10px;">
-							<tr valign="top">
-								<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
-								<td>
-									<input type="text" name="cfturnstile_formidable_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_formidable_disable')); ?>" />
-								</td>
-							</tr>
-						</table>
-						<i style="font-size: 10px;">
-							<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Formidable Form'); ?>
-							<?php echo __('Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile'); ?>
-						</i>
-
 					</table>
+				
+					<table class="form-table" style="margin-bottom: -10px;">
+						<tr valign="top">
+							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<input type="text" name="cfturnstile_formidable_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_formidable_disable')); ?>" />
+							</td>
+						</tr>
+					</table>
+					<i style="font-size: 10px;">
+						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Formidable Form'); ?>
+						<?php echo __('Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile'); ?>
+					</i>
 
 				</div>
 			<?php
@@ -624,6 +633,19 @@ function cfturnstile_settings_page() {
 
 					</table>
 
+					<table class="form-table" style="margin-bottom: -10px;">
+						<tr valign="top">
+							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<input type="text" name="cfturnstile_forminator_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_forminator_disable')); ?>" />
+							</td>
+						</tr>
+					</table>
+					<i style="font-size: 10px;">
+						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Forminator Form'); ?>
+						<?php echo __('Separate each ID with a comma, for example: 5,10,21', 'simple-cloudflare-turnstile'); ?>
+					</i>
+
 				</div>
 			<?php
 			} else {
@@ -663,6 +685,9 @@ function cfturnstile_settings_page() {
 									</option>
 									<option value="after" <?php if (get_option('cfturnstile_elementor_pos') == "after") { ?>selected<?php } ?>>
 										<?php esc_html_e('After Button', 'simple-cloudflare-turnstile'); ?>
+									</option>
+									<option value="afterform" <?php if (get_option('cfturnstile_elementor_pos') == "afterform") { ?>selected<?php } ?>>
+										<?php esc_html_e('After Form', 'simple-cloudflare-turnstile'); ?>
 									</option>
 								</select>
 							</td>
@@ -819,6 +844,7 @@ function cfturnstile_settings_page() {
 						<th scope="row">
 							<span style="font-size: 19px;"><?php echo __('Other Integrations', 'simple-cloudflare-turnstile'); ?></span>
 							<p>
+								
 								<?php echo __('You can also enable Turnstile on', 'simple-cloudflare-turnstile') . " ";
 								$last_plugin = end($not_installed);
 								foreach ($not_installed as $not_plugin) {
@@ -831,12 +857,11 @@ function cfturnstile_settings_page() {
 									}
 								}
 								?>
+
 								<br />
+
 								<?php echo __('Simply install/activate a plugin and the new settings dropdown will appear above.', 'simple-cloudflare-turnstile'); ?>
-								<br />
-							<p style="font-size: 15px;">
-								<?php echo __('Want to sponsor a new integration?', 'simple-cloudflare-turnstile'); ?> <a href="https://relywp.com/sponsor-plugin/?utm_source=sct" target="_blank"><?php echo __('Click here', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
-							</p>
+
 							</p>
 						</th>
 					</tr>

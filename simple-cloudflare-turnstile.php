@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.16.0
+ * Version: 1.17.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.1.0
+ * WC tested up to: 7.2.1
  **/
 
 // Include Admin Options
@@ -86,7 +86,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $g = false, $un
  * Enqueue admin scripts
  */
 function cfturnstile_admin_script_enqueue() {
-	wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), array('jquery'), '2.8', true);
+	wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 	wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.8');
 	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
@@ -111,7 +111,8 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("cfturnstile_enqueue_scripts", "cfturnstile_script_enqueue");
 	add_action("login_enqueue_scripts", "cfturnstile_script_enqueue");
 	function cfturnstile_script_enqueue() {
-		wp_enqueue_script('cfturnstile-js', plugins_url('/js/cfturnstile.js', __FILE__), array('jquery'), '2.11', false);
+		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '3.0', false); }
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/woocommerce.js', __FILE__), array('jquery'), '1.0', false); }
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), null, 'true');
 		wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2');
 	}
@@ -168,8 +169,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			return $results;
 
 		} else {
+
 			return false;
+
 		}
+		
 	}
 
 	/**

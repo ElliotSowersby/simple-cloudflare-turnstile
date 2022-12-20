@@ -30,6 +30,7 @@ You can currently enable Turnstile on the following forms:
 **WooCommerce**
 
 * Checkout
+* Pay For Order
 * Login Form
 * Registration Form
 * Password Reset Form
@@ -111,8 +112,23 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.17.0 - 20th December 2022 =
+- New: Added integration for the WooCommerce "Pay for Order" form.
+- New: Added "Disabled Form IDs" option for "Forminator Forms" integration.
+- Tweak: Added "After Form" option to elementor forms integration "Widget Location" setting. This will display the widget better on certain types of form layouts.
+- Tweak: When submitting WPForms form, if there is an error, the Turnstile widget will now reset and re-verify.
+- Tweak: On Elementor forms, wpDiscuz forms, and Forminator forms, Turnstile will now re-render on submission.
+- Tweak: The code for the "Disable Submit Button" option now uses vanila javascript instead of jQuery, and the JS file will only be loaded if the option is enabled.
+- Tweak: Turnstile on WordPress login will now work better with plugins that hide/change the admin login URL.
+- Tweak: WordPress Login and Register will skip Turnstile check for XMLRPC requests.
+- Tweak: Edited the filter used for WordPress login authentication.
+- Fix: Fixed issue with Turnstile widget not showing in some cases with the Contact Form 7 integration "Enable on all CF7 Forms" option enabled, since CF7 version 5.7.
+- Fix: Fixed "Disable Submit Button" not working with the new "Forminator" plugin integration.
+- Fix: Fixed "One or more fields have an error." message sometimes showing on Contact Form 7 integration with Turnstile enabled.
+- Fix: Fixed issue with the "bbPress" integration "alignment" option no longer for the working, since a recent update.
+
 = Version 1.16.0 - 8th December 2022 =
-- New: Added integration the "Forminator" plugin.
+- New: Added integration with the "Forminator" plugin.
 - Tweak: Added a check in the scripts for showing Turnstile on Elementor, to prevent a possible console error.
 - Fix: Fixed error with Turnstile widget not showing on Elementor forms with the "Before" option selected for "Widget Location".
 

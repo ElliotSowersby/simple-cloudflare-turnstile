@@ -29,6 +29,15 @@ if(get_option('cfturnstile_comment')) {
             <?php } ?>
           });
       });
+      jQuery( document ).ready(function() {
+        jQuery( '#wpd-field-submit-<?php echo $uniqueId; ?>' ).click(function(){
+        if (document.getElementById('cf-turnstile-wpd-<?php echo $uniqueId; ?>')) {
+          setTimeout(function() {
+            turnstile.reset('#cf-turnstile-wpd-<?php echo $uniqueId; ?>');
+          }, 2000);
+        }
+        });
+      });
       </script>
       <?php if(get_option('cfturnstile_disable_button')) { ?>
     	<style>#wpd-field-submit-<?php echo $uniqueId; ?> { pointer-events: none; opacity: 0.5; }</style>

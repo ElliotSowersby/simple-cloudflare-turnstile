@@ -1,5 +1,6 @@
-jQuery( document ).ready(function() {
-	jQuery("#sct-accordion-wordpress").click();
+/* Admin Toggles */
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelector("#sct-accordion-wordpress").click();
 });
 var acc = document.getElementsByClassName("sct-accordion");
 var i;

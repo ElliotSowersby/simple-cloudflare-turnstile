@@ -30,6 +30,7 @@ function cfturnstile_um_check( $args ){
 function cfturnstile_um_error_message() {
   echo '<p style="color: red; font-weight: bold;">' . cfturnstile_failed_message() . '</p>';
 }
+
 // Show Error Message
 function cfturnstile_um_error($mode) {
   if ( $mode == 'login' ) {

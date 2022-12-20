@@ -10,14 +10,17 @@ if(get_option('cfturnstile_elementor')) {
   function cfturnstile_field_elementor_form($instance, $form) {
     do_action("cfturnstile_enqueue_scripts");
     $id = mt_rand();
+    $turnstilediv = '<div id="cf-turnstile-em-'.$id.'" data-retry="auto" data-retry-interval="1000" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px;"></div><br/>';
   	?>
     <script>
     jQuery(document).ready(function() {
       if (jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"]').length > 0) {
         <?php if(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "after") { ?>
-          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').after('<div id="cf-turnstile-em-<?php echo $id; ?>" data-retry="auto" data-retry-interval="1000" style="margin-left: -2px; margin-top: 10px;"></div><br/>');
+          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').after('<?php echo $turnstilediv; ?>');
+        <?php } elseif(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "afterform") { ?>
+          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] .elementor-form-fields-wrapper').after('<?php echo $turnstilediv; ?>');
         <?php } else { ?>
-          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').before('<div id="cf-turnstile-em-<?php echo $id; ?>" data-retry="auto" data-retry-interval="1000" style="margin-left: -2px; margin-bottom: 10px;"></div><br/>');
+          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').before('<?php echo $turnstilediv; ?>');
         <?php } ?>
         if (jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] #cf-turnstile-em-<?php echo $id; ?> iframe').length <= 0) {
           setTimeout(function() {
@@ -33,6 +36,15 @@ if(get_option('cfturnstile_elementor')) {
           }, 50);
         }
       }
+    });
+    jQuery( document ).ready(function() {
+      jQuery( ".elementor-form" ).on('submit', function() {
+        if (document.getElementById('cf-turnstile-em-<?php echo $id; ?>')) {
+          setTimeout(function() {
+            turnstile.reset('#cf-turnstile-em-<?php echo $id; ?>');
+          }, 2000);
+        }
+      });
     });
     </script>
     <?php if(get_option('cfturnstile_disable_button')) { ?>
