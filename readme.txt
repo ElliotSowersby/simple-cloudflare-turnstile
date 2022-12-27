@@ -112,6 +112,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.17.1 - 27th December 2022 =
+- Tweak: Edited the filter used for WooCommerce login authentication, and fixed Turnstile challenge being checked twice when both WP Login and Woo Login enabled.
+
 = Version 1.17.0 - 20th December 2022 =
 - New: Added integration for the WooCommerce "Pay for Order" form.
 - New: Added "Disabled Form IDs" option for "Forminator Forms" integration.
@@ -125,7 +128,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 - Fix: Fixed issue with Turnstile widget not showing in some cases with the Contact Form 7 integration "Enable on all CF7 Forms" option enabled, since CF7 version 5.7.
 - Fix: Fixed "Disable Submit Button" not working with the new "Forminator" plugin integration.
 - Fix: Fixed "One or more fields have an error." message sometimes showing on Contact Form 7 integration with Turnstile enabled.
-- Fix: Fixed issue with the "bbPress" integration "alignment" option no longer for the working, since a recent update.
+- Fix: Fixed issue with the "bbPress" integration "alignment" option no longer working, since a recent update.
 
 = Version 1.16.0 - 8th December 2022 =
 - New: Added integration with the "Forminator" plugin.

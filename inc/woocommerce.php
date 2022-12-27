@@ -68,13 +68,13 @@ if(get_option('cfturnstile_woo_checkout_pay')) {
 if(get_option('cfturnstile_woo_login')) {
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 		add_action('woocommerce_login_form','cfturnstile_field_woo_login');
-		add_action('wp_authenticate_user', 'cfturnstile_woo_login_check', 10, 1);
+		add_action('authenticate', 'cfturnstile_woo_login_check', 21, 1);
 		function cfturnstile_woo_login_check($user){
 			if(isset($_POST['woocommerce-login-nonce'])) {
 				$check = cfturnstile_check();
 				$success = $check['success'];
 				if($success != true) {
-					$user = new WP_Error( 'authentication_failed', cfturnstile_failed_message() );
+					$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
 				}
 			}
 			return $user;

@@ -11,9 +11,10 @@ if(get_option('cfturnstile_login')) {
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 		add_action('login_form','cfturnstile_field');
 		add_action('authenticate', 'cfturnstile_wp_login_check', 21, 1);
-		function cfturnstile_wp_login_check($user){
-			if ( is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {	return $user; } // Skip Errors
-			if(stripos($_SERVER["REQUEST_URI"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
+		function cfturnstile_wp_login_check($user) {
+			if(isset($_POST['woocommerce-login-nonce']) && wp_verify_nonce($_POST['woocommerce-login-nonce'], 'woocommerce-login')) { return $user; } // Skip Woo
+			if(stripos($_SERVER["SCRIPT_NAME"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
+				if ( is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {	return $user; } // Skip Errors
 				$check = cfturnstile_check();
 				$success = $check['success'];
 				if($success != true) {
