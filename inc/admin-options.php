@@ -20,6 +20,7 @@ function cfturnstile_register_settings() {
 	register_setting('cfturnstile-settings-group', 'cfturnstile_theme');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_disable_button');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_error_message');
+	register_setting('cfturnstile-settings-group', 'cfturnstile_language');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_login');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_register');
 	register_setting('cfturnstile-settings-group', 'cfturnstile_reset');
