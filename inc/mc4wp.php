@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 add_shortcode('mc4wp-simple-turnstile', 'cfturnstile_mc4wp_shortcode');
 function cfturnstile_mc4wp_shortcode() {
 	ob_start();
-	echo cfturnstile_field_show('.mc4wp-form-fields input[type=submit]', 'turnstileMC4WPCallback', '', '-mc4wp');
+	echo cfturnstile_field_show('.mc4wp-form-fields input[type=submit]', 'turnstileMC4WPCallback', 'mc4wp', '-mc4wp');
 	$thecontent = ob_get_contents();
 	ob_end_clean();
 	wp_reset_postdata();

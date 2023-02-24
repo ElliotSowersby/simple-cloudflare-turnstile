@@ -12,7 +12,7 @@ if (get_option('cfturnstile_bbpress_create')) {
 		$guest_only = get_option('cfturnstile_bbpress_guest_only');
 		$align = get_option('cfturnstile_bbpress_align');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
-			cfturnstile_field_show('#bbp_topic_submit', 'turnstileBBPressCreateCallback', '', '-bb-create');
+			cfturnstile_field_show('#bbp_topic_submit', 'turnstileBBPressCreateCallback', 'bbpress-create', '-bb-create');
 			if ($align == "right") echo "<style>#bbpress-forums #cf-turnstile { float: right; }</style>";
 		}
 	}
@@ -30,7 +30,7 @@ if (get_option('cfturnstile_bbpress_reply')) {
 		$guest_only = get_option('cfturnstile_bbpress_guest_only');
 		$align = get_option('cfturnstile_bbpress_align');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
-			cfturnstile_field_show('#bbp_reply_submit', 'turnstileBBPressReplyCallback', '', '-bb-reply');
+			cfturnstile_field_show('#bbp_reply_submit', 'turnstileBBPressReplyCallback', 'bbpress-reply', '-bb-reply');
 			if ($align == "right") echo "<style>#bbpress-forums .cf-turnstile { float: right; }</style>";
 		}
 	}

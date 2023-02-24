@@ -57,7 +57,26 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  */
 if ( !function_exists( 'cft_is_plugin_active' ) ) {
 	function cft_is_plugin_active( $plugin ) {
-		return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( $plugin ) ) );
+		return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'cft_is_plugin_active_for_network' ) && cft_is_plugin_active_for_network( $plugin ) ) );
+	}
+}
+
+/**
+ * Custom "is_plugin_active_for_network" function.
+ *
+ * @param string $plugin
+ * @return bool
+ */
+if ( !function_exists( 'cft_is_plugin_active_for_network' ) ) {
+	function cft_is_plugin_active_for_network( $plugin ) {
+		if ( !is_multisite() ) {
+			return false;
+		}
+		$plugins = get_site_option( 'active_sitewide_plugins' );
+		if ( isset( $plugins[ $plugin ] ) ) {
+			return true;
+		}
+		return false;
 	}
 }
 
@@ -67,14 +86,23 @@ if ( !function_exists( 'cft_is_plugin_active' ) ) {
  * @param int $button_id
  * @param string $callback
  */
-function cfturnstile_field_show($button_id = '', $callback = '', $g = false, $unique_id = '') {
+function cfturnstile_field_show($button_id = '', $callback = '', $form_name = '', $unique_id = '') {
 	do_action("cfturnstile_enqueue_scripts");
 	do_action("cfturnstile_before_field", $unique_id);
 	$key = esc_attr(get_option('cfturnstile_key'));
 	$theme = esc_attr(get_option('cfturnstile_theme'));
+	$language = esc_attr(get_option('cfturnstile_language'));
+		if(!$language) { $language = 'auto'; }
 	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
 	?>
-	<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>" class="cf-turnstile" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>" <?php } ?> data-sitekey="<?php echo sanitize_text_field($key); ?>" data-theme="<?php echo sanitize_text_field($theme); ?>" data-retry="auto" data-retry-interval="1000" data-name="cf-turnstile" style="<?php if (!is_page() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
+	<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>"
+	class="cf-turnstile" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>"<?php } ?>
+	data-sitekey="<?php echo sanitize_text_field($key); ?>"
+	data-theme="<?php echo sanitize_text_field($theme); ?>"
+	data-language="<?php echo sanitize_text_field($language); ?>"
+	data-retry="auto" data-retry-interval="1000"
+	data-action="<?php echo sanitize_text_field($form_name); ?>"
+	style="<?php if (!is_page() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
 		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 	<?php } ?>
@@ -124,9 +152,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("cfturnstile_after_field", "cfturnstile_force_render", 10, 1);
 	function cfturnstile_force_render($unique_id = '') {
 		$unique_id = sanitize_text_field($unique_id);
+		if($unique_id) {
 		?>
-		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e.innerHTML.length<=1&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),200)}));</script>
+		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&e.innerHTML.length<=1&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),200)}));</script>
 		<?php
+		}
 	}
 
 	/**
@@ -177,6 +207,18 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		}
 		
 	}
+
+	/**
+	 * Check if form should show Turnstile
+	 */
+    function cfturnstile_form_disable($id, $option) {
+        if(!empty(get_option($option)) && get_option($option)) {
+            $disabled = preg_replace('/\s+/', '', get_option($option));
+            $disabled = explode (",",$disabled);
+            if(in_array($id, $disabled)) return true;
+        }
+        return false;
+    }
 
 	/**
 	 * Create shortcode to display Turnstile widget

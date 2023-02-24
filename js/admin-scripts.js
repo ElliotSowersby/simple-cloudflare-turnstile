@@ -1,6 +1,8 @@
 /* Admin Toggles */
 document.addEventListener("DOMContentLoaded", function() {
-	document.querySelector("#sct-accordion-wordpress").click();
+	if(document.querySelector("#sct-accordion-wordpress") != null) {
+		document.querySelector("#sct-accordion-wordpress").click();
+	}
 });
 var acc = document.getElementsByClassName("sct-accordion");
 var i;

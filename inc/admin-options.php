@@ -102,7 +102,7 @@ function cfturnstile_admin_test() {
 			}
 			if ($success != true) {
 				echo '<div style="margin-left: 15px;">';
-				echo cfturnstile_field_show('', '');
+				echo cfturnstile_field_show('', '', 'admin-test');
 				echo '</div><div style="margin-bottom: -20px;"></div>';
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-size: 15px; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">
 				' . __('TEST API RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
@@ -201,6 +201,45 @@ function cfturnstile_settings_page() {
 							<option value="auto" <?php if (get_option('cfturnstile_theme') == "auto") { ?>selected<?php } ?>>
 								<?php esc_html_e('Auto', 'simple-cloudflare-turnstile'); ?>
 							</option>
+						</select>
+					</td>
+				</tr>
+
+				<tr valign="top">
+					<th scope="row"><?php echo __('Language', 'simple-cloudflare-turnstile'); ?></th>
+					<td>
+						<select name="cfturnstile_language">
+						<?php
+						$languages = array(
+							'auto' => 'Auto Detect',
+							'ar-eg' => 'Arabic',
+							'de' => 'German',
+							'en' => 'English',
+							'es' => 'Spanish',
+							'fa' => 'Persian',
+							'fr' => 'French',
+							'id' => 'Indonesian',
+							'it' => 'Italian',
+							'ja' => 'Japanese',
+							'ko' => 'Korean',
+							'nl' => 'Dutch',
+							'pl' => 'Polish',
+							'pt-br' => 'Portuguese (Brazil)',
+							'ru' => 'Russian',
+							'tr' => 'Turkish',
+							'zh-cn' => 'Chinese (Simplified)',
+							'zh-tw' => 'Chinese (Traditional)'
+						);
+						foreach ($languages as $code => $name) {
+							$selected = '';
+							if(get_option('cfturnstile_language')) { $selected = 'selected'; }
+							?>
+								<option value="<?php echo $code; ?>" <?php echo $selected; ?>>
+									<?php echo esc_html($name); ?>
+								</option>
+							<?php
+						}
+						?>
 						</select>
 					</td>
 				</tr>

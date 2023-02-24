@@ -7,7 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(get_option('cfturnstile_um_login')) { add_action('um_after_login_fields','cfturnstile_field_um'); }
 if(get_option('cfturnstile_um_register')) { add_action('um_after_register_fields','cfturnstile_field_um'); }
 if(get_option('cfturnstile_um_password')) { add_action('um_after_password_reset_fields','cfturnstile_field_um'); }
-function cfturnstile_field_um() { cfturnstile_field_show('#um-submit-btn', 'turnstileUMCallback', '', '-' . mt_rand()); }
+function cfturnstile_field_um() { cfturnstile_field_show('#um-submit-btn', 'turnstileUMCallback', 'ultimate-member', '-' . mt_rand()); }
 
 // Ultimate Member Check
 if(get_option('cfturnstile_um_login')) { add_action( 'um_submit_form_errors_hook_login', 'cfturnstile_um_check', 20, 1 ); }

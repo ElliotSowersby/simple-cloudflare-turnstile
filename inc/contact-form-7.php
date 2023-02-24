@@ -10,7 +10,7 @@ function cfturnstile_cf7_shortcode() {
 	ob_start();
 	$id = mt_rand();
 	echo '<div class="cf7-cf-turnstile" style="margin-top: -10px; margin-bottom: -15px;">';
-	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback', '', '-cf7-' . $id);
+	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback', 'contact-form-7', '-cf7-' . $id);
 	?>
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {

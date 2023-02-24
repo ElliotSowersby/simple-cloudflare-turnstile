@@ -8,7 +8,7 @@ if(get_option('cfturnstile_bp_register')) {
 	// Get turnstile field: BuddyPress
 	add_action('bp_before_registration_submit_buttons','cfturnstile_field_bp_register');
 	function cfturnstile_field_bp_register() {
-    cfturnstile_field_show('#buddypress #signup-form .submit', 'turnstileBPCallback', '', '-bp-register');
+    cfturnstile_field_show('#buddypress #signup-form .submit', 'turnstileBPCallback', 'buddypress-register', '-bp-register');
   }
 
 	// BuddyPress Register Check

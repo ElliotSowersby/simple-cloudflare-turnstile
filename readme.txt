@@ -76,6 +76,8 @@ For more detailed instructions, please see our <a href="https://relywp.com/blog/
 
 Yes, this plugin is completely free with no paid version, and it doesn't track your data. Cloudflare Turnstile is also a completely free service!
 
+Please consider helping out by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a>, or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">donate</a>.
+
 ## Languages ##
 
 Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">5 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
@@ -111,6 +113,15 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.17.2 - 24th February 2023 =
+- New: Added support for the new "data-language" attribute available with Turnstile. A default language can now be selected in the settings.
+- Tweak: Added "data-action" attribute to Turnstile widget, which will allow you to see more detailed analytics in your Cloudflare dashboard.
+- Tweak: Some improvements to code (added universal "cfturnstile_form_disable" function).
+- Tweak: Added NULL check to force render script.
+- Fix: Fixed "Uncaught TypeError" JS error when Turnstile enabled on comments form.
+- Fix: Fixed potential console error due to unknown parameter sent to Cloudflare API.
+- Fix: Fixed issue with multisite compatibility.
 
 = Version 1.17.1 - 27th December 2022 =
 - Tweak: Edited the filter used for WooCommerce login authentication, and fixed Turnstile challenge being checked twice when both WP Login and Woo Login enabled.

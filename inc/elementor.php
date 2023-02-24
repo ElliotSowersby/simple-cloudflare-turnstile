@@ -26,6 +26,7 @@ if(get_option('cfturnstile_elementor')) {
           setTimeout(function() {
             turnstile.render('.elementor-form[name="<?php echo $instance['form_name']; ?>"] #cf-turnstile-em-<?php echo $id; ?>', {
               sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
+              action: 'elementor-<?php echo str_replace(" ", "-", strtolower($instance['form_name']) ); ?>',
               <?php if(get_option('cfturnstile_disable_button')) { ?>
               callback: function(token) {
                 jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').css('pointer-events', 'auto');
