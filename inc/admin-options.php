@@ -233,7 +233,7 @@ function cfturnstile_settings_page() {
 						);
 						foreach ($languages as $code => $name) {
 							$selected = '';
-							if(get_option('cfturnstile_language')) { $selected = 'selected'; }
+							if(get_option('cfturnstile_language') == $code) { $selected = 'selected'; }
 							?>
 								<option value="<?php echo $code; ?>" <?php echo $selected; ?>>
 									<?php echo esc_html($name); ?>
