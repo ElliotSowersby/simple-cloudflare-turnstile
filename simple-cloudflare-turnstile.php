@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.17.2
+ * Version: 1.17.3
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.4.0
+ * WC tested up to: 7.4.1
  **/
 
 // Include Admin Options
@@ -143,7 +143,9 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '3.0', false); }
 		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/woocommerce.js', __FILE__), array('jquery'), '1.0', false); }
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), null, 'true');
-		wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2');
+		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+			wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2');
+		}
 	}
 
 	/**
@@ -188,7 +190,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			$verify = wp_remote_retrieve_body($verify);
 			$response = json_decode($verify);
 
-			$results['success'] = $response->success;
+			if($response->success) {
+				$results['success'] = $response->success;
+			} else {
+				$results['success'] = false;
+			}
 
 			foreach ($response as $key => $val) {
 				if ($key == 'error-codes') {

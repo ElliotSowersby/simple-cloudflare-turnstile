@@ -80,7 +80,7 @@ Please consider helping out by <a href="https://wordpress.org/support/plugin/sim
 
 ## Languages ##
 
-Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">5 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
+Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">8 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
 
 ## Other Information ##
 
@@ -113,6 +113,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.17.3 - 10th March 2023 =
+- Tweak: The "Language" setting options are now localized.
+- Tweak: The "cfturnstile.css" file is now only loaded when required.
+- Fix: Added a check to prevent PHP warning when there is an API error.
 
 = Version 1.17.2 - 24th February 2023 =
 - New: Added support for the new "data-language" attribute available with Turnstile. A default language can now be selected in the settings.
