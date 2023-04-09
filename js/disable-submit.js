@@ -30,6 +30,26 @@ function turnstileWooResetCallback() {
         el.style.opacity = '1';
     });
 }
+/* EDD */
+function turnstileEDDLoginCallback() {
+    document.querySelectorAll('#edd_login_submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
+function turnstileEDDRegisterCallback() {
+    document.querySelectorAll('#edd_register_form .edd-submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
+/* Elementor */
+function turnstileElementorCallback() {
+    document.querySelectorAll('.elementor-field-type-submit .elementor-button').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
 /* CF7 */
 function turnstileCF7Callback() {
     document.querySelectorAll('.wpcf7-submit').forEach(function(el) {

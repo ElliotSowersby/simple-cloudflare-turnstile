@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.17.3
+ * Version: 1.18.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.4.1
+ * WC tested up to: 7.5.1
  **/
 
 // Include Admin Options
@@ -132,6 +132,15 @@ function cfturnstile_failed_message($default = "") {
 	}
 }
 
+/**
+ * Compatible with HPOS
+ */
+add_action( 'before_woocommerce_init', function() {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
 if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
 
 	/**
@@ -140,12 +149,17 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("cfturnstile_enqueue_scripts", "cfturnstile_script_enqueue");
 	add_action("login_enqueue_scripts", "cfturnstile_script_enqueue");
 	function cfturnstile_script_enqueue() {
-		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '3.0', false); }
-		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/woocommerce.js', __FILE__), array('jquery'), '1.0', false); }
+		$current_theme = wp_get_theme();
+		/* Turnstile */
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), null, 'true');
-		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
-			wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2');
-		}
+		/* Disable Button */
+		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', false); }
+		/* WooCommerce */
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', false); }
+		/* WPDiscuz */
+		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
+		/* Blocksy */
+		if ('blocksy' === $current_theme->get('TextDomain')) { wp_enqueue_script('cfturnstile-blocksy-js', plugins_url('/js/integrations/blocksy.js', __FILE__), array(), '1.0', false); }
 	}
 
 	/**
@@ -213,7 +227,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		}
 		
 	}
-
+	
 	/**
 	 * Check if form should show Turnstile
 	 */
@@ -275,6 +289,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		include(plugin_dir_path(__FILE__) . 'inc/woocommerce.php');
 	}
 
+	// Include EDD
+	if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php')) {
+		include(plugin_dir_path(__FILE__) . 'inc/edd.php');
+	}
+
 	// Include Contact Form 7
 	if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/contact-form-7.php');
@@ -295,22 +314,22 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		include(plugin_dir_path(__FILE__) . 'inc/wpforms.php');
 	}
 
-	// Fluent Forms
+	// Include Fluent Forms
 	if (cft_is_plugin_active('fluentform/fluentform.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/fluent-forms.php');
 	}
 
-	// Formidable Forms
+	// Include Formidable Forms
 	if (cft_is_plugin_active('formidable/formidable.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/formidable.php');
 	}
 
-	// Forminator Forms
+	// Include Forminator Forms
 	if (cft_is_plugin_active('forminator/forminator.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/forminator.php');
 	}
 
-	// Gravity Forms
+	// Include Gravity Forms
 	if (cft_is_plugin_active('gravityforms/gravityforms.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/gravity-forms.php');
 	}
@@ -333,6 +352,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	// Include Ultimate Member
 	if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/ultimate-member.php');
+	}
+
+	// Include WP-Members
+	if (cft_is_plugin_active('wp-members/wp-members.php')) {
+		include(plugin_dir_path(__FILE__) . 'inc/wp-members.php');
 	}
 
 }

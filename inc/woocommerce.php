@@ -10,7 +10,7 @@ function cfturnstile_field_woo_login() { cfturnstile_field_show('.woocommerce-fo
 function cfturnstile_field_woo_register() { cfturnstile_field_show('.woocommerce-form-register__submit', 'turnstileWooRegisterCallback', 'woocommerce-register', '-woo-register'); }
 
 // Get turnstile field: Woo Reset
-function cfturnstile_field_woo_reset() {cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset', '-woo-reset'); }
+function cfturnstile_field_woo_reset() { cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset', '-woo-reset'); }
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {
@@ -40,8 +40,23 @@ if(get_option('cfturnstile_woo_checkout')) {
 	}
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
+		// Skip if Turnstile disabled for payment method
+		$skip = 0;
+		if ( isset( $_POST['payment_method'] ) ) {
+			$chosen_payment_method = sanitize_text_field( $_POST['payment_method'] );
+			// Retrieve the selected payment methods from the cfturnstile_selected_payment_methods option
+			$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+			if(is_array($selected_payment_methods)) {
+				// Check if the chosen payment method is in the selected payment methods array
+				if ( in_array( $chosen_payment_method, $selected_payment_methods, true ) ) {
+					$skip = 1;
+				}
+			}
+		}
+		// Check if guest only enabled
 		$guest = esc_attr( get_option('cfturnstile_guest_only') );
-		if( !$guest || ( $guest && !is_user_logged_in() ) ) {
+		// Check
+		if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
@@ -85,7 +100,9 @@ if(get_option('cfturnstile_woo_login')) {
 // Woo Register Check
 if(get_option('cfturnstile_woo_register')) {
 	add_action('woocommerce_register_form','cfturnstile_field_woo_register');
-	add_action('woocommerce_register_post', 'cfturnstile_woo_register_check', 10, 3);
+	if(!is_admin()) { // Prevents admin registration from failing
+		add_action('woocommerce_register_post', 'cfturnstile_woo_register_check', 10, 3);
+	}
 	function cfturnstile_woo_register_check($username, $email, $validation_errors) {
 		if(!is_checkout()) {
 			$check = cfturnstile_check();

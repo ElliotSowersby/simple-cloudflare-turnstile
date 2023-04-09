@@ -3,7 +3,7 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.1.1
+Tested up to: 6.2
 Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -47,10 +47,12 @@ You can currently enable Turnstile on the following forms:
 **Other Integrations**
 
 * Elementor Pro Forms
+* Easy Digital Downloads Forms
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
 * Ultimate Member Forms
+* WP-Members Forms
 * wpDiscuz Custom Comments Form
 
 ## What is Cloudflare Turnstile? ##
@@ -85,7 +87,7 @@ Currently available in <a href="https://translate.wordpress.org/projects/wp-plug
 ## Other Information ##
 
 * For help & suggestions, please <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank">create a support topic</a>.
-* Follow the developer <a href="https://twitter.com/ElliotVS" target="_blank">@ElliotVS</a> on Twitter.
+* Follow the developer <a href="https://twitter.com/ElliotSowersby" target="_blank">@ElliotSowersby</a> on Twitter.
 * <a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank">View on GitHub</a>
 
 == Installation ==
@@ -113,6 +115,19 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.18.0 - 9th April 2023 =
+- New: Added integration with the "Easy Digital Downloads" plugin.
+- New: Added integration with the "WP-Members" plugin.
+- New: Added compatibility with "Blocksy" theme login modal.
+- New: Added option to skip Turnstile check for selected WooCommerce payment methods. Useful for Express Checkout options.
+- New: Replaced code for displaying Turnstile on Elementor forms. This is now more reliable and will now display properly on Elementor popups.
+- Tweak: Added check to prevent Turnstile check when adding WooCommerce users in admin area.
+- Tweak: Make tweak to ensure Turnstile challenge is checked for some 3rd-party plugins that load the login form.
+- Tweak: Added "cfturnstile_cf7_button_types" filter for applying custom button types for the Contact Form 7 integration.
+- Tweak: Made some tweaks to the admin settings page design.
+- Tweak: Added code for declarating of compatibility with WooCommerce HPOS.
+- Fix: Turnstile will now render properly on comment "reply" and "cancel reply" buttons being clicked.
 
 = Version 1.17.3 - 10th March 2023 =
 - Tweak: The "Language" setting options are now localized.

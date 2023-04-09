@@ -5,46 +5,66 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if(get_option('cfturnstile_elementor')) {
 
-  // Get turnstile field
-  add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form', 10, 2);
-  function cfturnstile_field_elementor_form($instance, $form) {
-    do_action("cfturnstile_enqueue_scripts");
-    $id = mt_rand();
-    $turnstilediv = '<div id="cf-turnstile-em-'.$id.'" data-retry="auto" data-retry-interval="1000" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px;"></div><br/>';
+  // Add Turnstile field to Elementor login form
+  add_filter('elementor/widget/render_content', 'cfturnstile_elementor_login_form', 10, 2);
+  function cfturnstile_elementor_login_form($content, $widget) {
+
+    // Start output buffering to capture the output of cfturnstile_field_show
+    ob_start();
+    $margin = "";
+    $unique_id = mt_rand();
+    if(get_option('cfturnstile_elementor_pos') == "after" || get_option('cfturnstile_elementor_pos') == "afterform") {
+      $margin = " style='margin-top: 12px;'";
+    }
+    echo "<div class='elementor-turnstile-field'".$margin.">";
+    cfturnstile_field_show('', 'turnstileElementorCallback', 'elementor-' . $unique_id, '-elementor-' . $unique_id);
+    echo "</div>";
+    $recaptcha_field = ob_get_clean();
+
+    // Find the submit button in the form
+    $submit_button_pattern = '/(<button[^>]*type="submit"[^>]*>.*?<\/button>)/is';
+    $matches = [];
+    preg_match($submit_button_pattern, $content, $matches);
+
+    if (!empty($matches[0])) {
+        $submit_button = $matches[0];
+        if(get_option('cfturnstile_elementor_pos') == "afterform") {
+          $content = str_replace('</form>', $recaptcha_field . '</form>', $content);
+        } elseif(get_option('cfturnstile_elementor_pos') == "after") {
+          $content = str_replace($submit_button, $submit_button . $recaptcha_field, $content);
+        } else {
+          $content = str_replace($submit_button, $recaptcha_field . $submit_button, $content);
+        }
+    } else {
+        // If submit button is not found, insert the Turnstile field before the form closing tag
+        $content = str_replace('</form>', $recaptcha_field . '</form>', $content);
+    }
+
+    return $content;
+    
+  }
+
+  // Reset Turnstile field on Elementor form submit
+  add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form_submit', 10, 2);
+  function cfturnstile_field_elementor_form_submit($instance, $form) {
   	?>
     <script>
     jQuery(document).ready(function() {
-      if (jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"]').length > 0) {
-        <?php if(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "after") { ?>
-          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').after('<?php echo $turnstilediv; ?>');
-        <?php } elseif(!empty(get_option('cfturnstile_elementor_pos')) && get_option('cfturnstile_elementor_pos') == "afterform") { ?>
-          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] .elementor-form-fields-wrapper').after('<?php echo $turnstilediv; ?>');
-        <?php } else { ?>
-          jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').before('<?php echo $turnstilediv; ?>');
-        <?php } ?>
-        if (jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] #cf-turnstile-em-<?php echo $id; ?> iframe').length <= 0) {
-          setTimeout(function() {
-            turnstile.render('.elementor-form[name="<?php echo $instance['form_name']; ?>"] #cf-turnstile-em-<?php echo $id; ?>', {
-              sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
-              action: 'elementor-<?php echo str_replace(" ", "-", strtolower($instance['form_name']) ); ?>',
-              <?php if(get_option('cfturnstile_disable_button')) { ?>
-              callback: function(token) {
-                jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').css('pointer-events', 'auto');
-                jQuery('.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit]').css('opacity', '1');
-              },
-              <?php } ?>
-            });
-          }, 50);
-        }
-      }
-    });
-    jQuery( document ).ready(function() {
-      jQuery( ".elementor-form" ).on('submit', function() {
-        if (document.getElementById('cf-turnstile-em-<?php echo $id; ?>')) {
-          setTimeout(function() {
-            turnstile.reset('#cf-turnstile-em-<?php echo $id; ?>');
-          }, 2000);
-        }
+      jQuery(".elementor-form").on('submit', function() {
+        // Store the submitted form in a variable
+        var submittedForm = jQuery(this);
+        setTimeout(function() {
+          // Find the .cf-turnstile element within the submitted form
+          var turnstileElement = submittedForm.find('.cf-turnstile');
+          // Check if the .cf-turnstile element exists
+          if (turnstileElement.length > 0) {
+            // Generate a unique ID for the turnstile element
+            var uniqueId = 'cf-turnstile-elementor-' + new Date().getTime();
+            turnstileElement.attr('id', uniqueId);
+            // Reset only the .cf-turnstile element within the submitted form
+            turnstile.reset('#' + uniqueId);
+          }
+        }, 2500);
       });
     });
     </script>

@@ -1,64 +1,102 @@
+.sct-wrap {
+  padding: 10px;
+  max-width: 1000px;
+}
+
+.sct-integrations {
+  padding: 0 20px;
+  background-color: #f9f9f9;
+  border-radius: 20px;
+}
+
 .sct-accordion {
   display: block;
   margin: 20px 0;
-  padding: 12px;
-  background-color: #fff;
-  color: #444;
+  padding: 16px;
+  background-color: #ededed;
+  color: #333;
   cursor: pointer;
   width: 100%;
   text-align: left;
-  border: 1px solid #c3c4c7;
+  border: none;
   outline: none;
-  transition: 0.4s;
-  font-size: 18px;
-  line-height: 20px;
-  font-weight: bold;
-  max-width: 420px;
+  transition: background-color 0.2s ease-in-out;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 440px;
 }
+
 .sct-active,
 .sct-accordion:hover {
-  background-color: #e1e1e1;
+  background-color: #d7e2eb;
+  color: #333;
 }
+
 .sct-panel {
-  margin-top: -20px;
+  margin-top: -16px;
   padding: 20px;
   background-color: white;
   display: none;
   overflow: hidden;
-  max-width: calc(420px - 40px);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: calc(440px - 40px);
 }
+
 .sct-accordion:after {
   content: '\25BC';
-  font-size: 13px;
+  font-size: 12px;
   color: #777;
   float: right;
+  margin-top: 2px;
   margin-left: 5px;
 }
+
 .sct-active:after {
   content: "\25B2";
 }
+
 .cfturnstile-settings .form-table th {
   font-size: 15px;
+  font-weight: 600;
 }
+
 .cfturnstile-settings .sct-panel .form-table th {
   width: 240px;
 }
+
 .cfturnstile-settings input[type="checkbox"] {
   transform: scale(1.1);
 }
+
 .cfturnstile-settings .button.button-primary {
-  font-size: 15px;
-  padding: 5px 20px;
+  font-size: 14px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  padding: 8px 24px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: none;
 }
+
 .sct-admin-promo-top .dashicons-star-filled {
   color: orange;
   margin-top: 5px;
   font-size: 12px;
   width: 12px;
 }
+
 .sct-admin-promo .dashicons-star-filled {
   color: orange;
   margin-top: 5px;
   font-size: 15px;
   width: 15px;
+}
+
+.sct-panel input[type="checkbox"],
+.sct-panel select {
+  float: right;
 }
