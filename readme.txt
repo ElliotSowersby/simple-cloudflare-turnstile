@@ -116,6 +116,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.18.1 - 10th April 2023 =
+- Tweak: Update to make compatible with certain other login security plugins, or any other plugins that run the login "authenticate" multiple times.
+- Tweak: Fixed issue with Turnstile widget showing on all Elementor forms (not just contact forms) and prevent it from showing twice.
+- Tweak: Update to offer better compatibility with AJAX comment form plugins.
+
 = Version 1.18.0 - 9th April 2023 =
 - New: Added integration with the "Easy Digital Downloads" plugin.
 - New: Added integration with the "WP-Members" plugin.
@@ -126,7 +131,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 - Tweak: Make tweak to ensure Turnstile challenge is checked for some 3rd-party plugins that load the login form.
 - Tweak: Added "cfturnstile_cf7_button_types" filter for applying custom button types for the Contact Form 7 integration.
 - Tweak: Made some tweaks to the admin settings page design.
-- Tweak: Added code for declarating of compatibility with WooCommerce HPOS.
+- Tweak: Added code for declaring of compatibility with WooCommerce HPOS.
 - Fix: Turnstile will now render properly on comment "reply" and "cancel reply" buttons being clicked.
 
 = Version 1.17.3 - 10th March 2023 =

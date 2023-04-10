@@ -22,6 +22,7 @@ if(get_option('cfturnstile_edd_checkout')) {
 	add_action('edd_purchase_form_before_submit', 'cfturnstile_field_edd_checkout', 10);
 	add_action('edd_pre_process_purchase', 'cfturnstile_edd_checkout_check');
 	function cfturnstile_edd_checkout_check() {
+		if (!session_id()) { session_start(); }
 		// Check if already validated
 		if(isset($_SESSION['cfturnstile_edd_checkout_checked']) && wp_verify_nonce( $_SESSION['cfturnstile_edd_checkout_checked'], 'cfturnstile_edd_checkout' )) {
 			unset($_SESSION['cfturnstile_edd_checkout_checked']);

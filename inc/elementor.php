@@ -9,6 +9,21 @@ if(get_option('cfturnstile_elementor')) {
   add_filter('elementor/widget/render_content', 'cfturnstile_elementor_login_form', 10, 2);
   function cfturnstile_elementor_login_form($content, $widget) {
 
+    // Check if the widget is an Elementor contact form
+    if ('form' !== $widget->get_name()) {
+      return $content;
+    }
+
+    // Use a static array to track the processed form widgets' IDs
+    static $processed_forms = [];
+    $widget_id = $widget->get_id();
+    // If the Turnstile field is already added to this form, return the content
+    if (in_array($widget_id, $processed_forms)) {
+      return $content;
+    }
+    // Add the widget ID to the processed_forms array
+    $processed_forms[] = $widget_id;
+
     // Start output buffering to capture the output of cfturnstile_field_show
     ob_start();
     $margin = "";
@@ -25,7 +40,7 @@ if(get_option('cfturnstile_elementor')) {
     $submit_button_pattern = '/(<button[^>]*type="submit"[^>]*>.*?<\/button>)/is';
     $matches = [];
     preg_match($submit_button_pattern, $content, $matches);
-
+    
     if (!empty($matches[0])) {
         $submit_button = $matches[0];
         if(get_option('cfturnstile_elementor_pos') == "afterform") {
