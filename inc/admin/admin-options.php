@@ -3,65 +3,17 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-// create custom plugin settings menu
+// Create custom plugin settings menu
 add_action('admin_menu', 'cfturnstile_create_menu');
 function cfturnstile_create_menu() {
-	//create new top-level menu
-	add_submenu_page('options-general.php', 'Cloudflare Turnstile', 'Cloudflare Turnstile', 'manage_options', __FILE__, 'cfturnstile_settings_page');
-	//call register settings function
-	add_action('admin_init', 'cfturnstile_register_settings');
-}
-
-// Register Settings
-function cfturnstile_register_settings() {
-	register_setting('cfturnstile-settings-group', 'cfturnstile_setup');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_key');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_secret');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_theme');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_disable_button');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_error_message');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_language');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_login');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_register');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_reset');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_comment');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_selected_payment_methods');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_guest_only');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_checkout_pay');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_login');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_register');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_woo_reset');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_edd_checkout');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_edd_guest_only');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_edd_login');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_edd_register');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_bp_register');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_cf7_all');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_wpforms');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_wpforms_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_wpforms_disable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_gravity');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_gravity_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_gravity_disable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_fluent');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_fluent_disable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_formidable_disable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_forminator_disable');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_elementor_pos');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_um_login');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_um_register');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_um_password');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_bbpress_create');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_bbpress_reply');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_bbpress_guest_only');
-	register_setting('cfturnstile-settings-group', 'cfturnstile_bbpress_align');
+    add_submenu_page(
+        'options-general.php', // Parent slug
+        'Cloudflare Turnstile', // Page title
+        'Cloudflare Turnstile', // Menu title
+        'manage_options', // Capability
+        'cfturnstile', // Menu slug
+        'cfturnstile_settings_page' // Callback function
+    );
 }
 
 // Keys Updated
@@ -1000,6 +952,11 @@ function cfturnstile_settings_page() {
 
 			<?php submit_button(); ?>
 
+			<div style="font-size: 10px; margin-top: 10px;">
+				<input type="checkbox" name="cfturnstile_uninstall_remove" <?php if (get_option('cfturnstile_uninstall_remove')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
+				<?php echo __('Remove all saved options when plugin is deleted.', 'simple-cloudflare-turnstile'); ?>
+			</div>
+			
 		</form>
 
 		<hr style="margin: 20px 0 10px 0;"><br />

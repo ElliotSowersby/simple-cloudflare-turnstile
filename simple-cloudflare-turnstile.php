@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.18.1
+ * Version: 1.18.2
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -12,8 +12,9 @@
  * WC tested up to: 7.5.1
  **/
 
-// Include Admin Options
-include(plugin_dir_path(__FILE__) . 'inc/admin-options.php');
+// Include Admin Files
+include(plugin_dir_path(__FILE__) . 'inc/admin/admin-options.php');
+include(plugin_dir_path(__FILE__) . 'inc/admin/register-settings.php');
 
 /**
  * On activate redirect to settings page
@@ -26,7 +27,7 @@ add_action('admin_init', 'cfturnstile_settings_redirect');
 function cfturnstile_settings_redirect() {
 	if (get_option('cfturnstile_do_activation_redirect', false)) {
 		delete_option('cfturnstile_do_activation_redirect');
-		exit(wp_redirect("options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php"));
+		exit(wp_redirect("options-general.php?page=cfturnstile"));
 	}
 }
 
@@ -43,7 +44,7 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
 	if (!isset($plugin))
 		$plugin = plugin_basename(__FILE__);
 	if ($plugin == $plugin_file) {
-		$settings = array('settings' => '<a href="options-general.php?page=simple-cloudflare-turnstile%2Finc%2Fadmin-options.php">' . __('Settings', 'simple-cloudflare-turnstile') . '</a>');
+		$settings = array('settings' => '<a href="options-general.php?page=cfturnstilee">' . __('Settings', 'simple-cloudflare-turnstile') . '</a>');
 		$actions = array_merge($settings, $actions);
 	}
 	return $actions;

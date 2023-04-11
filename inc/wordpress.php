@@ -90,9 +90,16 @@ if(get_option('cfturnstile_reset')) {
 }
 
 // WP Comment
-if(get_option('cfturnstile_comment')) {
-  if( !is_admin() || ( is_admin() && wp_doing_ajax() ) ) {
-    add_action("comment_form_after", "cfturnstile_force_render");
+if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+  if( !is_admin() || wp_doing_ajax() ) {
+	add_action("comment_form_after", "cfturnstile_comment_form_after");
+	function cfturnstile_comment_form_after() {
+		if ( wp_doing_ajax() ) {
+			wp_print_scripts('cfturnstile');
+			wp_print_styles('cfturnstile-css');
+		}
+		cfturnstile_force_render();
+	}
   	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
   	// Create and display the turnstile field for comments.
   	function cfturnstile_field_comment( $submit_button, $args ) {
@@ -122,14 +129,15 @@ if(get_option('cfturnstile_comment')) {
   	// Comment Validation
   	add_action('preprocess_comment','cfturnstile_wp_comment_check', 10, 1);
   	function cfturnstile_wp_comment_check($commentdata) {
-      if( !empty($_POST) ) {
-		$check = cfturnstile_check();
-		$success = $check['success'];
-		if($success != true) {
-			wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
-		}
-		return $commentdata;
-      }
+		if(is_admin()) { return $commentdata; }
+		if(!empty($_POST)) {
+			$check = cfturnstile_check();
+			$success = $check['success'];
+			if($success != true) {
+				wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+			}
+			return $commentdata;
+      	}
   	}
   }
 }

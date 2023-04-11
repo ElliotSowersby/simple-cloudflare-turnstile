@@ -116,6 +116,12 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.18.2 - 11th April 2023 =
+- New: Added option to remove all the plugins options on uninstall.
+- Tweak: Updated the admin settings page URL slug.
+- Fix: Fixed issue with admins not being able to reply to comments on the /wp-admin/edit-comments.php page.
+- Fix: Fixed an issue with wpDiscuz integration since 1.18.1 update.
+
 = Version 1.18.1 - 10th April 2023 =
 - Tweak: Update to make compatible with certain other login security plugins, or any other plugins that run the login "authenticate" multiple times.
 - Tweak: Fixed issue with Turnstile widget showing on all Elementor forms (not just contact forms) and prevent it from showing twice.
@@ -126,7 +132,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 - New: Added integration with the "WP-Members" plugin.
 - New: Added compatibility with "Blocksy" theme login modal.
 - New: Added option to skip Turnstile check for selected WooCommerce payment methods. Useful for Express Checkout options.
-- New: Replaced code for displaying Turnstile on Elementor forms. This is now more reliable and will now display properly on Elementor popups.
+- Tweak: Improvements to code for displaying Turnstile on Elementor forms.
 - Tweak: Added check to prevent Turnstile check when adding WooCommerce users in admin area.
 - Tweak: Make tweak to ensure Turnstile challenge is checked for some 3rd-party plugins that load the login form.
 - Tweak: Added "cfturnstile_cf7_button_types" filter for applying custom button types for the Contact Form 7 integration.
