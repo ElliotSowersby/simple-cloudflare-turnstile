@@ -14,6 +14,14 @@ if(get_option('cfturnstile_forminator')) {
             $unique_id = mt_rand();
 
             ob_start();
+
+            // if cfturnstile script doesnt exist, enqueue it
+            if(!wp_script_is('cfturnstile', 'enqueued')) {
+                wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
+                wp_print_scripts('cfturnstile');
+                echo "<style>#cf-turnstile-fmntr-".$unique_id." { margin-left: 0px !important; }</style>";
+            }
+
             cfturnstile_field_show('.forminator-button-submit', 'turnstileForminatorCallback', 'forminator-form-' . $form_id, '-fmntr-' . $unique_id);
             ?>
             <script>
@@ -27,6 +35,14 @@ if(get_option('cfturnstile_forminator')) {
                         }
                     });
                 });
+            });
+            // on ajax.complete run turnstile.reset
+            jQuery(document).ajaxComplete(function() {
+                if (document.getElementById('cf-turnstile-fmntr-<?php echo $unique_id; ?>')) {
+                    setTimeout(function() {
+                        turnstile.reset('#cf-turnstile-fmntr-<?php echo $unique_id; ?>');
+                    }, 1000);
+                }
             });
             </script>
             <?php

@@ -116,6 +116,10 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.18.3 - 13th April 2023 =
+- Fix: Fixed issue with Turnstile not loading on Forminator forms with "Load form using AJAX" enabled.
+- Fix: Fixed broken settings link on plugins list.
+
 = Version 1.18.2 - 11th April 2023 =
 - New: Added option to remove all the plugins options on uninstall.
 - Tweak: Updated the admin settings page URL slug.
