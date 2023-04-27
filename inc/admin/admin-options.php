@@ -377,7 +377,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // EDD
-			if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php')) { ?>
+			if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Easy Digital Downloads', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 

@@ -10,7 +10,7 @@ if(get_option('cfturnstile_elementor')) {
   function cfturnstile_elementor_login_form($content, $widget) {
 
     // Check if the widget is an Elementor contact form
-    if ('form' !== $widget->get_name()) {
+    if ('form' !== $widget->get_name() && 'login' !== $widget->get_name()) {
       return $content;
     }
 
@@ -29,11 +29,11 @@ if(get_option('cfturnstile_elementor')) {
     $margin = "";
     $unique_id = mt_rand();
     if(get_option('cfturnstile_elementor_pos') == "after" || get_option('cfturnstile_elementor_pos') == "afterform") {
-      $margin = " style='margin-top: 12px;'";
+      $margin = " margin-top: 12px;";
     }
-    echo "<div class='elementor-turnstile-field'".$margin.">";
+    echo "<div class='elementor-turnstile-field' style='width: 100%;".$margin."'>";
     cfturnstile_field_show('', 'turnstileElementorCallback', 'elementor-' . $unique_id, '-elementor-' . $unique_id);
-    echo "</div>";
+    echo "</div><br/>";
     $recaptcha_field = ob_get_clean();
 
     // Find the submit button in the form

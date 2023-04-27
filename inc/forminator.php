@@ -11,36 +11,25 @@ if(get_option('cfturnstile_forminator')) {
 
         if(!cfturnstile_form_disable($form_id, 'cfturnstile_forminator_disable')) {
 
-            $unique_id = mt_rand();
-
             ob_start();
 
             // if cfturnstile script doesnt exist, enqueue it
             if(!wp_script_is('cfturnstile', 'enqueued')) {
                 wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
                 wp_print_scripts('cfturnstile');
-                echo "<style>#cf-turnstile-fmntr-".$unique_id." { margin-left: 0px !important; }</style>";
+                echo "<style>#cf-turnstile-fmntr-".$form_id." { margin-left: 0px !important; }</style>";
             }
 
-            cfturnstile_field_show('.forminator-button-submit', 'turnstileForminatorCallback', 'forminator-form-' . $form_id, '-fmntr-' . $unique_id);
+            cfturnstile_field_show('.forminator-button-submit', 'turnstileForminatorCallback', 'forminator-form-' . $form_id, '-fmntr-' . $form_id);
             ?>
             <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                document.querySelectorAll('.forminator-custom-form').forEach(function(el) {
-                    el.addEventListener('submit', function() {
-                        if (document.getElementById('cf-turnstile-fmntr-<?php echo $unique_id; ?>')) {
-                            setTimeout(function() {
-                                turnstile.reset('#cf-turnstile-fmntr-<?php echo $unique_id; ?>');
-                            }, 4000);
-                        }
-                    });
-                });
-            });
-            // on ajax.complete run turnstile.reset
+            // on ajax.complete run turnstile.render if empty
             jQuery(document).ajaxComplete(function() {
-                if (document.getElementById('cf-turnstile-fmntr-<?php echo $unique_id; ?>')) {
+                if (document.getElementById('cf-turnstile-fmntr-<?php echo $form_id; ?>')) {
                     setTimeout(function() {
-                        turnstile.reset('#cf-turnstile-fmntr-<?php echo $unique_id; ?>');
+                        if(jQuery('#cf-turnstile-fmntr-<?php echo $form_id; ?>').is(':empty')) {
+                            turnstile.render('#cf-turnstile-fmntr-<?php echo $form_id; ?>');
+                        }
                     }, 1000);
                 }
             });

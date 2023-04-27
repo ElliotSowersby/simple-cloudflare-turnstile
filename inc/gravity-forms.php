@@ -11,8 +11,23 @@ if(get_option('cfturnstile_gravity')) {
   	ob_start();
     $unique_id = mt_rand();
     echo '</div><div style="margin-top: 10px; margin-bottom: -25px; padding-bottom: 0;">';
-  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $atts['id'], '-gf-' . $unique_id);
+  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $atts['id'], '-gf-' . $atts['id']);
     echo "</div><div class='gform_page_footer top_label'>";
+    ?>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        document.querySelectorAll('#gform_<?php echo $atts['id']; ?>').forEach(function(el) {
+          el.addEventListener('submit', function() {
+            if (document.getElementById('cf-turnstile-gf-<?php echo $atts['id']; ?>')) {
+              setTimeout(function() {
+                turnstile.render('#cf-turnstile-gf-<?php echo $atts['id']; ?>');
+              }, 5000);
+            }
+          });
+        });
+      });
+    </script>
+    <?php
   	$thecontent = ob_get_contents();
   	ob_end_clean();
   	wp_reset_postdata();

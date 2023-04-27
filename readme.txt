@@ -116,9 +116,20 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.18.4 - 27th April 2023 =
+- Tweak: Made some tweaks to the admin settings page design.
+- Tweak: Added check for Easy Digital Downloads PRO.
+- Tweak: Turnstile will now work/be displayed on the Elementor login form.
+- Tweak: Tweak to alignment of Turnstile on wpDiscuz comments form and added a "wpdiscuz-cfturnstile" class for applying any custom CSS/alignment tweaks if needed.
+- Fix: Fixed occasional error with Contact Form 7 not re-rendering Turnstile on form submission error.
+- Fix: Fixed issue with Gravity Forms when AJAX form was enabled, where if submitting with an error, Turnstile would not re-render.
+- Fix: Fixed issue with Turnstile still not loading on some Forminator forms that had "Load form using AJAX" enabled.
+- Fix: Fixed issue with Ultimate Member login form occasionally failing on first attempt with Turnstile enabled.
+- Fix: Fixed WooCommerce integration settings sometimes not showing properly if Payment Method names were too long.
+
 = Version 1.18.3 - 13th April 2023 =
 - Fix: Fixed issue with Turnstile not loading on Forminator forms with "Load form using AJAX" enabled.
-- Fix: Fixed broken settings link on plugins list.
+- Fix: Fixed broken settings link on plugins list since last update.
 
 = Version 1.18.2 - 11th April 2023 =
 - New: Added option to remove all the plugins options on uninstall.

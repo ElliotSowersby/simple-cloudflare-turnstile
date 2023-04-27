@@ -15,14 +15,22 @@ if(get_option('cfturnstile_um_register')) { add_action( 'um_submit_form_errors_h
 if(get_option('cfturnstile_um_password')) { add_action( 'um_reset_password_errors_hook', 'cfturnstile_um_check', 20, 1 ); }
 function cfturnstile_um_check( $args ){
   $mode = $args['mode'];
+  // Check if already validated
+  if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
+    return;
+  }
+
   if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
     $check = cfturnstile_check();
     $success = $check['success'];
     if($success != true) {
-      cfturnstile_um_error($mode);
-    }
+      UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );
+    } else {
+      $nonce = wp_create_nonce( 'cfturnstile_login_check' );
+      $_SESSION['cfturnstile_login_checked'] = $nonce;
+  }
   } else {
-    cfturnstile_um_error($mode);
+    UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );
   }
 }
 
@@ -30,19 +38,8 @@ function cfturnstile_um_check( $args ){
 function cfturnstile_um_error_message() {
   echo '<p style="color: red; font-weight: bold;">' . cfturnstile_failed_message() . '</p>';
 }
-
-// Show Error Message
-function cfturnstile_um_error($mode) {
-  if ( $mode == 'login' ) {
-    UM()->form()->add_error( 'cfturnstile', '' );
-    add_action('um_after_login_fields','cfturnstile_um_error_message');
-  }
-  if ( $mode == 'register' ){
-    UM()->form()->add_error( 'cfturnstile', '' );
-    add_action('um_after_register_fields','cfturnstile_um_error_message');
-  }
-  if ( $mode == 'password' ){
-    UM()->form()->add_error( 'cfturnstile', '' );
-    add_action('um_after_password_reset_fields','cfturnstile_um_error_message');
-  }
+// Clear session on login
+add_action('um_user_login', 'cfturnstile_um_login_clear', 10, 1);
+function cfturnstile_um_login_clear($args) { 
+	if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
 }

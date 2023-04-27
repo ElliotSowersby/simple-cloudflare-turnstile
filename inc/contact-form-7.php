@@ -18,7 +18,7 @@ function cfturnstile_cf7_shortcode() {
 				el.addEventListener('submit', function() {
 					if (document.getElementById('cf-turnstile-cf7-<?php echo $id; ?>')) {
 						setTimeout(function() {
-							turnstile.reset('#cf-turnstile-cf7-<?php echo $id; ?>');
+							turnstile.render('#cf-turnstile-cf7-<?php echo $id; ?>');
 						}, 4000);
 					}
 				});

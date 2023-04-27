@@ -96,7 +96,50 @@
   width: 15px;
 }
 
-.sct-panel input[type="checkbox"],
-.sct-panel select {
+.sct-wrap input[type="text"] {
+  padding: 5px 10px;
+  border-radius: 8px;
+  min-width: 240px;
+}
+.sct-wrap input[type="text"]:focus {
+  border-color: #cbdded;
+}
+
+.sct-wrap input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  width: 18px;
+  height: 18px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease-out;
+}
+
+.sct-wrap select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 8px;
+  padding: 4px 10px;
+  min-width: 240px;
+  outline: none;
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+}
+.sct-wrap select:focus {
+  box-shadow: 0 0 0 2px #cbdded;
+}
+
+.sct-wrap .sct-panel input[type="checkbox"], .sct-wrap .sct-panel select {
   float: right;
+}
+.sct-wrap .sct-panel input[type="text"], .sct-wrap .sct-panel select {
+  padding: 2px 8px;
+  min-width: 150px !important;
+  max-width: 220px;
 }

@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.18.3
+ * Version: 1.18.4
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.5.1
+ * WC tested up to: 7.6.1
  **/
 
 // Include Admin Files
@@ -27,7 +27,9 @@ add_action('admin_init', 'cfturnstile_settings_redirect');
 function cfturnstile_settings_redirect() {
 	if (get_option('cfturnstile_do_activation_redirect', false)) {
 		delete_option('cfturnstile_do_activation_redirect');
-		exit(wp_redirect("options-general.php?page=cfturnstile"));
+		if(!is_multisite()) {
+			exit(wp_redirect("options-general.php?page=cfturnstile"));
+		}
 	}
 }
 
@@ -103,7 +105,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	data-language="<?php echo sanitize_text_field($language); ?>"
 	data-retry="auto" data-retry-interval="1000"
 	data-action="<?php echo sanitize_text_field($form_name); ?>"
-	style="<?php if (!is_page() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
+	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
 		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 	<?php } ?>
@@ -121,17 +123,6 @@ function cfturnstile_admin_script_enqueue() {
 	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
 }
 add_action('admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue');
-
-/**
- * Gets the custom Turnstile failed message
- */
-function cfturnstile_failed_message($default = "") {
-	if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
-		return sanitize_text_field(get_option('cfturnstile_error_message'));
-	} else {
-		return __('Please verify that you are human.', 'simple-cloudflare-turnstile');
-	}
-}
 
 /**
  * Compatible with HPOS
@@ -256,6 +247,17 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	}
 
 	/**
+	 * Gets the custom Turnstile failed message
+	 */
+	function cfturnstile_failed_message($default = "") {
+		if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
+			return sanitize_text_field(get_option('cfturnstile_error_message'));
+		} else {
+			return __('Please verify that you are human.', 'simple-cloudflare-turnstile');
+		}
+	}
+
+	/**
 	 * Gets the official Turnstile error message
 	 *
 	 * @param string $code
@@ -291,7 +293,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	}
 
 	// Include EDD
-	if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php')) {
+	if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/edd.php');
 	}
 
@@ -349,7 +351,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	if ( cft_is_plugin_active('elementor/elementor.php') && cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
 		include(plugin_dir_path(__FILE__) . 'inc/elementor.php');
 	}
-
+	
 	// Include Ultimate Member
 	if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/ultimate-member.php');
