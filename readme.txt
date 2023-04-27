@@ -116,6 +116,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ==
 
+= Version 1.18.5 - 27th April 2023 =
+- Fix: Fixed error on admin settings page for new installs, since last update.
+
 = Version 1.18.4 - 27th April 2023 =
 - Tweak: Made some tweaks to the admin settings page design.
 - Tweak: Added check for Easy Digital Downloads PRO.

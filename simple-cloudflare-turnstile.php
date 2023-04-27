@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.18.4
+ * Version: 1.18.5
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -133,6 +133,44 @@ add_action( 'before_woocommerce_init', function() {
 	}
 } );
 
+/**
+ * Gets the custom Turnstile failed message
+ */
+function cfturnstile_failed_message($default = "") {
+	if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
+		return sanitize_text_field(get_option('cfturnstile_error_message'));
+	} else {
+		return __('Please verify that you are human.', 'simple-cloudflare-turnstile');
+	}
+}
+
+/**
+ * Gets the official Turnstile error message
+ *
+ * @param string $code
+ * @return string
+ */
+function cfturnstile_error_message($code) {
+	switch ($code) {
+		case 'missing-input-secret':
+			return __('The secret parameter was not passed.', 'simple-cloudflare-turnstile');
+		case 'invalid-input-secret':
+			return __('The secret parameter was invalid or did not exist.', 'simple-cloudflare-turnstile');
+		case 'missing-input-response':
+			return __('The response parameter was not passed.', 'simple-cloudflare-turnstile');
+		case 'invalid-input-response':
+			return __('The response parameter is invalid or has expired.', 'simple-cloudflare-turnstile');
+		case 'bad-request':
+			return __('The request was rejected because it was malformed.', 'simple-cloudflare-turnstile');
+		case 'timeout-or-duplicate':
+			return __('The response parameter has already been validated before.', 'simple-cloudflare-turnstile');
+		case 'internal-error':
+			return __('An internal error happened while validating the response. The request can be retried.', 'simple-cloudflare-turnstile');
+		default:
+			return __('There was an error with Turnstile response. Please check your keys are correct.', 'simple-cloudflare-turnstile');
+	}
+}
+
 if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
 
 	/**
@@ -244,44 +282,6 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		wp_reset_postdata();
 		$thecontent = trim(preg_replace('/\s+/', ' ', $thecontent));
 		return $thecontent;
-	}
-
-	/**
-	 * Gets the custom Turnstile failed message
-	 */
-	function cfturnstile_failed_message($default = "") {
-		if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
-			return sanitize_text_field(get_option('cfturnstile_error_message'));
-		} else {
-			return __('Please verify that you are human.', 'simple-cloudflare-turnstile');
-		}
-	}
-
-	/**
-	 * Gets the official Turnstile error message
-	 *
-	 * @param string $code
-	 * @return string
-	 */
-	function cfturnstile_error_message($code) {
-		switch ($code) {
-			case 'missing-input-secret':
-				return __('The secret parameter was not passed.', 'simple-cloudflare-turnstile');
-			case 'invalid-input-secret':
-				return __('The secret parameter was invalid or did not exist.', 'simple-cloudflare-turnstile');
-			case 'missing-input-response':
-				return __('The response parameter was not passed.', 'simple-cloudflare-turnstile');
-			case 'invalid-input-response':
-				return __('The response parameter is invalid or has expired.', 'simple-cloudflare-turnstile');
-			case 'bad-request':
-				return __('The request was rejected because it was malformed.', 'simple-cloudflare-turnstile');
-			case 'timeout-or-duplicate':
-				return __('The response parameter has already been validated before.', 'simple-cloudflare-turnstile');
-			case 'internal-error':
-				return __('An internal error happened while validating the response. The request can be retried.', 'simple-cloudflare-turnstile');
-			default:
-				return __('There was an error with Turnstile response. Please check your keys are correct.', 'simple-cloudflare-turnstile');
-		}
 	}
 
 	// Include WordPress
