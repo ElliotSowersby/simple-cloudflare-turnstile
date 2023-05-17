@@ -10,9 +10,9 @@ if(get_option('cfturnstile_gravity')) {
   function cfturnstile_gravity_shortcode($atts) {
   	ob_start();
     $unique_id = mt_rand();
-    echo '</div><div style="margin-top: 10px; margin-bottom: -25px; padding-bottom: 0;">';
+    //echo '</div><div style="margin-top: 10px; margin-bottom: -25px; padding-bottom: 0;">';
   	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $atts['id'], '-gf-' . $atts['id']);
-    echo "</div><div class='gform_page_footer top_label'>";
+    //echo "</div><div class='gform_page_footer top_label'>";
     ?>
     <script>
       document.addEventListener("DOMContentLoaded", function() {
