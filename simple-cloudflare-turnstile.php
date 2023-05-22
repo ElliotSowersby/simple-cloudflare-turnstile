@@ -189,8 +189,9 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		// Checkif the compliance cookie is set: 
 		$complied = (isset($_COOKIE['cfturnstile_compliance']) && $_COOKIE['cfturnstile_compliance'] === 'granted') ? true : false;
 		if($complied) $load_turnstile = true;
+		/** Links should still be clickable, so we only wrap the checkbox with the label and not the whole text. */
 		?>
-		<label class="<?php echo $complied ? "cf_comply_box cf_comply_box_active" : "cf_comply_box" ?>"><input type='checkbox' <?php if ($complied) echo "checked" ?> onchange="turnstileComplyChanged(event)"> <?php $complied ? "TRUE" : "FALSE" ?> <span><?php echo get_option("cfturnstile_compliance_message_html"); ?></span></label>
+		<div class="<?php echo $complied ? "cf_comply_box cf_comply_box_active" : "cf_comply_box" ?>"><label class="cf_comply_checkbox_label"><input type='checkbox' <?php if ($complied) echo "checked" ?> onchange="turnstileComplyChanged(event)"></label> <?php $complied ? "TRUE" : "FALSE" ?> <span><?php echo get_option("cfturnstile_compliance_message_html"); ?></span></div>
 		<?php
 		}
 

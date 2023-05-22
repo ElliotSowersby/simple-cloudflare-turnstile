@@ -90,10 +90,9 @@ function cfturnstile_render_compliance_section() {
 		</tr>
 
 		<tr valign="top">
-			<th scope="row"><?php echo __('Custom Compliance Message', 'simple-cloudflare-turnstile'); ?></th>
+			<th scope="row"><?php echo __('Custom Compliance Message (HTML)', 'simple-cloudflare-turnstile'); ?></th>
 			<td>
-				<input type="text" style="width: 240px;" name="cfturnstile_compliance_message_html" value="<?php echo sanitize_text_field(get_option('cfturnstile_compliance_message_html')); ?>" placeholder="" />
-
+				<textarea name="cfturnstile_compliance_message_html" style="width: 100%;"><?php echo get_option('cfturnstile_compliance_message_html'); ?></textarea>
 			</td>
 		</tr>
 	</table>

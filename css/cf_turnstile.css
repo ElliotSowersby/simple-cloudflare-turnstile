@@ -1,8 +1,8 @@
-label.cf_comply_box {
+.cf_comply_box {
     font-size: 0.75em;
     display: flex;
     align-items: center;
-    gap: 2em;
+    gap: 1em;
     text-align: left;
     border: 1px solid #ccc;
     background-color: whitesmoke;
@@ -10,12 +10,16 @@ label.cf_comply_box {
     box-sizing: border-box;
     padding: .25em .5em;
     margin: 1em 0;
+}
+
+label.cf_comply_checkbox_label {
+    display: block;
+    width: auto;
+    padding: 1.641em;
     cursor: pointer;
 }
 
 .cf_comply_box input[type="checkbox"] {
-    display: inline;
-    width: auto;
-    width: 1.5em;
-    height: 1.5em;
+    width: 2.3em;
+    height: 2.3em;
 }
