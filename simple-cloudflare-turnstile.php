@@ -1,8 +1,9 @@
 <?php
+
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.18.5
+ * Version: 1.18.6
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -27,7 +28,7 @@ add_action('admin_init', 'cfturnstile_settings_redirect');
 function cfturnstile_settings_redirect() {
 	if (get_option('cfturnstile_do_activation_redirect', false)) {
 		delete_option('cfturnstile_do_activation_redirect');
-		if(!is_multisite()) {
+		if (!is_multisite()) {
 			exit(wp_redirect("options-general.php?page=cfturnstile"));
 		}
 	}
@@ -58,9 +59,9 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  * @param string $plugin
  * @return bool
  */
-if ( !function_exists( 'cft_is_plugin_active' ) ) {
-	function cft_is_plugin_active( $plugin ) {
-		return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'cft_is_plugin_active_for_network' ) && cft_is_plugin_active_for_network( $plugin ) ) );
+if (!function_exists('cft_is_plugin_active')) {
+	function cft_is_plugin_active($plugin) {
+		return (in_array($plugin, apply_filters('active_plugins', get_option('active_plugins'))) || (function_exists('cft_is_plugin_active_for_network') && cft_is_plugin_active_for_network($plugin)));
 	}
 }
 
@@ -70,13 +71,13 @@ if ( !function_exists( 'cft_is_plugin_active' ) ) {
  * @param string $plugin
  * @return bool
  */
-if ( !function_exists( 'cft_is_plugin_active_for_network' ) ) {
-	function cft_is_plugin_active_for_network( $plugin ) {
-		if ( !is_multisite() ) {
+if (!function_exists('cft_is_plugin_active_for_network')) {
+	function cft_is_plugin_active_for_network($plugin) {
+		if (!is_multisite()) {
 			return false;
 		}
-		$plugins = get_site_option( 'active_sitewide_plugins' );
-		if ( isset( $plugins[ $plugin ] ) ) {
+		$plugins = get_site_option('active_sitewide_plugins');
+		if (isset($plugins[$plugin])) {
 			return true;
 		}
 		return false;
@@ -95,7 +96,9 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	$key = esc_attr(get_option('cfturnstile_key'));
 	$theme = esc_attr(get_option('cfturnstile_theme'));
 	$language = esc_attr(get_option('cfturnstile_language'));
-		if(!$language) { $language = 'auto'; }
+	if (!$language) {
+		$language = 'auto';
+	}
 	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
 	?>
 	<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>"
@@ -180,16 +183,43 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("login_enqueue_scripts", "cfturnstile_script_enqueue");
 	function cfturnstile_script_enqueue() {
 		$current_theme = wp_get_theme();
-		/* Turnstile */
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), null, 'true');
+		
+		// Checkif the compliance cookie is set: 
+		$complied = (isset($_COOKIE['cfturnstile_compliance']) && $_COOKIE['cfturnstile_compliance'] === 'granted') ? true : false;
+		
+		?>
+		<label class="<?php echo $complied ? "cf_comply_box cf_comply_box_active" : "cf_comply_box" ?>"><input type='checkbox' <?php if ($complied) echo "checked" ?> onchange="turnstileComplyChanged(event)"> <?php $complied ? "TRUE" : "FALSE" ?> <span><?php echo get_option("cfturnstile_compliance_message_html"); ?></span></label>
+		<?php
+
+		if ($complied) {
+			/* 
+				Turnstile
+				Note: The script is not loaded, when the user has not complied.	
+			*/
+			wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), null, 'true');
+		};
+
+		wp_enqueue_style('cfturnstile-css', plugins_url('./css/cf_turnstile.css', __FILE__), array(), '1.2');
+
+		/* Comply Functions*/
+		wp_enqueue_script('cfturnstile-comply-js', plugins_url('/js/comply.js', __FILE__), '', '1.0', false);
+
 		/* Disable Button */
-		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', false); }
+		if (get_option('cfturnstile_disable_button')) {
+			wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', false);
+		}
 		/* WooCommerce */
-		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', false); }
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) {
+			wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', false);
+		}
 		/* WPDiscuz */
-		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
+		if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+			wp_enqueue_style('cfturnstile-css', plugins_url('/css/cf_wpdiscuz.css', __FILE__), array(), '1.2');
+		}
 		/* Blocksy */
-		if ('blocksy' === $current_theme->get('TextDomain')) { wp_enqueue_script('cfturnstile-blocksy-js', plugins_url('/js/integrations/blocksy.js', __FILE__), array(), '1.0', false); }
+		if ('blocksy' === $current_theme->get('TextDomain')) {
+			wp_enqueue_script('cfturnstile-blocksy-js', plugins_url('/js/integrations/blocksy.js', __FILE__), array(), '1.0', false);
+		}
 	}
 
 	/**
@@ -198,9 +228,18 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("cfturnstile_after_field", "cfturnstile_force_render", 10, 1);
 	function cfturnstile_force_render($unique_id = '') {
 		$unique_id = sanitize_text_field($unique_id);
-		if($unique_id) {
+		if ($unique_id) {
 		?>
-		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&e.innerHTML.length<=1&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),200)}));</script>
+			<script>
+				document.addEventListener("DOMContentLoaded", (function() {
+					var e = document.getElementById("cf-turnstile<?php echo $unique_id; ?>");
+					setTimeout((function() {
+						e && e.innerHTML.length <= 1 && (turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"), turnstile.render("#cf-turnstile<?php echo $unique_id; ?>", {
+							sitekey: "<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"
+						}))
+					}), 200)
+				}));
+			</script>
 		<?php
 		}
 	}
@@ -234,7 +273,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			$verify = wp_remote_retrieve_body($verify);
 			$response = json_decode($verify);
 
-			if($response->success) {
+			if ($response->success) {
 				$results['success'] = $response->success;
 			} else {
 				$results['success'] = false;
@@ -249,23 +288,20 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			}
 
 			return $results;
-
 		} else {
 
 			return false;
-
 		}
-		
 	}
 	
 	/**
 	 * Check if form should show Turnstile
 	 */
     function cfturnstile_form_disable($id, $option) {
-        if(!empty(get_option($option)) && get_option($option)) {
+		if (!empty(get_option($option)) && get_option($option)) {
             $disabled = preg_replace('/\s+/', '', get_option($option));
-            $disabled = explode (",",$disabled);
-            if(in_array($id, $disabled)) return true;
+			$disabled = explode(",", $disabled);
+			if (in_array($id, $disabled)) return true;
         }
         return false;
     }
@@ -348,7 +384,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	}
 
 	// Include Elementor Forms
-	if ( cft_is_plugin_active('elementor/elementor.php') && cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
+	if (cft_is_plugin_active('elementor/elementor.php') && cft_is_plugin_active('elementor-pro/elementor-pro.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/elementor.php');
 	}
 	
@@ -361,5 +397,4 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	if (cft_is_plugin_active('wp-members/wp-members.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/wp-members.php');
 	}
-
 }
