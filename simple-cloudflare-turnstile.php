@@ -183,7 +183,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("login_enqueue_scripts", "cfturnstile_script_enqueue");
 	function cfturnstile_script_enqueue() {
 		$current_theme = wp_get_theme();
-		$use_compliance = get_option("cfturnstile_compliance");
+		$use_compliance = get_option("cfturnstile_compliance") == "yes";
 		$load_turnstile = ($use_compliance) ? false : true;
 		if($use_compliance){
 		// Checkif the compliance cookie is set: 
