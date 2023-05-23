@@ -58,7 +58,9 @@ function cfturnstile_settings_list() {
         'cfturnstile_bbpress_create',
         'cfturnstile_bbpress_reply',
         'cfturnstile_bbpress_guest_only',
-        'cfturnstile_bbpress_align'
+        'cfturnstile_bbpress_align',
+        'cfturnstile_compliance',
+        'cfturnstile_compliance_message_html',
     );
 }
 

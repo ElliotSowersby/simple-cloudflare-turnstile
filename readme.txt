@@ -1,5 +1,5 @@
 === Simple Cloudflare Turnstile — The new user-friendly alternative to CAPTCHA ===
-Contributors: ElliotVS, RelyWP
+Contributors: ElliotVS, RelyWP, Severino
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
@@ -115,6 +115,10 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ==
+
+= Version 1.18.6 - 22th May 2023 =
+- New: Added option that may be activated to require the user to comply that the data is pulled and verified from cloudflare (opt-in). 
+- Tweak: Renamed the 'cfturnstile.css' to 'cf_wpdiscuz.css' and added a 'cf_turnstile.css' that is always loaded.
 
 = Version 1.18.5 - 27th April 2023 =
 - Fix: Fixed error on admin settings page for new installs, since last update.
