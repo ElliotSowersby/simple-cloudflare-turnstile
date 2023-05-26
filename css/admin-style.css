@@ -141,5 +141,5 @@
 .sct-wrap .sct-panel input[type="text"], .sct-wrap .sct-panel select {
   padding: 2px 8px;
   min-width: 150px !important;
-  max-width: 220px;
+  max-width: 200px;
 }

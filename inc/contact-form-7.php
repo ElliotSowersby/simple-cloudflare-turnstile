@@ -67,12 +67,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	if (!class_exists('WPCF7_Submission')) {
 		return $result;
 	}
-
-	$_wpcf7 = !empty($_POST['_wpcf7']) ? absint($_POST['_wpcf7']) : 0;
-	if (empty($_wpcf7)) {
-		return $result;
-	}
-
+	
 	$post = WPCF7_Submission::get_instance();
 
 	if (!empty($post)) {

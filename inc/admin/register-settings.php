@@ -1,4 +1,8 @@
 <?php
+if (!defined('ABSPATH')) {
+	exit;
+}
+
 // Register Settings
 function cfturnstile_register_settings() {
     $settings = cfturnstile_settings_list();

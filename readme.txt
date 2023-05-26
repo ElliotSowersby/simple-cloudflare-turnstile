@@ -3,7 +3,7 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.2
+Tested up to: 6.2.2
 Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -53,7 +53,7 @@ You can currently enable Turnstile on the following forms:
 * bbPress Create Topic & Reply Forms
 * Ultimate Member Forms
 * WP-Members Forms
-* wpDiscuz Custom Comments Form
+* wpDiscuz Comments Form
 
 ## What is Cloudflare Turnstile? ##
 
@@ -76,7 +76,9 @@ For more detailed instructions, please see our <a href="https://relywp.com/blog/
 
 ## Is it free to use? ##
 
-Yes, this plugin is completely free with no paid version, and it doesn't track your data. Cloudflare Turnstile is also a completely free service!
+Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
+
+Cloudflare Turnstile is also a completely free service, and mentions that they "never harvest data for ad retargeting". You can view Cloudflare’s GDPR and DPA <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">here</a>.
 
 Please consider helping out by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a>, or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">donate</a>.
 
@@ -114,7 +116,16 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 6. Example Turnstile on a Contact Form
 7. Example Settings Page
 
-== Changelog ==
+== Changelog ===
+
+= Version 1.18.6 - 26th May 2023 =
+- Tweak: Added skip for REST API on WordPress login check.
+- Tweak: Improved position and alignment of Turnstile on wpDiscuz comments form.
+- Tweak: Removed ?onload=onloadTurnstileCallback from Turnstile script URL, which fixes a console error.
+- Tweak: Reduced "setTimeout" delay in cfturnstile_force_render() function slightly to prevent console error.
+- Tweak: Tweak to gravity forms code to prevent duplicate footer class.
+- Fix: Fixed security issue with being able to bypass Turnstile on Contact Form 7.
+- Other: Tested with WordPress 6.2.2
 
 = Version 1.18.5 - 27th April 2023 =
 - Fix: Fixed error on admin settings page for new installs, since last update.

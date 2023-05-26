@@ -328,7 +328,7 @@ function cfturnstile_settings_page() {
 								$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 								if(!$selected_payment_methods) $selected_payment_methods = array();
 								?>
-								<select multiple name="cfturnstile_selected_payment_methods[]" style="margin-top: 10px;">
+								<select multiple name="cfturnstile_selected_payment_methods[]" style="margin-top: 10px; max-width: 200px;">
 									<?php foreach ( $available_gateways as $gateway ) : ?>
 										<option value="<?php echo esc_attr( $gateway->id ); ?>" <?php echo in_array( $gateway->id, $selected_payment_methods, true ) ? 'selected' : ''; ?>>
 											<?php echo esc_html( $gateway->get_title() ); ?>
@@ -963,7 +963,7 @@ function cfturnstile_settings_page() {
 
 		<div class="sct-admin-promo">
 
-			<p style="font-size: 15px; font-weight: bold;"><?php echo __('100% free plugin developed by', 'simple-cloudflare-turnstile'); ?> <a href="https://twitter.com/ElliotSowersby" target="_blank" title="@ElliotVS on Twitter"><span class="dashicons dashicons-twitter" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>Elliot Sowersby</a> <a href="https://relywp.com/?utm_source=sct" target="_blank" title="RelyWP - WordPress Maintenance & Support"><span class="dashicons dashicons-admin-links" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>RelyWP</a></p>
+			<p style="font-size: 15px; font-weight: bold;"><?php echo __('100% free plugin developed by', 'simple-cloudflare-turnstile'); ?> <a href="https://twitter.com/ElliotSowersby" target="_blank" title="@ElliotSowersby on Twitter"><span class="dashicons dashicons-twitter" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>Elliot Sowersby</a> <a href="https://relywp.com/?utm_source=sct" target="_blank" title="RelyWP - WordPress Maintenance & Support"><span class="dashicons dashicons-admin-links" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>RelyWP</a></p>
 
 			<p style="font-size: 15px;">
 				- <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
@@ -981,7 +981,7 @@ function cfturnstile_settings_page() {
 			<p style="font-size: 12px;">
 				<a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank"><?php echo __('Translate into your language', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
 				<br />
-				<a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank"><?php echo __('View on GitHub', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
+				<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile" target="_blank"><?php echo __('View on GitHub', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
 			</p>
 
 		</div>

@@ -13,10 +13,15 @@ if(get_option('cfturnstile_comment')) {
   add_action('wpdiscuz_submit_button_before','cfturnstile_field_wpdiscuz', 10, 3);
   function cfturnstile_field_wpdiscuz( $currentUser, $uniqueId, $isMainForm ) {
       $uniqueId = sanitize_text_field($uniqueId);
+      $turnstilecode = '<div id="cf-turnstile-wpd-'.$uniqueId.'" class="wpdiscuz-cfturnstile" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px; display: inline-flex;"></div><div style="clear: both;"></div>';
     	?>
       <script>
       jQuery(document).ready(function() {
-        jQuery('#wpd-field-submit-<?php echo $uniqueId; ?>').before('<div id="cf-turnstile-wpd-<?php echo $uniqueId; ?>" class="wpdiscuz-cfturnstile" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px;"></div><div style="clear: both;"></div><br/>');
+          <?php if($uniqueId == "0_0") { ?>
+          jQuery('.wpd_main_comm_form .wpd-form-col-right .wc-field-submit').before('<?php echo $turnstilecode; ?>');
+          <?php } else { ?>
+          jQuery('#wpd-comm-<?php echo $uniqueId; ?> .wpd-form-col-right .wc-field-submit').before('<?php echo $turnstilecode; ?>');
+          <?php } ?>
           turnstile.remove('#cf-turnstile-wpd-<?php echo $uniqueId; ?>');
           turnstile.render('#cf-turnstile-wpd-<?php echo $uniqueId; ?>', {
             sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
