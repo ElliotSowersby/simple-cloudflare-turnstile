@@ -85,8 +85,6 @@ if(get_option('cfturnstile_woo_login')) {
 		add_action('woocommerce_login_form','cfturnstile_field_woo_login');
 		add_action('authenticate', 'cfturnstile_woo_login_check', 21, 1);
 		function cfturnstile_woo_login_check($user){
-            if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return $user; } // Skip XMLRPC
-			if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
 			if(isset($_POST['woocommerce-login-nonce'])) {
 				$check = cfturnstile_check();
 				$success = $check['success'];
@@ -106,8 +104,6 @@ if(get_option('cfturnstile_woo_register')) {
 		add_action('woocommerce_register_post', 'cfturnstile_woo_register_check', 10, 3);
 	}
 	function cfturnstile_woo_register_check($username, $email, $validation_errors) {
-		if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return; } // Skip XMLRPC
-		if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return; } // Skip REST API
 		if(!is_checkout()) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
