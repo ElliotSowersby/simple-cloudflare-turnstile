@@ -62,11 +62,7 @@ Cloudflare Turnstile delivers frustration-free, CAPTCHA-free web experiences to 
 
 Turnstile stops abuse and confirms visitors are real without the data privacy concerns or awful UX that CAPTCHA thrusts on users.
 
-Cloudflare mentions that they "never harvest data for ad retargeting" and Turnstile "never looks for cookies (like a login cookie), or uses cookies to collect or store information of any kind".
-
 Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank">https://www.cloudflare.com/en-gb/products/turnstile/</a>
-
-Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
 
 ## Getting Started ##
 
@@ -93,7 +89,7 @@ Cloudflare mentions that they "never harvest data for ad retargeting" and Turnst
 
 Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
 
-View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/">GDPR compliance</a> and <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">Data Processing Addendum</a> for more information how on they handle your data.
+View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/">GDPR compliance</a> and <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">Data Processing Addendum</a> for more information how on they handle data.
 
 ## Plugin Languages ##
 
@@ -130,6 +126,10 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ===
+
+= Version 1.20.1 - 27th May 2023 =
+- Fix: Added extra sanitization to the new "Appearance Mode" option output.
+- Fix: Fixed compatibility issue with "LiteSpeed Cache" plugin.
 
 = Version 1.20.0 - 27th May 2023 =
 - New: Added new "Appearance Mode" option. "Always" is the default option, however if "Interaction Only" is enabled, the Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.

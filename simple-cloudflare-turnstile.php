@@ -106,7 +106,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	data-language="<?php echo sanitize_text_field($language); ?>"
 	data-retry="auto" data-retry-interval="1000"
 	data-action="<?php echo sanitize_text_field($form_name); ?>"
-	data-appearance="<?php echo $appearance; ?>"
+	data-appearance="<?php echo sanitize_text_field($appearance); ?>"
 	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
 	<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
@@ -291,7 +291,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	}
 
 	// Performance Plugins Compatibility
-	if (cft_is_plugin_active('sg-cachepress/sg-cachepress.php')) {
+	if (cft_is_plugin_active('sg-cachepress/sg-cachepress.php') || cft_is_plugin_active('litespeed-cache/litespeed-cache.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/perf.php');
 	}
 

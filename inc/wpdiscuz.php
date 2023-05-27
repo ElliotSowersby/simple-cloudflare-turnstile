@@ -26,7 +26,7 @@ if(get_option('cfturnstile_comment')) {
           turnstile.remove('#cf-turnstile-wpd-<?php echo $uniqueId; ?>');
           turnstile.render('#cf-turnstile-wpd-<?php echo $uniqueId; ?>', {
             sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
-            appearance: '<?php echo $appearance; ?>',
+            appearance: '<?php echo sanitize_text_field($appearance); ?>',
             action: 'wpdiscuz-comment',
             <?php if(get_option('cfturnstile_disable_button')) { ?>
             callback: function(token) {
