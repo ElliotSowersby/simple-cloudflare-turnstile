@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.18.6
+ * Version: 1.20.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.6.1
+ * WC tested up to: 7.7.0
  **/
 
 // Include Admin Files
@@ -95,6 +95,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	$key = esc_attr(get_option('cfturnstile_key'));
 	$theme = esc_attr(get_option('cfturnstile_theme'));
 	$language = esc_attr(get_option('cfturnstile_language'));
+	$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
 		if(!$language) { $language = 'auto'; }
 	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
 	?>
@@ -105,11 +106,16 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	data-language="<?php echo sanitize_text_field($language); ?>"
 	data-retry="auto" data-retry-interval="1000"
 	data-action="<?php echo sanitize_text_field($form_name); ?>"
+	data-appearance="<?php echo $appearance; ?>"
 	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
 	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
-		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
+	<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 	<?php } ?>
-	<br />
+	<?php if($appearance == 'always') { ?>
+	<br/>
+	<?php } else { ?>
+	<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> iframe { margin-bottom: 15px; }</style>
+	<?php } ?>
 	<?php
 	do_action("cfturnstile_after_field", $unique_id);
 }
@@ -284,6 +290,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		return $thecontent;
 	}
 
+	// Performance Plugins Compatibility
+	if (cft_is_plugin_active('sg-cachepress/sg-cachepress.php')) {
+		include(plugin_dir_path(__FILE__) . 'inc/perf.php');
+	}
+
 	// Include WordPress
 	include(plugin_dir_path(__FILE__) . 'inc/wordpress.php');
 
@@ -355,6 +366,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	// Include Ultimate Member
 	if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
 		include(plugin_dir_path(__FILE__) . 'inc/ultimate-member.php');
+	}
+
+	// Include MemberPress
+	if (cft_is_plugin_active('memberpress-courses/main.php')) {
+		include(plugin_dir_path(__FILE__) . 'inc/memberpress.php');
 	}
 
 	// Include WP-Members

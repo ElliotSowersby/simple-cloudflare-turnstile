@@ -203,6 +203,53 @@ function cfturnstile_settings_page() {
 				</tr>
 
 				<tr valign="top">
+					<th scope="row"><?php echo __('Appearance Mode', 'simple-cloudflare-turnstile'); ?></th>
+					<td>
+						<select name="cfturnstile_appearance" style="max-width: 240px;">
+						<?php
+						$appearances = array(
+							'always' => __( 'Always', 'simple-cloudflare-turnstile' ),
+							// 'execute' => __( 'Execute', 'simple-cloudflare-turnstile' ), // Not really needed
+							'interaction-only' => __( 'Interaction Only', 'simple-cloudflare-turnstile' ),
+						);
+						foreach ($appearances as $code => $name) {
+							$selected = '';
+							if(get_option('cfturnstile_appearance') == $code) { $selected = 'selected'; }
+							?>
+								<option value="<?php echo $code; ?>" <?php echo $selected; ?>>
+									<?php echo esc_html($name); ?>
+								</option>
+							<?php
+						}
+						?>
+						</select>
+						<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
+					</td>
+				</tr>
+				<script>
+					jQuery(document).ready(function($) {
+						function updateDescription(selected) {
+							// Hide all descriptions
+							$('.wcu-appearance-always, .wcu-appearance-execute, .wcu-appearance-interaction-only').hide();
+
+							// Show the relevant description
+							$('.wcu-appearance-' + selected).show();
+						}
+
+						// Update the description on page load
+						updateDescription($("select[name='cfturnstile_appearance']").val());
+
+						// Handle the select change event
+						$("select[name='cfturnstile_appearance']").change(function(){
+							updateDescription($(this).val());
+						});
+					});
+				</script>
+
+
+				<tr valign="top">
 					<th scope="row">
 						<?php echo __('Disable Submit Button', 'simple-cloudflare-turnstile'); ?>
 					</th>
@@ -883,6 +930,49 @@ function cfturnstile_settings_page() {
 			<?php
 			} else {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/ultimate-member/" target="_blank">' . __('Ultimate Member', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
+			<?php // MemberPress
+			if (cft_is_plugin_active('memberpress-courses/main.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo __('MemberPress', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<script>
+						jQuery(document).ready(function(){
+							jQuery("input[name='cfturnstile_login']").change(function(){
+								if(jQuery("input[name='cfturnstile_login']").is(':checked')){
+									jQuery('#cfturnstile_mepr_login').prop('checked', true);
+								} else {
+									jQuery('#cfturnstile_mepr_login').prop('checked', false);
+								}
+							});
+						});
+						</script>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Login Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_mepr_login' id='cfturnstile_mepr_login' <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>
+							title='<?php echo __('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Register/Checkout Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_mepr_register' id='cfturnstile_mepr_register' <?php if (get_option('cfturnstile_mepr_register')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://memberpress.com/" target="_blank">' . __('MemberPress', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 

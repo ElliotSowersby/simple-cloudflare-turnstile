@@ -14,7 +14,8 @@ if(get_option('cfturnstile_comment')) {
   function cfturnstile_field_wpdiscuz( $currentUser, $uniqueId, $isMainForm ) {
       $uniqueId = sanitize_text_field($uniqueId);
       $turnstilecode = '<div id="cf-turnstile-wpd-'.$uniqueId.'" class="wpdiscuz-cfturnstile" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px; display: inline-flex;"></div><div style="clear: both;"></div>';
-    	?>
+    	$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
+      ?>
       <script>
       jQuery(document).ready(function() {
           <?php if($uniqueId == "0_0") { ?>
@@ -25,6 +26,7 @@ if(get_option('cfturnstile_comment')) {
           turnstile.remove('#cf-turnstile-wpd-<?php echo $uniqueId; ?>');
           turnstile.render('#cf-turnstile-wpd-<?php echo $uniqueId; ?>', {
             sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
+            appearance: '<?php echo $appearance; ?>',
             action: 'wpdiscuz-comment',
             <?php if(get_option('cfturnstile_disable_button')) { ?>
             callback: function(token) {

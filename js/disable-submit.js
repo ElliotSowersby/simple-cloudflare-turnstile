@@ -120,3 +120,10 @@ function turnstileUMCallback() {
         el.style.opacity = '1';
     });
 }
+/* Ultimate Member */
+function turnstileMEPRCallback() {
+    document.querySelectorAll('.mepr-submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}

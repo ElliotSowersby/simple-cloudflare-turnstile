@@ -51,6 +51,7 @@ You can currently enable Turnstile on the following forms:
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
+* MemberPress Forms
 * Ultimate Member Forms
 * WP-Members Forms
 * wpDiscuz Comments Form
@@ -61,7 +62,11 @@ Cloudflare Turnstile delivers frustration-free, CAPTCHA-free web experiences to 
 
 Turnstile stops abuse and confirms visitors are real without the data privacy concerns or awful UX that CAPTCHA thrusts on users.
 
+Cloudflare mentions that they "never harvest data for ad retargeting" and Turnstile "never looks for cookies (like a login cookie), or uses cookies to collect or store information of any kind".
+
 Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank">https://www.cloudflare.com/en-gb/products/turnstile/</a>
+
+Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
 
 ## Getting Started ##
 
@@ -78,11 +83,19 @@ For more detailed instructions, please see our <a href="https://relywp.com/blog/
 
 Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
 
-Cloudflare Turnstile is also a completely free service, and mentions that they "never harvest data for ad retargeting". You can view Cloudflare’s GDPR and DPA <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">here</a>.
+Cloudflare Turnstile is also a completely free service.
 
-Please consider helping out by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a>, or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">donate</a>.
+Please consider helping the ongoing development and support of this free plugin by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">making a donation</a>.
 
-## Languages ##
+## Data Privacy ##
+
+Cloudflare mentions that they "never harvest data for ad retargeting" and Turnstile "never looks for cookies (like a login cookie), or uses cookies to collect or store information of any kind".
+
+Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
+
+View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/">GDPR compliance</a> and <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">Data Processing Addendum</a> for more information how on they handle your data.
+
+## Plugin Languages ##
 
 Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">8 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
 
@@ -117,6 +130,14 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ===
+
+= Version 1.20.0 - 27th May 2023 =
+- New: Added new "Appearance Mode" option. "Always" is the default option, however if "Interaction Only" is enabled, the Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.
+- Fix: Fixed compatibility issue with "SiteGround Optimizer" plugin.
+
+= Version 1.19.0 - 26th May 2023 =
+- New: Added integration with the "MemberPress" plugin.
+- Tweak: Added skip for XMLRPC and REST API on WooCommerce login and register check.
 
 = Version 1.18.6 - 26th May 2023 =
 - Tweak: Added skip for REST API on WordPress login check.

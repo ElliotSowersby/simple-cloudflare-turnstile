@@ -109,13 +109,14 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		$key = esc_attr( get_option('cfturnstile_key') );
 		$theme = esc_attr( get_option('cfturnstile_theme') );
 		$language = esc_attr(get_option('cfturnstile_language'));
+		$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
 		$script = '<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() { document.body.addEventListener("click", function(event) { if (event.target.matches(".comment-reply-link, #cancel-comment-reply-link")) { turnstile.render("#cf-turnstile-c-' . $unique_id . '"); } }); });</script>';
 		if(!$language) { $language = 'auto'; }
 		$submit_before = '';
 		$submit_after = '';
 		$callback = '';
 		if(get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
-		$submit_before .= '<div id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-retry="auto" data-retry-interval="1000"></div>';
+		$submit_before .= '<div id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-retry="auto" data-retry-interval="1000"></div>';
 		if(get_option('cfturnstile_disable_button')) {
 			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
 			$submit_after .= "</div>";
