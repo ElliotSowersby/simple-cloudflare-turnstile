@@ -9,7 +9,7 @@ if(get_option('cfturnstile_gravity')) {
   add_shortcode('gravity-simple-turnstile', 'cfturnstile_gravity_shortcode');
   function cfturnstile_gravity_shortcode($atts) {
   	ob_start();
-    $unique_id = mt_rand();
+    $unique_id = wp_rand();
     echo '</div><div style="margin-top: 10px; margin-bottom: -10px; padding-bottom: 0;">';
   	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $atts['id'], '-gf-' . $atts['id']);
     echo "</div><div>";

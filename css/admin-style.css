@@ -1,19 +1,13 @@
 .sct-wrap {
   padding: 10px;
-  max-width: 1000px;
-}
-
-.sct-integrations {
-  padding: 0 20px;
-  background-color: #f9f9f9;
-  border-radius: 20px;
+  max-width: 720px;
 }
 
 .sct-accordion {
   display: block;
   margin: 20px 0;
   padding: 16px;
-  background-color: #ededed;
+  background-color: #fff;
   color: #333;
   cursor: pointer;
   width: 100%;
@@ -24,9 +18,9 @@
   font-size: 16px;
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
-  border-radius: 6px;
+  border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 440px;
+  max-width: 480px;
 }
 
 .sct-active,
@@ -36,14 +30,19 @@
 }
 
 .sct-panel {
-  margin-top: -16px;
+  margin-top: -20px;
   padding: 20px;
   background-color: white;
   display: none;
   overflow: hidden;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: calc(440px - 40px);
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+  max-width: calc(480px - 40px);
+}
+
+.sct-panel tr:not(:last-child) {
+    border-bottom: 1px solid #f3f3f3;
 }
 
 .sct-accordion:after {
@@ -96,6 +95,15 @@
   width: 15px;
 }
 
+.sct-admin-promo {
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 70px;
+  max-width: calc(480px - 40px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .sct-wrap input[type="text"] {
   padding: 5px 10px;
   border-radius: 8px;
@@ -142,4 +150,13 @@
   padding: 2px 8px;
   min-width: 150px !important;
   max-width: 200px;
+}
+
+.cfturnstile-settings span.dashicons.dashicons-yes-alt {
+  height: 28px;
+  width: 28px;
+  font-size: 28px;
+  display: inline-block;
+  margin-top: -2px;
+  margin-left: -5px;
 }

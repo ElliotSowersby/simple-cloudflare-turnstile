@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Get turnstile field: Ultimate Member
 if(get_option('cfturnstile_login')) { add_action('mepr-login-form-before-submit','cfturnstile_field_mepr'); }
 if(get_option('cfturnstile_mepr_register')) { add_action('mepr-checkout-before-submit','cfturnstile_field_mepr'); }
-function cfturnstile_field_mepr() { cfturnstile_field_show('.mepr-submit', 'turnstileMEPRCallback', 'memberpress', '-' . mt_rand()); }
+function cfturnstile_field_mepr() { cfturnstile_field_show('.mepr-submit', 'turnstileMEPRCallback', 'memberpress', '-' . wp_rand()); }
 
 // Ultimate Member Check
 if(get_option('cfturnstile_mepr_register')) { add_action( 'mepr-validate-signup', 'cfturnstile_mepr_check', 20, 1 ); }

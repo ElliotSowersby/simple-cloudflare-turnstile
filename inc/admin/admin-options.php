@@ -35,7 +35,7 @@ function cfturnstile_admin_test() {
 			if (isset($check['success'])) $success = $check['success'];
 			if (isset($check['error_code'])) $error = $check['error_code'];
 			if ($success != true) {
-				echo '<br/><div style="padding: 20px 20px 25px 20px; background: #fff; border-radius: 20px; max-width: 500px; border: 2px solid #d5d5d5;">';
+				echo '<div style="padding: 20px 20px 25px 20px; margin: 20px 0 28px 0; background: #fff; border-radius: 20px; max-width: 500px; border: 2px solid #d5d5d5;">';
 				echo '<p style="font-weight: 600; font-size: 19px; margin-top: 0; margin-bottom: 0;">' . __('Almost done...', 'simple-cloudflare-turnstile') . '</p>';
 			}
 			if (!isset($_POST['cf-turnstile-response'])) {
@@ -63,7 +63,7 @@ function cfturnstile_admin_test() {
 				echo cfturnstile_field_show('', '', 'admin-test');
 				echo '</div><div style="margin-bottom: -20px;"></div>';
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-size: 15px; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">
-				' . __('TEST API RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
+				' . __('TEST RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
 				</button>';
 				echo '</div>';
 			}
@@ -85,7 +85,7 @@ function cfturnstile_settings_page() {
 		<div class="sct-admin-promo-top">
 
 			<p>
-				<?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
+				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" title="View our Turnstile plugin setup guide." target="_blank"><?php echo __('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
 					<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
 				</a>
 			</p>
@@ -248,7 +248,6 @@ function cfturnstile_settings_page() {
 					});
 				</script>
 
-
 				<tr valign="top">
 					<th scope="row">
 						<?php echo __('Disable Submit Button', 'simple-cloudflare-turnstile'); ?>
@@ -268,7 +267,7 @@ function cfturnstile_settings_page() {
 
 			</table>
 
-			<hr style="margin: 20px 0 25px 0;">
+			<hr style="margin: 20px 0 10px 0;">
 
 			<div class="sct-integrations">
 
@@ -319,7 +318,7 @@ function cfturnstile_settings_page() {
 								<br /><i style="font-size: 10px;"><?php echo __('Due to Jetpack limitations, this does NOT currently work with Jetpack comments form enabled.', 'simple-cloudflare-turnstile'); ?></i>
 							<?php } ?>
 							<?php if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { ?>
-								<i style="font-size: 12px;"><?php echo __('Compatible with wpDiscuz!', 'simple-cloudflare-turnstile'); ?> &#128077;</i>
+								<i style="font-size: 11px;"><?php echo __('Compatible with wpDiscuz!', 'simple-cloudflare-turnstile'); ?></i>
 							<?php } ?>
 						</td>
 					</tr>
@@ -1002,6 +1001,12 @@ function cfturnstile_settings_page() {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . __('wpDiscuz', 'simple-cloudflare-turnstile') . '</a>');
 			} ?>
 
+			<?php
+			// Output Custom Settings
+			do_action('cfturnstile-settings-section');
+			$not_installed = apply_filters('cfturnstile-settings-not-installed', $not_installed);
+			?>
+
 			<?php // List of plugins not installed
 			if (!empty($not_installed)) { ?>
 				<br />
@@ -1038,8 +1043,6 @@ function cfturnstile_settings_page() {
 
 			</div>
 
-			<br/>
-
 			<?php submit_button(); ?>
 
 			<div style="font-size: 10px; margin-top: 15px;">
@@ -1048,8 +1051,6 @@ function cfturnstile_settings_page() {
 			</div>
 			
 		</form>
-
-		<hr style="margin: 20px 0 10px 0;"><br />
 
 		<div class="sct-admin-promo">
 
@@ -1065,8 +1066,6 @@ function cfturnstile_settings_page() {
 			<p style="font-size: 15px;">
 				- <?php echo __('Want to support the developer?', 'simple-cloudflare-turnstile'); ?> <?php echo __('Feel free to', 'simple-cloudflare-turnstile'); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo __('Donate', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
 			</p>
-
-			<br />
 
 			<p style="font-size: 12px;">
 				<a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank"><?php echo __('Translate into your language', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>

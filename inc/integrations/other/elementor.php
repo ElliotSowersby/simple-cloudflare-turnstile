@@ -27,7 +27,7 @@ if(get_option('cfturnstile_elementor')) {
     // Start output buffering to capture the output of cfturnstile_field_show
     ob_start();
     $margin = "";
-    $unique_id = mt_rand();
+    $unique_id = wp_rand();
     if(get_option('cfturnstile_elementor_pos') == "after" || get_option('cfturnstile_elementor_pos') == "afterform") {
       $margin = " margin-top: 12px;";
     }

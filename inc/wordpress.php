@@ -6,10 +6,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Get turnstile field: WP
 function cfturnstile_field_login() {
 	if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
-	cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . mt_rand());
+	cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand());
 }
-function cfturnstile_field_register() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-register', '-' . mt_rand()); }
-function cfturnstile_field_reset() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-reset', '-' . mt_rand()); }
+function cfturnstile_field_register() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-register', '-' . wp_rand()); }
+function cfturnstile_field_reset() { cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-reset', '-' . wp_rand()); }
 
 // WP Login Check
 if(get_option('cfturnstile_login')) {
@@ -105,7 +105,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
   	// Create and display the turnstile field for comments.
   	function cfturnstile_field_comment( $submit_button, $args ) {
         do_action("cfturnstile_enqueue_scripts");
-		$unique_id = mt_rand();
+		$unique_id = wp_rand();
 		$key = esc_attr( get_option('cfturnstile_key') );
 		$theme = esc_attr( get_option('cfturnstile_theme') );
 		$language = esc_attr(get_option('cfturnstile_language'));

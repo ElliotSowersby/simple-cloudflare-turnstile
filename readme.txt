@@ -55,6 +55,7 @@ You can currently enable Turnstile on the following forms:
 * Ultimate Member Forms
 * WP-Members Forms
 * wpDiscuz Comments Form
+* WordPress Multisite
 
 ## What is Cloudflare Turnstile? ##
 
@@ -126,6 +127,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ===
+
+= Version 1.20.2 - 28th May 2023 =
+- Tweak: Made a few small syle changes to the settings page. Added setup guide link.
+- Tweak: Changed structure of integration files, to be more organised.
+- Tweak: Changed mt_rand() to wp_rand() in the plugin code.
 
 = Version 1.20.1 - 27th May 2023 =
 - Fix: Added extra sanitization to the new "Appearance Mode" option output.

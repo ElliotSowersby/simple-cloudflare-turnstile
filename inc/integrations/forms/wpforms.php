@@ -13,7 +13,7 @@ if(get_option('cfturnstile_wpforms')) {
   }
 	function cfturnstile_field_wpf_form($form_data) {
     if(!cfturnstile_form_disable($form_data['id'], 'cfturnstile_wpforms_disable')) {
-      $uniqueId = mt_rand();
+      $uniqueId = wp_rand();
       if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") { echo "<br/><br/>"; }
       cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback', 'wpforms-' . $form_data['id'], '-wpf-' . $uniqueId);
     }

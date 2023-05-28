@@ -10,7 +10,7 @@ if (get_option('cfturnstile_fluent')) {
 	function cfturnstile_field_fluent_form($item, $form)
 	{
 		if (!cfturnstile_form_disable($form->id, 'cfturnstile_fluent_disable')) {
-			$unique_id = mt_rand();
+			$unique_id = wp_rand();
 			cfturnstile_field_show('.fluentform .ff-btn-submit', 'turnstileFluentCallback', 'fluent-form-' . $form->id, '-fluent-' . $unique_id);
 		}
 	}

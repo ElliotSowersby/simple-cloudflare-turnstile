@@ -8,7 +8,7 @@ add_shortcode('cf7-simple-turnstile', 'cfturnstile_cf7_shortcode');
 add_filter('wpcf7_form_elements', 'do_shortcode');
 function cfturnstile_cf7_shortcode() {
 	ob_start();
-	$id = mt_rand();
+	$id = wp_rand();
 	echo '<div class="cf7-cf-turnstile" style="margin-top: -10px; margin-bottom: -15px;">';
 	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback', 'contact-form-7', '-cf7-' . $id);
 	?>
