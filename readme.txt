@@ -128,6 +128,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ===
 
+= Version 1.20.3 - 1st June 2023 =
+- Tweak: Small improvements and fixes for MemberPress integration.
+
 = Version 1.20.2 - 28th May 2023 =
 - Tweak: Made a few small syle changes to the settings page. Added setup guide link.
 - Tweak: Changed structure of integration files, to be more organised.

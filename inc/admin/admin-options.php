@@ -933,7 +933,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // MemberPress
-			if (cft_is_plugin_active('memberpress-courses/main.php')) { ?>
+			if (cft_is_plugin_active('memberpress/memberpress.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('MemberPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
