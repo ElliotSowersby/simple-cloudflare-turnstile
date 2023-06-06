@@ -10,10 +10,14 @@ if(get_option('cfturnstile_gravity')) {
   function cfturnstile_gravity_shortcode($atts) {
   	ob_start();
     $unique_id = wp_rand();
-    echo '</div><div style="margin-top: 10px; margin-bottom: -10px; padding-bottom: 0;">';
+    echo '<div class="gf-turnstile-container">';
   	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $atts['id'], '-gf-' . $atts['id']);
-    echo "</div><div>";
+    echo "</div>";
     ?>
+    <style>
+    .gf-turnstile-container { width: 100%; }
+    .gform_footer.top_label { display: flex; flex-wrap: wrap; }
+    </style>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
       document.querySelectorAll('#gform_<?php echo $atts['id']; ?>').forEach(function(el) {

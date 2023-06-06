@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.20.3
+ * Version: 1.20.4
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -124,9 +124,11 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
  * Enqueue admin scripts
  */
 function cfturnstile_admin_script_enqueue() {
-	wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
-	wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
-	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
+	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
+		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
+		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
+		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js", array(), '', 'true');
+	}
 }
 add_action('admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue');
 

@@ -70,6 +70,8 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	
 	$post = WPCF7_Submission::get_instance();
 
+	$_wpcf7 = !empty($_POST['_wpcf7']) ? absint($_POST['_wpcf7']) : 0;
+
 	if (!empty($post)) {
 
 		$data = $post->get_posted_data();

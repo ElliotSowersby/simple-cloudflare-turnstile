@@ -128,6 +128,11 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ===
 
+= Version 1.20.4 - 6th June 2023 =
+- Tweak: Admin scripts and styles will now only load on the plugin settings page.
+- Fix: Fixed issue with Gravity Forms multi-page forms not being able to submit with Turnstile enabled.
+- Fix: Fixed issue with Turnstile not working properly on Contact Form 7 forms when using the shortcode method (since 1.18.6).
+
 = Version 1.20.3 - 1st June 2023 =
 - Tweak: Small improvements and fixes for MemberPress integration.
 
