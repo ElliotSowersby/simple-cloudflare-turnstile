@@ -85,7 +85,7 @@ function cfturnstile_settings_page() {
 		<div class="sct-admin-promo-top">
 
 			<p>
-				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" title="View our Turnstile plugin setup guide." target="_blank"><?php echo __('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
+				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" title="View our Turnstile plugin setup guide." target="_blank"><?php echo __('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
 					<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
 				</a>
 			</p>
@@ -993,6 +993,75 @@ function cfturnstile_settings_page() {
 			<?php
 			} else {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-members/" target="_blank">' . __('WP-Members', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
+<?php // WP User Frontend
+			if (cft_is_plugin_active('wp-user-frontend/wpuf.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo __('WP User Frontend', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+					<script>
+						jQuery(document).ready(function(){
+							jQuery("input[name='cfturnstile_login']").change(function(){
+								if(jQuery("input[name='cfturnstile_login']").is(':checked')){
+									jQuery('#cfturnstile_wpuf_login').prop('checked', true);
+								} else {
+									jQuery('#cfturnstile_wpuf_login').prop('checked', false);
+								}
+							});
+						});
+						</script>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Login Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_wpuf_login' id='cfturnstile_wpuf_login' <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>
+							title='<?php echo __('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+						</tr>
+
+						<script>
+						jQuery(document).ready(function(){
+							jQuery("input[name='cfturnstile_reset']").change(function(){
+								if(jQuery("input[name='cfturnstile_reset']").is(':checked')){
+									jQuery('#cfturnstile_wpuf_reset').prop('checked', true);
+								} else {
+									jQuery('#cfturnstile_wpuf_reset').prop('checked', false);
+								}
+							});
+						});
+						</script>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Reset Password Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_wpuf_reset' id='cfturnstile_wpuf_reset' <?php if (get_option('cfturnstile_reset')) { ?>checked<?php } ?>
+							title='<?php echo __('Edit via "WordPress Reset Password" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Register Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_wpuf_register" <?php if (get_option('cfturnstile_wpuf_register')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('Post Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_wpuf_forms" <?php if (get_option('cfturnstile_wpuf_forms')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-user-frontend/" target="_blank">' . __('WP User Frontend', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 

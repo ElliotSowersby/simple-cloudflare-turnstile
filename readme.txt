@@ -54,6 +54,7 @@ You can currently enable Turnstile on the following forms:
 * MemberPress Forms
 * Ultimate Member Forms
 * WP-Members Forms
+* WP User Frontend Forms
 * wpDiscuz Comments Form
 * WordPress Multisite
 
@@ -74,7 +75,7 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 3. Finally, click the "TEST API RESPONSE" button to make sure the Turnstile API response is working OK.
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
 
 ## Is it free to use? ##
 
@@ -112,7 +113,7 @@ Currently available in <a href="https://translate.wordpress.org/projects/wp-plug
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
 
 https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
@@ -127,6 +128,9 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 7. Example Settings Page
 
 == Changelog ===
+
+= Version 1.21.0 - 21st June 2023 =
+- New: Added integration with the "WP User Frontend" plugin.
 
 = Version 1.20.4 - 6th June 2023 =
 - Tweak: Admin scripts and styles will now only load on the plugin settings page.

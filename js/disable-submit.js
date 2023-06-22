@@ -120,7 +120,14 @@ function turnstileUMCallback() {
         el.style.opacity = '1';
     });
 }
-/* Ultimate Member */
+/* WP User Frontend */
+function turnstileWPUFCallback() {
+    document.querySelectorAll('.wpuf-form input[type="submit"]').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
+/* MemberPress */
 function turnstileMEPRCallback() {
     document.querySelectorAll('.mepr-submit').forEach(function(el) {
         el.style.pointerEvents = 'auto';

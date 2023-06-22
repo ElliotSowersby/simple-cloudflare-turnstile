@@ -62,6 +62,8 @@ function cfturnstile_settings_list() {
         'cfturnstile_um_password',
         'cfturnstile_mepr_login',
         'cfturnstile_mepr_register',
+        'cfturnstile_wpuf_register',
+        'cfturnstile_wpuf_forms',
         'cfturnstile_bbpress_create',
         'cfturnstile_bbpress_reply',
         'cfturnstile_bbpress_guest_only',
