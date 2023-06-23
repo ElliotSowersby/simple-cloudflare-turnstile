@@ -129,6 +129,10 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 == Changelog ===
 
+= Version 1.21.1 - 23rd June 2023 =
+- Tweak: The jQuery for AJAX comments forms support will now only load if needed, or the new option "AJAX comments form?" is enabled.
+- Fix: Fixed issue with BBPress new topic button staying disabled with the "Disable Submit Button" option enabled.
+
 = Version 1.21.0 - 21st June 2023 =
 - New: Added integration with the "WP User Frontend" plugin.
 

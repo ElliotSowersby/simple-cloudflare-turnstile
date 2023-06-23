@@ -310,7 +310,16 @@ function cfturnstile_settings_page() {
 
 					<tr valign="top">
 						<th scope="row">
-							<?php echo __('WordPress Comment', 'simple-cloudflare-turnstile'); ?>
+							<?php echo __('WordPress Comment', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_comments" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
+							<span id="cfturnstile_ajax_comments_option" style="display: none;" title="<?php echo __('Enable this if you are using an AJAX based comments form plugin or theme.', 'simple-cloudflare-turnstile'); ?>">
+							<br/><br/>
+								<label style="float: left; margin: -5px 10px 0px 0; font-weight: 600; font-size: 10px;" for="cfturnstile_ajax_comments"><?php echo __('AJAX comments form?', 'simple-cloudflare-turnstile'); ?></label>
+								<input style="float: left; transform: scale(0.75); margin-top: -7px; margin-left: -5px;"
+								type="checkbox" name="cfturnstile_ajax_comments"
+								<?php if(!cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') && !cft_is_plugin_active('wp-ajaxify-comments/wp-ajaxify-comments.php')) { ?>
+								<?php if (get_option('cfturnstile_ajax_comments')) { ?>checked<?php } ?>>
+								<?php } else { ?>checked disabled<?php } ?>
+							</span>
 						</th>
 						<td>
 							<input type="checkbox" name="cfturnstile_comment" <?php if (get_option('cfturnstile_comment')) { ?>checked<?php } ?>>
@@ -322,6 +331,14 @@ function cfturnstile_settings_page() {
 							<?php } ?>
 						</td>
 					</tr>
+					<script>
+						jQuery(document).ready(function() {
+							jQuery('.cfturnstile_toggle_comments').click(function(e) {
+								e.preventDefault();
+								jQuery('#cfturnstile_ajax_comments_option').toggle();
+							});
+						});
+					</script>
 
 				</table>
 
@@ -335,6 +352,27 @@ function cfturnstile_settings_page() {
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('WooCommerce Login', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_woo_login" <?php if (get_option('cfturnstile_woo_login')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('WooCommerce Register', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_woo_register" <?php if (get_option('cfturnstile_woo_register')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo __('WooCommerce Reset Password', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_woo_reset" <?php if (get_option('cfturnstile_woo_reset')) { ?>checked<?php } ?>></td>
+						</tr>
 
 						<tr valign="top">
 							<th scope="row">
@@ -390,27 +428,6 @@ function cfturnstile_settings_page() {
 								<?php echo __('WooCommerce Pay for Order', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_checkout_pay" <?php if (get_option('cfturnstile_woo_checkout_pay')) { ?>checked<?php } ?>></td>
-						</tr>
-
-						<tr valign="top">
-							<th scope="row">
-								<?php echo __('WooCommerce Login', 'simple-cloudflare-turnstile'); ?>
-							</th>
-							<td><input type="checkbox" name="cfturnstile_woo_login" <?php if (get_option('cfturnstile_woo_login')) { ?>checked<?php } ?>></td>
-						</tr>
-
-						<tr valign="top">
-							<th scope="row">
-								<?php echo __('WooCommerce Register', 'simple-cloudflare-turnstile'); ?>
-							</th>
-							<td><input type="checkbox" name="cfturnstile_woo_register" <?php if (get_option('cfturnstile_woo_register')) { ?>checked<?php } ?>></td>
-						</tr>
-
-						<tr valign="top">
-							<th scope="row">
-								<?php echo __('WooCommerce Reset Password', 'simple-cloudflare-turnstile'); ?>
-							</th>
-							<td><input type="checkbox" name="cfturnstile_woo_reset" <?php if (get_option('cfturnstile_woo_reset')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>

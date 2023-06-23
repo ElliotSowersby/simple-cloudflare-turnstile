@@ -134,3 +134,10 @@ function turnstileMEPRCallback() {
         el.style.opacity = '1';
     });
 }
+/* BBPress */
+function turnstileBBPressCreateCallback() {
+    document.querySelectorAll('#bbp_topic_submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}

@@ -99,7 +99,6 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 			wp_print_scripts('cfturnstile');
 			wp_print_styles('cfturnstile-css');
 		}
-		cfturnstile_force_render();
 	}
   	add_action('comment_form_submit_button','cfturnstile_field_comment', 100, 2);
   	// Create and display the turnstile field for comments.
@@ -110,7 +109,6 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		$theme = esc_attr( get_option('cfturnstile_theme') );
 		$language = esc_attr(get_option('cfturnstile_language'));
 		$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
-		$script = '<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() { document.body.addEventListener("click", function(event) { if (event.target.matches(".comment-reply-link, #cancel-comment-reply-link")) { turnstile.render("#cf-turnstile-c-' . $unique_id . '"); } }); });</script>';
 		if(!$language) { $language = 'auto'; }
 		$submit_before = '';
 		$submit_after = '';
@@ -123,9 +121,13 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		}
 		$submit_after .= cfturnstile_force_render("-c-" . $unique_id);
 		$submit_after .= do_action("cfturnstile_after_field", $unique_id);
-		// if ajax comments are enabled, we need to re-render the turnstile after the comment is submitted
-		$submit_after .= '<script type="text/javascript">jQuery(document).ajaxComplete(function() { setTimeout(function() { turnstile.render("#cf-turnstile-c-'.$unique_id.'"); }, 1000); });</script>';
-		// return button
+		// Script to render turnstile when clicking reply
+		$script = '<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() { document.body.addEventListener("click", function(event) { if (event.target.matches(".comment-reply-link, #cancel-comment-reply-link")) { turnstile.reset(".comment-form .cf-turnstile"); } }); });</script>';
+		// If ajax comments are enabled, we need to re-render the turnstile after the comment is submitted
+		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') || cft_is_plugin_active('wp-ajaxify-comments/wp-ajaxify-comments.php') || get_option('cfturnstile_ajax_comments')) {
+			$script .= '<script type="text/javascript">jQuery(document).ajaxComplete(function() { setTimeout(function() { turnstile.render("#cf-turnstile-c-'.$unique_id.'"); }, 1000); });</script>';
+		}
+		// Return button
 		return $submit_before . $submit_button . $submit_after . $script;
   	}
   	// Comment Validation

@@ -27,6 +27,7 @@ function cfturnstile_settings_list() {
         'cfturnstile_register',
         'cfturnstile_reset',
         'cfturnstile_comment',
+        'cfturnstile_ajax_comments',
         'cfturnstile_woo_checkout',
         'cfturnstile_selected_payment_methods',
         'cfturnstile_guest_only',
