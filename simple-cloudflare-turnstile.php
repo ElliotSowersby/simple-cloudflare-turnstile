@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.21.1
+ * Version: 1.21.2
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.8.0
+ * WC tested up to: 7.8.1
  **/
 
 // Include Admin Files
@@ -107,7 +107,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	data-retry="auto" data-retry-interval="1000"
 	data-action="<?php echo sanitize_text_field($form_name); ?>"
 	data-appearance="<?php echo sanitize_text_field($appearance); ?>"
-	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } else { ?>margin-left: -2px;<?php } ?>"></div>
+	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } ?>"></div>
 	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
 	<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 	<?php } ?>
@@ -200,6 +200,17 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		if ('blocksy' === $current_theme->get('TextDomain')) { wp_enqueue_script('cfturnstile-blocksy-js', plugins_url('/js/integrations/blocksy.js', __FILE__), array(), '1.0', false); }
 	}
 
+	/**
+	 * Add data-cfasync="false" to Turnstile script tag
+	 */
+	function add_data_attribute($tag, $handle) {
+		if ('cfturnstile' === $handle) {
+			$tag = str_replace("src='", "data-cfasync='false' src='", $tag);
+		}
+		return $tag;
+	}
+	add_filter('script_loader_tag', 'add_data_attribute', 10, 2);
+	
 	/**
 	 * Force Render Turnstile (Explicitly). This only runs if it failed to load implicitly.
 	 */
@@ -361,7 +372,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	}
 
 	// Include Elementor Forms
-	if ( cft_is_plugin_active('elementor/elementor.php') && cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
+	if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
 		include(plugin_dir_path(__FILE__) . 'inc/integrations/other/elementor.php');
 	}
 	

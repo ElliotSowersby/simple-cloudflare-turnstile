@@ -774,10 +774,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Elementor Forms
-			if (
-				cft_is_plugin_active('elementor/elementor.php')
-				&& cft_is_plugin_active('elementor-pro/elementor-pro.php')
-			) { ?>
+			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) { ?>
 				<button type="button" class="sct-accordion"><?php echo __('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 

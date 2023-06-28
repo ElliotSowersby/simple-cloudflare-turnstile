@@ -85,14 +85,6 @@ Cloudflare Turnstile is also a completely free service.
 
 Please consider helping the ongoing development and support of this free plugin by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">making a donation</a>.
 
-## Data Privacy ##
-
-Cloudflare mentions that they "never harvest data for ad retargeting" and Turnstile "never looks for cookies (like a login cookie), or uses cookies to collect or store information of any kind".
-
-Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
-
-View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/">GDPR compliance</a> and <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">Data Processing Addendum</a> for more information how on they handle data.
-
 ## Plugin Languages ##
 
 Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">8 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
@@ -127,7 +119,62 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 6. Example Turnstile on a Contact Form
 7. Example Settings Page
 
+== Frequently Asked Questions ==
+
+= Do you have a setup guide? =
+
+Yes, you can view a setup guide for the plugin <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">here</a>.
+
+= Will there be more integrations be added in the future? =
+
+More integrations may be added in the future, based on user feedback. So if you have any suggestions please feel free to submit a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a>.
+
+= I need help, can I get support? =
+
+Please bare in mind, the <a href="https://simpleturnstile.com/">Simple Cloudflare Turnstile</a> plugin is 100% free, developed by RelyWP as a way to give back to the WordPress community.
+
+You can post a support thread on the WordPress.org forums to get help from the community, and we will also keep an eye on this quite frequently, providing support and answers where possible.
+
+Additionally, we can not guarantee that we’ll be able to answer every single support ticket.
+
+<a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">Click here to create a support topic.</a>
+
+The support forums are the only place you should submit a support ticket for 100% free support from us and the WordPress community.
+
+= Is the plugin free? =
+
+Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
+
+Cloudflare Turnstile is also a completely free service.
+
+Please consider helping the ongoing development and support of this free plugin by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">making a donation</a>.
+
+= Is this better for Data Privacy & GDPR? =
+
+Cloudflare mentions that they "never harvest data for ad retargeting" and Turnstile "never looks for cookies (like a login cookie), or uses cookies to collect or store information of any kind".
+
+Check out <a href="https://blog.cloudflare.com/turnstile-private-captcha-alternative/#ux-isn-t-the-only-big-problem-with-captcha-so-is-privacy">this article</a> which explains more about how Turnstile has less data collection, more privacy, and same security.
+
+View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/">GDPR compliance</a> and <a href="https://www.cloudflare.com/en-gb/cloudflare-customer-dpa/">Data Processing Addendum</a> for more information how on they handle data.
+
+= I see a 401 console error, is this a problem? =
+
+You can safely ignore the error. It is requesting a “Private Access Token (PAT) Open external link” that your device or browser does not support yet. <a href="https://developers.cloudflare.com/turnstile/frequently-asked-questions/#i-am-seeing-a-401-error-in-your-console-during-a-turnstile-security-check-is-this-a-problem">Click here</a> for more information.
+
+= The Turnstile Challenge is not appearing, what should I do? =
+
+Firstly, make sure you have completed the setup guide correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
+
+If you are still having issues, please post a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a> on the WordPress.org forums.
+
 == Changelog ===
+
+= Version 1.21.2 - 28th June 2023 =
+- Improvement: Small optimisation so that plugin options are no longer saved in the database for disabled integrations. Existing installs will need to re-save the plugin settings for this to apply.
+- Tweak: Added compatibility fix for Cloudflare "Rocket Loader" feature, which was causing the Turnstile challenge to appear in some cases. May remove this in the future, if Cloudflare fix the issue on their end.
+- Tweak: Remove "cfturnstile_tested" option on plugin uninstall.
+- Tweak: Removed the "-2px" left margin on Turnstile widget, since it is no longer needed.
+- Fix: Fixed an issue with WooCommerce login form.
 
 = Version 1.21.1 - 23rd June 2023 =
 - Tweak: The jQuery for AJAX comments forms support will now only load if needed, or the new option "AJAX comments form?" is enabled.

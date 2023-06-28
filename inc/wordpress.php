@@ -17,19 +17,16 @@ if(get_option('cfturnstile_login')) {
         add_action('login_form','cfturnstile_field_login');
         add_action('authenticate', 'cfturnstile_wp_login_check', 21, 1);
         function cfturnstile_wp_login_check($user) {
-            
-            // Start session
-            if (!session_id()) { session_start(); }
-
-            // Only run if $user exists
-            if(!isset($user->ID)) { return $user; }
 
             // Check skip
+			if(!isset($user->ID)) { return $user; }
             if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return $user; } // Skip XMLRPC
 			if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
-            if(isset($_POST['woocommerce-login-nonce']) && wp_verify_nonce(sanitize_text_field($_POST['woocommerce-login-nonce']), 'woocommerce-login')) { return $user; } // Skip Woo
             if(isset($_POST['edd_login_nonce']) && wp_verify_nonce( sanitize_text_field($_POST['edd_login_nonce']), 'edd-login-nonce') ) { return $user; } // Skip EDD
             if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
+
+            // Start session
+            if (!session_id()) { session_start(); }
 
             // Check if already validated
             if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
@@ -50,11 +47,11 @@ if(get_option('cfturnstile_login')) {
             
         }
     }
-}
-// Clear session on login
-add_action('wp_login', 'cfturnstile_wp_login_clear', 10, 2);
-function cfturnstile_wp_login_clear($user_login, $user) {
-	if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+	// Clear session on login
+	add_action('wp_login', 'cfturnstile_wp_login_clear', 10, 2);
+	function cfturnstile_wp_login_clear($user_login, $user) {
+		if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+	}
 }
 
 // WP Register Check

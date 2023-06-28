@@ -15,6 +15,7 @@ if (get_option('cfturnstile_uninstall_remove')) {
     foreach ($settings as $setting) {
         delete_option($setting);
     }
+    // Remove the "cfturnstile_uninstall_remove" option itself
+    delete_option('cfturnstile_tested');
+    delete_option('cfturnstile_uninstall_remove');
 }
-// Remove the "cfturnstile_uninstall_remove" option itself
-delete_option('cfturnstile_uninstall_remove');
