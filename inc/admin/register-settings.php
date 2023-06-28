@@ -129,7 +129,7 @@ function cfturnstile_settings_list($all = false) {
         }
     }
 
-    $settings[] = 'cfturnstile_uninstall_remove';
+    $settings[] = 'cfturnstile_uninstall_remove'; // Always last
 
     return $settings;
 }

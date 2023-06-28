@@ -1129,6 +1129,7 @@ function cfturnstile_settings_page() {
 			<?php submit_button(); ?>
 
 			<div style="font-size: 10px; margin-top: 15px;">
+				<!-- Delete Options on Uninstall (Always keep this option last) -->
 				<input type="checkbox" name="cfturnstile_uninstall_remove" <?php if (get_option('cfturnstile_uninstall_remove')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
 				<?php echo __('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
 			</div>
