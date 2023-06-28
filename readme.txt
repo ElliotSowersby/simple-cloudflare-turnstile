@@ -169,6 +169,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 == Changelog ===
 
+= Version 1.21.3 - 28th June 2023 =
+- Fix: Fixed the "cfturnstile_uninstall_remove" option no longer saving since last update, and a PHP error when it's enabled and deleting the plugin.
+
 = Version 1.21.2 - 28th June 2023 =
 - Improvement: Small optimisation so that plugin options are no longer saved in the database for disabled integrations. Existing installs will need to re-save the plugin settings for this to apply.
 - Tweak: Added compatibility fix for Cloudflare "Rocket Loader" feature, which was causing the Turnstile challenge to appear in some cases. May remove this in the future, if Cloudflare fix the issue on their end.

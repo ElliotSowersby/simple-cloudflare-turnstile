@@ -17,13 +17,14 @@ add_action('admin_init', 'cfturnstile_register_settings');
 /*
 * Delete inactive settings
 */
-function cfturnstile_delete_inactive_settings() {
+function cfturnstile_delete_inactive_settings($value) {
     $all_settings = cfturnstile_settings_list(true);
     $active_settings = cfturnstile_settings_list();
     $inactive_settings = array_diff($all_settings, $active_settings);
     foreach ($inactive_settings as $setting) {
         delete_option($setting);
     }
+    return $value;
 }
 add_action('sanitize_option_cfturnstile_uninstall_remove', 'cfturnstile_delete_inactive_settings');
 
@@ -131,4 +132,35 @@ function cfturnstile_settings_list($all = false) {
     $settings[] = 'cfturnstile_uninstall_remove';
 
     return $settings;
+}
+
+/**
+ * Custom "is_plugin_active" function.
+ *
+ * @param string $plugin
+ * @return bool
+ */
+if ( !function_exists( 'cft_is_plugin_active' ) ) {
+	function cft_is_plugin_active( $plugin ) {
+		return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'cft_is_plugin_active_for_network' ) && cft_is_plugin_active_for_network( $plugin ) ) );
+	}
+}
+
+/**
+ * Custom "is_plugin_active_for_network" function.
+ *
+ * @param string $plugin
+ * @return bool
+ */
+if ( !function_exists( 'cft_is_plugin_active_for_network' ) ) {
+	function cft_is_plugin_active_for_network( $plugin ) {
+		if ( !is_multisite() ) {
+			return false;
+		}
+		$plugins = get_site_option( 'active_sitewide_plugins' );
+		if ( isset( $plugins[ $plugin ] ) ) {
+			return true;
+		}
+		return false;
+	}
 }
