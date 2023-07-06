@@ -111,13 +111,12 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		$submit_after = '';
 		$callback = '';
 		if(get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
-		$submit_before .= '<div id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-retry="auto" data-retry-interval="1000"></div>';
+		$submit_before .= '<span id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-retry="auto" data-retry-interval="1000"></span><br/>';
 		if(get_option('cfturnstile_disable_button')) {
-			$submit_before .= '<div class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
-			$submit_after .= "</div>";
+			$submit_before .= '<span class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
+			$submit_after .= "</span>";
 		}
 		$submit_after .= cfturnstile_force_render("-c-" . $unique_id);
-		$submit_after .= do_action("cfturnstile_after_field", $unique_id);
 		// Script to render turnstile when clicking reply
 		$script = '<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() { document.body.addEventListener("click", function(event) { if (event.target.matches(".comment-reply-link, #cancel-comment-reply-link")) { turnstile.reset(".comment-form .cf-turnstile"); } }); });</script>';
 		// If ajax comments are enabled, we need to re-render the turnstile after the comment is submitted

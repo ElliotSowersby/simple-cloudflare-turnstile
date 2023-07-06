@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.21.3
+ * Version: 1.22.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.8.1
+ * WC tested up to: 7.8.2
  **/
 
 // Include Admin Files
@@ -96,7 +96,7 @@ function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js", array(), '', 'true');
+		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
 	}
 }
 add_action('admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue');
@@ -158,7 +158,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	function cfturnstile_script_enqueue() {
 		$current_theme = wp_get_theme();
 		/* Turnstile */
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js", array(), null, 'true');
+		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, 'true');
 		/* Disable Button */
 		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', false); }
 		/* WooCommerce */
@@ -188,7 +188,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		$unique_id = sanitize_text_field($unique_id);
 		if($unique_id) {
 		?>
-		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&e.innerHTML.length<=1&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),125)}));</script>
+		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),50)}));</script>
 		<?php
 		}
 	}

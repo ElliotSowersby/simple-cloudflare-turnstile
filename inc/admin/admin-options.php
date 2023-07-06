@@ -60,7 +60,7 @@ function cfturnstile_admin_test() {
 			}
 			if ($success != true) {
 				echo '<div style="margin-left: 15px;">';
-				echo cfturnstile_field_show('', '', 'admin-test');
+				echo cfturnstile_field_show('', '', 'admin-test', 'admin-test');
 				echo '</div><div style="margin-bottom: -20px;"></div>';
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-size: 15px; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">
 				' . __('TEST RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
@@ -1129,6 +1129,7 @@ function cfturnstile_settings_page() {
 			<?php submit_button(); ?>
 
 			<div style="font-size: 10px; margin-top: 15px;">
+				<!-- Delete Options on Uninstall (Always keep this option last) -->
 				<input type="checkbox" name="cfturnstile_uninstall_remove" <?php if (get_option('cfturnstile_uninstall_remove')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
 				<?php echo __('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
 			</div>

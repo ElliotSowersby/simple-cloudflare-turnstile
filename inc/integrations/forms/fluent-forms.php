@@ -6,7 +6,12 @@ if (!defined('ABSPATH')) {
 if (get_option('cfturnstile_fluent')) {
 
 	// Get turnstile field: Fluent Forms
-	add_action('fluentform_render_item_submit_button', 'cfturnstile_field_fluent_form', 10, 2);
+	if(has_action('fluentform/render_item_submit_button')) {
+		add_action('fluentform/render_item_submit_button', 'cfturnstile_field_fluent_form', 10, 2);
+	} else {
+		// If newer hook is not available, fallback to the deprecated one
+		add_action('fluentform_render_item_submit_button', 'cfturnstile_field_fluent_form', 10, 2);
+	}
 	function cfturnstile_field_fluent_form($item, $form)
 	{
 		if (!cfturnstile_form_disable($form->id, 'cfturnstile_fluent_disable')) {

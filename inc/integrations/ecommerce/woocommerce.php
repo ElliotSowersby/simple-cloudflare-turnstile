@@ -4,13 +4,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Get turnstile field: Woo Login
-function cfturnstile_field_woo_login() { cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', 'woocommerce-login', '-woo-login'); }
+function cfturnstile_field_woo_login() {
+	$unique_id = wp_rand();
+	cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', 'woocommerce-login-' . $unique_id, '-woo-login-' . $unique_id);
+}
 
 // Get turnstile field: Woo Register
-function cfturnstile_field_woo_register() { cfturnstile_field_show('.woocommerce-form-register__submit', 'turnstileWooRegisterCallback', 'woocommerce-register', '-woo-register'); }
+function cfturnstile_field_woo_register() {
+	$unique_id = wp_rand();
+	cfturnstile_field_show('.woocommerce-form-register__submit', 'turnstileWooRegisterCallback', 'woocommerce-register-' . $unique_id, '-woo-register-' . $unique_id);
+}
 
 // Get turnstile field: Woo Reset
-function cfturnstile_field_woo_reset() { cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset', '-woo-reset'); }
+function cfturnstile_field_woo_reset() { cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset-' . $unique_id, '-woo-reset-' . $unique_id); }
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {

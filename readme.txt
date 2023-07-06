@@ -56,7 +56,8 @@ You can currently enable Turnstile on the following forms:
 * WP-Members Forms
 * WP User Frontend Forms
 * wpDiscuz Comments Form
-* WordPress Multisite
+
+This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
 ## What is Cloudflare Turnstile? ##
 
@@ -131,11 +132,9 @@ More integrations may be added in the future, based on user feedback. So if you 
 
 = I need help, can I get support? =
 
-Please bare in mind, the <a href="https://simpleturnstile.com/">Simple Cloudflare Turnstile</a> plugin is 100% free, developed by RelyWP as a way to give back to the WordPress community.
+Please bare in mind, the <a href="https://simpleturnstile.com/">Simple Cloudflare Turnstile</a> plugin is 100% free, developed as a way to give back to the WordPress community.
 
-You can post a support thread on the WordPress.org forums to get help from the community, and we will also keep an eye on this quite frequently, providing support and answers where possible.
-
-Additionally, we can not guarantee that we’ll be able to answer every single support ticket.
+You can post a support thread on the WordPress.org forums to get help from the community, and we will also keep an eye on this quite frequently, providing support and answers where possible. However, we can not guarantee an answer every single support ticket.
 
 <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">Click here to create a support topic.</a>
 
@@ -163,11 +162,16 @@ You can safely ignore the error. It is requesting a “Private Access Token (PAT
 
 = The Turnstile Challenge is not appearing, what should I do? =
 
-Firstly, make sure you have completed the setup guide correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
+Firstly, make sure you have completed the <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a> correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
 
 If you are still having issues, please post a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a> on the WordPress.org forums.
 
 == Changelog ===
+
+= Version 1.22.0 - 6th July 2023 =
+- Tweak: Updated Turnstile to always load explicitly (instead of implicitly) in all instances. This helps prevent certain potential conflict issues, for example with performance plugins.
+- Fix: Fixed an issue with Frominator forms, where the Turnstile challenge stopped working if there was an error on the form after submitting once.
+- Fix: Fixed a PHP error with WP Forms, since a newer version of the WP Forms plugin.
 
 = Version 1.21.3 - 28th June 2023 =
 - Fix: Fixed the "cfturnstile_uninstall_remove" option no longer saving since last update, and a PHP error when it's enabled and deleting the plugin.

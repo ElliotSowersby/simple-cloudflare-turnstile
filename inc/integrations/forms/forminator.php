@@ -15,7 +15,7 @@ if(get_option('cfturnstile_forminator')) {
 
             // if cfturnstile script doesnt exist, enqueue it
             if(!wp_script_is('cfturnstile', 'enqueued')) {
-                wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback", array(), '', 'true');
+                wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
                 wp_print_scripts('cfturnstile');
                 echo "<style>#cf-turnstile-fmntr-".$form_id." { margin-left: 0px !important; }</style>";
             }
@@ -27,10 +27,8 @@ if(get_option('cfturnstile_forminator')) {
             jQuery(document).ajaxComplete(function() {
                 if (document.getElementById('cf-turnstile-fmntr-<?php echo $form_id; ?>')) {
                     setTimeout(function() {
-                        if(jQuery('#cf-turnstile-fmntr-<?php echo $form_id; ?>').is(':empty')) {
-                            turnstile.render('#cf-turnstile-fmntr-<?php echo $form_id; ?>');
-                        }
-                    }, 1000);
+                        turnstile.render('#cf-turnstile-fmntr-<?php echo $form_id; ?>');
+                    }, 100);
                 }
             });
             </script>
