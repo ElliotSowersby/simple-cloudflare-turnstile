@@ -99,13 +99,6 @@ function turnstileFormidableCallback() {
         el.style.opacity = '1';
     });
 }
-/* Forminator Forms */
-function turnstileForminatorCallback() {
-    document.querySelectorAll('.forminator-button-submit').forEach(function(el) {
-        el.style.pointerEvents = 'auto';
-        el.style.opacity = '1';
-    });
-}
 /* Gravity Forms */
 function turnstileGravityCallback() {
     document.querySelectorAll('.gform_button').forEach(function(el) {

@@ -16,7 +16,10 @@ function cfturnstile_field_woo_register() {
 }
 
 // Get turnstile field: Woo Reset
-function cfturnstile_field_woo_reset() { cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset-' . $unique_id, '-woo-reset-' . $unique_id); }
+function cfturnstile_field_woo_reset() {
+	$unique_id = wp_rand();
+	cfturnstile_field_show('.woocommerce-ResetPassword .button', 'turnstileWooResetCallback', 'woocommerce-reset-' . $unique_id, '-woo-reset-' . $unique_id);
+}
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {

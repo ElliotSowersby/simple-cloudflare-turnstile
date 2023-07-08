@@ -127,7 +127,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		return $submit_before . $submit_button . $submit_after . $script;
   	}
   	// Comment Validation
-  	add_action('preprocess_comment','cfturnstile_wp_comment_check', 10, 1);
+  	add_action('pre_comment_on_post','cfturnstile_wp_comment_check', 10, 1);
   	function cfturnstile_wp_comment_check($commentdata) {
 		if(is_admin()) { return $commentdata; }
 		if(!empty($_POST)) {

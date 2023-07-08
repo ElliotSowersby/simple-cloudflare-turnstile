@@ -168,6 +168,11 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 == Changelog ===
 
+= Version 1.22.1 - 8th July 2023 =
+- Tweak: Changed the hook used for validation on Turnstile on the comments form, to an earlier hook, to prevent potential conflicts with other plugins.
+- Fix: Fixed an issue with the "Disable Submit Button" option on Forminator forms, when "Load for using AJAX" was enabled.
+- Fix: Fixed an error with WooCommerce reset password form since last update.
+
 = Version 1.22.0 - 6th July 2023 =
 - Tweak: Updated Turnstile to always load explicitly (instead of implicitly) in all instances. This helps prevent certain potential conflict issues, for example with performance plugins.
 - Fix: Fixed an issue with Frominator forms, where the Turnstile challenge stopped working if there was an error on the form after submitting once.
