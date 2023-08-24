@@ -169,6 +169,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 == Changelog ===
 
+= Version 1.23.1 - 24th August 2023 =
+- Fix: Fixed an issue with "Payment Methods to Skip" toggle on settings page.
+
 = Version 1.23.0 - 24th August 2023 =
 - New: Added "Whitelist Settings" section to the settings page, with options to whitelist logged in users, or certain IP addresses.
 - New: Added support/integration for the CheckoutWC plugin.

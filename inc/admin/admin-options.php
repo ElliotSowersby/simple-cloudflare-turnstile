@@ -452,8 +452,16 @@ function cfturnstile_settings_page() {
 							<br/>
 
 							<p style="font-size: 15px; font-weight: 600;">
-								<?php echo __('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?><br/>
+								<?php echo __('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_skip_methods" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
 							</p>
+							<script>
+								jQuery(document).ready(function() {
+									jQuery('.cfturnstile_toggle_skip_methods').click(function(e) {
+										e.preventDefault();
+										jQuery('#toggleContentSkipMethods').toggle();
+									});
+								});
+							</script>
 
 							<div id="toggleContentSkipMethods" style="display: none;"> <!-- Initially hidden -->
 							
@@ -479,19 +487,6 @@ function cfturnstile_settings_page() {
 								<?php } ?>
 
 							</div>
-
-							<script type="text/javascript">
-								document.getElementById("toggleButtonSkipMethods").addEventListener("click", function() {
-									var content = document.getElementById("toggleContentSkipMethods");
-									if (content.style.display === "none") {
-										content.style.display = "block"; // Show content
-										this.className = "dashicons dashicons-arrow-up"; // Arrow up
-									} else {
-										content.style.display = "none"; // Hide content
-										this.className = "dashicons dashicons-arrow-down"; // Arrow down
-									}
-								});
-							</script>
 
 					<?php } ?>
 
