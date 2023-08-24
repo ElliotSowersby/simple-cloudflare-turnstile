@@ -26,16 +26,18 @@ if(get_option('cfturnstile_wpuf_register')) {
 }
 // Function to check register
 function cfturnstile_wpuf_check_register( $validation_error ) {
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
-        $check = cfturnstile_check();
-        $success = $check['success'];
-        if($success != true) {
-            $validation_error->add( 'cfturnstile_error', cfturnstile_failed_message() );
+    if(!cfturnstile_whitelisted()) {
+        if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
+            $check = cfturnstile_check();
+            $success = $check['success'];
+            if($success != true) {
+                $validation_error->add( 'cfturnstile_error', cfturnstile_failed_message() );
+            } else {
+                $nonce = wp_create_nonce( 'cfturnstile_login_check' );
+            }
         } else {
-            $nonce = wp_create_nonce( 'cfturnstile_login_check' );
+            $validation_error->add( 'cfturnstile_error', cfturnstile_failed_message() );
         }
-    } else {
-        $validation_error->add( 'cfturnstile_error', cfturnstile_failed_message() );
     }
     return $validation_error;
 }
@@ -49,16 +51,18 @@ if(get_option('cfturnstile_reset')) {
 }
 // Function to check forms
 function cfturnstile_wpuf_check_reset() {
-    if ( isset( $_POST['cf-turnstile-response'] ) ) {
-        $check = cfturnstile_check();
-        $success = $check['success'];
-        if($success != true) {
-            wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+    if(!cfturnstile_whitelisted()) {
+        if ( isset( $_POST['cf-turnstile-response'] ) ) {
+            $check = cfturnstile_check();
+            $success = $check['success'];
+            if($success != true) {
+                wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
+            } else {
+                $nonce = wp_create_nonce( 'cfturnstile_login_check' );
+            }
         } else {
-            $nonce = wp_create_nonce( 'cfturnstile_login_check' );
+            wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
         }
-    } else {
-        wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
     }
 }
 
@@ -71,15 +75,18 @@ if(get_option('cfturnstile_wpuf_forms')) {
 }
 // Function to check forms
 function cfturnstile_wpuf_check() {
-    if ( isset( $_POST['cf-turnstile-response'] ) ) {
-        $check = cfturnstile_check();
-        $success = $check['success'];
-        if($success != true) {
+    if(!cfturnstile_whitelisted()) {
+        if ( isset( $_POST['cf-turnstile-response'] ) ) {
+            $check = cfturnstile_check();
+            $success = $check['success'];
+            if($success != true) {
+                $errors = cfturnstile_failed_message();
+            }
+        } else {
             $errors = cfturnstile_failed_message();
         }
-    } else {
-        $errors = cfturnstile_failed_message();
     }
+    if(empty($errors)) { return; }
     return $errors;
 }
 // Function to add field

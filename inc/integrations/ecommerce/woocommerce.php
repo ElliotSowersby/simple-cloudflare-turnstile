@@ -5,8 +5,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Get turnstile field: Woo Login
 function cfturnstile_field_woo_login() {
-	$unique_id = wp_rand();
-	cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', 'woocommerce-login-' . $unique_id, '-woo-login-' . $unique_id);
+	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
+		$unique_id = wp_rand();
+		cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', 'woocommerce-login-' . $unique_id, '-woo-login-' . $unique_id);
+	}
 }
 
 // Get turnstile field: Woo Register
@@ -36,6 +38,7 @@ function cfturnstile_field_checkout() {
 
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
+	// WooCommerce Checkout
 	if(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
 		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
@@ -47,6 +50,9 @@ if(get_option('cfturnstile_woo_checkout')) {
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
 		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
 	}
+	// CheckoutWC
+	add_action('cfw_after_cart_summary_totals', 'cfturnstile_field_checkout', 10);
+	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
 		// Skip if Turnstile disabled for payment method
@@ -62,6 +68,14 @@ if(get_option('cfturnstile_woo_checkout')) {
 				}
 			}
 		}
+
+		// Start session
+		if (!session_id()) { session_start(); }
+		// Check if already validated
+		if(isset($_SESSION['cfturnstile_checkout_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_checkout_checked']), 'cfturnstile_checkout_check' )) {
+			return;
+		}
+
 		// Check if guest only enabled
 		$guest = esc_attr( get_option('cfturnstile_guest_only') );
 		// Check
@@ -70,9 +84,17 @@ if(get_option('cfturnstile_woo_checkout')) {
 			$success = $check['success'];
 			if($success != true) {
 				wc_add_notice( cfturnstile_failed_message(), 'error');
+			} else {
+				$nonce = wp_create_nonce( 'cfturnstile_checkout_check' );
+				$_SESSION['cfturnstile_checkout_checked'] = $nonce;
 			}
 		}
 	}
+}
+// On payment complete clear session
+add_action('woocommerce_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
+function cfturnstile_woo_checkout_clear($order_id) {
+	if(isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
 }
 
 // Woo Checkout Pay Order Check
@@ -123,6 +145,11 @@ if(get_option('cfturnstile_woo_login')) {
 				
 				return $user;
 				
+			}
+			// Clear session on login
+			add_action('wp_login', 'cfturnstile_woo_login_clear', 10, 2);
+			function cfturnstile_woo_login_clear($user_login, $user) {
+				if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
 			}
 		}
 	}

@@ -25,7 +25,7 @@ if(get_option('cfturnstile_gravity')) {
           if (document.getElementById('cf-turnstile-gf-<?php echo $atts['id']; ?>')) {
             setTimeout(function() {
               turnstile.render('#cf-turnstile-gf-<?php echo $atts['id']; ?>');
-            }, 7500);
+            }, 10000);
           }
         });
       });
@@ -54,8 +54,8 @@ if(get_option('cfturnstile_gravity')) {
 
   // Gravity Forms Check
 	add_action('gform_pre_submission', 'cfturnstile_gravity_check', 10, 1);
-	function cfturnstile_gravity_check($form){
-    if(!cfturnstile_form_disable($form['id'], 'cfturnstile_gravity_disable')) {
+	function cfturnstile_gravity_check($form) {
+    if(!cfturnstile_whitelisted() && !cfturnstile_form_disable($form['id'], 'cfturnstile_gravity_disable')) {
   		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
   			$check = cfturnstile_check();
   			$success = $check['success'];

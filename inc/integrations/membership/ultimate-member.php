@@ -13,13 +13,19 @@ function cfturnstile_field_um() { cfturnstile_field_show('#um-submit-btn', 'turn
 if(get_option('cfturnstile_um_login')) { add_action( 'um_submit_form_errors_hook_login', 'cfturnstile_um_check', 20, 1 ); }
 if(get_option('cfturnstile_um_register')) { add_action( 'um_submit_form_errors_hook__registration', 'cfturnstile_um_check', 20, 1 ); }
 if(get_option('cfturnstile_um_password')) { add_action( 'um_reset_password_errors_hook', 'cfturnstile_um_check', 20, 1 ); }
-function cfturnstile_um_check( $args ){
-  $mode = $args['mode'];
+function cfturnstile_um_check( $args ) {
+
   // Check if already validated
   if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
     return;
   }
 
+  // Whitelisted
+  if(cfturnstile_whitelisted()) {
+    return;
+  }
+
+  // Check
   if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
     $check = cfturnstile_check();
     $success = $check['success'];
@@ -32,6 +38,7 @@ function cfturnstile_um_check( $args ){
   } else {
     UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );
   }
+
 }
 
 // Get Error Message

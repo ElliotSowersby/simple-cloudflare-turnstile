@@ -41,18 +41,18 @@ if (get_option('cfturnstile_bbpress_reply')) {
 
 // Validate Function
 function cfturnstile_bbpress_register_check() {
-
-	$guest_only = get_option('cfturnstile_bbpress_guest_only');
-	if (!$guest_only || ($guest_only && !is_user_logged_in())) {
-
-		if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['cf-turnstile-response'])) {
-			$check = cfturnstile_check();
-			$success = $check['success'];
-			if ($success != true) {
+	if(!cfturnstile_whitelisted()) {
+		$guest_only = get_option('cfturnstile_bbpress_guest_only');
+		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
+			if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['cf-turnstile-response'])) {
+				$check = cfturnstile_check();
+				$success = $check['success'];
+				if ($success != true) {
+					bbp_add_error('bbp_throw_error', cfturnstile_failed_message());
+				}
+			} else {
 				bbp_add_error('bbp_throw_error', cfturnstile_failed_message());
 			}
-		} else {
-			bbp_add_error('bbp_throw_error', cfturnstile_failed_message());
 		}
 	}
 }

@@ -42,7 +42,7 @@ function cfturnstile_admin_test() {
 				echo '<p>'
 					. '<span style="color: red; font-weight: bold;">' . __('API keys have been updated. Please test the Turnstile API response below.', 'simple-cloudflare-turnstile') . '</span>'
 					. '<br/>'
-					. __('Turnstile will not be added to any login forms until the test is successfully complete.', 'simple-cloudflare-turnstile')
+					. __('Turnstile will not be added to any forms until the test is successfully complete.', 'simple-cloudflare-turnstile')
 					. '</p>';
 			} else {
 				if ($success == true) {
@@ -261,13 +261,39 @@ function cfturnstile_settings_page() {
 					<th scope="row"><?php echo __('Custom Error Message', 'simple-cloudflare-turnstile'); ?></th>
 					<td>
 						<input type="text" style="width: 240px;" name="cfturnstile_error_message" value="<?php echo sanitize_text_field(get_option('cfturnstile_error_message')); ?>" placeholder="<?php echo cfturnstile_failed_message(1); ?>" />
-						<br /><i style="font-size: 10px;"><?php echo __('Leave blank to use the default message (localized):', 'simple-cloudflare-turnstile') . ' "' . cfturnstile_failed_message(1) . '"'; ?></i>
+						<br /><i style="font-size: 10px;"><?php echo __('This message is shown if the form is submitted without successfully completing the Turnstile challenge. Leave blank to use the default message (localized):', 'simple-cloudflare-turnstile') . ' "' . cfturnstile_failed_message(1) . '"'; ?></i>
 					</td>
 				</tr>
-
+				
 			</table>
 
-			<hr style="margin: 20px 0 10px 0;">
+			<button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo __('Whitelist Settings', 'simple-cloudflare-turnstile'); ?></button>
+			<div class="sct-panel">
+
+				<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+					<tr valign="top">
+						<th scope="row">
+							<?php echo __('Logged In Users', 'simple-cloudflare-turnstile'); ?>
+						</th>
+						<td><input style="margin-top: 5px;" type="checkbox" name="cfturnstile_whitelist_users" <?php if (get_option('cfturnstile_whitelist_users')) { ?>checked<?php } ?>>
+							<i style="font-size: 10px;"><?php echo __('When enabled, logged in users will not see the Turnstile challenge.', 'simple-cloudflare-turnstile'); ?></i>
+						</td>
+					</tr>
+					
+					<tr valign="top">
+						<th scope="row"><?php echo __('IP Addresses', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<textarea style="width: 240px;" name="cfturnstile_whitelist_ips"><?php echo sanitize_textarea_field(get_option('cfturnstile_whitelist_ips')); ?></textarea>
+							<br /><i style="font-size: 10px;"><?php echo __('One per line. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
+						</td>
+					</tr>
+
+				</table>
+
+			</div>
+
+			<hr style="margin: 40px 0 10px 0;">
 
 			<div class="sct-integrations">
 
@@ -308,7 +334,7 @@ function cfturnstile_settings_page() {
 						<td><input type="checkbox" name="cfturnstile_reset" <?php if (get_option('cfturnstile_reset')) { ?>checked<?php } ?>></td>
 					</tr>
 
-					<tr valign="top">
+					<tr valign="top" style="border: 0;">
 						<th scope="row">
 							<?php echo __('WordPress Comment', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_comments" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
 							<span id="cfturnstile_ajax_comments_option" style="display: none;" title="<?php echo __('Enable this if you are using an AJAX based comments form plugin or theme.', 'simple-cloudflare-turnstile'); ?>">
@@ -381,13 +407,11 @@ function cfturnstile_settings_page() {
 								- <?php echo __('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
 								<br /><br />
 								- <?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?>
-								<br /><br />
-								- <?php echo __('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?><br/><i style="font-size: 10px;"><?php echo __("The Turnstile check will not be run for the selected payment methods. Useful for any 'Express Checkout' payment methods.", 'simple-cloudflare-turnstile'); ?></i>
 							</th>
 							<td>
-								<input type="checkbox" name="cfturnstile_woo_checkout" <?php if (get_option('cfturnstile_woo_checkout')) { ?>checked<?php } ?>>
+								<input style="margin-top: 5px;" type="checkbox" name="cfturnstile_woo_checkout" <?php if (get_option('cfturnstile_woo_checkout')) { ?>checked<?php } ?>>
 								<br /><br />
-								<input type="checkbox" name="cfturnstile_guest_only" <?php if (get_option('cfturnstile_guest_only')) { ?>checked<?php } ?>>
+								<input style="margin-top: 5px;" type="checkbox" name="cfturnstile_guest_only" <?php if (get_option('cfturnstile_guest_only')) { ?>checked<?php } ?>>
 								<br /><br />
 								<select name="cfturnstile_woo_checkout_pos">
 									<option value="beforepay" <?php if (!get_option('cfturnstile_woo_checkout_pos') || get_option('cfturnstile_woo_checkout_pos') == "beforepay") { ?>selected<?php } ?>>
@@ -406,24 +430,11 @@ function cfturnstile_settings_page() {
 										<?php esc_html_e('After Billing', 'simple-cloudflare-turnstile'); ?>
 									</option>
 								</select>
-								<br /><br />
-								<?php
-								$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
-								$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
-								if(!$selected_payment_methods) $selected_payment_methods = array();
-								?>
-								<select multiple name="cfturnstile_selected_payment_methods[]" style="margin-top: 10px; max-width: 200px;">
-									<?php foreach ( $available_gateways as $gateway ) : ?>
-										<option value="<?php echo esc_attr( $gateway->id ); ?>" <?php echo in_array( $gateway->id, $selected_payment_methods, true ) ? 'selected' : ''; ?>>
-											<?php echo esc_html( $gateway->get_title() ); ?>
-										</option>
-									<?php endforeach; ?>
-								</select>
 							</td>
 						</tr>
 						</tr>
 
-						<tr valign="top">
+						<tr valign="top" style="border-bottom: 1px solid #f3f3f3;">
 							<th scope="row">
 								<?php echo __('WooCommerce Pay for Order', 'simple-cloudflare-turnstile'); ?>
 							</th>
@@ -431,6 +442,60 @@ function cfturnstile_settings_page() {
 						</tr>
 
 					</table>
+
+					<?php if ( class_exists( 'WooCommerce' ) ) { ?>
+
+						<?php $available_gateways = WC()->payment_gateways->get_available_payment_gateways(); ?>
+
+						<?php if(!empty($available_gateways)) { ?>
+
+							<br/>
+
+							<p style="font-size: 15px; font-weight: 600;">
+								<?php echo __('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?><br/>
+							</p>
+
+							<div id="toggleContentSkipMethods" style="display: none;"> <!-- Initially hidden -->
+							
+								<i style="font-size: 10px;">
+									<?php echo __("If selected below, Turnstile check will not be run for that specific payment method.", 'simple-cloudflare-turnstile'); ?>
+									<br/>
+									<?php echo __("Useful for 'Express Checkout' payment methods compatibility.", 'simple-cloudflare-turnstile'); ?>
+								</i>
+
+								<?php
+								$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+								if(!$selected_payment_methods) $selected_payment_methods = array();
+								if(!empty($available_gateways)) { ?>
+								<div style="margin-top: 10px; max-width: 200px;">
+								<?php foreach ( $available_gateways as $gateway ) : ?>
+								<p>
+									<input type="checkbox" name="cfturnstile_selected_payment_methods[]" style="float: none; margin-top: 2px;"
+									value="<?php echo esc_attr( $gateway->id ); ?>" <?php echo in_array( $gateway->id, $selected_payment_methods, true ) ? 'checked' : ''; ?> >
+									<label><?php echo esc_html( $gateway->get_title() ); ?></label>
+								</p>
+								<?php endforeach; ?>
+								</div>
+								<?php } ?>
+
+							</div>
+
+							<script type="text/javascript">
+								document.getElementById("toggleButtonSkipMethods").addEventListener("click", function() {
+									var content = document.getElementById("toggleContentSkipMethods");
+									if (content.style.display === "none") {
+										content.style.display = "block"; // Show content
+										this.className = "dashicons dashicons-arrow-up"; // Arrow up
+									} else {
+										content.style.display = "none"; // Hide content
+										this.className = "dashicons dashicons-arrow-down"; // Arrow down
+									}
+								});
+							</script>
+
+					<?php } ?>
+
+				<?php } ?>
 
 				</div>
 			<?php

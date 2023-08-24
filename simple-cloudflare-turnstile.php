@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.22.1
+ * Version: 1.23.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 7.8.2
+ * WC tested up to: 8.0.2
  **/
 
 // Include Admin Files
@@ -59,34 +59,36 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  * @param string $callback
  */
 function cfturnstile_field_show($button_id = '', $callback = '', $form_name = '', $unique_id = '') {
-	do_action("cfturnstile_enqueue_scripts");
-	do_action("cfturnstile_before_field", $unique_id);
-	$key = esc_attr(get_option('cfturnstile_key'));
-	$theme = esc_attr(get_option('cfturnstile_theme'));
-	$language = esc_attr(get_option('cfturnstile_language'));
-	$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
-		if(!$language) { $language = 'auto'; }
-	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
-	?>
-	<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>"
-	class="cf-turnstile" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>"<?php } ?>
-	data-sitekey="<?php echo sanitize_text_field($key); ?>"
-	data-theme="<?php echo sanitize_text_field($theme); ?>"
-	data-language="<?php echo sanitize_text_field($language); ?>"
-	data-retry="auto" data-retry-interval="1000"
-	data-action="<?php echo sanitize_text_field($form_name); ?>"
-	data-appearance="<?php echo sanitize_text_field($appearance); ?>"
-	style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } ?>"></div>
-	<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
-	<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
-	<?php } ?>
-	<?php if($appearance == 'always') { ?>
-	<br/>
-	<?php } else { ?>
-	<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> iframe { margin-bottom: 15px; }</style>
-	<?php } ?>
-	<?php
-	do_action("cfturnstile_after_field", $unique_id);
+	if(!cfturnstile_whitelisted()) {
+		do_action("cfturnstile_enqueue_scripts");
+		do_action("cfturnstile_before_field", $unique_id);
+		$key = esc_attr(get_option('cfturnstile_key'));
+		$theme = esc_attr(get_option('cfturnstile_theme'));
+		$language = esc_attr(get_option('cfturnstile_language'));
+		$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
+			if(!$language) { $language = 'auto'; }
+		$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
+		?>
+		<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>"
+		class="cf-turnstile" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>"<?php } ?>
+		data-sitekey="<?php echo sanitize_text_field($key); ?>"
+		data-theme="<?php echo sanitize_text_field($theme); ?>"
+		data-language="<?php echo sanitize_text_field($language); ?>"
+		data-retry="auto" data-retry-interval="1000"
+		data-action="<?php echo sanitize_text_field($form_name); ?>"
+		data-appearance="<?php echo sanitize_text_field($appearance); ?>"
+		style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } ?>"></div>
+		<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
+		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
+		<?php } ?>
+		<?php if($appearance == 'always') { ?>
+		<br/>
+		<?php } else { ?>
+		<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> iframe { margin-bottom: 15px; }</style>
+		<?php } ?>
+		<?php
+		do_action("cfturnstile_after_field", $unique_id);
+	}
 }
 
 /**
@@ -96,7 +98,7 @@ function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
+		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', array('strategy' => 'defer'));
 	}
 }
 add_action('admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue');
@@ -148,6 +150,29 @@ function cfturnstile_error_message($code) {
 	}
 }
 
+/**
+ * Display error notice if Turnstile is not showing on forms
+ */
+add_action('admin_notices', 'cfturnstile_tested_notice');
+function cfturnstile_tested_notice() {
+	if(!isset($_GET['page']) || $_GET['page'] != 'cfturnstile') {
+		if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
+			// Get the option from the database
+			$cfturnstile_tested = get_option('cfturnstile_tested');
+			
+			// If the option is 'no', display the error notice
+			if ($cfturnstile_tested === 'no') {
+				echo '<div class="notice notice-error is-dismissible">';
+				echo sprintf(
+					__('<p>Cloudflare Turnstile is not currently showing on your forms. Please test the API response on the <a href="%s">settings page</a>.</p>', 'simple-cloudflare-turnstile'),
+					admin_url('options-general.php?page=cfturnstile')
+				);
+				echo '</div>';
+			}
+		}
+	}
+}
+
 if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
 
 	/**
@@ -158,11 +183,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	function cfturnstile_script_enqueue() {
 		$current_theme = wp_get_theme();
 		/* Turnstile */
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, 'true');
+		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, array('strategy' => 'defer'));
 		/* Disable Button */
-		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', false); }
+		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', array('strategy' => 'defer')); }
 		/* WooCommerce */
-		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', false); }
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', array('strategy' => 'defer')); }
 		/* WPDiscuz */
 		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
 		/* Blocksy */
@@ -203,6 +228,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 
 		$results = array();
 
+		if(cfturnstile_whitelisted()) {
+			$results['success'] = true;
+			return $results;
+		}
+
 		if (empty($postdata) && isset($_POST['cf-turnstile-response'])) {
 			$postdata = sanitize_text_field($_POST['cf-turnstile-response']);
 		}
@@ -232,6 +262,9 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 				if ($key == 'error-codes') {
 					foreach ($val as $key => $error_val) {
 						$results['error_code'] = $error_val;
+						if($error_val == 'invalid-input-secret') {
+							update_option('cfturnstile_tested', 'no'); // Disable if invalid secret
+						}
 					}
 				}
 			}
@@ -272,97 +305,105 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		return $thecontent;
 	}
 
-	// Performance Plugins Compatibility
-	if (cft_is_plugin_active('sg-cachepress/sg-cachepress.php') || cft_is_plugin_active('litespeed-cache/litespeed-cache.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/other/perf.php');
-	}
+	// Include Whitelist
+	include(plugin_dir_path(__FILE__) . 'inc/whitelist.php');
 
-	// Include WordPress
-	include(plugin_dir_path(__FILE__) . 'inc/wordpress.php');
+	// Include Integrations
+	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 
-	// Include WooCommerce
-	if (cft_is_plugin_active('woocommerce/woocommerce.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/woocommerce.php');
-	}
+		// Performance Plugins Compatibility
+		if (cft_is_plugin_active('sg-cachepress/sg-cachepress.php') || cft_is_plugin_active('litespeed-cache/litespeed-cache.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/other/perf.php');
+		}
+		
+		// Include WordPress
+		include(plugin_dir_path(__FILE__) . 'inc/wordpress.php');
 
-	// Include EDD
-	if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/edd.php');
-	}
+		// Include WooCommerce
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/woocommerce.php');
+		}
 
-	// Include MC4WP
-	if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/newsletters/mc4wp.php');
-	}
-	
-	// Include Contact Form 7
-	if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/contact-form-7.php');
-	}
+		// Include EDD
+		if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/edd.php');
+		}
 
-	// Include WPForms
-	if (cft_is_plugin_active('wpforms-lite/wpforms.php') || cft_is_plugin_active('wpforms/wpforms.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/wpforms.php');
-	}
+		// Include MC4WP
+		if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/newsletters/mc4wp.php');
+		}
+		
+		// Include Contact Form 7
+		if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/contact-form-7.php');
+		}
 
-	// Include Fluent Forms
-	if (cft_is_plugin_active('fluentform/fluentform.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/fluent-forms.php');
-	}
+		// Include WPForms
+		if (cft_is_plugin_active('wpforms-lite/wpforms.php') || cft_is_plugin_active('wpforms/wpforms.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/wpforms.php');
+		}
 
-	// Include Formidable Forms
-	if (cft_is_plugin_active('formidable/formidable.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/formidable.php');
-	}
+		// Include Fluent Forms
+		if (cft_is_plugin_active('fluentform/fluentform.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/fluent-forms.php');
+		}
 
-	// Include Forminator Forms
-	if (cft_is_plugin_active('forminator/forminator.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/forminator.php');
-	}
+		// Include Formidable Forms
+		if (cft_is_plugin_active('formidable/formidable.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/formidable.php');
+		}
 
-	// Include Gravity Forms
-	if (cft_is_plugin_active('gravityforms/gravityforms.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/gravity-forms.php');
-	}
+		// Include Forminator Forms
+		if (cft_is_plugin_active('forminator/forminator.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/forminator.php');
+		}
 
-	// Include Buddypress
-	if (cft_is_plugin_active('buddypress/bp-loader.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/community/buddypress.php');
-	}
+		// Include Gravity Forms
+		if (cft_is_plugin_active('gravityforms/gravityforms.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/gravity-forms.php');
+		}
 
-	// Include BBPress
-	if (cft_is_plugin_active('bbpress/bbpress.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/community/bbpress.php');
-	}
+		// Include Buddypress
+		if (cft_is_plugin_active('buddypress/bp-loader.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/community/buddypress.php');
+		}
 
-	// Include WPDiscuz
-	if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/community/wpdiscuz.php');
-	}
+		// Include BBPress
+		if (cft_is_plugin_active('bbpress/bbpress.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/community/bbpress.php');
+		}
 
-	// Include Elementor Forms
-	if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/other/elementor.php');
-	}
-	
-	// Include Ultimate Member
-	if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/ultimate-member.php');
-	}
+		// Include WPDiscuz
+		if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/community/wpdiscuz.php');
+		}
 
-	// Include MemberPress
-	if (cft_is_plugin_active('memberpress/memberpress.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/memberpress.php');
-	}
+		// Include Elementor Forms
+		if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/other/elementor.php');
+		}
+		
+		// Include Ultimate Member
+		if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/ultimate-member.php');
+		}
 
-	// Include WP-Members
-	if (cft_is_plugin_active('wp-members/wp-members.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/wp-members.php');
-	}
+		// Include MemberPress
+		if (cft_is_plugin_active('memberpress/memberpress.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/memberpress.php');
+		}
 
-	// Include WP User Frontend
-	if (cft_is_plugin_active('wp-user-frontend/wpuf.php')) {
-		include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/wpuf.php');
+		// Include WP-Members
+		if (cft_is_plugin_active('wp-members/wp-members.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/wp-members.php');
+		}
+
+		// Include WP User Frontend
+		if (cft_is_plugin_active('wp-user-frontend/wpuf.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/membership/wpuf.php');
+		}
+
 	}
 
 }

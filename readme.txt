@@ -3,7 +3,7 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.2.2
+Tested up to: 6.3.0
 Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -56,6 +56,7 @@ You can currently enable Turnstile on the following forms:
 * WP-Members Forms
 * WP User Frontend Forms
 * wpDiscuz Comments Form
+* CheckoutWC & Flux Checkout
 
 This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
@@ -168,6 +169,19 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 == Changelog ===
 
+= Version 1.23.0 - 24th August 2023 =
+- New: Added "Whitelist Settings" section to the settings page, with options to whitelist logged in users, or certain IP addresses.
+- New: Added support/integration for the CheckoutWC plugin.
+- Tweak: Turnstile will now be disabled on all forms until the "Test Response" is successfully completed on the settings page. An admin error message will now show if the keys are set but the test is not complete.
+- Tweak: If Turnstile returns error code "invalid-input-secret" at any point, it will automatically disable itself and requires a "Test Response" to be completed again in the settings page.
+- Tweak: Modified the "Payment Methods to Skip" option (for WooCommerce) information to be easier to understand, and now displayed as checkboxes instead of a multi-select field.
+- Tweak: Added a session to WooCommerce checkout, to ensure the Turnstile check is only run once during checkout.
+- Tweak: The scripts loaded by the plugin are now automatically defered, to help improve performance.
+- Fix: Fixed undefined array key "mode" error with Ultimate Member integration.
+- Fix: Fixed issue with Turnstile not working on Contact Form 7 in some cases.
+- Other: Tested with WordPress 6.3.0
+- Other: Tested with WooCommerce 8.0.2
+
 = Version 1.22.1 - 8th July 2023 =
 - Tweak: Changed the hook used for validation on Turnstile on the comments form, to an earlier hook, to prevent potential conflicts with other plugins.
 - Fix: Fixed an issue with the "Disable Submit Button" option on Forminator forms, when "Load for using AJAX" was enabled.
@@ -175,7 +189,7 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 = Version 1.22.0 - 6th July 2023 =
 - Tweak: Updated Turnstile to always load explicitly (instead of implicitly) in all instances. This helps prevent certain potential conflict issues, for example with performance plugins.
-- Fix: Fixed an issue with Frominator forms, where the Turnstile challenge stopped working if there was an error on the form after submitting once.
+- Fix: Fixed an issue with Forminator forms, where the Turnstile challenge stopped working if there was an error on the form after submitting once.
 - Fix: Fixed a PHP error with WP Forms, since a newer version of the WP Forms plugin.
 
 = Version 1.21.3 - 28th June 2023 =

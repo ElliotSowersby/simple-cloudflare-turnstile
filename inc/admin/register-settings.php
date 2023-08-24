@@ -49,6 +49,8 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_reset',
         'cfturnstile_comment',
         'cfturnstile_ajax_comments',
+        'cfturnstile_whitelist_users',
+        'cfturnstile_whitelist_ips',
     );
 
     $integrations = array(

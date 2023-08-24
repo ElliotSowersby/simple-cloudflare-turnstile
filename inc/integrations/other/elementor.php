@@ -31,7 +31,7 @@ if(get_option('cfturnstile_elementor')) {
     if(get_option('cfturnstile_elementor_pos') == "after" || get_option('cfturnstile_elementor_pos') == "afterform") {
       $margin = " margin-top: 12px;";
     }
-    echo "<div class='elementor-turnstile-field' style='width: 100%;".$margin."'>";
+    echo "<div class='elementor-turnstile-field' style='display: block;margin-top: 10px;width: 100%;".$margin."'>";
     cfturnstile_field_show('', 'turnstileElementorCallback', 'elementor-' . $unique_id, '-elementor-' . $unique_id);
     echo "</div><br/>";
     $recaptcha_field = ob_get_clean();
@@ -66,17 +66,12 @@ if(get_option('cfturnstile_elementor')) {
     <script>
     jQuery(document).ready(function() {
       jQuery(".elementor-form").on('submit', function() {
-        // Store the submitted form in a variable
         var submittedForm = jQuery(this);
         setTimeout(function() {
-          // Find the .cf-turnstile element within the submitted form
           var turnstileElement = submittedForm.find('.cf-turnstile');
-          // Check if the .cf-turnstile element exists
           if (turnstileElement.length > 0) {
-            // Generate a unique ID for the turnstile element
             var uniqueId = 'cf-turnstile-elementor-' + new Date().getTime();
             turnstileElement.attr('id', uniqueId);
-            // Reset only the .cf-turnstile element within the submitted form
             turnstile.reset('#' + uniqueId);
           }
         }, 2500);
@@ -92,19 +87,21 @@ if(get_option('cfturnstile_elementor')) {
   // Elementor Forms Check
   add_action('elementor_pro/forms/validation', 'cfturnstile_elementor_check', 10, 2);
   function cfturnstile_elementor_check($record, $ajax_handler){
-  	$error_message = cfturnstile_failed_message();
-    if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
-      $check = cfturnstile_check();
-      $success = $check['success'];
-      if($success != true) {
+    if(!cfturnstile_whitelisted()) {
+      $error_message = cfturnstile_failed_message();
+      if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
+        $check = cfturnstile_check();
+        $success = $check['success'];
+        if($success != true) {
+          $ajax_handler->add_error_message( $error_message );
+          $ajax_handler->add_error( '', '' );
+          $ajax_handler->is_success = false;
+        }
+      } else {
         $ajax_handler->add_error_message( $error_message );
         $ajax_handler->add_error( '', '' );
         $ajax_handler->is_success = false;
       }
-    } else {
-      $ajax_handler->add_error_message( $error_message );
-      $ajax_handler->add_error( '', '' );
-      $ajax_handler->is_success = false;
     }
   }
 

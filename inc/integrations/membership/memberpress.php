@@ -21,6 +21,12 @@ function cfturnstile_mepr_check( $errors ) {
     return $errors;
   }
 
+  // Whitelisted
+  if(cfturnstile_whitelisted()) {
+    return $errors;
+  }
+
+  // Check
   if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
     $check = cfturnstile_check();
     $success = $check['success'];

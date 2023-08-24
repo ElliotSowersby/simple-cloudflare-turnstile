@@ -40,20 +40,7 @@ if ((!empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_al
 	function cfturnstile_field_cf7($content) {
 		$cfturnstile_key = sanitize_text_field(get_option('cfturnstile_key'));
 		if (false === strpos($content, $cfturnstile_key)) {
-			$button_types = array(
-				'<input type="submit"',
-				'<input class="wpcf7-submit" type="submit"',
-				'<input class="wpcf7-form-control wpcf7-submit" type="submit"',
-				'<input class="wpcf7-form-control has-spinner wpcf7-submit" type="submit"',
-				'<input class="wpcf7-form-control has-spinner wpcf7-submit button button--secondary" type="submit"',
-			);
-			$button_types = apply_filters( 'cfturnstile_cf7_button_types', $button_types );
-			foreach($button_types as $button_type) {
-				if (false !== strpos($content, $button_type)) {
-					$content = str_replace($button_type, cfturnstile_cf7_shortcode() . '<br/>' . $button_type, $content);
-				}
-			}
-			return $content;
+			return preg_replace('/(<input[^>]*type="submit")/i', cfturnstile_cf7_shortcode() . '<br/>$1', $content);
 		} else {
 			return $content;
 		}
@@ -81,6 +68,10 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		if ((empty(get_option('cfturnstile_cf7_all')) || !get_option('cfturnstile_cf7_all'))
 			&& false === strpos($cf7_text, $cfturnstile_key)
 		) {
+			return $result;
+		}
+
+		if(cfturnstile_whitelisted()) {
 			return $result;
 		}
 

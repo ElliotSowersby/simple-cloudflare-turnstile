@@ -19,20 +19,24 @@ function cfturnstile_mc4wp_shortcode() {
 add_action('mc4wp_form_errors', 'cfturnstile_mc4wp_register_check', 10, 2);
 function cfturnstile_mc4wp_register_check( $errors, $form ) {
 
-	$post = get_post($form->ID);
+	if(!cfturnstile_whitelisted()) {
 
-	$mc4wp_text = do_shortcode( '[mc4wp_form id="' . $form->ID . '"]' );
-	$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
-	if ( !has_shortcode( $post->post_content, 'mc4wp-simple-turnstile') ) { return $errors; }
+		$post = get_post($form->ID);
 
-	if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
-		$check = cfturnstile_check();
-		$success = $check['success'];
-		if($success != true) {
+		$mc4wp_text = do_shortcode( '[mc4wp_form id="' . $form->ID . '"]' );
+		$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
+		if ( !has_shortcode( $post->post_content, 'mc4wp-simple-turnstile') ) { return $errors; }
+
+		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {
+			$check = cfturnstile_check();
+			$success = $check['success'];
+			if($success != true) {
+				$errors[] = 'cf_turnstile_error';
+			}
+		} else {
 			$errors[] = 'cf_turnstile_error';
 		}
-	} else {
-		$errors[] = 'cf_turnstile_error';
+
 	}
 
 	return $errors;
