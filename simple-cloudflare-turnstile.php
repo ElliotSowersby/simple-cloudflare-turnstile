@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.23.1
+ * Version: 1.23.2
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 8.0.2
+ * WC tested up to: 8.1.1
  **/
 
 // Include Admin Files
@@ -76,8 +76,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		data-language="<?php echo sanitize_text_field($language); ?>"
 		data-retry="auto" data-retry-interval="1000"
 		data-action="<?php echo sanitize_text_field($form_name); ?>"
-		data-appearance="<?php echo sanitize_text_field($appearance); ?>"
-		style="<?php if (!is_page() && !is_single() && !$is_checkout) { ?>margin-left: -15px;<?php } ?>"></div>
+		data-appearance="<?php echo sanitize_text_field($appearance); ?>"></div>
 		<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
 		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 		<?php } ?>
@@ -87,6 +86,11 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> iframe { margin-bottom: 15px; }</style>
 		<?php } ?>
 		<?php
+		if ((!is_page() && !is_single() && !$is_checkout) || strpos($_SERVER['PHP_SELF'], 'wp-login.php') !== false) {
+			?>
+			<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> { margin-left: -15px; }</style>
+			<?php
+		}
 		do_action("cfturnstile_after_field", $unique_id);
 	}
 }
@@ -213,7 +217,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		$unique_id = sanitize_text_field($unique_id);
 		if($unique_id) {
 		?>
-		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&(turnstile.remove("#cf-turnstile<?php echo $unique_id; ?>"),turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),50)}));</script>
+		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&(turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),50)}));</script>
 		<?php
 		}
 	}

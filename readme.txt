@@ -1,9 +1,9 @@
-=== Simple Cloudflare Turnstile — The new user-friendly alternative to CAPTCHA ===
+=== Simple Cloudflare Turnstile - CAPTCHA Alternative ===
 Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.3.0
+Tested up to: 6.3.1
 Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -60,13 +60,16 @@ You can currently enable Turnstile on the following forms:
 
 This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
-## What is Cloudflare Turnstile? ##
+## Other Features ##
 
-Cloudflare Turnstile delivers frustration-free, CAPTCHA-free web experiences to website visitors.
+The plugin includes several other features and options:
 
-Turnstile stops abuse and confirms visitors are real without the data privacy concerns or awful UX that CAPTCHA thrusts on users.
-
-Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank">https://www.cloudflare.com/en-gb/products/turnstile/</a>
+* Theme: Select the default theme for Turnstile.
+* Language: Set the default language for Turnstile.
+* Appearance Mode: Choose if Turnstile is always displayed, or only when an interaction is required.
+* Disable Submit Button: Disable the submit button on forms until the Turnstile challenge is completed.
+* Custom Error Message: Set your own custom error message for failed submissions.
+* Whitelist: Prevent Turnstile from showing for logged in users, or certain IP addresses.
 
 ## Getting Started ##
 
@@ -79,9 +82,17 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 
 For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
 
+## What is Cloudflare Turnstile? ##
+
+Cloudflare Turnstile delivers frustration-free, CAPTCHA-free web experiences to website visitors.
+
+Turnstile stops abuse and confirms visitors are real without the data privacy concerns or awful UX that CAPTCHA thrusts on users.
+
+Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank">https://www.cloudflare.com/en-gb/products/turnstile/</a>
+
 ## Is it free to use? ##
 
-Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
+Yes, this antispam plugin is completely free with no paid version, and does not include any additional data tracking.
 
 Cloudflare Turnstile is also a completely free service.
 
@@ -167,7 +178,18 @@ Firstly, make sure you have completed the <a href="https://relywp.com/blog/how-t
 
 If you are still having issues, please post a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a> on the WordPress.org forums.
 
+= How can I report security bugs? =
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
+
 == Changelog ===
+
+= Version 1.23.2 - 22nd September 2023 =
+- Fix: Fixed a security vulnerability with the GravityForms integration.
+- Tweak: Minified the inline scripts on Contact Form 7 and Gravity Forms integrations.
+- Tweak: Small tweak to styles on wp-login.php page in some cases.
+- Other: Tested with WordPress 6.3.1
+- Other: Tested with WooCommerce 8.1.1
 
 = Version 1.23.1 - 24th August 2023 =
 - Fix: Fixed an issue with "Payment Methods to Skip" toggle on settings page.
