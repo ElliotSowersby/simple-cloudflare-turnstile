@@ -79,7 +79,7 @@ if(get_option('cfturnstile_elementor')) {
     });
     </script>
     <?php if(get_option('cfturnstile_disable_button')) { ?>
-  	<style>.elementor-form[name="<?php echo $instance['form_name']; ?>"] button[type=submit] { pointer-events: none; opacity: 0.5; }</style>
+  	<style>.elementor-form[name="<?php echo esc_html($instance['form_name']); ?>"] button[type=submit] { pointer-events: none; opacity: 0.5; }</style>
     <?php } ?>
     <?php
   }

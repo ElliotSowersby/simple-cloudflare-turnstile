@@ -36,13 +36,13 @@ function cfturnstile_admin_test() {
 			if (isset($check['error_code'])) $error = $check['error_code'];
 			if ($success != true) {
 				echo '<div style="padding: 20px 20px 25px 20px; margin: 20px 0 28px 0; background: #fff; border-radius: 20px; max-width: 500px; border: 2px solid #d5d5d5;">';
-				echo '<p style="font-weight: 600; font-size: 19px; margin-top: 0; margin-bottom: 0;">' . __('Almost done...', 'simple-cloudflare-turnstile') . '</p>';
+				echo '<p style="font-weight: 600; font-size: 19px; margin-top: 0; margin-bottom: 0;">' . esc_html__('Almost done...', 'simple-cloudflare-turnstile') . '</p>';
 			}
 			if (!isset($_POST['cf-turnstile-response'])) {
 				echo '<p>'
-					. '<span style="color: red; font-weight: bold;">' . __('API keys have been updated. Please test the Turnstile API response below.', 'simple-cloudflare-turnstile') . '</span>'
+					. '<span style="color: red; font-weight: bold;">' . esc_html__('API keys have been updated. Please test the Turnstile API response below.', 'simple-cloudflare-turnstile') . '</span>'
 					. '<br/>'
-					. __('Turnstile will not be added to any forms until the test is successfully complete.', 'simple-cloudflare-turnstile')
+					. esc_html__('Turnstile will not be added to any forms until the test is successfully complete.', 'simple-cloudflare-turnstile')
 					. '</p>';
 			} else {
 				if ($success == true) {
@@ -63,7 +63,7 @@ function cfturnstile_admin_test() {
 				echo cfturnstile_field_show('', '', 'admin-test', 'admin-test');
 				echo '</div><div style="margin-bottom: -20px;"></div>';
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-size: 15px; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">
-				' . __('TEST RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
+				' . esc_html__('TEST RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
 				</button>';
 				echo '</div>';
 			}
@@ -78,14 +78,14 @@ function cfturnstile_settings_page() {
 ?>
 	<div class="sct-wrap wrap">
 
-		<h1 style="font-weight: bold;"><?php echo __('Simple Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
+		<h1 style="font-weight: bold;"><?php echo esc_html__('Simple Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
 
-		<p style="margin-bottom: 0;"><?php echo __('Easily add the new "Cloudflare Turnstile" to your WordPress forms to help prevent spam.', 'simple-cloudflare-turnstile'); ?> <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank"><?php echo __('Learn more.', 'simple-cloudflare-turnstile'); ?></a>
+		<p style="margin-bottom: 0;"><?php echo esc_html__('Easily add the new "Cloudflare Turnstile" to your WordPress forms to help prevent spam.', 'simple-cloudflare-turnstile'); ?> <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank"><?php echo esc_html__('Learn more.', 'simple-cloudflare-turnstile'); ?></a>
 
 		<div class="sct-admin-promo-top">
 
 			<p>
-				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" title="View our Turnstile plugin setup guide." target="_blank"><?php echo __('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
+				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo esc_html__('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo esc_html__('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
 					<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
 				</a>
 			</p>
@@ -110,14 +110,14 @@ function cfturnstile_settings_page() {
 				<tr valign="top">
 					<th scope="row" style="padding-bottom: 0;">
 
-						<p style="font-size: 19px; margin-top: 0;"><?php echo __('API Key Settings:', 'simple-cloudflare-turnstile'); ?></p>
+						<p style="font-size: 19px; margin-top: 0;"><?php echo esc_html__('API Key Settings:', 'simple-cloudflare-turnstile'); ?></p>
 
 						<?php
 						if (get_option('cfturnstile_tested') == 'yes') {
-							echo '<p style=" font-size: 15px; font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . __('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
+							echo '<p style=" font-size: 15px; font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . esc_html__('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
 						} ?>
 
-						<p style="margin-bottom: 2px;"><?php echo __('You can get your site key and secret key from here:', 'simple-cloudflare-turnstile'); ?> <a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">https://dash.cloudflare.com/?to=/:account/turnstile</a></p>
+						<p style="margin-bottom: 2px;"><?php echo esc_html__('You can get your site key and secret key from here:', 'simple-cloudflare-turnstile'); ?> <a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">https://dash.cloudflare.com/?to=/:account/turnstile</a></p>
 
 					</th>
 				</tr>
@@ -127,13 +127,13 @@ function cfturnstile_settings_page() {
 			<table class="form-table">
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Site Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>" /></td>
+					<th scope="row"><?php echo esc_html__('Site Key', 'simple-cloudflare-turnstile'); ?></th>
+					<td><input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo esc_html(get_option('cfturnstile_key')); ?>" /></td>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Secret Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo sanitize_text_field(get_option('cfturnstile_secret')); ?>" /></td>
+					<th scope="row"><?php echo esc_html__('Secret Key', 'simple-cloudflare-turnstile'); ?></th>
+					<td><input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_html(get_option('cfturnstile_secret')); ?>" /></td>
 				</tr>
 
 			</table>
@@ -143,11 +143,11 @@ function cfturnstile_settings_page() {
 			<table class="form-table">
 
 				<tr valign="top">
-					<th scope="row" style="font-size: 19px; padding-bottom: 5px;"><?php echo __('General Settings:', 'simple-cloudflare-turnstile'); ?></th>
+					<th scope="row" style="font-size: 19px; padding-bottom: 5px;"><?php echo esc_html__('General Settings:', 'simple-cloudflare-turnstile'); ?></th>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Theme', 'simple-cloudflare-turnstile'); ?></th>
+					<th scope="row"><?php echo esc_html__('Theme', 'simple-cloudflare-turnstile'); ?></th>
 					<td>
 						<select name="cfturnstile_theme">
 							<option value="light" <?php if (!get_option('cfturnstile_theme') || get_option('cfturnstile_theme') == "light") { ?>selected<?php } ?>>
@@ -164,35 +164,35 @@ function cfturnstile_settings_page() {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Language', 'simple-cloudflare-turnstile'); ?></th>
+					<th scope="row"><?php echo esc_html__('Language', 'simple-cloudflare-turnstile'); ?></th>
 					<td>
 						<select name="cfturnstile_language">
 						<?php
 						$languages = array(
-							'auto' => __( 'Auto Detect', 'simple-cloudflare-turnstile' ),
-							'ar-eg' => __( 'Arabic', 'simple-cloudflare-turnstile' ),
-							'de' => __( 'German', 'simple-cloudflare-turnstile' ),
-							'en' => __( 'English', 'simple-cloudflare-turnstile' ),
-							'es' => __( 'Spanish', 'simple-cloudflare-turnstile' ),
-							'fa' => __( 'Persian', 'simple-cloudflare-turnstile' ),
-							'fr' => __( 'French', 'simple-cloudflare-turnstile' ),
-							'id' => __( 'Indonesian', 'simple-cloudflare-turnstile' ),
-							'it' => __( 'Italian', 'simple-cloudflare-turnstile' ),
-							'ja' => __( 'Japanese', 'simple-cloudflare-turnstile' ),
-							'ko' => __( 'Korean', 'simple-cloudflare-turnstile' ),
-							'nl' => __( 'Dutch', 'simple-cloudflare-turnstile' ),
-							'pl' => __( 'Polish', 'simple-cloudflare-turnstile' ),
-							'pt-br' => __( 'Portuguese (Brazil)', 'simple-cloudflare-turnstile' ),
-							'ru' => __( 'Russian', 'simple-cloudflare-turnstile' ),
-							'tr' => __( 'Turkish', 'simple-cloudflare-turnstile' ),
-							'zh-cn' => __( 'Chinese (Simplified)', 'simple-cloudflare-turnstile' ),
-							'zh-tw' => __( 'Chinese (Traditional)', 'simple-cloudflare-turnstile' )
+							'auto' => esc_html__( 'Auto Detect', 'simple-cloudflare-turnstile' ),
+							'ar-eg' => esc_html__( 'Arabic', 'simple-cloudflare-turnstile' ),
+							'de' => esc_html__( 'German', 'simple-cloudflare-turnstile' ),
+							'en' => esc_html__( 'English', 'simple-cloudflare-turnstile' ),
+							'es' => esc_html__( 'Spanish', 'simple-cloudflare-turnstile' ),
+							'fa' => esc_html__( 'Persian', 'simple-cloudflare-turnstile' ),
+							'fr' => esc_html__( 'French', 'simple-cloudflare-turnstile' ),
+							'id' => esc_html__( 'Indonesian', 'simple-cloudflare-turnstile' ),
+							'it' => esc_html__( 'Italian', 'simple-cloudflare-turnstile' ),
+							'ja' => esc_html__( 'Japanese', 'simple-cloudflare-turnstile' ),
+							'ko' => esc_html__( 'Korean', 'simple-cloudflare-turnstile' ),
+							'nl' => esc_html__( 'Dutch', 'simple-cloudflare-turnstile' ),
+							'pl' => esc_html__( 'Polish', 'simple-cloudflare-turnstile' ),
+							'pt-br' => esc_html__( 'Portuguese (Brazil)', 'simple-cloudflare-turnstile' ),
+							'ru' => esc_html__( 'Russian', 'simple-cloudflare-turnstile' ),
+							'tr' => esc_html__( 'Turkish', 'simple-cloudflare-turnstile' ),
+							'zh-cn' => esc_html__( 'Chinese (Simplified)', 'simple-cloudflare-turnstile' ),
+							'zh-tw' => esc_html__( 'Chinese (Traditional)', 'simple-cloudflare-turnstile' )
 						);
 						foreach ($languages as $code => $name) {
 							$selected = '';
 							if(get_option('cfturnstile_language') == $code) { $selected = 'selected'; }
 							?>
-								<option value="<?php echo $code; ?>" <?php echo $selected; ?>>
+								<option value="<?php echo esc_attr($code); ?>" <?php echo esc_attr($selected); ?>>
 									<?php echo esc_html($name); ?>
 								</option>
 							<?php
@@ -203,29 +203,29 @@ function cfturnstile_settings_page() {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Appearance Mode', 'simple-cloudflare-turnstile'); ?></th>
+					<th scope="row"><?php echo esc_html__('Appearance Mode', 'simple-cloudflare-turnstile'); ?></th>
 					<td>
 						<select name="cfturnstile_appearance" style="max-width: 240px;">
 						<?php
 						$appearances = array(
-							'always' => __( 'Always', 'simple-cloudflare-turnstile' ),
-							// 'execute' => __( 'Execute', 'simple-cloudflare-turnstile' ), // Not really needed
-							'interaction-only' => __( 'Interaction Only', 'simple-cloudflare-turnstile' ),
+							'always' => esc_html__( 'Always', 'simple-cloudflare-turnstile' ),
+							// 'execute' => esc_html__( 'Execute', 'simple-cloudflare-turnstile' ), // Not really needed
+							'interaction-only' => esc_html__( 'Interaction Only', 'simple-cloudflare-turnstile' ),
 						);
 						foreach ($appearances as $code => $name) {
 							$selected = '';
 							if(get_option('cfturnstile_appearance') == $code) { $selected = 'selected'; }
 							?>
-								<option value="<?php echo $code; ?>" <?php echo $selected; ?>>
+								<option value="<?php echo esc_attr($code); ?>" <?php echo esc_attr($selected); ?>>
 									<?php echo esc_html($name); ?>
 								</option>
 							<?php
 						}
 						?>
 						</select>
-						<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
-						<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
-						<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo __( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
 					</td>
 				</tr>
 				<script>
@@ -250,42 +250,42 @@ function cfturnstile_settings_page() {
 
 				<tr valign="top">
 					<th scope="row">
-						<?php echo __('Disable Submit Button', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Disable Submit Button', 'simple-cloudflare-turnstile'); ?>
 					</th>
 					<td><input type="checkbox" name="cfturnstile_disable_button" <?php if (get_option('cfturnstile_disable_button')) { ?>checked<?php } ?>>
-						<i style="font-size: 10px;"><?php echo __('When enabled, the user will not be able to click submit until the Turnstile challenge is completed.', 'simple-cloudflare-turnstile'); ?></i>
+						<i style="font-size: 10px;"><?php echo esc_html__('When enabled, the user will not be able to click submit until the Turnstile challenge is completed.', 'simple-cloudflare-turnstile'); ?></i>
 					</td>
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo __('Custom Error Message', 'simple-cloudflare-turnstile'); ?></th>
+					<th scope="row"><?php echo esc_html__('Custom Error Message', 'simple-cloudflare-turnstile'); ?></th>
 					<td>
-						<input type="text" style="width: 240px;" name="cfturnstile_error_message" value="<?php echo sanitize_text_field(get_option('cfturnstile_error_message')); ?>" placeholder="<?php echo cfturnstile_failed_message(1); ?>" />
-						<br /><i style="font-size: 10px;"><?php echo __('This message is shown if the form is submitted without successfully completing the Turnstile challenge. Leave blank to use the default message (localized):', 'simple-cloudflare-turnstile') . ' "' . cfturnstile_failed_message(1) . '"'; ?></i>
+						<input type="text" style="width: 240px;" name="cfturnstile_error_message" value="<?php echo esc_html(get_option('cfturnstile_error_message')); ?>" placeholder="<?php echo cfturnstile_failed_message(1); ?>" />
+						<br /><i style="font-size: 10px;"><?php echo esc_html__('This message is shown if the form is submitted without successfully completing the Turnstile challenge. Leave blank to use the default message (localized):', 'simple-cloudflare-turnstile') . ' "' . cfturnstile_failed_message(1) . '"'; ?></i>
 					</td>
 				</tr>
 				
 			</table>
 
-			<button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo __('Whitelist Settings', 'simple-cloudflare-turnstile'); ?></button>
+			<button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo esc_html__('Whitelist Settings', 'simple-cloudflare-turnstile'); ?></button>
 			<div class="sct-panel">
 
 				<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 					<tr valign="top">
 						<th scope="row">
-							<?php echo __('Logged In Users', 'simple-cloudflare-turnstile'); ?>
+							<?php echo esc_html__('Logged In Users', 'simple-cloudflare-turnstile'); ?>
 						</th>
 						<td><input style="margin-top: 5px;" type="checkbox" name="cfturnstile_whitelist_users" <?php if (get_option('cfturnstile_whitelist_users')) { ?>checked<?php } ?>>
-							<i style="font-size: 10px;"><?php echo __('When enabled, logged in users will not see the Turnstile challenge.', 'simple-cloudflare-turnstile'); ?></i>
+							<i style="font-size: 10px;"><?php echo esc_html__('When enabled, logged in users will not see the Turnstile challenge.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
 					
 					<tr valign="top">
-						<th scope="row"><?php echo __('IP Addresses', 'simple-cloudflare-turnstile'); ?></th>
+						<th scope="row"><?php echo esc_html__('IP Addresses', 'simple-cloudflare-turnstile'); ?></th>
 						<td>
 							<textarea style="width: 240px;" name="cfturnstile_whitelist_ips"><?php echo sanitize_textarea_field(get_option('cfturnstile_whitelist_ips')); ?></textarea>
-							<br /><i style="font-size: 10px;"><?php echo __('One per line. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
+							<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
 
@@ -301,45 +301,45 @@ function cfturnstile_settings_page() {
 
 				<tr valign="top">
 					<th scope="row">
-						<span style="font-size: 19px;"><?php echo __('Enable Turnstile on your forms:', 'simple-cloudflare-turnstile'); ?></span>
-						<p><?php echo __('Select the dropdown for each integration, and choose when specific forms you want to enable Turnstile on.', 'simple-cloudflare-turnstile'); ?></p>
+						<span style="font-size: 19px;"><?php echo esc_html__('Enable Turnstile on your forms:', 'simple-cloudflare-turnstile'); ?></span>
+						<p><?php echo esc_html__('Select the dropdown for each integration, and choose when specific forms you want to enable Turnstile on.', 'simple-cloudflare-turnstile'); ?></p>
 					</th>
 				</tr>
 
 			</table>
 
-			<button type="button" class="sct-accordion" id="sct-accordion-wordpress"><?php echo __('Default WordPress Forms', 'simple-cloudflare-turnstile'); ?></button>
+			<button type="button" class="sct-accordion" id="sct-accordion-wordpress"><?php echo esc_html__('Default WordPress Forms', 'simple-cloudflare-turnstile'); ?></button>
 			<div class="sct-panel">
 
 				<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 					<tr valign="top">
 						<th scope="row">
-							<?php echo __('WordPress Login', 'simple-cloudflare-turnstile'); ?>
+							<?php echo esc_html__('WordPress Login', 'simple-cloudflare-turnstile'); ?>
 						</th>
 						<td><input type="checkbox" name="cfturnstile_login" <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>></td>
 					</tr>
 
 					<tr valign="top">
 						<th scope="row">
-							<?php echo __('WordPress Register', 'simple-cloudflare-turnstile'); ?>
+							<?php echo esc_html__('WordPress Register', 'simple-cloudflare-turnstile'); ?>
 						</th>
 						<td><input type="checkbox" name="cfturnstile_register" <?php if (get_option('cfturnstile_register')) { ?>checked<?php } ?>></td>
 					</tr>
 
 					<tr valign="top">
 						<th scope="row">
-							<?php echo __('WordPress Reset Password', 'simple-cloudflare-turnstile'); ?>
+							<?php echo esc_html__('WordPress Reset Password', 'simple-cloudflare-turnstile'); ?>
 						</th>
 						<td><input type="checkbox" name="cfturnstile_reset" <?php if (get_option('cfturnstile_reset')) { ?>checked<?php } ?>></td>
 					</tr>
 
 					<tr valign="top" style="border: 0;">
 						<th scope="row">
-							<?php echo __('WordPress Comment', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_comments" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
-							<span id="cfturnstile_ajax_comments_option" style="display: none;" title="<?php echo __('Enable this if you are using an AJAX based comments form plugin or theme.', 'simple-cloudflare-turnstile'); ?>">
+							<?php echo esc_html__('WordPress Comment', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_comments" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
+							<span id="cfturnstile_ajax_comments_option" style="display: none;" title="<?php echo esc_html__('Enable this if you are using an AJAX based comments form plugin or theme.', 'simple-cloudflare-turnstile'); ?>">
 							<br/><br/>
-								<label style="float: left; margin: -5px 10px 0px 0; font-weight: 600; font-size: 10px;" for="cfturnstile_ajax_comments"><?php echo __('AJAX comments form?', 'simple-cloudflare-turnstile'); ?></label>
+								<label style="float: left; margin: -5px 10px 0px 0; font-weight: 600; font-size: 10px;" for="cfturnstile_ajax_comments"><?php echo esc_html__('AJAX comments form?', 'simple-cloudflare-turnstile'); ?></label>
 								<input style="float: left; transform: scale(0.75); margin-top: -7px; margin-left: -5px;"
 								type="checkbox" name="cfturnstile_ajax_comments"
 								<?php if(!cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') && !cft_is_plugin_active('wp-ajaxify-comments/wp-ajaxify-comments.php')) { ?>
@@ -350,10 +350,10 @@ function cfturnstile_settings_page() {
 						<td>
 							<input type="checkbox" name="cfturnstile_comment" <?php if (get_option('cfturnstile_comment')) { ?>checked<?php } ?>>
 							<?php if (cft_is_plugin_active('jetpack/jetpack.php')) { ?>
-								<br /><i style="font-size: 10px;"><?php echo __('Due to Jetpack limitations, this does NOT currently work with Jetpack comments form enabled.', 'simple-cloudflare-turnstile'); ?></i>
+								<br /><i style="font-size: 10px;"><?php echo esc_html__('Due to Jetpack limitations, this does NOT currently work with Jetpack comments form enabled.', 'simple-cloudflare-turnstile'); ?></i>
 							<?php } ?>
 							<?php if (cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { ?>
-								<i style="font-size: 11px;"><?php echo __('Compatible with wpDiscuz!', 'simple-cloudflare-turnstile'); ?></i>
+								<i style="font-size: 11px;"><?php echo esc_html__('Compatible with wpDiscuz!', 'simple-cloudflare-turnstile'); ?></i>
 							<?php } ?>
 						</td>
 					</tr>
@@ -374,39 +374,39 @@ function cfturnstile_settings_page() {
 
 			<?php // WooCommerce
 			if (cft_is_plugin_active('woocommerce/woocommerce.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('WooCommerce Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('WooCommerce Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('WooCommerce Login', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('WooCommerce Login', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_login" <?php if (get_option('cfturnstile_woo_login')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('WooCommerce Register', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('WooCommerce Register', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_register" <?php if (get_option('cfturnstile_woo_register')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('WooCommerce Reset Password', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('WooCommerce Reset Password', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_reset" <?php if (get_option('cfturnstile_woo_reset')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('WooCommerce Checkout', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('WooCommerce Checkout', 'simple-cloudflare-turnstile'); ?>
 								<br /><br />
-								- <?php echo __('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
+								- <?php echo esc_html__('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
 								<br /><br />
-								- <?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?>
+								- <?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td>
 								<input style="margin-top: 5px;" type="checkbox" name="cfturnstile_woo_checkout" <?php if (get_option('cfturnstile_woo_checkout')) { ?>checked<?php } ?>>
@@ -436,7 +436,7 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top" style="border-bottom: 1px solid #f3f3f3;">
 							<th scope="row">
-								<?php echo __('WooCommerce Pay for Order', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('WooCommerce Pay for Order', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_checkout_pay" <?php if (get_option('cfturnstile_woo_checkout_pay')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -452,7 +452,7 @@ function cfturnstile_settings_page() {
 							<br/>
 
 							<p style="font-size: 15px; font-weight: 600;">
-								<?php echo __('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_skip_methods" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
+								<?php echo esc_html__('Payment Methods to Skip', 'simple-cloudflare-turnstile'); ?> <a href="#" class="cfturnstile_toggle_skip_methods" style="font-size: 10px; text-decoration: none; color: #333;">&#9660;</a>
 							</p>
 							<script>
 								jQuery(document).ready(function() {
@@ -466,9 +466,9 @@ function cfturnstile_settings_page() {
 							<div id="toggleContentSkipMethods" style="display: none;"> <!-- Initially hidden -->
 							
 								<i style="font-size: 10px;">
-									<?php echo __("If selected below, Turnstile check will not be run for that specific payment method.", 'simple-cloudflare-turnstile'); ?>
+									<?php echo esc_html__("If selected below, Turnstile check will not be run for that specific payment method.", 'simple-cloudflare-turnstile'); ?>
 									<br/>
-									<?php echo __("Useful for 'Express Checkout' payment methods compatibility.", 'simple-cloudflare-turnstile'); ?>
+									<?php echo esc_html__("Useful for 'Express Checkout' payment methods compatibility.", 'simple-cloudflare-turnstile'); ?>
 								</i>
 
 								<?php
@@ -495,22 +495,22 @@ function cfturnstile_settings_page() {
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/woocommerce/" target="_blank">' . __('WooCommerce', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/woocommerce/" target="_blank">' . esc_html__('WooCommerce', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // EDD
 			if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Easy Digital Downloads', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Easy Digital Downloads', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('EDD Checkout', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('EDD Checkout', 'simple-cloudflare-turnstile'); ?>
 								<br /><br />
-								- <?php echo __('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
+								- <?php echo esc_html__('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td>
 								<input type="checkbox" name="cfturnstile_edd_checkout" <?php if (get_option('cfturnstile_edd_checkout')) { ?>checked<?php } ?>>
@@ -521,14 +521,14 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('EDD Login', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('EDD Login', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_edd_login" <?php if (get_option('cfturnstile_edd_login')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('EDD Register', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('EDD Register', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_edd_register" <?php if (get_option('cfturnstile_edd_register')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -538,20 +538,20 @@ function cfturnstile_settings_page() {
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/easy-digital-downloads/" target="_blank">' . __('Easy Digital Downloads', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/easy-digital-downloads/" target="_blank">' . esc_html__('Easy Digital Downloads', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Contact Form 7
 			if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Contact Form 7', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Contact Form 7', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all CF7 Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all CF7 Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_cf7_all" <?php if (get_option('cfturnstile_cf7_all')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -560,38 +560,38 @@ function cfturnstile_settings_page() {
 
 					<br />
 
-					<?php echo __('To add Turnstile to individual Contact Form 7 forms, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('To add Turnstile to individual Contact Form 7 forms, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile'); ?>
 					<br /><span style="color: red; font-size: 15px; font-weight: bold;">[cf7-simple-turnstile]</span>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/contact-form-7/" target="_blank">' . __('Contact Form 7', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/contact-form-7/" target="_blank">' . esc_html__('Contact Form 7', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // WPForms
 			if (cft_is_plugin_active('wpforms-lite/wpforms.php') || cft_is_plugin_active('wpforms/wpforms.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('WPForms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('WPForms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all WPForms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all WPForms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_wpforms" <?php if (get_option('cfturnstile_wpforms')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_wpforms_pos">
 									<option value="before" <?php if (!get_option('cfturnstile_wpforms_pos') || get_option('cfturnstile_wpforms_pos') == "before") { ?>selected<?php } ?>>
@@ -608,46 +608,46 @@ function cfturnstile_settings_page() {
 
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
-							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
-								<input type="text" name="cfturnstile_wpforms_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_wpforms_disable')); ?>" />
+								<input type="text" name="cfturnstile_wpforms_disable" value="<?php echo esc_html(get_option('cfturnstile_wpforms_disable')); ?>" />
 							</td>
 						</tr>
 					</table>
 					<i style="font-size: 10px;">
 						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'WPForms Form'); ?>
-						<?php echo __('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
 					</i>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpforms-lite/" target="_blank">' . __('WPForms', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpforms-lite/" target="_blank">' . esc_html__('WPForms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Gravity Forms
 			if (cft_is_plugin_active('gravityforms/gravityforms.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Gravity Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Gravity Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all Gravity Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all Gravity Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_gravity" <?php if (get_option('cfturnstile_gravity')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with Gravity Forms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with Gravity Forms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_gravity_pos">
 									<option value="before" <?php if (!get_option('cfturnstile_gravity_pos') || get_option('cfturnstile_gravity_pos') == "before") { ?>selected<?php } ?>>
@@ -664,85 +664,85 @@ function cfturnstile_settings_page() {
 
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
-							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
-								<input type="text" name="cfturnstile_gravity_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_gravity_disable')); ?>" />
+								<input type="text" name="cfturnstile_gravity_disable" value="<?php echo esc_html(get_option('cfturnstile_gravity_disable')); ?>" />
 							</td>
 						</tr>
 					</table>
 					<i style="font-size: 10px;">
 						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Gravity Form'); ?>
-						<?php echo __('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
 					</i>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://www.gravityforms.com/" target="_blank">' . __('Gravity Forms', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://www.gravityforms.com/" target="_blank">' . esc_html__('Gravity Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Fluent Forms
 			if (cft_is_plugin_active('fluentform/fluentform.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Fluent Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Fluent Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all Fluent Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all Fluent Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_fluent" <?php if (get_option('cfturnstile_fluent')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Fluent Forms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Fluent Forms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
-							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
-								<input type="text" name="cfturnstile_fluent_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_fluent_disable')); ?>" />
+								<input type="text" name="cfturnstile_fluent_disable" value="<?php echo esc_html(get_option('cfturnstile_fluent_disable')); ?>" />
 							</td>
 						</tr>
 					</table>
 					<i style="font-size: 10px;">
 						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Fluent Form'); ?>
-						<?php echo __('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
 					</i>
 
 				</div>
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/fluentform/" target="_blank">' . __('Fluent Forms', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/fluentform/" target="_blank">' . esc_html__('Fluent Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Formidable Forms
 			if (cft_is_plugin_active('formidable/formidable.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Formidable Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Formidable Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all Formidable Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all Formidable Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_formidable" <?php if (get_option('cfturnstile_formidable')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Formidable Forms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Formidable Forms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_formidable_pos">
 									<option value="before" <?php if (!get_option('cfturnstile_formidable_pos') || get_option('cfturnstile_formidable_pos') == "before") { ?>selected<?php } ?>>
@@ -759,46 +759,46 @@ function cfturnstile_settings_page() {
 				
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
-							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
-								<input type="text" name="cfturnstile_formidable_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_formidable_disable')); ?>" />
+								<input type="text" name="cfturnstile_formidable_disable" value="<?php echo esc_html(get_option('cfturnstile_formidable_disable')); ?>" />
 							</td>
 						</tr>
 					</table>
 					<i style="font-size: 10px;">
 						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Formidable Form'); ?>
-						<?php echo __('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
 					</i>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/formidable/" target="_blank">' . __('Formidable', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/formidable/" target="_blank">' . esc_html__('Formidable', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 			
 			<?php // Forminator Forms
 			if (cft_is_plugin_active('forminator/forminator.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Forminator Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Forminator Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all Forminator Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all Forminator Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_forminator" <?php if (get_option('cfturnstile_forminator')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Forminator Forms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Forminator Forms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_forminator_pos">
 									<option value="before" <?php if (!get_option('cfturnstile_forminator_pos') || get_option('cfturnstile_forminator_pos') == "before") { ?>selected<?php } ?>>
@@ -815,46 +815,46 @@ function cfturnstile_settings_page() {
 
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
-							<th scope="row"><?php echo __('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
-								<input type="text" name="cfturnstile_forminator_disable" value="<?php echo sanitize_text_field(get_option('cfturnstile_forminator_disable')); ?>" />
+								<input type="text" name="cfturnstile_forminator_disable" value="<?php echo esc_html(get_option('cfturnstile_forminator_disable')); ?>" />
 							</td>
 						</tr>
 					</table>
 					<i style="font-size: 10px;">
 						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'Forminator Form'); ?>
-						<?php echo __('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
 					</i>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/forminator/" target="_blank">' . __('Forminator', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/forminator/" target="_blank">' . esc_html__('Forminator', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Elementor Forms
 			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Enable on all Elementor Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Enable on all Elementor Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_elementor" <?php if (get_option('cfturnstile_elementor')) { ?>checked<?php } ?>></td>
 						</tr>
 
 					</table>
 
-					<?php echo __('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Elementor Pro Forms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Elementor Pro Forms.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_elementor_pos">
 									<option value="before" <?php if (!get_option('cfturnstile_elementor_pos') || get_option('cfturnstile_elementor_pos') == "before") { ?>selected<?php } ?>>
@@ -875,34 +875,34 @@ function cfturnstile_settings_page() {
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . __('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . esc_html__('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
-					<?php echo __('To add Turnstile to Mailchimp for WordPress, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('To add Turnstile to Mailchimp for WordPress, simply add this shortcode to any of your forms (in the form editor):', 'simple-cloudflare-turnstile'); ?>
 					<br /><span style="color: red; font-size: 15px; font-weight: bold;">[mc4wp-simple-turnstile]</span>
 
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/mailchimp-for-wp/" target="_blank">' . __('Mailchimp for WordPress', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/mailchimp-for-wp/" target="_blank">' . esc_html__('Mailchimp for WordPress', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // BuddyPress
 			if (cft_is_plugin_active('buddypress/bp-loader.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('BuddyPress', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('BuddyPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('BuddyPress Register', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('BuddyPress Register', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_bp_register" <?php if (get_option('cfturnstile_bp_register')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -912,33 +912,33 @@ function cfturnstile_settings_page() {
 				</div>
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/buddypress/" target="_blank">' . __('BuddyPress', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/buddypress/" target="_blank">' . esc_html__('BuddyPress', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // bbPress
 			if (cft_is_plugin_active('bbpress/bbpress.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('bbPress', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('bbPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('bbPress Create Topic', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('bbPress Create Topic', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_bbpress_create" <?php if (get_option('cfturnstile_bbpress_create')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('bbPress Reply', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('bbPress Reply', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_bbpress_reply" <?php if (get_option('cfturnstile_bbpress_reply')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
-							<th scope="row"><?php echo __('Alignment', 'simple-cloudflare-turnstile'); ?></th>
+							<th scope="row"><?php echo esc_html__('Alignment', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<select name="cfturnstile_bbpress_align">
 									<option value="left" <?php if (!get_option('cfturnstile_bbpress_align') || get_option('cfturnstile_bbpress_align') == "left") { ?>selected<?php } ?>>
@@ -953,7 +953,7 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Guest Users Only', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Guest Users Only', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_bbpress_guest_only" <?php if (get_option('cfturnstile_bbpress_guest_only')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -964,34 +964,34 @@ function cfturnstile_settings_page() {
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/bbpress/" target="_blank">' . __('bbPress', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/bbpress/" target="_blank">' . esc_html__('bbPress', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // Ultimate Member
 			if (cft_is_plugin_active('ultimate-member/ultimate-member.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('Ultimate Member', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Ultimate Member', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('UM Login Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('UM Login Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_um_login" <?php if (get_option('cfturnstile_um_login')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('UM Register Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('UM Register Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_um_register" <?php if (get_option('cfturnstile_um_register')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('UM Password Reset Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('UM Password Reset Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_um_password" <?php if (get_option('cfturnstile_um_password')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -1002,13 +1002,13 @@ function cfturnstile_settings_page() {
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/ultimate-member/" target="_blank">' . __('Ultimate Member', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/ultimate-member/" target="_blank">' . esc_html__('Ultimate Member', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // MemberPress
 			if (cft_is_plugin_active('memberpress/memberpress.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('MemberPress', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('MemberPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
@@ -1026,15 +1026,15 @@ function cfturnstile_settings_page() {
 						</script>
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Login Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Login Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type='checkbox' name='cfturnstile_mepr_login' id='cfturnstile_mepr_login' <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>
-							title='<?php echo __('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+							title='<?php echo esc_html__('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Register/Checkout Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Register/Checkout Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type='checkbox' name='cfturnstile_mepr_register' id='cfturnstile_mepr_register' <?php if (get_option('cfturnstile_mepr_register')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -1045,19 +1045,19 @@ function cfturnstile_settings_page() {
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://memberpress.com/" target="_blank">' . __('MemberPress', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://memberpress.com/" target="_blank">' . esc_html__('MemberPress', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // WP-Members
 			if (cft_is_plugin_active('wp-members/wp-members.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('WP-Members', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('WP-Members', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
 						<p>
-							<?php echo __('Turnstile is supported for WP-Members Login and Registration forms. Enable for these forms in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>
+							<?php echo esc_html__('Turnstile is supported for WP-Members Login and Registration forms. Enable for these forms in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>
 						</p><br/>
 
 					</table>
@@ -1066,13 +1066,13 @@ function cfturnstile_settings_page() {
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-members/" target="_blank">' . __('WP-Members', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-members/" target="_blank">' . esc_html__('WP-Members', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 <?php // WP User Frontend
 			if (cft_is_plugin_active('wp-user-frontend/wpuf.php')) { ?>
-				<button type="button" class="sct-accordion"><?php echo __('WP User Frontend', 'simple-cloudflare-turnstile'); ?></button>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('WP User Frontend', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
@@ -1090,10 +1090,10 @@ function cfturnstile_settings_page() {
 						</script>
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Login Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Login Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type='checkbox' name='cfturnstile_wpuf_login' id='cfturnstile_wpuf_login' <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>
-							title='<?php echo __('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+							title='<?php echo esc_html__('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
 						</tr>
 
 						<script>
@@ -1109,22 +1109,22 @@ function cfturnstile_settings_page() {
 						</script>
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Reset Password Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Reset Password Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type='checkbox' name='cfturnstile_wpuf_reset' id='cfturnstile_wpuf_reset' <?php if (get_option('cfturnstile_reset')) { ?>checked<?php } ?>
-							title='<?php echo __('Edit via "WordPress Reset Password" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+							title='<?php echo esc_html__('Edit via "WordPress Reset Password" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Register Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Register Form', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_wpuf_register" <?php if (get_option('cfturnstile_wpuf_register')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo __('Post Forms', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Post Forms', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_wpuf_forms" <?php if (get_option('cfturnstile_wpuf_forms')) { ?>checked<?php } ?>></td>
 						</tr>
@@ -1135,13 +1135,13 @@ function cfturnstile_settings_page() {
 
 			<?php
 			} else {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-user-frontend/" target="_blank">' . __('WP User Frontend', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-user-frontend/" target="_blank">' . esc_html__('WP User Frontend', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
 			<?php // wpDiscuz
 			if (!cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
-				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . __('wpDiscuz', 'simple-cloudflare-turnstile') . '</a>');
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . esc_html__('wpDiscuz', 'simple-cloudflare-turnstile') . '</a>');
 			} ?>
 
 			<?php
@@ -1158,10 +1158,10 @@ function cfturnstile_settings_page() {
 
 					<tr valign="top">
 						<th scope="row">
-							<span style="font-size: 19px;"><?php echo __('Other Integrations', 'simple-cloudflare-turnstile'); ?></span>
+							<span style="font-size: 19px;"><?php echo esc_html__('Other Integrations', 'simple-cloudflare-turnstile'); ?></span>
 							<p>
 								
-								<?php echo __('You can also enable Turnstile on', 'simple-cloudflare-turnstile') . " ";
+								<?php echo esc_html__('You can also enable Turnstile on', 'simple-cloudflare-turnstile') . " ";
 								$last_plugin = end($not_installed);
 								foreach ($not_installed as $not_plugin) {
 									if ($not_plugin == $last_plugin && count($not_installed) > 1) echo 'and ';
@@ -1174,7 +1174,7 @@ function cfturnstile_settings_page() {
 								}
 								?>
 
-								<?php echo __('Simply install the plugin and new settings will appear above.', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Simply install the plugin and new settings will appear above.', 'simple-cloudflare-turnstile'); ?>
 
 							</p>
 						</th>
@@ -1191,30 +1191,30 @@ function cfturnstile_settings_page() {
 			<div style="font-size: 10px; margin-top: 15px;">
 				<!-- Delete Options on Uninstall (Always keep this option last) -->
 				<input type="checkbox" name="cfturnstile_uninstall_remove" <?php if (get_option('cfturnstile_uninstall_remove')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
-				<?php echo __('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
+				<?php echo esc_html__('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
 			</div>
 			
 		</form>
 
 		<div class="sct-admin-promo">
 
-			<p style="font-size: 15px; font-weight: bold;"><?php echo __('100% free plugin developed by', 'simple-cloudflare-turnstile'); ?> <a href="https://twitter.com/ElliotSowersby" target="_blank" title="@ElliotSowersby on Twitter"><span class="dashicons dashicons-twitter" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>Elliot Sowersby</a> <a href="https://relywp.com/?utm_source=sct" target="_blank" title="RelyWP - WordPress Maintenance & Support"><span class="dashicons dashicons-admin-links" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>RelyWP</a></p>
+			<p style="font-size: 15px; font-weight: bold;"><?php echo esc_html__('100% free plugin developed by', 'simple-cloudflare-turnstile'); ?> <a href="https://twitter.com/ElliotSowersby" target="_blank" title="@ElliotSowersby on Twitter"><span class="dashicons dashicons-twitter" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>Elliot Sowersby</a> <a href="https://relywp.com/?utm_source=sct" target="_blank" title="RelyWP - WordPress Maintenance & Support"><span class="dashicons dashicons-admin-links" style="margin-top: 5px; font-size: 15px; text-decoration: none;"></span>RelyWP</a></p>
 
 			<p style="font-size: 15px;">
-				- <?php echo __('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo __('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo __('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
+				- <?php echo esc_html__('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo esc_html__('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
 					<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
 				</a></p>
 
-			<p style="font-size: 15px;">- <?php echo __('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile" target="_blank"><?php echo __('Create a support topic', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a></p>
+			<p style="font-size: 15px;">- <?php echo esc_html__('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile" target="_blank"><?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a></p>
 
 			<p style="font-size: 15px;">
-				- <?php echo __('Want to support the developer?', 'simple-cloudflare-turnstile'); ?> <?php echo __('Feel free to', 'simple-cloudflare-turnstile'); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo __('Donate', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
+				- <?php echo esc_html__('Want to support the developer?', 'simple-cloudflare-turnstile'); ?> <?php echo esc_html__('Feel free to', 'simple-cloudflare-turnstile'); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo esc_html__('Donate', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 5px; text-decoration: none;"></span></a>
 			</p>
 
 			<p style="font-size: 12px;">
-				<a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank"><?php echo __('Translate into your language', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
+				<a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank"><?php echo esc_html__('Translate into your language', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
 				<br />
-				<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile" target="_blank"><?php echo __('View on GitHub', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
+				<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile" target="_blank"><?php echo esc_html__('View on GitHub', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="font-size: 15px; margin-top: 2px; text-decoration: none;"></span></a>
 			</p>
 
 		</div>

@@ -13,3 +13,8 @@ function turnstileWooCheckoutReset() {
         turnstile.render('#cf-turnstile-woo-checkout');
     }
 }
+/* On click ".checkout .showlogin" link re-render */
+jQuery('.showlogin').on('click', function() {
+    turnstile.remove('.sct-woocommerce-login');
+    turnstile.render('.sct-woocommerce-login');
+});

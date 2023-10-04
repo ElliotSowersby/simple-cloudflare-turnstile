@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.23.2
+ * Version: 1.23.3
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -46,7 +46,7 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
 	if (!isset($plugin))
 		$plugin = plugin_basename(__FILE__);
 	if ($plugin == $plugin_file) {
-		$settings = array('settings' => '<a href="options-general.php?page=cfturnstile">' . __('Settings', 'simple-cloudflare-turnstile') . '</a>');
+		$settings = array('settings' => '<a href="options-general.php?page=cfturnstile">' . esc_html__('Settings', 'simple-cloudflare-turnstile') . '</a>');
 		$actions = array_merge($settings, $actions);
 	}
 	return $actions;
@@ -58,40 +58,40 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  * @param int $button_id
  * @param string $callback
  */
-function cfturnstile_field_show($button_id = '', $callback = '', $form_name = '', $unique_id = '') {
+function cfturnstile_field_show($button_id = '', $callback = '', $form_name = '', $unique_id = '', $class = '') {
 	if(!cfturnstile_whitelisted()) {
 		do_action("cfturnstile_enqueue_scripts");
-		do_action("cfturnstile_before_field", $unique_id);
-		$key = esc_attr(get_option('cfturnstile_key'));
-		$theme = esc_attr(get_option('cfturnstile_theme'));
-		$language = esc_attr(get_option('cfturnstile_language'));
-		$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
+		do_action("cfturnstile_before_field", esc_attr($unique_id));
+		$key = sanitize_text_field(get_option('cfturnstile_key'));
+		$theme = sanitize_text_field(get_option('cfturnstile_theme'));
+		$language = sanitize_text_field(get_option('cfturnstile_language'));
+		$appearance = sanitize_text_field(get_option('cfturnstile_appearance', 'always'));
 			if(!$language) { $language = 'auto'; }
 		$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
 		?>
-		<div id="cf-turnstile<?php echo sanitize_text_field($unique_id); ?>"
-		class="cf-turnstile" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo sanitize_text_field($callback); ?>"<?php } ?>
-		data-sitekey="<?php echo sanitize_text_field($key); ?>"
-		data-theme="<?php echo sanitize_text_field($theme); ?>"
-		data-language="<?php echo sanitize_text_field($language); ?>"
+		<div id="cf-turnstile<?php echo esc_attr($unique_id); ?>"
+		class="cf-turnstile<?php if($class) { echo " " . esc_attr($class); } ?>" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo esc_attr($callback); ?>"<?php } ?>
+		data-sitekey="<?php echo esc_attr($key); ?>"
+		data-theme="<?php echo esc_attr($theme); ?>"
+		data-language="<?php echo esc_attr($language); ?>"
 		data-retry="auto" data-retry-interval="1000"
-		data-action="<?php echo sanitize_text_field($form_name); ?>"
-		data-appearance="<?php echo sanitize_text_field($appearance); ?>"></div>
+		data-action="<?php echo esc_attr($form_name); ?>"
+		data-appearance="<?php echo esc_attr($appearance); ?>"></div>
 		<?php if ($button_id && get_option('cfturnstile_disable_button')) { ?>
-		<style><?php echo sanitize_text_field($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
+		<style><?php echo esc_html($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
 		<?php } ?>
 		<?php if($appearance == 'always') { ?>
-		<br/>
+		<br class="cf-turnstile-br cf-turnstile-br<?php echo esc_attr($unique_id); ?>">
 		<?php } else { ?>
-		<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> iframe { margin-bottom: 15px; }</style>
+		<style>#cf-turnstile<?php echo esc_html($unique_id); ?> iframe { margin-bottom: 15px; }</style>
 		<?php } ?>
 		<?php
 		if ((!is_page() && !is_single() && !$is_checkout) || strpos($_SERVER['PHP_SELF'], 'wp-login.php') !== false) {
 			?>
-			<style>#cf-turnstile<?php echo sanitize_text_field($unique_id); ?> { margin-left: -15px; }</style>
+			<style>#cf-turnstile<?php echo esc_html($unique_id); ?> { margin-left: -15px; }</style>
 			<?php
 		}
-		do_action("cfturnstile_after_field", $unique_id);
+		do_action("cfturnstile_after_field", esc_attr($unique_id));
 	}
 }
 
@@ -123,7 +123,7 @@ function cfturnstile_failed_message($default = "") {
 	if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
 		return sanitize_text_field(get_option('cfturnstile_error_message'));
 	} else {
-		return __('Please verify that you are human.', 'simple-cloudflare-turnstile');
+		return esc_html__('Please verify that you are human.', 'simple-cloudflare-turnstile');
 	}
 }
 
@@ -136,21 +136,21 @@ function cfturnstile_failed_message($default = "") {
 function cfturnstile_error_message($code) {
 	switch ($code) {
 		case 'missing-input-secret':
-			return __('The secret parameter was not passed.', 'simple-cloudflare-turnstile');
+			return esc_html__('The secret parameter was not passed.', 'simple-cloudflare-turnstile');
 		case 'invalid-input-secret':
-			return __('The secret parameter was invalid or did not exist.', 'simple-cloudflare-turnstile');
+			return esc_html__('The secret parameter was invalid or did not exist.', 'simple-cloudflare-turnstile');
 		case 'missing-input-response':
-			return __('The response parameter was not passed.', 'simple-cloudflare-turnstile');
+			return esc_html__('The response parameter was not passed.', 'simple-cloudflare-turnstile');
 		case 'invalid-input-response':
-			return __('The response parameter is invalid or has expired.', 'simple-cloudflare-turnstile');
+			return esc_html__('The response parameter is invalid or has expired.', 'simple-cloudflare-turnstile');
 		case 'bad-request':
-			return __('The request was rejected because it was malformed.', 'simple-cloudflare-turnstile');
+			return esc_html__('The request was rejected because it was malformed.', 'simple-cloudflare-turnstile');
 		case 'timeout-or-duplicate':
-			return __('The response parameter has already been validated before.', 'simple-cloudflare-turnstile');
+			return esc_html__('The response parameter has already been validated before.', 'simple-cloudflare-turnstile');
 		case 'internal-error':
-			return __('An internal error happened while validating the response. The request can be retried.', 'simple-cloudflare-turnstile');
+			return esc_html__('An internal error happened while validating the response. The request can be retried.', 'simple-cloudflare-turnstile');
 		default:
-			return __('There was an error with Turnstile response. Please check your keys are correct.', 'simple-cloudflare-turnstile');
+			return esc_html__('There was an error with Turnstile response. Please check your keys are correct.', 'simple-cloudflare-turnstile');
 	}
 }
 
@@ -191,7 +191,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		/* Disable Button */
 		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), '', '4.0', array('strategy' => 'defer')); }
 		/* WooCommerce */
-		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.1', array('strategy' => 'defer')); }
+		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery'), '1.2', array('strategy' => 'defer')); }
 		/* WPDiscuz */
 		if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
 		/* Blocksy */
@@ -217,7 +217,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		$unique_id = sanitize_text_field($unique_id);
 		if($unique_id) {
 		?>
-		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo $unique_id; ?>");setTimeout((function(){e&&(turnstile.render("#cf-turnstile<?php echo $unique_id; ?>",{sitekey:"<?php echo sanitize_text_field(get_option('cfturnstile_key')); ?>"}))}),50)}));</script>
+		<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");setTimeout((function(){e&&(turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html(get_option('cfturnstile_key')); ?>"}))}),100)}));</script>
 		<?php
 		}
 	}

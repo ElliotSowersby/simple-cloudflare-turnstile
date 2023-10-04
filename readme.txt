@@ -184,8 +184,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= Version 1.23.3 - 4th October 2023 =
+- Tweak: Added some additional sanitization and escaping to the plugin code, as an extra security precaution, and to meet WordPress coding standards better.
+- Tweak: Added a class to the line break displayed below the Turnstile widget, so it can be hidden or edited with CSS if needed.
+- Fix: Fixed issue with Turnstile not loading on WooCommerce checkout login form in some cases.
+
 = Version 1.23.2 - 22nd September 2023 =
-- Fix: Fixed a security vulnerability with the GravityForms integration.
+- Fix: Fixed a security vulnerability with the Gravity Forms integration.
 - Tweak: Minified the inline scripts on Contact Form 7 and Gravity Forms integrations.
 - Tweak: Small tweak to styles on wp-login.php page in some cases.
 - Other: Tested with WordPress 6.3.1

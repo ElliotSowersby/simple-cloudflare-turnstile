@@ -12,14 +12,14 @@ if(get_option('cfturnstile_gravity')) {
     $unique_id = wp_rand();
     $form_id = sanitize_text_field(esc_html($atts['id']));
     echo '<div class="gf-turnstile-container">';
-  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . $form_id, '-gf-' . $form_id);
+  	echo cfturnstile_field_show('.gform_button', 'turnstileGravityCallback', 'gravity-form-' . esc_html($form_id), '-gf-' . esc_html($form_id));
     echo "</div>";
     ?>
     <style>
     .gf-turnstile-container { width: 100%; }
     .gform_footer.top_label { display: flex; flex-wrap: wrap; }
     </style>
-    <script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('#gform_<?php echo $form_id; ?>').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-gf-<?php echo $form_id; ?>')){setTimeout(function(){turnstile.render('#cf-turnstile-gf-<?php echo $form_id; ?>');},10000)}})})});</script>
+    <script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('#gform_<?php echo esc_html($form_id); ?>').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-gf-<?php echo esc_html($form_id); ?>')){setTimeout(function(){turnstile.render('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');},10000)}})})});</script>
     <?php
   	$thecontent = ob_get_contents();
   	ob_end_clean();

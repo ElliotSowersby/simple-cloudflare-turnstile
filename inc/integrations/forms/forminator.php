@@ -18,16 +18,16 @@ if(get_option('cfturnstile_forminator')) {
                 wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
                 wp_print_scripts('cfturnstile');
             }
-            echo "<style>#cf-turnstile-fmntr-".$form_id." { margin-left: 0px !important; }</style>";
+            echo "<style>#cf-turnstile-fmntr-".esc_html($form_id)." { margin-left: 0px !important; }</style>";
 
-            cfturnstile_field_show('.forminator-button-submit', 'turnstileForminatorCallback', 'forminator-form-' . $form_id, '-fmntr-' . $form_id);
+            cfturnstile_field_show('.forminator-button-submit', 'turnstileForminatorCallback', 'forminator-form-' . esc_html($form_id), '-fmntr-' . esc_html($form_id));
             ?>
             <script>
             // On ajax.complete run turnstile.render if empty
             jQuery(document).ajaxComplete(function() {
-                if (document.getElementById('cf-turnstile-fmntr-<?php echo $form_id; ?>')) {
+                if (document.getElementById('cf-turnstile-fmntr-<?php echo esc_html($form_id); ?>')) {
                     setTimeout(function() {
-                        turnstile.render('#cf-turnstile-fmntr-<?php echo $form_id; ?>');
+                        turnstile.render('#cf-turnstile-fmntr-<?php echo esc_html($form_id); ?>');
                     }, 100);
                 }
             });
