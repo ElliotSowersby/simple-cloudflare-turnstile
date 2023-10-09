@@ -43,6 +43,13 @@ function turnstileEDDRegisterCallback() {
         el.style.opacity = '1';
     });
 }
+/* PMP */
+function turnstilePMPLoginCallback() {
+    document.querySelectorAll('#wp-submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
 /* Elementor */
 function turnstileElementorCallback() {
     document.querySelectorAll('.elementor-field-type-submit .elementor-button').forEach(function(el) {

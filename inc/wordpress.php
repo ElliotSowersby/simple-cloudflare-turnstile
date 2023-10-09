@@ -23,7 +23,7 @@ if(get_option('cfturnstile_login')) {
             if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return $user; } // Skip XMLRPC
 			if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
             if(isset($_POST['edd_login_nonce']) && wp_verify_nonce( sanitize_text_field($_POST['edd_login_nonce']), 'edd-login-nonce') ) { return $user; } // Skip EDD
-            if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
+			if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
             // Start session
             if (!session_id()) { session_start(); }
@@ -38,6 +38,7 @@ if(get_option('cfturnstile_login')) {
             $success = $check['success'];
             if($success != true) {
                 $user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
+				do_action('cfturnstile_wp_login_failed');
             } else {
                 $nonce = wp_create_nonce( 'cfturnstile_login_check' );
                 $_SESSION['cfturnstile_login_checked'] = $nonce;

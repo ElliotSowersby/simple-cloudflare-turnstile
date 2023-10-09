@@ -48,6 +48,7 @@ You can currently enable Turnstile on the following forms:
 
 * Elementor Pro Forms
 * Easy Digital Downloads Forms
+* Paid Memberships Pro Forms
 * Mailchimp for WordPress Forms
 * BuddyPress Registration Form
 * bbPress Create Topic & Reply Forms
@@ -183,6 +184,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.24.0 - 9th October 2023 =
+- New: Added integration with the "Paid Memberships PRO" plugin.
 
 = Version 1.23.3 - 4th October 2023 =
 - Tweak: Added some additional sanitization and escaping to the plugin code, as an extra security precaution, and to meet WordPress coding standards better.

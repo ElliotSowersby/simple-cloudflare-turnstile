@@ -70,6 +70,12 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_edd_login',
             'cfturnstile_edd_register',
         ),
+        'paid-memberships-pro/paid-memberships-pro.php' => array(
+            'cfturnstile_pmp_checkout',
+            'cfturnstile_pmp_guest_only',
+            'cfturnstile_pmp_login',
+            'cfturnstile_pmp_register',
+        ),
         'contact-form-7/wp-contact-form-7.php' => array(
             'cfturnstile_cf7_all',
         ),

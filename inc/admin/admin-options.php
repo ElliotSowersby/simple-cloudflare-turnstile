@@ -542,6 +542,84 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
+			<?php // Paid Memberships PRO
+			if (cft_is_plugin_active('paid-memberships-pro/paid-memberships-pro.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Paid Memberships PRO', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('PMP Checkout / Registration', 'simple-cloudflare-turnstile'); ?>
+								<br /><br />
+								- <?php echo esc_html__('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td>
+								<input type="checkbox" name="cfturnstile_pmp_checkout" <?php if (get_option('cfturnstile_pmp_checkout')) { ?>checked<?php } ?>>
+								<br /><br />
+								<input type="checkbox" name="cfturnstile_pmp_guest_only" <?php if (get_option('cfturnstile_pmp_guest_only')) { ?>checked<?php } ?>>
+							</td>
+						</tr>
+
+						<script>
+						jQuery(document).ready(function(){
+							jQuery("input[name='cfturnstile_login']").change(function(){
+								if(jQuery("input[name='cfturnstile_login']").is(':checked')){
+									jQuery('#cfturnstile_pmp_login').prop('checked', true);
+								} else {
+									jQuery('#cfturnstile_pmp_login').prop('checked', false);
+								}
+							});
+						});
+						</script>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Login Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_pmp_login' id='cfturnstile_pmp_login' <?php if (get_option('cfturnstile_login')) { ?>checked<?php } ?>
+							title='<?php echo esc_html__('Edit via "WordPress Login" option in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>' disabled></td>
+						</tr>
+
+						<!-- Lost Password -->
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Lost Password Form', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type='checkbox' name='cfturnstile_wpuf_reset' id='cfturnstile_wpuf_reset'
+							title='<?php echo esc_html__('Currently Turnstile can not be implemented on the lost password form when PMP is installed.', 'simple-cloudflare-turnstile'); ?>'
+							disabled></td>
+						</tr>
+						<!-- Set name="cfturnstile_reset" to disabled and unchecked -->
+						<script>
+						jQuery(document).ready(function(){
+							jQuery("input[name='cfturnstile_reset']").prop('disabled', true);
+							jQuery("input[name='cfturnstile_reset']").prop('checked', false);
+							jQuery("input[name='cfturnstile_reset']").attr('title', '<?php echo esc_html__('Currently Turnstile can not be implemented on the lost password form when PMP is installed.', 'simple-cloudflare-turnstile'); ?>');
+						});
+						</script>
+						<!-- Show X inside checkbox -->
+						<style>
+						#cfturnstile_wpuf_reset:after, input[name='cfturnstile_reset']:after {
+							content: "X";
+							color: #333;
+							font-weight: bold;
+							font-size: 15px;
+							position: absolute;
+							margin-left: -5px;
+							margin-top: 7px;
+						}
+						</style>
+						
+					</table>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://en-gb.wordpress.org/plugins/paid-memberships-pro/" target="_blank">' . esc_html__('Paid Memberships PRO', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
 			<?php // Contact Form 7
 			if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Contact Form 7', 'simple-cloudflare-turnstile'); ?></button>
@@ -1077,7 +1155,7 @@ function cfturnstile_settings_page() {
 
 					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
-					<script>
+						<script>
 						jQuery(document).ready(function(){
 							jQuery("input[name='cfturnstile_login']").change(function(){
 								if(jQuery("input[name='cfturnstile_login']").is(':checked')){
