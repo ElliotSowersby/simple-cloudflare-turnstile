@@ -3,7 +3,7 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.3.1
+Tested up to: 6.4.0
 Stable Tag: trunk
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -93,11 +93,9 @@ Learn more here: <a href="https://www.cloudflare.com/en-gb/products/turnstile/" 
 
 ## Is it free to use? ##
 
-Yes, this antispam plugin is completely free with no paid version, and does not include any additional data tracking.
+Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
 
 Cloudflare Turnstile is also a completely free service.
-
-Please consider helping the ongoing development and support of this free plugin by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">making a donation</a>.
 
 ## Plugin Languages ##
 
@@ -155,7 +153,7 @@ The support forums are the only place you should submit a support ticket for 100
 
 = Is the plugin free? =
 
-Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
+Yes, this anti spam plugin is completely free with no paid version, and does not include any additional data tracking.
 
 Cloudflare Turnstile is also a completely free service.
 
@@ -185,8 +183,25 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= Version 1.25.0 -  November 2023 =
+- New: Added compatibility with the "Clean Login" plugin.
+- New: Added an option to only show Turnstile on the default WordPress login and registration form, and not on any other similar forms added by plugins. This is enabled by default for new installs.
+- New: Added a new "Extra Failure Message" option, in advanced settings, which will show a custom notice to the user, under the widget, if the Turnstile challenge fails.
+- New: Added a new "Defer Scripts" option, in advanced settings, to decide whether the javascript files will be deferred or not. This is enabled by default.
+- Tweak: Modified the code for WooCommerce login check.
+- Tweak: Added some information about other form plugins that are not currently supported by our plugin, if they are installed.
+- Tweak: Removed 100ms delay on Turnstile widget render.
+- Tweak: Added an "Advanced Settings" tab to the settings page, and moved some settings into there.
+- Tweak: A few small changes to the admin settings page.
+- Tweak: The "Language" setting is now ordered alphabetically.
+- Tweak: Improvements to the Blocksy integration.
+- Fix: Fixed a compatibility issue with the EDD Auto Register plugin.
+- Dev: Moved around some of the plugin code into different files.
+- Dev: Added some filters for the WP Login and WP Register check functions.
+- Other: Tested with WordPress 6.4.0
+
 = Version 1.24.0 - 9th October 2023 =
-- New: Added integration with the "Paid Memberships PRO" plugin.
+- New: Added integration with the "Paid Memberships Pro" plugin.
 
 = Version 1.23.3 - 4th October 2023 =
 - Tweak: Added some additional sanitization and escaping to the plugin code, as an extra security precaution, and to meet WordPress coding standards better.

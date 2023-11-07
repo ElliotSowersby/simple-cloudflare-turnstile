@@ -64,6 +64,19 @@ if(get_option('cfturnstile_edd_login')) {
 	}
 }
 
+// EDD Default Login Check
+add_filter('cfturnstile_wp_login_checks','cfturnstile_edd_default_login_check');
+function cfturnstile_edd_default_login_check() {
+    // Return true if any EDD purchase process has occurred.
+    return (
+        function_exists( 'did_action' ) && (
+            did_action( 'edd_purchase' ) ||
+            did_action( 'edd_straight_to_gateway' ) ||
+            did_action( 'edd_free_download_process' )
+        )
+    );
+}
+
 // EDD Register Check
 if(get_option('cfturnstile_edd_register')) {
 	add_action('edd_register_form_fields_before_submit','cfturnstile_field_edd_register');

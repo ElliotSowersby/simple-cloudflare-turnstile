@@ -28,7 +28,7 @@ if(get_option('cfturnstile_forminator')) {
                 if (document.getElementById('cf-turnstile-fmntr-<?php echo esc_html($form_id); ?>')) {
                     setTimeout(function() {
                         turnstile.render('#cf-turnstile-fmntr-<?php echo esc_html($form_id); ?>');
-                    }, 100);
+                    }, 10);
                 }
             });
             // Enable Submit Button Function

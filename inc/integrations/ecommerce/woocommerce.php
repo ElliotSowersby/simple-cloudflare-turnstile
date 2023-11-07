@@ -112,45 +112,43 @@ if(get_option('cfturnstile_woo_checkout_pay')) {
 
 // Woo Login Check
 if(get_option('cfturnstile_woo_login')) {
-	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
-		add_action('woocommerce_login_form','cfturnstile_field_woo_login');
-		if(!get_option('cfturnstile_login')) {
-			add_action('authenticate', 'cfturnstile_woo_login_check', 21, 1);
-			function cfturnstile_woo_login_check($user) {
+	add_action('woocommerce_login_form','cfturnstile_field_woo_login');
+	if(!get_option('cfturnstile_login')) {
+		add_action('authenticate', 'cfturnstile_woo_login_check', 21, 1);
+		function cfturnstile_woo_login_check($user) {
 
-				// Check skip
-				if(!isset($user->ID)) { return $user; }
-				if(!isset($_POST['woocommerce-login-nonce'])) { return $user; } // Skip if not WooCommerce login
-				if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return $user; } // Skip XMLRPC
-				if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
-				if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
+			// Check skip
+			if(!isset($user->ID)) { return $user; }
+			if(!isset($_POST['woocommerce-login-nonce'])) { return $user; } // Skip if not WooCommerce login
+			if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return $user; } // Skip XMLRPC
+			if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
+			if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
-				// Start session
-				if (!session_id()) { session_start(); }
+			// Start session
+			if (!session_id()) { session_start(); }
 
-				// Check if already validated
-				if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
-					return $user;
-				}
-
-				// Check Turnstile
-				$check = cfturnstile_check();
-				$success = $check['success'];
-				if($success != true) {
-					$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
-				} else {
-					$nonce = wp_create_nonce( 'cfturnstile_login_check' );
-					$_SESSION['cfturnstile_login_checked'] = $nonce;
-				}
-				
+			// Check if already validated
+			if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
 				return $user;
-				
 			}
-			// Clear session on login
-			add_action('wp_login', 'cfturnstile_woo_login_clear', 10, 2);
-			function cfturnstile_woo_login_clear($user_login, $user) {
-				if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+
+			// Check Turnstile
+			$check = cfturnstile_check();
+			$success = $check['success'];
+			if($success != true) {
+				$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
+			} else {
+				$nonce = wp_create_nonce( 'cfturnstile_login_check' );
+				$_SESSION['cfturnstile_login_checked'] = $nonce;
 			}
+			
+			return $user;
+			
+		}
+		// Clear session on login
+		add_action('wp_login', 'cfturnstile_woo_login_clear', 10, 2);
+		function cfturnstile_woo_login_clear($user_login, $user) {
+			if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
 		}
 	}
 }

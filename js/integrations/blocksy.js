@@ -5,8 +5,13 @@ document.addEventListener('DOMContentLoaded', function() {
         element.addEventListener('click', function() {
             turnstile.remove(".ct-account-panel #cf-turnstile-woo-register");
             setTimeout(function() {
-                turnstile.render(".ct-account-panel #loginform .cf-turnstile");
-                turnstile.render(".ct-account-panel #registerform .cf-turnstile");
+                if(document.querySelector(".ct-account-panel #loginform .cf-turnstile")) {
+                    turnstile.reset(".ct-account-panel #loginform .cf-turnstile");
+                }
+                if(document.querySelector(".ct-account-panel #registerform .cf-turnstile")) {
+                    turnstile.reset(".ct-account-panel #registerform .cf-turnstile");
+                    turnstile.remove(".ct-account-panel #registerform .sct-woocommerce-register");
+                }
             }, 500);
         });
     });
