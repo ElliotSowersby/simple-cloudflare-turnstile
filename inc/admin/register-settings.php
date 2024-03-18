@@ -56,6 +56,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_ajax_comments',
         'cfturnstile_whitelist_users',
         'cfturnstile_whitelist_ips',
+        'cfturnstile_whitelist_user_agents',
     );
 
     $integrations = array(
