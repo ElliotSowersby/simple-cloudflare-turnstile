@@ -354,6 +354,14 @@ function cfturnstile_settings_page() {
 							<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
+					
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('User Agents', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<textarea style="width: 240px;" name="cfturnstile_whitelist_user_agents"><?php echo sanitize_textarea_field(get_option('cfturnstile_whitelist_user_agents')); ?></textarea>
+							<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. All visitors with listed User Agents will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted User Agents, they can spoof that to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
+						</td>
+					</tr>
 
 				</table>
 
