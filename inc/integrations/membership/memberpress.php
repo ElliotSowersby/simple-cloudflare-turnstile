@@ -15,7 +15,7 @@ function cfturnstile_field_mepr_register($membership_ID) {
   $ProductsNeedingCaptcha = explode("\n", str_replace("\r", "", $LimitedToProductIDs));
 
   // Only show Turnstile for those specific product ids
-  if( in_array( $membership_ID, $ProductsNeedingCaptcha ) || empty($ProductsNeedingCaptcha) ) {
+  if( in_array( $membership_ID, $ProductsNeedingCaptcha ) || empty($LimitedToProductIDs) ) {
     cfturnstile_field_show(
       '.mepr-submit', 
       'turnstileMEPRCallback', 
@@ -48,7 +48,7 @@ function cfturnstile_mepr_check( $errors ) {
   }
 
   // Suppress Turnstile on all non-specified product ids
-  if( !in_array( $_POST['mepr_product_id'], $ProductsNeedingCaptcha ) && !empty($ProductsNeedingCaptcha) ) {
+  if( !in_array( $_POST['mepr_product_id'], $ProductsNeedingCaptcha ) && !empty($LimitedToProductIDs) ) {
     return $errors;
   }
   
