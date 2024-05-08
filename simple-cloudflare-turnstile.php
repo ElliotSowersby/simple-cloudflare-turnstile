@@ -9,7 +9,7 @@
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 8.1.1
+ * WC tested up to: 8.4.0
  **/
 
 // Include Admin Files

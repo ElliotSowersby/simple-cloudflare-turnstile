@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.5.3
-Stable Tag: 1.25.1
+Stable Tag: 1.26.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -178,14 +178,6 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 = How can I report security bugs? =
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
-
-== Code Fork: == 
-=== auutstudio/simple-cloudflare-turnstile-sometimes ===
-
-= Version 1.25.0.001 -  May 2024 =
-- New: Added an option to only show Turnstile on specific MemberPress registration forms, based on a declared list of Membership Product IDs.
-- Tweak: Clarify that the Whitelist IP option does not support wildcards.
-- Tweak: Clarify that WPForms has a redundant place in its own settings to configure Turnstile.
 
 == Changelog ===
 
