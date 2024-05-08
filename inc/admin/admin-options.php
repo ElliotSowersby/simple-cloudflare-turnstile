@@ -80,7 +80,7 @@ function cfturnstile_settings_page() {
 
 		<h1 style="font-weight: bold;"><?php echo esc_html__('Simple Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
 
-		<p style="margin-bottom: 0;"><?php echo esc_html__('Easily add the new "Cloudflare Turnstile" to your WordPress forms to help prevent spam.', 'simple-cloudflare-turnstile'); ?> <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank"><?php echo esc_html__('Learn more.', 'simple-cloudflare-turnstile'); ?></a>
+		<p style="margin-bottom: 0;"><?php echo esc_html__('Easily add the free CAPTCHA service called "Cloudflare Turnstile" to your WordPress forms to help prevent spam.', 'simple-cloudflare-turnstile'); ?> <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank"><?php echo esc_html__('Learn more.', 'simple-cloudflare-turnstile'); ?></a>
 
 		<div class="sct-admin-promo-top">
 
@@ -351,7 +351,7 @@ function cfturnstile_settings_page() {
 						<th scope="row"><?php echo esc_html__('IP Addresses', 'simple-cloudflare-turnstile'); ?></th>
 						<td>
 							<textarea style="width: 240px;" name="cfturnstile_whitelist_ips"><?php echo sanitize_textarea_field(get_option('cfturnstile_whitelist_ips')); ?></textarea>
-							<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
+							<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. Wildcards are not supported. All visitors with listed IP addresses will not see the Turnstile challenge. Warning: If an attacker knows one of the whitelisted IP addresses, they might be able to spoof that address to bypass Turnstile.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
 
@@ -759,6 +759,7 @@ function cfturnstile_settings_page() {
 					</table>
 
 					<?php echo esc_html__('When enabled, Turnstile will be added before/after the submit button, on ALL your forms created with WPForms.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('Remember that WPForms has an option to configure Turnstile on its own Settings page > CAPTCHA tab. You should only enable it in one place: either here –OR– in those Settings.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
