@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.5.3
-Stable Tag: 1.26.0
+Stable Tag: 1.26.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -180,6 +180,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.26.1 - 8th May 2024 =
+- Fix: Fixed an issue with the new "ONLY enable for these Membership IDs" option with the MemberPress integration.
 
 = Version 1.26.0 - 8th May 2024 =
 - New: Added option to whitelist certain "User Agents" in the "Whitelist Settings" section to the settings page.

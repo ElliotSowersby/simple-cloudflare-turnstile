@@ -17,6 +17,7 @@ function cfturnstile_um_check( $args ) {
 
   // Check if already validated
   if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
+    unset($_SESSION['cfturnstile_login_checked']);
     return;
   }
 

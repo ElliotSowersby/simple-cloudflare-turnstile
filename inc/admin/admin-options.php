@@ -1253,8 +1253,7 @@ function cfturnstile_settings_page() {
 								<?php echo esc_html__('Registration/Checkout Forms', 'simple-cloudflare-turnstile'); 
 								if(get_option('cfturnstile_mepr_product_ids')) {
 									?>
-								<br><span style="font-weight:400;font-size:12px;"><span style="color:#d1242f;">currently limited to:</span>
-								<br><?php echo implode(', ' , $ProductsNeedingCaptcha); ?></span>
+								<br><span style="font-weight:400;font-size:12px;"><span style="color:#d1242f;"><?php echo esc_html__('Limited to:', 'simple-cloudflare-turnstile'); ?></span> <?php echo implode(', ' , $ProductsNeedingCaptcha); ?></span>
 								<?php
 								}
 								?>
@@ -1266,7 +1265,7 @@ function cfturnstile_settings_page() {
 								<?php echo esc_html__('ONLY enable for these Membership IDs:', 'simple-cloudflare-turnstile'); ?></th>
 							<td>
 								<textarea style="width: 240px;" name="cfturnstile_mepr_product_ids"><?php echo sanitize_textarea_field(get_option('cfturnstile_mepr_product_ids')); ?></textarea>
-								<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. For Membership products that are not on this list, no Turnstile challenge will be loaded or enforced.', 'simple-cloudflare-turnstile'); ?></i>
+								<br /><i style="font-size: 10px;"><?php echo esc_html__('(Optional) One per line. For Membership products that are not on this list, no Turnstile challenge will be loaded or enforced.', 'simple-cloudflare-turnstile'); ?></i>
 							</td>
 						</tr>
 
