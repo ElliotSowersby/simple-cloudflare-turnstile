@@ -1209,7 +1209,13 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // MemberPress
-			if (cft_is_plugin_active('memberpress/memberpress.php')) { ?>
+			if (cft_is_plugin_active('memberpress/memberpress.php')) { 
+
+				if(get_option('cfturnstile_mepr_product_ids')) {
+				  $LimitedToProductIDs = get_option('cfturnstile_mepr_product_ids');
+				  $ProductsNeedingCaptcha = explode("\n", str_replace("\r", "", $LimitedToProductIDs));
+				}
+				?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('MemberPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -1236,9 +1242,24 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo esc_html__('Register/Checkout Form', 'simple-cloudflare-turnstile'); ?>
+								<?php echo esc_html__('Registration/Checkout Forms', 'simple-cloudflare-turnstile'); 
+								if(get_option('cfturnstile_mepr_product_ids')) {
+									?>
+								<br><span style="font-weight:400;font-size:12px;"><span style="color:#d1242f;">currently limited to:</span>
+								<br><?php echo implode(', ' , $ProductsNeedingCaptcha); ?></span>
+								<?php
+								}
+								?>
 							</th>
 							<td><input type='checkbox' name='cfturnstile_mepr_register' id='cfturnstile_mepr_register' <?php if (get_option('cfturnstile_mepr_register')) { ?>checked<?php } ?>></td>
+						</tr>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('—but ONLY for these Membership IDs:', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<textarea style="width: 240px;" name="cfturnstile_mepr_product_ids"><?php echo sanitize_textarea_field(get_option('cfturnstile_mepr_product_ids')); ?></textarea>
+								<br /><i style="font-size: 10px;"><?php echo esc_html__('One per line. For Membership products that are not on this list, no Turnstile challenge will be loaded or enforced.', 'simple-cloudflare-turnstile'); ?></i>
+							</td>
 						</tr>
 
 					</table>
