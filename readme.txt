@@ -179,6 +179,14 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
+== Code Fork: == 
+=== auutstudio/simple-cloudflare-turnstile-sometimes ===
+
+= Version 1.25.0.001 -  May 2024 =
+- New: Added an option to only show Turnstile on specific MemberPress registration forms, based on a declared list of Membership Product IDs.
+- Tweak: Clarify that the Whitelist IP option does not support wildcards.
+- Tweak: Clarify that WPForms has a redundant place in its own settings to configure Turnstile.
+
 == Changelog ===
 
 = Version 1.26.0 - 8th May 2024 =
