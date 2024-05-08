@@ -56,6 +56,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_ajax_comments',
         'cfturnstile_whitelist_users',
         'cfturnstile_whitelist_ips',
+        'cfturnstile_whitelist_agents',
     );
 
     $integrations = array(
@@ -129,6 +130,7 @@ function cfturnstile_settings_list($all = false) {
         'memberpress/memberpress.php' => array(
             'cfturnstile_mepr_login',
             'cfturnstile_mepr_register',
+            'cfturnstile_mepr_product_ids',
         ),
         'wp-user-frontend/wpuf.php' => array(
             'cfturnstile_wpuf_register',

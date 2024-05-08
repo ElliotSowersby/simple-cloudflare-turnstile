@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.4.0
-Stable Tag: trunk
+Tested up to: 6.5.3
+Stable Tag: 1.25.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -70,7 +70,7 @@ The plugin includes several other features and options:
 * Appearance Mode: Choose if Turnstile is always displayed, or only when an interaction is required.
 * Disable Submit Button: Disable the submit button on forms until the Turnstile challenge is completed.
 * Custom Error Message: Set your own custom error message for failed submissions.
-* Whitelist: Prevent Turnstile from showing for logged in users, or certain IP addresses.
+* Whitelist: Prevent Turnstile from showing for logged in users, or certain IP addresses (wildcards are not supported).
 
 ## Getting Started ##
 
@@ -153,11 +153,9 @@ The support forums are the only place you should submit a support ticket for 100
 
 = Is the plugin free? =
 
-Yes, this anti spam plugin is completely free with no paid version, and does not include any additional data tracking.
+Yes, this plugin is completely free with no paid version, and does not include any additional data tracking.
 
 Cloudflare Turnstile is also a completely free service.
-
-Please consider helping the ongoing development and support of this free plugin by <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post">leaving a review</a> or <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">making a donation</a>.
 
 = Is this better for Data Privacy & GDPR? =
 
@@ -183,7 +181,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
-= Version 1.25.0 -  November 2023 =
+= Version 1.26.0 - 8th May 2024 =
+- New: Added option to whitelist certain "User Agents" in the "Whitelist Settings" section to the settings page.
+- Tweak: Made a few small changes to the admin settings page.
+- Dev: Added a filter ("cfturnstile_widget_disable") to allow skipping Turnstile check and hiding the Turnstile widget programmatically.
+- Code Fork: auutstudio/simple-cloudflare-turnstile-sometimes
+-- New: Added an option to only show Turnstile on specific MemberPress registration forms, based on a declared list of Membership Product IDs.
+-- Tweak: Clarify that the Whitelist IP option does not support wildcards.
+-- Tweak: Clarify that WPForms has a redundant place in its own settings to configure Turnstile.
+
+= Version 1.25.0 - 7th November 2023 =
 - New: Added compatibility with the "Clean Login" plugin.
 - New: Added an option to only show Turnstile on the default WordPress login and registration form, and not on any other similar forms added by plugins. This is enabled by default for new installs.
 - New: Added a new "Extra Failure Message" option, in advanced settings, which will show a custom notice to the user, under the widget, if the Turnstile challenge fails.

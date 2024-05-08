@@ -13,7 +13,14 @@ if (!defined('ABSPATH')) {
  * @param string $class
  */
 function cfturnstile_field_show($button_id = '', $callback = '', $form_name = '', $unique_id = '', $class = '') {
+	// Hook to not show
+	$hide = apply_filters('cfturnstile_widget_disable', false);
+	if($hide) {
+		return;
+	}
+	// Check if whitelisted
 	if(!cfturnstile_whitelisted()) {
+		// Show Turnstile
 		do_action("cfturnstile_enqueue_scripts");
 		do_action("cfturnstile_before_field", esc_attr($unique_id));
 		$key = sanitize_text_field(get_option('cfturnstile_key'));
@@ -61,7 +68,7 @@ function cfturnstile_disable_button_styles($button_id) {
  */
 add_action('cfturnstile_after_field', 'cfturnstile_always_br', 15, 1);
 function cfturnstile_always_br($unique_id) {
-	if(get_option('cfturnstile_appearance') == 'always') {
+	if(!get_option('cfturnstile_appearance') || get_option('cfturnstile_appearance') == 'always') {
 		?>
 		<br class="cf-turnstile-br cf-turnstile-br<?php echo esc_attr($unique_id); ?>">
 		<?php
@@ -137,15 +144,25 @@ function cfturnstile_check($postdata = "") {
 
 	$results = array();
 
+	// Check if whitelisted
 	if(cfturnstile_whitelisted()) {
 		$results['success'] = true;
 		return $results;
 	}
 
+	// Hook to allow custom skip
+	$skip = apply_filters('cfturnstile_widget_disable', false);
+	if($skip) {
+		$results['success'] = true;
+		return $results;
+	}
+
+	// Check if POST data is empty
 	if (empty($postdata) && isset($_POST['cf-turnstile-response'])) {
 		$postdata = sanitize_text_field($_POST['cf-turnstile-response']);
 	}
 
+	// Get Turnstile Keys from Settings
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	$secret = sanitize_text_field(get_option('cfturnstile_secret'));
 

@@ -17,7 +17,7 @@ function cfturnstile_whitelisted() {
     if(get_option('cfturnstile_whitelist_users') && is_user_logged_in()) {
         $whitelisted = true;
     }
-    // If the IP address is within the list of IPs in get_option('cfturnstile_whitelist_ips') whist is a textarea field seperated one per line
+    // If the IP address is within the list of IPs in get_option('cfturnstile_whitelist_ips')
     if(get_option('cfturnstile_whitelist_ips')) {
         $whitelist = get_option('cfturnstile_whitelist_ips');
         $whitelist_ips = explode("\n", str_replace("\r", "", $whitelist));
@@ -30,6 +30,20 @@ function cfturnstile_whitelisted() {
             }
             // Check if the IP is exactly equal
             if ($current_ip && $current_ip == $whitelist_ip) {
+                $whitelisted = true;
+                break;
+            }
+        }
+    }
+    // If the User Agent is within the list of User Agents in get_option('cfturnstile_whitelist_agents')
+    if(get_option('cfturnstile_whitelist_agents')) {
+        $whitelist = get_option('cfturnstile_whitelist_agents');
+        $whitelist_agents = explode("\n", str_replace("\r", "", $whitelist));
+        $current_agent = sanitize_text_field($_SERVER['HTTP_USER_AGENT']);
+        foreach ($whitelist_agents as $whitelist_agent) {
+            $whitelist_agent = sanitize_text_field(trim($whitelist_agent));
+            // Check if the User Agent contains the whitelist agent
+            if (strpos($current_agent, $whitelist_agent) !== false) {
                 $whitelisted = true;
                 break;
             }
