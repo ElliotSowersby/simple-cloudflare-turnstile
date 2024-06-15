@@ -1044,53 +1044,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Elementor Forms
-			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) { ?>
-				<button type="button" class="sct-accordion"><?php echo esc_html__('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
-				<div class="sct-panel">
-
-					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
-
-						<tr valign="top">
-							<th scope="row">
-								<?php echo esc_html__('Enable on all Elementor Forms', 'simple-cloudflare-turnstile'); ?>
-							</th>
-							<td><input type="checkbox" name="cfturnstile_elementor" <?php if (get_option('cfturnstile_elementor')) { ?>checked<?php } ?>></td>
-						</tr>
-
-					</table>
-
-					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Elementor Pro Forms.', 'simple-cloudflare-turnstile'); ?>
-
-					<table class="form-table" style="margin-bottom: -15px;">
-
-						<tr valign="top">
-							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
-							<td>
-								<select name="cfturnstile_elementor_pos">
-									<option value="before" <?php if (!get_option('cfturnstile_elementor_pos') || get_option('cfturnstile_elementor_pos') == "before") { ?>selected<?php } ?>>
-										<?php esc_html_e('Before Button', 'simple-cloudflare-turnstile'); ?>
-									</option>
-									<option value="after" <?php if (get_option('cfturnstile_elementor_pos') == "after") { ?>selected<?php } ?>>
-										<?php esc_html_e('After Button', 'simple-cloudflare-turnstile'); ?>
-									</option>
-									<option value="afterform" <?php if (get_option('cfturnstile_elementor_pos') == "afterform") { ?>selected<?php } ?>>
-										<?php esc_html_e('After Form', 'simple-cloudflare-turnstile'); ?>
-									</option>
-								</select>
-							</td>
-						</tr>
-
-					</table>
-
-				</div>
-			<?php
-			} else {
-				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . esc_html__('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
-			}
-			?>
-
-	<?php // PRO Elements Forms
-			if ( cft_is_plugin_active('pro-elements/pro-elements.php') ) { ?>
+			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') || cft_is_plugin_active('pro-elements/pro-elements.php') ) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
