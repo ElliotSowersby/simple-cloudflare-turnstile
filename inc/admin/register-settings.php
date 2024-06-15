@@ -122,6 +122,10 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',
         ),
+        'pro-elements/pro-elements.php' => array(
+            'cfturnstile_elementor',
+            'cfturnstile_elementor_pos',
+        ),
         'ultimate-member/ultimate-member.php' => array(
             'cfturnstile_um_login',
             'cfturnstile_um_register',
