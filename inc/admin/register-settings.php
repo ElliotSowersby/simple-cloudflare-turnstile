@@ -90,6 +90,11 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_wpforms_pos',
             'cfturnstile_wpforms_disable',
         ),
+        'wpforms/wpforms.php' => array(
+            'cfturnstile_wpforms',
+            'cfturnstile_wpforms_pos',
+            'cfturnstile_wpforms_disable',
+        ),
         'fluentform/fluentform.php' => array(
             'cfturnstile_fluent',
             'cfturnstile_fluent_disable',

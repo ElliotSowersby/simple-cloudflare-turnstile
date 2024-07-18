@@ -62,6 +62,10 @@ if(get_option('cfturnstile_elementor')) {
   // Reset Turnstile field on Elementor form submit
   add_action('elementor-pro/forms/pre_render','cfturnstile_field_elementor_form_submit', 10, 2);
   function cfturnstile_field_elementor_form_submit($instance, $form) {
+    if(!wp_script_is('cfturnstile', 'enqueued')) {
+      $defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
+      wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js", array(), null, $defer);
+    }
   	?>
     <script>
     jQuery(document).ready(function() {

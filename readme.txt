@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.5.3
-Stable Tag: 1.26.2
+Tested up to: 6.6.0
+Stable Tag: 1.26.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -180,6 +180,12 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.26.3 - 18th July 2024 =
+- Tweak: Added a message to state that it is not currently compatible with WooCommerce "block-based" checkout.
+- Fix: Fixed an issue with not being able to save the WP Forms integration settings if using the Pro version of WP Forms.
+- Other: Tested with WordPress 6.6.0
+- Other: Tested with WooCommerce 9.1.2
 
 = Version 1.26.2 - 8th May 2024 =
 - Fix: Fixed an issue with the new "ONLY enable for these Membership IDs" option with the MemberPress integration.

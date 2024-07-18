@@ -25,6 +25,11 @@ function cfturnstile_field_woo_reset() {
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {
+	$checkout_page_id = get_option('woocommerce_checkout_page_id');
+	$checkout_page_content = get_post_field('post_content', $checkout_page_id);
+	if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {
+		return;
+	}
 	$guest_only = esc_attr( get_option('cfturnstile_guest_only') );
 	if( !$guest_only || ($guest_only && !is_user_logged_in()) ) {
 		if(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
@@ -55,6 +60,16 @@ if(get_option('cfturnstile_woo_checkout')) {
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
+
+		// Skip if WooCommerce Checkout block is used
+		$checkout_page_id = get_option('woocommerce_checkout_page_id');
+		if($checkout_page_id) {
+			$checkout_page_content = get_post_field('post_content', $checkout_page_id);
+			if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {
+				return;
+			}
+		}
+
 		// Skip if Turnstile disabled for payment method
 		$skip = 0;
 		if ( isset( $_POST['payment_method'] ) ) {
