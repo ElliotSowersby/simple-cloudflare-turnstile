@@ -64,7 +64,7 @@ if(get_option('cfturnstile_elementor')) {
   function cfturnstile_field_elementor_form_submit($instance, $form) {
     if(!wp_script_is('cfturnstile', 'enqueued')) {
       $defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
-      wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js", array(), null, $defer);
+      wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, $defer);
     }
   	?>
     <script>
