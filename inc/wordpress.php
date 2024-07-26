@@ -138,6 +138,9 @@ if(get_option('cfturnstile_reset')) {
   	add_action('lostpassword_form','cfturnstile_field_reset');
   	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
   	function cfturnstile_wp_reset_check($validation_errors) {
+
+		if(isset($_POST['woocommerce-lost-password-nonce'])) { return; } // Skip Woo
+
 		if(stripos($_SERVER["SCRIPT_NAME"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
   			$check = cfturnstile_check();
   			$success = $check['success'];
