@@ -129,7 +129,7 @@ function cfturnstile_force_render($unique_id = '') {
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {
 	?>
-	<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");e&&turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html($key); ?>"})}));</script>
+	<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");e&&!e.innerHTML.trim()&&turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html($key); ?>"})}));</script>
 	<?php
 	}
 }

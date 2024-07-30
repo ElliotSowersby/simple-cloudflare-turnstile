@@ -15,7 +15,7 @@ if(get_option('cfturnstile_forminator')) {
 
             // if cfturnstile script doesnt exist, enqueue it
             if(!wp_script_is('cfturnstile', 'enqueued')) {
-                wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
+                wp_register_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', 'true');
                 wp_print_scripts('cfturnstile');
             }
             echo "<style>#cf-turnstile-fmntr-".esc_html($form_id)." { margin-left: 0px !important; }</style>";
