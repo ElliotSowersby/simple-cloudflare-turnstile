@@ -1442,8 +1442,92 @@ function cfturnstile_settings_page() {
 				<input type="checkbox" name="cfturnstile_uninstall_remove" <?php if (get_option('cfturnstile_uninstall_remove')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
 				<?php echo esc_html__('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
 			</div>
+
+			<div style="font-size: 10px; margin-top: 15px;">
+				<!-- Enable Logging -->
+				<input type="checkbox" name="cfturnstile_log_enable" <?php if (get_option('cfturnstile_log_enable')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
+				<?php echo esc_html__('Enable debug logging of Turnstile form submission events.', 'simple-cloudflare-turnstile'); ?>
+			</div>
 			
 		</form>
+
+		<?php if(get_option('cfturnstile_log_enable')) { ?>
+		<br/><button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo esc_html__('Turnstile Debug Log', 'simple-cloudflare-turnstile'); ?></button>
+			<div class="sct-panel">
+
+				<?php
+				$cfturnstile_log = get_option('cfturnstile_log');
+				/* 	$cfturnstile_log[] = array(
+					'date' => date('Y-m-d H:i:s'),
+					'success' => $success,
+					'error' => $errors,
+					'ip' => $_SERVER['REMOTE_ADDR'],
+					'page' => $_SERVER['REQUEST_URI'],
+				);
+				*/
+				if ($cfturnstile_log) {
+				echo '<div style="max-height: 200px; overflow: auto; border: 1px solid #ddd; padding: 0px;">';
+					echo '<table>';
+						echo '<tr valign="top">';
+						echo '<td>';
+						echo '<table class="widefat">';
+						echo '<thead>';
+						echo '<tr>';
+						echo '<th>' . esc_html__('Date', 'simple-cloudflare-turnstile') . '</th>';
+						echo '<th>' . esc_html__('Success', 'simple-cloudflare-turnstile') . '</th>';
+						echo '<th>' . esc_html__('Response', 'simple-cloudflare-turnstile') . '</th>';
+						echo '<th>' . esc_html__('Info', 'simple-cloudflare-turnstile') . '</th>';
+						echo '</tr>';
+						echo '</thead>';
+						echo '<tbody>';
+						$cfturnstile_log = array_reverse($cfturnstile_log);
+						foreach ($cfturnstile_log as $log) {
+							echo '<tr>';
+							$log['date'] = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log['date']));
+							echo '<td>' . esc_html($log['date']) . '</td>';
+							echo '<td>' . ($log['success'] ? '<span style="color: green;">Yes</span>' : '<span style="color: red;">No</span>') . '</td>';
+							echo '<td>';
+							if(!$log['success']) {
+								$error_val = $log['error'];
+								echo esc_html($error_val);
+							} else {
+								echo '<span>' . esc_html__('Success', 'simple-cloudflare-turnstile') . '</span>';
+							}
+							echo '</td>';
+							echo '<td>';
+							echo '<strong>' . esc_html__('IP:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html($log['ip']) . '<br />';
+							echo '<strong>' . esc_html__('URL:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html($log['page']);
+							echo '</td>';
+						}
+						echo '</tr>';
+						echo '</tbody>';
+						echo '</table>';
+						echo '</td>';
+						echo '</tr>';
+					echo '</table>';
+				echo '</div>';
+				// Error code meanings
+				echo '<div style="margin-top: 20px; font-size: 9px;">';
+				echo '<strong><u>' . esc_html__('Error Codes', 'simple-cloudflare-turnstile') . '</strong></u><br />';
+				echo '- <strong>missing-input-response:</strong> ' . cfturnstile_error_message('missing-input-response') . esc_html__(' (Visitor submitted form when Turnstile was not successfully completed.)', 'simple-cloudflare-turnstile') . '<br />';
+				echo '- <strong>missing-input-secret:</strong> ' . cfturnstile_error_message('missing-input-secret') . '<br />';
+				echo '- <strong>invalid-input-secret:</strong> ' . cfturnstile_error_message('invalid-input-secret') . '<br />';
+				echo '- <strong>invalid-input-response:</strong> ' . cfturnstile_error_message('invalid-input-response') . '<br />';
+				echo '- <strong>bad-request:</strong> ' . cfturnstile_error_message('bad-request') . '<br />';
+				echo '- <strong>timeout-or-duplicate:</strong> ' . cfturnstile_error_message('timeout-or-duplicate') . '<br />';
+				echo '- <strong>internal-error:</strong> ' . cfturnstile_error_message('internal-error') . '<br />';
+				echo '</div>';
+				} else {
+					echo '<p>' . esc_html__('No events logged yet.', 'simple-cloudflare-turnstile') . '</p>';
+				}
+				?>
+			</div>
+		<?php } else {
+			if(get_option('cfturnstile_log')) {
+				delete_option('cfturnstile_log');
+			}
+		}
+		?>
 
 		<div class="sct-admin-promo">
 

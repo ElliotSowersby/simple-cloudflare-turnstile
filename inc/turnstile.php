@@ -105,7 +105,7 @@ function cfturnstile_failed_text($unique_id) {
 	$failed_text = get_option('cfturnstile_failure_message');
 	if(!$failed_text) { $failed_text = esc_html__('Failed to verify you are human. Please contact us if you are having issues.', 'simple-cloudflare-turnstile'); }
 	?>
-	<div class="cf-turnstile-failed-text<?php echo esc_attr($unique_id); ?>"></div>
+	<div class="cf-turnstile-failed-text cf-turnstile-failed-text<?php echo esc_attr($unique_id); ?>"></div>
 	<script>
 	function cfturnstileErrorCallback() {
 		var cfTurnstileFailedText = document.querySelector('.cf-turnstile-failed-text<?php echo esc_html($unique_id); ?>');
@@ -129,7 +129,7 @@ function cfturnstile_force_render($unique_id = '') {
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {
 	?>
-	<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");e&&!e.innerHTML.trim()&&turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html($key); ?>"})}));</script>
+	<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");e&&!e.innerHTML.trim()&&(turnstile.remove("#cf-turnstile<?php echo esc_html($unique_id); ?>"),turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html($key); ?>"}))}));</script>
 	<?php
 	}
 }
@@ -195,6 +195,8 @@ function cfturnstile_check($postdata = "") {
 			}
 		}
 
+		do_action('cfturnstile_after_check', $response, $results);
+
 		return $results;
 
 	} else {
@@ -203,6 +205,42 @@ function cfturnstile_check($postdata = "") {
 
 	}
 	
+}
+
+/* 
+ * Add Turnstile check to a "cfturnstile_log" option
+ */
+add_action('cfturnstile_after_check', 'cfturnstile_log', 10, 2);
+function cfturnstile_log($response, $results) {
+	if(get_option('cfturnstile_log_enable')) {
+		// Get log
+		$cfturnstile_log = get_option('cfturnstile_log');
+		if(!$cfturnstile_log) {
+			$cfturnstile_log = array();
+		}
+		// Get Values
+		$error_code = $results['error_code'];
+		// Success Yes or No
+		if($response->success) {
+			$success = true;
+		} else {
+			$success = false;
+		}
+		// Add to log
+		$cfturnstile_log[] = array(
+			'date' => date('Y-m-d H:i:s'),
+			'success' => $success,
+			'error' => $error_code,
+			'ip' => $_SERVER['REMOTE_ADDR'],
+			'page' => $_SERVER['REQUEST_URI'],
+		);
+		// Max 50
+		if(count($cfturnstile_log) > 50) {
+			array_shift($cfturnstile_log);
+		}
+		// Update log
+		update_option('cfturnstile_log', $cfturnstile_log);
+	}
 }
 
 /**

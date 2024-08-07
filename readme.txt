@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.6.1
-Stable Tag: 1.26.6
+Stable Tag: 1.27.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -180,6 +180,12 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.27.0 - 7th August 2024 =
+- New: Added a new option in the admin settings page to "enable debug logging of Turnstile form submission events". This will add a log event every time a form is submitted with Turnstile enabled, and display the log at the bottom of the settings page.
+- Fix: Fixed issue with Turnstile not rendering on Elementor popup forms.
+- Fix: Fixed issue with Turnstile not resetting properly on Contact Form 7 causing it to display twice on submission error.
+- Fix: Fixed issue with Turnstile showing twice in some cases.
 
 = Version 1.26.6 - 27th July 2024 =
 - Fix: Fixed issue with Turnstile showing twice on Forminator forms in some cases.

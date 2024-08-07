@@ -19,7 +19,7 @@ if(get_option('cfturnstile_gravity')) {
     .gf-turnstile-container { width: 100%; }
     .gform_footer.top_label { display: flex; flex-wrap: wrap; }
     </style>
-    <script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('#gform_<?php echo esc_html($form_id); ?>').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-gf-<?php echo esc_html($form_id); ?>')){setTimeout(function(){turnstile.render('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');},10000)}})})});</script>
+    <script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('#gform_<?php echo esc_html($form_id); ?>').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-gf-<?php echo esc_html($form_id); ?>')){setTimeout(function(){turnstile.remove('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');turnstile.render('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');},10000)}})})});</script>
     <?php
   	$thecontent = ob_get_contents();
   	ob_end_clean();

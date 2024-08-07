@@ -103,7 +103,8 @@ if(get_option('cfturnstile_register')) {
 		// Check skip
 		if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) { return $errors; } // Skip XMLRPC
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) { return $errors; } // Skip REST API
-		if(isset($_POST['woocommerce-register-nonce'])) { return $errors; } // Skip Woo
+		if ( isset($_POST['woocommerce-register-nonce']) && wp_verify_nonce( sanitize_text_field($_POST['woocommerce-register-nonce']), 'woocommerce-register' ) ) { return $errors; } // Skip Woo
+		if ( isset($_POST['edd_register_nonce']) && wp_verify_nonce( sanitize_text_field($_POST['edd_register_nonce']), 'edd-register-nonce' ) ) { return $errors; } // Skip EDD
 
 		// Skip if not on login page
 		if(get_option('cfturnstile_register_only', 0)) {
