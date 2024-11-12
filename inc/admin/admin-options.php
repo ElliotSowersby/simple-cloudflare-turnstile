@@ -169,24 +169,46 @@ function cfturnstile_settings_page() {
 						<select name="cfturnstile_language">
 						<?php
 						$languages = array(
-							'auto' => esc_html__( 'Auto Detect', 'simple-cloudflare-turnstile' ),
-							'ar-eg' => esc_html__( 'Arabic', 'simple-cloudflare-turnstile' ),
-							'de' => esc_html__( 'German', 'simple-cloudflare-turnstile' ),
-							'en' => esc_html__( 'English', 'simple-cloudflare-turnstile' ),
-							'es' => esc_html__( 'Spanish', 'simple-cloudflare-turnstile' ),
-							'fa' => esc_html__( 'Persian', 'simple-cloudflare-turnstile' ),
-							'fr' => esc_html__( 'French', 'simple-cloudflare-turnstile' ),
-							'id' => esc_html__( 'Indonesian', 'simple-cloudflare-turnstile' ),
-							'it' => esc_html__( 'Italian', 'simple-cloudflare-turnstile' ),
-							'ja' => esc_html__( 'Japanese', 'simple-cloudflare-turnstile' ),
-							'ko' => esc_html__( 'Korean', 'simple-cloudflare-turnstile' ),
-							'nl' => esc_html__( 'Dutch', 'simple-cloudflare-turnstile' ),
-							'pl' => esc_html__( 'Polish', 'simple-cloudflare-turnstile' ),
-							'pt-br' => esc_html__( 'Portuguese (Brazil)', 'simple-cloudflare-turnstile' ),
-							'ru' => esc_html__( 'Russian', 'simple-cloudflare-turnstile' ),
-							'tr' => esc_html__( 'Turkish', 'simple-cloudflare-turnstile' ),
-							'zh-cn' => esc_html__( 'Chinese (Simplified)', 'simple-cloudflare-turnstile' ),
-							'zh-tw' => esc_html__( 'Chinese (Traditional)', 'simple-cloudflare-turnstile' )
+							'auto'   => esc_html__( 'Auto Detect', 'simple-cloudflare-turnstile' ),
+							'ar-eg'  => esc_html__( 'Arabic (Egypt)', 'simple-cloudflare-turnstile' ),
+							'bg-bg'  => esc_html__( 'Bulgarian (Bulgaria)', 'simple-cloudflare-turnstile' ),
+							'zh-cn'  => esc_html__( 'Chinese (Simplified, China)', 'simple-cloudflare-turnstile' ),
+							'zh-tw'  => esc_html__( 'Chinese (Traditional, Taiwan)', 'simple-cloudflare-turnstile' ),
+							'hr-hr'  => esc_html__( 'Croatian (Croatia)', 'simple-cloudflare-turnstile' ),
+							'cs-cz'  => esc_html__( 'Czech (Czech Republic)', 'simple-cloudflare-turnstile' ),
+							'da-dk'  => esc_html__( 'Danish (Denmark)', 'simple-cloudflare-turnstile' ),
+							'nl-nl'  => esc_html__( 'Dutch (Netherlands)', 'simple-cloudflare-turnstile' ),
+							'en-us'  => esc_html__( 'English (United States)', 'simple-cloudflare-turnstile' ),
+							'fa-ir'  => esc_html__( 'Farsi (Iran)', 'simple-cloudflare-turnstile' ),
+							'fi-fi'  => esc_html__( 'Finnish (Finland)', 'simple-cloudflare-turnstile' ),
+							'fr-fr'  => esc_html__( 'French (France)', 'simple-cloudflare-turnstile' ),
+							'de-de'  => esc_html__( 'German (Germany)', 'simple-cloudflare-turnstile' ),
+							'el-gr'  => esc_html__( 'Greek (Greece)', 'simple-cloudflare-turnstile' ),
+							'he-il'  => esc_html__( 'Hebrew (Israel)', 'simple-cloudflare-turnstile' ),
+							'hi-in'  => esc_html__( 'Hindi (India)', 'simple-cloudflare-turnstile' ),
+							'hu-hu'  => esc_html__( 'Hungarian (Hungary)', 'simple-cloudflare-turnstile' ),
+							'id-id'  => esc_html__( 'Indonesian (Indonesia)', 'simple-cloudflare-turnstile' ),
+							'it-it'  => esc_html__( 'Italian (Italy)', 'simple-cloudflare-turnstile' ),
+							'ja-jp'  => esc_html__( 'Japanese (Japan)', 'simple-cloudflare-turnstile' ),
+							'tlh'    => esc_html__( 'Klingon (Qo’noS)', 'simple-cloudflare-turnstile' ),
+							'ko-kr'  => esc_html__( 'Korean (Korea)', 'simple-cloudflare-turnstile' ),
+							'lt-lt'  => esc_html__( 'Lithuanian (Lithuania)', 'simple-cloudflare-turnstile' ),
+							'ms-my'  => esc_html__( 'Malay (Malaysia)', 'simple-cloudflare-turnstile' ),
+							'nb-no'  => esc_html__( 'Norwegian Bokmål (Norway)', 'simple-cloudflare-turnstile' ),
+							'pl-pl'  => esc_html__( 'Polish (Poland)', 'simple-cloudflare-turnstile' ),
+							'pt-br'  => esc_html__( 'Portuguese (Brazil)', 'simple-cloudflare-turnstile' ),
+							'ro-ro'  => esc_html__( 'Romanian (Romania)', 'simple-cloudflare-turnstile' ),
+							'ru-ru'  => esc_html__( 'Russian (Russia)', 'simple-cloudflare-turnstile' ),
+							'sr-ba'  => esc_html__( 'Serbian (Bosnia and Herzegovina)', 'simple-cloudflare-turnstile' ),
+							'sk-sk'  => esc_html__( 'Slovak (Slovakia)', 'simple-cloudflare-turnstile' ),
+							'sl-si'  => esc_html__( 'Slovenian (Slovenia)', 'simple-cloudflare-turnstile' ),
+							'es-es'  => esc_html__( 'Spanish (Spain)', 'simple-cloudflare-turnstile' ),
+							'sv-se'  => esc_html__( 'Swedish (Sweden)', 'simple-cloudflare-turnstile' ),
+							'tl-ph'  => esc_html__( 'Tagalog (Philippines)', 'simple-cloudflare-turnstile' ),
+							'th-th'  => esc_html__( 'Thai (Thailand)', 'simple-cloudflare-turnstile' ),
+							'tr-tr'  => esc_html__( 'Turkish (Turkey)', 'simple-cloudflare-turnstile' ),
+							'uk-ua'  => esc_html__( 'Ukrainian (Ukraine)', 'simple-cloudflare-turnstile' ),
+							'vi-vn'  => esc_html__( 'Vietnamese (Vietnam)', 'simple-cloudflare-turnstile' ),
 						);
 						$auto = $languages['auto'];
 						unset($languages['auto']);
@@ -207,52 +229,6 @@ function cfturnstile_settings_page() {
 				</tr>
 
 				<tr valign="top">
-					<th scope="row"><?php echo esc_html__('Appearance Mode', 'simple-cloudflare-turnstile'); ?></th>
-					<td>
-						<select name="cfturnstile_appearance" style="max-width: 240px;">
-						<?php
-						$appearances = array(
-							'always' => esc_html__( 'Always', 'simple-cloudflare-turnstile' ),
-							// 'execute' => esc_html__( 'Execute', 'simple-cloudflare-turnstile' ), // Not really needed
-							'interaction-only' => esc_html__( 'Interaction Only', 'simple-cloudflare-turnstile' ),
-						);
-						foreach ($appearances as $code => $name) {
-							$selected = '';
-							if(get_option('cfturnstile_appearance') == $code) { $selected = 'selected'; }
-							?>
-								<option value="<?php echo esc_attr($code); ?>" <?php echo esc_attr($selected); ?>>
-									<?php echo esc_html($name); ?>
-								</option>
-							<?php
-						}
-						?>
-						</select>
-						<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
-						<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
-						<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
-					</td>
-				</tr>
-				<script>
-					jQuery(document).ready(function($) {
-						function updateDescription(selected) {
-							// Hide all descriptions
-							$('.wcu-appearance-always, .wcu-appearance-execute, .wcu-appearance-interaction-only').hide();
-
-							// Show the relevant description
-							$('.wcu-appearance-' + selected).show();
-						}
-
-						// Update the description on page load
-						updateDescription($("select[name='cfturnstile_appearance']").val());
-
-						// Handle the select change event
-						$("select[name='cfturnstile_appearance']").change(function(){
-							updateDescription($(this).val());
-						});
-					});
-				</script>
-
-				<tr valign="top">
 					<th scope="row">
 						<?php echo esc_html__('Disable Submit Button', 'simple-cloudflare-turnstile'); ?>
 					</th>
@@ -271,6 +247,51 @@ function cfturnstile_settings_page() {
 				</p>
 
 				<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Widget Size', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<select name="cfturnstile_size" style="width: 100%;">
+								<option value="normal" <?php if (!get_option('cfturnstile_size') || get_option('cfturnstile_size') == "normal") { ?>selected<?php } ?>>
+									<?php esc_html_e('Normal (300px)', 'simple-cloudflare-turnstile'); ?>
+								</option>
+								<option value="flexible" <?php if (get_option('cfturnstile_size') == "flexible") { ?>selected<?php } ?>>
+									<?php esc_html_e('Flexible (100%)', 'simple-cloudflare-turnstile'); ?>
+								</option>
+								<option value="compact" <?php if (get_option('cfturnstile_size') == "compact") { ?>selected<?php } ?>>
+									<?php esc_html_e('Compact (150px)', 'simple-cloudflare-turnstile'); ?>
+								</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Appearance Mode', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<select name="cfturnstile_appearance" style="width: 100%;">
+							<?php
+							$appearances = array(
+								'always' => esc_html__( 'Always', 'simple-cloudflare-turnstile' ),
+								// 'execute' => esc_html__( 'Execute', 'simple-cloudflare-turnstile' ), // Not really needed
+								'interaction-only' => esc_html__( 'Interaction Only', 'simple-cloudflare-turnstile' ),
+							);
+							foreach ($appearances as $code => $name) {
+								$selected = '';
+								if(get_option('cfturnstile_appearance') == $code) { $selected = 'selected'; }
+								?>
+									<option value="<?php echo esc_attr($code); ?>" <?php echo esc_attr($selected); ?>>
+										<?php echo esc_html($name); ?>
+									</option>
+								<?php
+							}
+							?>
+							</select>
+							<br/><br/>
+							<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
+							<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
+							<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						</td>
+					</tr>
 
 					<tr valign="top">
 						<th scope="row">
@@ -1063,7 +1084,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // Elementor Forms
-			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') ) { ?>
+			if ( cft_is_plugin_active('elementor-pro/elementor-pro.php') || cft_is_plugin_active('pro-elements/pro-elements.php') ) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -1107,7 +1128,7 @@ function cfturnstile_settings_page() {
 				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . esc_html__('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
-
+	
 			<?php if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">

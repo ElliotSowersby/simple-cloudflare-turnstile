@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.6.1
-Stable Tag: 1.27.0
+Tested up to: 6.7.0
+Stable Tag: 1.27.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -180,6 +180,16 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.27.1 - 10th November 2024 =
+- New: Added a "Widget Size" option to the advanced settings section.
+- Tweak: Moved the "Appearance Mode" option to the advanced settings section.
+- Tweak: Added support for Elementor PRO Elements.
+- Tweak: Added the new supported languages.
+- Fix: Fixed a "WPCF7_TagGenerator::add()" error with the Contact Form 7 integration.
+- Fix: Prevent Turnstile from showing on the order received page in some cases, such as with the CheckoutWC plugin.
+- Other: Tested with WordPress 6.7.0
+- Other: Tested with WooCommerce 9.3.3
 
 = Version 1.27.0 - 7th August 2024 =
 - New: Added a new option in the admin settings page to "enable debug logging of Turnstile form submission events". This will add a log event every time a form is submitted with Turnstile enabled, and display the log at the bottom of the settings page.

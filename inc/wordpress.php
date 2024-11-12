@@ -175,12 +175,13 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 			$theme = esc_attr( get_option('cfturnstile_theme') );
 			$language = esc_attr(get_option('cfturnstile_language'));
 			$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
+			$cfturnstile_size = esc_attr(get_option('cfturnstile_size'), 'normal');
 			if(!$language) { $language = 'auto'; }
 			$submit_before = '';
 			$submit_after = '';
 			$callback = '';
 			if(get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
-			$submit_before .= '<span id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile cf-turnstile-comments" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-retry="auto" data-retry-interval="1000"></span>';
+			$submit_before .= '<span id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile cf-turnstile-comments" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-size="'.sanitize_text_field($cfturnstile_size).'" data-retry="auto" data-retry-interval="1000"></span>';
 			$submit_before .= '<br class="cf-turnstile-br cf-turnstile-br-comments">';
 			if(get_option('cfturnstile_disable_button')) {
 				$submit_before .= '<span class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';

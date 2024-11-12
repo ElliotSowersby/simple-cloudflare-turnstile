@@ -25,6 +25,9 @@ function cfturnstile_field_woo_reset() {
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {
+	if(is_wc_endpoint_url('order-received')) {
+		return;
+	}
 	$checkout_page_id = get_option('woocommerce_checkout_page_id');
 	$checkout_page_content = get_post_field('post_content', $checkout_page_id);
 	if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {

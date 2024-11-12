@@ -92,7 +92,7 @@ function cfturnstile_cf7_add_form_tag_button() {
 add_action('wpcf7_admin_init', 'cfturnstile_cf7_add_tag_generator_button', 55, 0);
 function cfturnstile_cf7_add_tag_generator_button() {
 	$tag_generator = WPCF7_TagGenerator::get_instance();
-	$tag_generator->add('cf7-simple-turnstile', esc_html__('cloudflare turnstile', 'contact-form-7'), 'cfturnstile_cf7_tag_generator_button', '');
+	$tag_generator->add('cf7-simple-turnstile', esc_html__('cloudflare turnstile', 'contact-form-7'), 'cfturnstile_cf7_tag_generator_button', array( 'version' => '2' ) );
 }
 
 // Insert tag form

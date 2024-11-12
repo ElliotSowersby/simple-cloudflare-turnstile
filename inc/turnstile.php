@@ -27,6 +27,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		$theme = sanitize_text_field(get_option('cfturnstile_theme'));
 		$language = sanitize_text_field(get_option('cfturnstile_language'));
 		$appearance = sanitize_text_field(get_option('cfturnstile_appearance', 'always'));
+		$cfturnstile_size = sanitize_text_field(get_option('cfturnstile_size'), 'normal');
 			if(!$language) { $language = 'auto'; }
 		?>
 		<div id="cf-turnstile<?php echo esc_attr($unique_id); ?>"
@@ -34,6 +35,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		data-sitekey="<?php echo esc_attr($key); ?>"
 		data-theme="<?php echo esc_attr($theme); ?>"
 		data-language="<?php echo esc_attr($language); ?>"
+		data-size="<?php echo esc_attr($cfturnstile_size); ?>"
 		data-retry="auto" data-retry-interval="1000"
 		data-action="<?php echo esc_attr($form_name); ?>"
 		<?php if(get_option('cfturnstile_failure_message_enable')) { ?>
@@ -86,6 +88,9 @@ function cfturnstile_always_br($unique_id) {
  */
 add_action('cfturnstile_after_field', 'cfturnstile_admin_styles', 20, 1);
 function cfturnstile_admin_styles($unique_id) {
+	if(defined('DOING_AJAX') || is_admin()) {
+		return;
+	}
 	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
 	if ((!is_page() && !is_single() && !$is_checkout) || strpos($_SERVER['PHP_SELF'], 'wp-login.php') !== false) {
 		?>

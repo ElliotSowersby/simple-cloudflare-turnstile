@@ -45,6 +45,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_defer_scripts',
         'cfturnstile_language',
         'cfturnstile_appearance',
+        'cfturnstile_size',
         'cfturnstile_failure_message_enable',
         'cfturnstile_failure_message',
         'cfturnstile_login',
@@ -124,6 +125,10 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_bbpress_align',
         ),
         'elementor-pro/elementor-pro.php' => array(
+            'cfturnstile_elementor',
+            'cfturnstile_elementor_pos',
+        ),
+        'pro-elements/pro-elements.php' => array(
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',
         ),

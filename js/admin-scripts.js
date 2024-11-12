@@ -17,3 +17,23 @@ for (i = 0; i < acc.length; i++) {
 	}
   });
 }
+/* Appearance Mode Description */
+document.addEventListener("DOMContentLoaded", function() {
+    function updateDescription(selected) {
+        // Hide all descriptions
+        document.querySelectorAll('.wcu-appearance-always, .wcu-appearance-execute, .wcu-appearance-interaction-only')
+            .forEach(element => element.style.display = 'none');
+
+        // Show the relevant description
+        document.querySelector('.wcu-appearance-' + selected).style.display = 'block';
+    }
+
+    // Update the description on page load
+    const appearanceSelect = document.querySelector("select[name='cfturnstile_appearance']");
+    updateDescription(appearanceSelect.value);
+
+    // Handle the select change event
+    appearanceSelect.addEventListener("change", function() {
+        updateDescription(this.value);
+    });
+});
