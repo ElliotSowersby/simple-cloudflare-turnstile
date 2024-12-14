@@ -100,6 +100,10 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_fluent',
             'cfturnstile_fluent_disable',
         ),
+        'jetpack/jetpack.php' => array(
+            'cfturnstile_jetpack',
+            'cfturnstile_jetpack_disable',
+        ),
         'formidable/formidable.php' => array(
             'cfturnstile_formidable',
             'cfturnstile_formidable_pos',
