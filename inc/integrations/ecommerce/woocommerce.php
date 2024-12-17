@@ -28,11 +28,7 @@ function cfturnstile_field_checkout() {
 	if(is_wc_endpoint_url('order-received')) {
 		return;
 	}
-	$checkout_page_id = get_option('woocommerce_checkout_page_id');
-	$checkout_page_content = get_post_field('post_content', $checkout_page_id);
-	if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {
-		return;
-	}
+
 	$guest_only = esc_attr( get_option('cfturnstile_guest_only') );
 	if( !$guest_only || ($guest_only && !is_user_logged_in()) ) {
 		if(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
@@ -44,35 +40,49 @@ function cfturnstile_field_checkout() {
 	}
 }
 
+function cfturnstile_render_post_block($block_content) {
+	ob_start();
+	echo $block_content;
+	cfturnstile_field_checkout();
+	$block_content = ob_get_contents();
+	ob_end_clean();
+	return $block_content;
+}
+
+function cfturnstile_render_pre_block($block_content) {
+	ob_start();
+	cfturnstile_field_checkout();
+	echo $block_content;
+	$block_content = ob_get_contents();
+	ob_end_clean();
+	return $block_content;
+}
+
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
 	// WooCommerce Checkout
 	if(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
 		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
+		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_pre_block', 999, 1); // Before Payment block.
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
 		add_action('woocommerce_review_order_after_payment', 'cfturnstile_field_checkout', 10);
+		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_post_block', 999, 1); // After Payment block.
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforebilling") {
 		add_action('woocommerce_before_checkout_billing_form', 'cfturnstile_field_checkout', 10);
+		add_filter('render_block_woocommerce/checkout-contact-information-block', 'cfturnstile_render_pre_block', 999, 1); // Before Contact Information block.
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterbilling") {
 		add_action('woocommerce_after_checkout_billing_form', 'cfturnstile_field_checkout', 10);
+		add_filter('render_block_woocommerce/checkout-shipping-methods-block', 'cfturnstile_render_pre_block', 999, 1); // Before Shipping Methods block.
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
 		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
+		add_filter('render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1); // Before Actions block, not sure if this option is still supported.
+
 	}
 	// CheckoutWC
 	add_action('cfw_after_cart_summary_totals', 'cfturnstile_field_checkout', 10);
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
-
-		// Skip if WooCommerce Checkout block is used
-		$checkout_page_id = get_option('woocommerce_checkout_page_id');
-		if($checkout_page_id) {
-			$checkout_page_content = get_post_field('post_content', $checkout_page_id);
-			if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {
-				return;
-			}
-		}
-
 		// Skip if Turnstile disabled for payment method
 		$skip = 0;
 		if ( isset( $_POST['payment_method'] ) ) {
@@ -108,9 +118,78 @@ if(get_option('cfturnstile_woo_checkout')) {
 			}
 		}
 	}
+	add_action('woocommerce_store_api_checkout_update_order_from_request', 'cfturnstile_woo_checkout_block_check', 10, 2);
+	function cfturnstile_woo_checkout_block_check($order, $request) {
+		// Skip if Turnstile disabled for payment method
+		$skip = 0;
+		if ( $request->get_method() === 'POST' ) {
+			if ( $request->get_param('payment_method') !== null ) {
+				$chosen_payment_method = sanitize_text_field( $request->get_param('payment_method') );
+				// Retrieve the selected payment methods from the cfturnstile_selected_payment_methods option
+			$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+			if(is_array($selected_payment_methods)) {
+				// Check if the chosen payment method is in the selected payment methods array
+					if ( in_array( $chosen_payment_method, $selected_payment_methods, true ) ) {
+						$skip = 1;
+					}
+				}
+			}
+		
+
+			// Start session
+			if (!session_id()) { session_start(); }
+			// Check if already validated
+			if(isset($_SESSION['cfturnstile_checkout_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_checkout_checked']), 'cfturnstile_checkout_check' )) {
+				return;
+			}
+			
+			// Check if guest only enabled
+			$guest = esc_attr( get_option('cfturnstile_guest_only') );
+			// Check
+			if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
+				$extensions = $request->get_param( 'extensions' );
+				if ( empty( $extensions ) ) {
+					throw new \Exception( cfturnstile_failed_message() );
+				}
+				$value = $extensions[ 'simple-cloudflare-turnstile' ];
+				if ( empty( $value ) ) {
+					throw new \Exception( cfturnstile_failed_message() );
+				}
+				$token = $value['token'];	
+				$check = cfturnstile_check( $token );
+				$success = $check['success'];
+				if($success != true) {
+					throw new \Exception( cfturnstile_failed_message() );
+				} else {
+					$nonce = wp_create_nonce( 'cfturnstile_checkout_check' );
+					$_SESSION['cfturnstile_checkout_checked'] = $nonce;
+				}
+			}
+		}
+	}
+
+	add_action('woocommerce_loaded', 'cfturnstile_register_endpoint_data');
+	function cfturnstile_register_endpoint_data() {
+		woocommerce_store_api_register_endpoint_data(
+			array(
+				'endpoint'        => 'checkout',
+				'namespace'       => 'simple-cloudflare-turnstile',
+				'schema_callback' => function() {
+					return array(
+						'token' => array(
+							'description' => __( 'Turnstile token.', 'cfturnstile' ),
+							'type'        => 'string',
+							'context'     => array()
+						),
+					);
+				},
+			)
+		);
+	}
 }
 // On payment complete clear session
 add_action('woocommerce_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
+add_action('woocommerce_store_api_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
 function cfturnstile_woo_checkout_clear($order_id) {
 	if(isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
 }
