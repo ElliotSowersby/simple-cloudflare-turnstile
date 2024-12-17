@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.7.0
-Stable Tag: 1.27.1
+Tested up to: 6.7.1
+Stable Tag: 1.28.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -181,8 +181,10 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
-= Version 1.27.2 - 22nd November 2024 =
+= Version 1.28.0 - 17th December 2024 =
+- New: Added Checkout block and Store API support. (Thanks [@senadir](https://github.com/senadir)) 
 - Fix: Fixed an issue with Turnstile re-rendering when it does not need to in some cases, on WooCommerce checkout.
+- Other: Tested with WooCommerce 9.4.3
 
 = Version 1.27.1 - 10th November 2024 =
 - New: Added a "Widget Size" option to the advanced settings section.
