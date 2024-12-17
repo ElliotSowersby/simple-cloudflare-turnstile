@@ -523,23 +523,6 @@ function cfturnstile_settings_page() {
 							<td><input type="checkbox" name="cfturnstile_woo_reset" <?php if (get_option('cfturnstile_woo_reset')) { ?>checked<?php } ?>></td>
 						</tr>
 
-						<?php
-						$checkout_page_id = get_option('woocommerce_checkout_page_id');
-						$checkout_page_content = get_post_field('post_content', $checkout_page_id);
-						if (strpos($checkout_page_content, 'wp:woocommerce/checkout') !== false) {
-						?>
-
-						<tr valign="top">
-							<th scope="row">
-								<?php echo esc_html__('WooCommerce Checkout', 'simple-cloudflare-turnstile'); ?>
-							</th>
-							<td>
-							<i style="font-size: 12px; color: red;"><?php echo esc_html__("Currently not compatible with the new 'block-based' checkout.", 'simple-cloudflare-turnstile'); ?></i>
-							</td>
-						</tr>
-
-						<?php } else { ?>
-
 						<tr valign="top">
 							<th scope="row">
 								<?php echo esc_html__('WooCommerce Checkout', 'simple-cloudflare-turnstile'); ?>
@@ -573,8 +556,6 @@ function cfturnstile_settings_page() {
 								</select>
 							</td>
 						</tr>
-
-						<?php } ?>
 
 						<tr valign="top" style="border-bottom: 1px solid #f3f3f3;">
 							<th scope="row">
