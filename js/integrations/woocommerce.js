@@ -1,7 +1,7 @@
 /* Woo Checkout */
 jQuery( document ).ready(function() {
     jQuery( document.body ).on( 'update_checkout updated_checkout applied_coupon_in_checkout removed_coupon_in_checkout', function() {
-        if(jQuery('#cf-turnstile-woo-checkout iframe').length <= 0) {
+        if(jQuery('#cf-turnstile-woo-checkout').is(':empty')) {
             turnstileWooCheckoutReset();
         }
     });

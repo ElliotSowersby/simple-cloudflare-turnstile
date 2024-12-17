@@ -181,6 +181,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= Version 1.27.2 - 22nd November 2024 =
+- Fix: Fixed an issue with Turnstile re-rendering when it does not need to in some cases, on WooCommerce checkout.
+
 = Version 1.27.1 - 10th November 2024 =
 - New: Added a "Widget Size" option to the advanced settings section.
 - Tweak: Moved the "Appearance Mode" option to the advanced settings section.
