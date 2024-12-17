@@ -48,7 +48,6 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 	}
 }
 
-
 /**
  * Add Styles Below Turnstile if Disable Submit Enabled
  *
@@ -106,6 +105,9 @@ function cfturnstile_admin_styles($unique_id) {
  */
 add_action('cfturnstile_after_field', 'cfturnstile_failed_text', 5, 1);
 function cfturnstile_failed_text($unique_id) {
+	if(function_exists('cfturnstile_is_block_based_checkout') && cfturnstile_is_block_based_checkout()) {
+		return;
+	}
 	if(get_option('cfturnstile_failure_message_enable')) {
 	$failed_text = get_option('cfturnstile_failure_message');
 	if(!$failed_text) { $failed_text = esc_html__('Failed to verify you are human. Please contact us if you are having issues.', 'simple-cloudflare-turnstile'); }
@@ -130,6 +132,9 @@ function cfturnstile_failed_text($unique_id) {
  */
 add_action("cfturnstile_after_field", "cfturnstile_force_render", 10, 1);
 function cfturnstile_force_render($unique_id = '') {
+	if(function_exists('cfturnstile_is_block_based_checkout') && cfturnstile_is_block_based_checkout()) {
+		return;
+	}
 	$unique_id = sanitize_text_field($unique_id);
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {

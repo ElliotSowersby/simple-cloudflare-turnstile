@@ -40,6 +40,7 @@ function cfturnstile_field_checkout() {
 	}
 }
 
+// Render after checkout block
 function cfturnstile_render_post_block($block_content) {
 	ob_start();
 	echo $block_content;
@@ -49,6 +50,7 @@ function cfturnstile_render_post_block($block_content) {
 	return $block_content;
 }
 
+// Render before checkout block
 function cfturnstile_render_pre_block($block_content) {
 	ob_start();
 	cfturnstile_field_checkout();
@@ -282,4 +284,15 @@ if(get_option('cfturnstile_woo_reset')) {
 			}
 		}
 	}
+}
+
+// Check if WooCommerce block checkout page
+function cfturnstile_is_block_based_checkout() {
+    if ( is_checkout() ) {
+        $checkout_page_id = wc_get_page_id( 'checkout' );
+        if ( $checkout_page_id && has_block( 'woocommerce/checkout', get_post( $checkout_page_id )->post_content ) ) {
+            return true;
+        }
+    }
+    return false;
 }
