@@ -23,20 +23,20 @@ if (get_option('cfturnstile_fluent')) {
 	// Fluent Forms Check
 	add_action('fluentform/before_insert_submission', 'cfturnstile_fluent_check', 10, 3);
 	function cfturnstile_fluent_check($insertData, $data, $form) {
-		if(!cfturnstile_whitelisted()) {
-			if (!cfturnstile_form_disable($form->id, 'cfturnstile_fluent_disable')) {
-				$postdata = $data['cf-turnstile-response'];
-				$error_message = cfturnstile_failed_message();
-				if (!empty($postdata)) {
-					$check = cfturnstile_check($postdata);
-					$success = $check['success'];
-					if ($success != true) {
-						wp_die($error_message, 'simple-cloudflare-turnstile');
-					}
-				} else {
-					wp_die($error_message, 'simple-cloudflare-turnstile');
-				}
-			}
+		if (cfturnstile_whitelisted() || cfturnstile_form_disable($form->id, 'cfturnstile_fluent_disable')) {
+            		return;
+        	}
+		
+		$error_message = cfturnstile_failed_message();
+		if (empty($data['cf-turnstile-response'])) {
+			wp_die($error_message, 'simple-cloudflare-turnstile');
 		}
+
+		$check = cfturnstile_check($data['cf-turnstile-response']);
+		$success = $check['success'];
+		if ($success != true) {
+			wp_die($error_message, 'simple-cloudflare-turnstile');
+		}
+
 	}
 }
