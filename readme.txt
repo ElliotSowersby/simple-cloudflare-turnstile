@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.5.3
-Stable Tag: 1.26.0
+Tested up to: 6.7.1
+Stable Tag: 1.28.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -99,7 +99,7 @@ Cloudflare Turnstile is also a completely free service.
 
 ## Plugin Languages ##
 
-Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">8 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
+Currently available in <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">12 languages</a>. Thank you to all the <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/" target="_blank">contributers</a>! If you would like to help contribute translations, please <a href="https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/" target="_blank">click here</a>.
 
 ## Other Information ##
 
@@ -180,6 +180,52 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.28.1 - 13th January 2025 =
+- Fix: Fixed a undefined array key "error_code" error showing in some cases.
+- Fix: Fix CheckoutWC implementation. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/33">#33</a>).
+- Fix: Fix warning when cf-turnstile-response not present. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/32">#32</a>).
+
+= Version 1.28.0 - 17th December 2024 =
+- New: Added Checkout block and Store API support. (Thanks [@senadir](https://github.com/senadir)) 
+- Fix: Fixed an issue with Turnstile re-rendering when it does not need to in some cases, on WooCommerce checkout.
+- Other: Tested with WooCommerce 9.4.3
+
+= Version 1.27.1 - 10th November 2024 =
+- New: Added a "Widget Size" option to the advanced settings section.
+- Tweak: Moved the "Appearance Mode" option to the advanced settings section.
+- Tweak: Added support for Elementor PRO Elements.
+- Tweak: Added the new supported languages.
+- Fix: Fixed a "WPCF7_TagGenerator::add()" error with the Contact Form 7 integration.
+- Fix: Prevent Turnstile from showing on the order received page in some cases, such as with the CheckoutWC plugin.
+- Other: Tested with WordPress 6.7.0
+- Other: Tested with WooCommerce 9.3.3
+
+= Version 1.27.0 - 7th August 2024 =
+- New: Added a new option in the admin settings page to "enable debug logging of Turnstile form submission events". This will add a log event every time a form is submitted with Turnstile enabled, and display the log at the bottom of the settings page.
+- Fix: Fixed issue with Turnstile not rendering on Elementor popup forms.
+- Fix: Fixed issue with Turnstile not resetting properly on Contact Form 7 causing it to display twice on submission error.
+- Fix: Fixed issue with Turnstile showing twice in some cases.
+
+= Version 1.26.6 - 27th July 2024 =
+- Fix: Fixed issue with Turnstile showing twice on Forminator forms in some cases.
+
+= Version 1.26.5 - 26th July 2024 =
+- Fix: Fixed issue with Turnstile showing twice on Elementor forms.
+
+= Version 1.26.4 - 26th July 2024 =
+- Fix: Tweak to help prevent some new rare cases where the Turnstile widget was being shown twice in some cases.
+- Fix: Fixed an issue with the WooCommerce password reset form when using a hide admin login URL plugin like "WPS Hide Login".
+- Other: Tested with WordPress 6.6.1
+
+= Version 1.26.3 - 18th July 2024 =
+- Tweak: Added a message to state that it is not currently compatible with WooCommerce "block-based" checkout.
+- Fix: Fixed an issue with not being able to save the WP Forms integration settings if using the Pro version of WP Forms.
+- Other: Tested with WordPress 6.6.0
+- Other: Tested with WooCommerce 9.1.2
+
+= Version 1.26.2 - 8th May 2024 =
+- Fix: Fixed an issue with the new "ONLY enable for these Membership IDs" option with the MemberPress integration.
 
 = Version 1.26.0 - 8th May 2024 =
 - New: Added option to whitelist certain "User Agents" in the "Whitelist Settings" section to the settings page.
