@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.7.1
-Stable Tag: 1.28.0
+Stable Tag: 1.28.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -180,6 +180,11 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.28.1 - 13th January 2025 =
+- Fix: Fixed a undefined array key "error_code" error showing in some cases.
+- Fix: Fix CheckoutWC implementation. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/33">#33</a>).
+- Fix: Fix warning when cf-turnstile-response not present in Fluent Forms. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/32">#32</a>).
 
 = Version 1.28.0 - 17th December 2024 =
 - New: Added Checkout block and Store API support. (Thanks [@senadir](https://github.com/senadir)) 

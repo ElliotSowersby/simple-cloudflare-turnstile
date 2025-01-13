@@ -228,6 +228,10 @@ function cfturnstile_log($response, $results) {
 		if(!$cfturnstile_log) {
 			$cfturnstile_log = array();
 		}
+		// If $results['error_code'] is not set, set it to empty
+		if(!isset($results['error_code'])) {
+			$results['error_code'] = '';
+		}
 		// Get Values
 		$error_code = $results['error_code'];
 		// Success Yes or No

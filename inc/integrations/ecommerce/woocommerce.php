@@ -81,7 +81,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 
 	}
 	// CheckoutWC
-	add_action('cfw_checkout_payment_method_tab', 'cfturnstile_field_checkout', 50);
+	add_action('cfw_checkout_payment_method_tab', 'cfturnstile_field_checkout', 10);
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
