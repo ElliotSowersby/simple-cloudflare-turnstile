@@ -923,6 +923,31 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
+			<?php // Jetpack Forms
+			if (cft_is_plugin_active('jetpack/jetpack.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Jetpack Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all Jetpack Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_jetpack" <?php if (get_option('cfturnstile_jetpack')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added after the submit button, on ALL your forms created with Jetpack Forms.', 'simple-cloudflare-turnstile'); ?>
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/jetpack/" target="_blank">' . esc_html__('Jetpack Forms', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
 			<?php // Formidable Forms
 			if (cft_is_plugin_active('formidable/formidable.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Formidable Forms', 'simple-cloudflare-turnstile'); ?></button>

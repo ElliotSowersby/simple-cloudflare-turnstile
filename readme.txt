@@ -43,6 +43,7 @@ You can currently enable Turnstile on the following forms:
 * Gravity Forms
 * Formidable Forms
 * Forminator Forms
+* Jetpack Forms
 
 **Other Integrations**
 
