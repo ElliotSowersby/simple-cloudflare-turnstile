@@ -59,7 +59,7 @@ function cfturnstile_admin_test() {
 				}
 			}
 			if ($success != true) {
-				echo '<div style="margin-left: 15px;">';
+				echo '<div style="margin-left: 0px;">';
 				echo cfturnstile_field_show('', '', 'admin-test', 'admin-test');
 				echo '</div><div style="margin-bottom: -20px;"></div>';
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-size: 15px; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">

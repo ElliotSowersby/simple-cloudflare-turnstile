@@ -17,7 +17,7 @@ function cfturnstile_tested_notice() {
 			if ($cfturnstile_tested === 'no') {
 				echo '<div class="notice notice-error is-dismissible">';
 				echo sprintf(
-					'<p>' . esc_html__('Cloudflare Turnstile is not currently showing on your forms. Please test the API response on the <a href="%s">settings page</a>.', 'simple-cloudflare-turnstile') .
+					'<p>' . wp_kses_post(__('Cloudflare Turnstile is not currently showing on your forms. Please test the API response on the <a href="%s">settings page</a>.', 'simple-cloudflare-turnstile')) .
 					'</p>',	admin_url('options-general.php?page=cfturnstile')
 				);
 				echo '</div>';
