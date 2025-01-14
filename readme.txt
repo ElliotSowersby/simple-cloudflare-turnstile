@@ -183,7 +183,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ===
 
 = Version 1.29.0 - 14th January 2025 =
-- New: Added Jetpack Contact Forms integration. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/30">#30</a>).
+- New: Added Jetpack Forms integration. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/30">#30</a>).
 
 = Version 1.28.1 - 13th January 2025 =
 - Fix: Fixed a undefined array key "error_code" error showing in some cases.
