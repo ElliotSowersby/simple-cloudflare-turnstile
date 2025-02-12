@@ -19,7 +19,7 @@ if(get_option('cfturnstile_gravity')) {
     .gf-turnstile-container { width: 100%; }
     .gform_footer.top_label { display: flex; flex-wrap: wrap; }
     </style>
-    <script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('#gform_<?php echo esc_html($form_id); ?>').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-gf-<?php echo esc_html($form_id); ?>')){setTimeout(function(){turnstile.remove('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');turnstile.render('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');},10000)}})})});</script>
+    <script>document.addEventListener("DOMContentLoaded", function() {document.addEventListener('gform/post_render', function handlePostRender(event) {if (event.detail.formId !== <?php echo $form_id; ?>) {return;}gform.utils.addAsyncFilter('gform/submission/pre_submission', async function handlePreSubmission(data) {document.addEventListener('gform/post_render', function rerenderTurnstile(event) {if (event.detail.formId !== <?php echo $form_id; ?>) {return;}const turnstileElement = document.getElementById('cf-turnstile-gf-<?php echo esc_html($form_id); ?>');if (turnstileElement) {turnstile.remove('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');turnstile.render('#cf-turnstile-gf-<?php echo esc_html($form_id); ?>');}document.removeEventListener('gform/post_render', rerenderTurnstile);});gform.utils.removeFilter('gform/submission/pre_submission', handlePreSubmission);return data;});document.removeEventListener('gform/post_render', handlePostRender);});});</script>
     <?php
   	$thecontent = ob_get_contents();
   	ob_end_clean();

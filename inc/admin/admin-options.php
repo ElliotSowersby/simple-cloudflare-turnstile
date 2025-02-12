@@ -1135,7 +1135,8 @@ function cfturnstile_settings_page() {
 			}
 			?>
 	
-			<?php if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
+			<?php // Mailchimp for WordPress
+			if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
 
@@ -1146,6 +1147,57 @@ function cfturnstile_settings_page() {
 			<?php
 			} else {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/mailchimp-for-wp/" target="_blank">' . esc_html__('Mailchimp for WordPress', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
+			<?php // MailPoet
+			if (cft_is_plugin_active('mailpoet/mailpoet.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('MailPoet', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all MailPoet Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_mailpoet" <?php if (get_option('cfturnstile_mailpoet')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with MailPoet.', 'simple-cloudflare-turnstile'); ?>
+
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/mailpoet/" target="_blank">' . esc_html__('MailPoet', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
+			<?php // Kadence Forms
+			if (cft_is_plugin_active('kadence-blocks/kadence-blocks.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Kadence Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all Kadence Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_kadence" <?php if (get_option('cfturnstile_kadence')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with Kadence Forms.', 'simple-cloudflare-turnstile'); ?>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/kadence-blocks/" target="_blank">' . esc_html__('Kadence Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
@@ -1346,7 +1398,7 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
-<?php // WP User Frontend
+			<?php // WP User Frontend
 			if (cft_is_plugin_active('wp-user-frontend/wpuf.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('WP User Frontend', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">

@@ -44,7 +44,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		<?php } ?>
 		data-appearance="<?php echo esc_attr($appearance); ?>"></div>
 		<?php
-		do_action("cfturnstile_after_field", esc_attr($unique_id));
+		do_action("cfturnstile_after_field", esc_attr($unique_id), $button_id);
 	}
 }
 
@@ -53,8 +53,8 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
  *
  * @return bool
  */
-add_action('cfturnstile_after_field', 'cfturnstile_disable_button_styles', 10, 1);
-function cfturnstile_disable_button_styles($button_id) {
+add_action('cfturnstile_after_field', 'cfturnstile_disable_button_styles', 10, 2);
+function cfturnstile_disable_button_styles($unique_id, $button_id) {
 	if ($button_id && get_option('cfturnstile_disable_button')) {
 		?>
 		<style><?php echo esc_html($button_id); ?> { pointer-events: none; opacity: 0.5; }</style>
@@ -139,7 +139,7 @@ function cfturnstile_force_render($unique_id = '') {
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {
 	?>
-	<script>document.addEventListener("DOMContentLoaded",(function(){var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>");e&&!e.innerHTML.trim()&&(turnstile.remove("#cf-turnstile<?php echo esc_html($unique_id); ?>"),turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>",{sitekey:"<?php echo esc_html($key); ?>"}))}));</script>
+	<script>document.addEventListener("DOMContentLoaded", function() { setTimeout(function(){ var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>"); e&&!e.innerHTML.trim()&&(turnstile.remove("#cf-turnstile<?php echo esc_html($unique_id); ?>"), turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>", {sitekey:"<?php echo esc_html($key); ?>"})); }, 0); });</script>
 	<?php
 	}
 }

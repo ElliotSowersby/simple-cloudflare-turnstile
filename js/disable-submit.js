@@ -57,6 +57,13 @@ function turnstileElementorCallback() {
         el.style.opacity = '1';
     });
 }
+/* Kadence */
+function turnstileKadenceCallback() {
+    document.querySelectorAll('.kb-submit-field .kb-button').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
 /* CF7 */
 function turnstileCF7Callback() {
     document.querySelectorAll('.wpcf7-submit').forEach(function(el) {

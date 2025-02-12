@@ -20,10 +20,10 @@ jQuery('.showlogin').on('click', function() {
 });
 
 /* Woo Checkout Block */
-if ( wp && wp.data ) {
+if ( wp && wp.data && turnstile ) {
     var unsubscribe = wp.data.subscribe(function() {
         const turnstileItem = document.getElementById('cf-turnstile-woo-checkout');
-        if(turnstile) {
+        if(turnstileItem) {
             turnstile.render(turnstileItem, {
                 sitekey: turnstileItem.dataset.sitekey,
                 callback: function(data) {

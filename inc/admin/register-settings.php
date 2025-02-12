@@ -132,6 +132,12 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',
         ),
+        'mailpoet/mailpoet.php' => array(
+            'cfturnstile_mailpoet',
+        ),
+        'kadence-blocks/kadence-blocks.php' => array(
+            'cfturnstile_kadence',
+        ),
         'pro-elements/pro-elements.php' => array(
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',

@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
-Tested up to: 6.7.1
-Stable Tag: 1.29.0
+Tested up to: 6.7.2
+Stable Tag: 1.30.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -181,6 +181,16 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.30.0 - 12th February 2025 =
+- New: Added Kadence Forms integration.
+- New: Added MailPoet integration.
+- Fix: Fixed "Cannot read properties of null (reading 'dataset')" error with WooCommerce block checkout.
+- Fix: Fixed an issue with Turnstile loading twice in some cases.
+- Fix: Fixed an issue with the "Disable Submit Button" option not working.
+- Fix: Gravity-form integration rerender on validation. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/38">#38</a>).
+- Tested with WordPress 6.7.2
+- Tested with WooCommerce 9.6.1
 
 = Version 1.29.0 - 14th January 2025 =
 - New: Added Jetpack Forms integration. (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/30">#30</a>).
