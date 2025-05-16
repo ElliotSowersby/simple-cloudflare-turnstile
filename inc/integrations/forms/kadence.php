@@ -16,7 +16,7 @@ if (get_option("cfturnstile_kadence")) {
             if (has_block('kadence/advanced-form', $content) || has_block('kadence/form', $content)) {
                 
                 // Enqueue the JavaScript file
-                wp_enqueue_script('cfturnstile-kadence', plugins_url('simple-cloudflare-turnstile/js/integrations/kadence.js'), '', '1.0', true);
+                wp_enqueue_script('cfturnstile-kadence', plugins_url('simple-cloudflare-turnstile/js/integrations/kadence.js'), array('cfturnstile'), '1.0', true);
 
                 $uniqueId = wp_rand();
                 ob_start();
