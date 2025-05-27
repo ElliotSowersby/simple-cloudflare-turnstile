@@ -20,21 +20,23 @@ jQuery('.showlogin').on('click', function() {
 });
 
 /* Woo Checkout Block */
-if ( wp && wp.data && turnstile ) {
-    var unsubscribe = wp.data.subscribe(function() {
-        const turnstileItem = document.getElementById('cf-turnstile-woo-checkout');
-        if(turnstileItem) {
-            turnstile.render(turnstileItem, {
-                sitekey: turnstileItem.dataset.sitekey,
-                callback: function(data) {
-                    wp.data.dispatch('wc/store/checkout').__internalSetExtensionData('simple-cloudflare-turnstile', {
-                        token: data
-                    })
-                }
-            });
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof wp !== 'undefined' && wp.data && typeof turnstile !== 'undefined') {
+        var unsubscribe = wp.data.subscribe(function() {
+            const turnstileItem = document.getElementById('cf-turnstile-woo-checkout');
+            if(turnstileItem) {
+                turnstile.render(turnstileItem, {
+                    sitekey: turnstileItem.dataset.sitekey,
+                    callback: function(data) {
+                        wp.data.dispatch('wc/store/checkout').__internalSetExtensionData('simple-cloudflare-turnstile', {
+                            token: data
+                        })
+                    }
+                });
 
-            turnstile.onEx
-            unsubscribe();
-        }
-    }, 'wc/store/cart');
-}
+                turnstile.onEx
+                unsubscribe();
+            }
+        }, 'wc/store/cart');
+    }
+});

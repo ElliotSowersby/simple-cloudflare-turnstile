@@ -3,6 +3,16 @@
   max-width: 720px;
 }
 
+@media screen and (min-width: 1420px) {
+  .sct-admin-promo-area {
+    margin-top: 15px;
+    float: right;
+    top: -20px;
+    position: fixed;
+    right: 40px;
+  }
+}
+
 .sct-accordion {
   display: block;
   margin: 20px 0;
@@ -90,7 +100,8 @@
 
 .sct-admin-promo .dashicons-star-filled {
   color: orange;
-  margin-top: 5px;
+  margin-top: 2px;
+  margin-bottom: -2px;
   font-size: 15px;
   width: 15px;
 }
@@ -100,8 +111,16 @@
   padding: 10px 20px;
   border-radius: 5px;
   margin-top: 70px;
-  max-width: calc(480px - 40px);
+  max-width: 400px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.sct-admin-promo p {
+  font-size: 12px !important;
+}
+
+.sct-admin-promo .dashicons:not(.dashicons-star-filled) {
+  font-size: 12px;
+  width: 18px;
 }
 
 .sct-wrap input[type="text"] {
