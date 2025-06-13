@@ -1079,13 +1079,22 @@ function cfturnstile_settings_page() {
 			if (cft_is_plugin_active('ninja-forms/ninja-forms.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Ninja Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
-
-					<p>
-						<?php echo esc_html__('Currently Ninja Forms is not supported by this plugin.', 'simple-cloudflare-turnstile'); ?>
-					</p>
-
+					
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+				
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all Ninja Form Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_ninja_forms_all" <?php if (get_option('cfturnstile_ninja_forms_all')) { ?>checked<?php } ?>></td>
+						</tr>
+				
+					</table>
+			
 				</div>
 			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/ninja-forms/" target="_blank">' . esc_html__('Ninja Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 

@@ -156,6 +156,9 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_wpuf_register',
             'cfturnstile_wpuf_forms',
         ),
+        'ninja-forms/ninja-forms.php' => array(
+            'cfturnstile_ninja_forms_all',
+        ),
     );
 
     foreach ($integrations as $plugin => $integration_settings) {
