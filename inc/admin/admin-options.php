@@ -6,14 +6,14 @@ if (!defined('ABSPATH')) {
 // Create custom plugin settings menu
 add_action('admin_menu', 'cfturnstile_create_menu');
 function cfturnstile_create_menu() {
-    add_submenu_page(
-        'options-general.php', // Parent slug
-        'Cloudflare Turnstile', // Page title
-        'Cloudflare Turnstile', // Menu title
-        'manage_options', // Capability
-        'cfturnstile', // Menu slug
-        'cfturnstile_settings_page' // Callback function
-    );
+	add_submenu_page(
+		'options-general.php', // Parent slug
+		'Cloudflare Turnstile', // Page title
+		'Cloudflare Turnstile', // Menu title
+		'manage_options', // Capability
+		'cfturnstile', // Menu slug
+		'cfturnstile_settings_page' // Callback function
+	);
 }
 
 // Keys Updated
@@ -344,7 +344,7 @@ function cfturnstile_settings_page() {
 								jQuery('.cfturnstile-failure-message').hide();
 							}
 						});
-						jQuery('input[name="cfturnstile_failure_message_enable"]').trigger('change');						
+						jQuery('input[name="cfturnstile_failure_message_enable"]').trigger('change');
 					});
 					</script>
 
@@ -367,7 +367,7 @@ function cfturnstile_settings_page() {
 							<i style="font-size: 10px;"><?php echo esc_html__('When enabled, logged in users will not see the Turnstile challenge.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
-					
+
 					<tr valign="top">
 						<th scope="row"><?php echo esc_html__('IP Addresses', 'simple-cloudflare-turnstile'); ?></th>
 						<td>
@@ -587,7 +587,7 @@ function cfturnstile_settings_page() {
 							</script>
 
 							<div id="toggleContentSkipMethods" style="display: none;"> <!-- Initially hidden -->
-							
+
 								<i style="font-size: 10px;">
 									<?php echo esc_html__("If selected below, Turnstile check will not be run for that specific payment method.", 'simple-cloudflare-turnstile'); ?>
 									<br/>
@@ -733,7 +733,7 @@ function cfturnstile_settings_page() {
 							margin-top: 7px;
 						}
 						</style>
-						
+
 					</table>
 
 				</div>
@@ -983,7 +983,7 @@ function cfturnstile_settings_page() {
 						</tr>
 
 					</table>
-				
+
 					<table class="form-table" style="margin-bottom: -10px;">
 						<tr valign="top">
 							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
@@ -1003,7 +1003,7 @@ function cfturnstile_settings_page() {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/formidable/" target="_blank">' . esc_html__('Formidable', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
-			
+
 			<?php // Forminator Forms
 			if (cft_is_plugin_active('forminator/forminator.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Forminator Forms', 'simple-cloudflare-turnstile'); ?></button>
@@ -1079,13 +1079,21 @@ function cfturnstile_settings_page() {
 			if (cft_is_plugin_active('ninja-forms/ninja-forms.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Ninja Forms', 'simple-cloudflare-turnstile'); ?></button>
 				<div class="sct-panel">
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
 
-					<p>
-						<?php echo esc_html__('Currently Ninja Forms is not supported by this plugin.', 'simple-cloudflare-turnstile'); ?>
-					</p>
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all Ninja Form Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_ninja_forms_all" <?php if (get_option('cfturnstile_ninja_forms_all')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
 
 				</div>
 			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/ninja-forms/" target="_blank">' . esc_html__('Ninja Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
@@ -1134,7 +1142,7 @@ function cfturnstile_settings_page() {
 				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/" target="_blank">' . esc_html__('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
-	
+
 			<?php // Mailchimp for WordPress
 			if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('MC4WP: Mailchimp for WordPress', 'simple-cloudflare-turnstile'); ?></button>
@@ -1315,7 +1323,7 @@ function cfturnstile_settings_page() {
 			?>
 
 			<?php // MemberPress
-			if (cft_is_plugin_active('memberpress/memberpress.php')) { 
+			if (cft_is_plugin_active('memberpress/memberpress.php')) {
 
 				if(get_option('cfturnstile_mepr_product_ids')) {
 				  $LimitedToProductIDs = get_option('cfturnstile_mepr_product_ids');
@@ -1348,7 +1356,7 @@ function cfturnstile_settings_page() {
 
 						<tr valign="top">
 							<th scope="row">
-								<?php echo esc_html__('Registration/Checkout Forms', 'simple-cloudflare-turnstile'); 
+								<?php echo esc_html__('Registration/Checkout Forms', 'simple-cloudflare-turnstile');
 								if(get_option('cfturnstile_mepr_product_ids')) {
 									?>
 								<br><span style="font-weight:400;font-size:12px;"><span style="color:#d1242f;"><?php echo esc_html__('Limited to:', 'simple-cloudflare-turnstile'); ?></span> <?php echo implode(', ' , $ProductsNeedingCaptcha); ?></span>
@@ -1488,7 +1496,7 @@ function cfturnstile_settings_page() {
 						<th scope="row">
 							<span style="font-size: 19px;"><?php echo esc_html__('Other Integrations', 'simple-cloudflare-turnstile'); ?></span>
 							<p>
-								
+
 								<?php echo esc_html__('You can also enable Turnstile on', 'simple-cloudflare-turnstile') . " ";
 								$last_plugin = end($not_installed);
 								foreach ($not_installed as $not_plugin) {
@@ -1527,7 +1535,7 @@ function cfturnstile_settings_page() {
 				<input type="checkbox" name="cfturnstile_log_enable" <?php if (get_option('cfturnstile_log_enable')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
 				<?php echo esc_html__('Enable debug logging of Turnstile form submission events.', 'simple-cloudflare-turnstile'); ?>
 			</div>
-			
+
 		</form>
 
 		<?php if(get_option('cfturnstile_log_enable')) { ?>
