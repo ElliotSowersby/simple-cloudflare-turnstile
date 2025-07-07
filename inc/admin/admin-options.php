@@ -1467,6 +1467,22 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
+			<?php // WP User Manager
+			if (cft_is_plugin_active('wp-user-manager/wp-user-manager.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('WP User Manager', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<p>
+						<?php echo esc_html__('Turnstile is supported for WP User Manager Login, Registration and Reset Password forms. Enable for these forms in the "Default WordPress Forms" settings.', 'simple-cloudflare-turnstile'); ?>
+					</p>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/wp-user-manager/" target="_blank">' . esc_html__('WP User Manager', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
 			<?php // wpDiscuz
 			if (!cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/wpdiscuz/" target="_blank">' . esc_html__('wpDiscuz', 'simple-cloudflare-turnstile') . '</a>');
@@ -1627,7 +1643,7 @@ function cfturnstile_settings_page() {
 					<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=promo" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?></a>
 				</p>
 
-				<p>- <?php echo esc_html__('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank"><?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?></a></p>
+				<p>- <?php echo esc_html__('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank" title="<?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?>."><?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?></a></p>
 
 				<p>
 				- <?php echo esc_html__('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo esc_html__('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
