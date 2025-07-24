@@ -148,3 +148,10 @@ function turnstileBBPressCreateCallback() {
         el.style.opacity = '1';
     });
 }
+
+function turnstileMailpoetCallback() {
+    document.querySelectorAll('.mailpoet_submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
