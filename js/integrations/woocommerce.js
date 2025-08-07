@@ -33,8 +33,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         })
                     }
                 });
-
-                turnstile.onEx
                 unsubscribe();
             }
         }, 'wc/store/cart');
