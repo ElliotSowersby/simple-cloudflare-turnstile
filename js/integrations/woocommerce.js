@@ -23,6 +23,9 @@ jQuery('.showlogin').on('click', function() {
 document.addEventListener('DOMContentLoaded', function() {
     if (typeof wp !== 'undefined' && wp.data && typeof turnstile !== 'undefined') {
         var unsubscribe = wp.data.subscribe(function() {
+            if (document.getElementById('cf-turnstile-woo-checkout') && document.getElementById('cf-turnstile-woo-checkout').innerHTML.trim() !== '') {
+                return;
+            }
             const turnstileItem = document.getElementById('cf-turnstile-woo-checkout');
             if(turnstileItem) {
                 turnstile.render(turnstileItem, {

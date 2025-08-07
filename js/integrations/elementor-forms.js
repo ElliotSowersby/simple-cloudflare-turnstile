@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function() {
       // Render Turnstile
       turnstile.render('#cf-turnstile-elementor-fallback-' + index, {
         sitekey: sitekey,
+        theme: settings.theme || 'auto',
         callback: function(token) {
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);

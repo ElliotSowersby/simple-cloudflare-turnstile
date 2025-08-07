@@ -81,7 +81,6 @@ if(get_option('cfturnstile_woo_checkout')) {
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
 		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1); // Before Actions block, not sure if this option is still supported.
-
 	}
 
 	// Check Turnstile

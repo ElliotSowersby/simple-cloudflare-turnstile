@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.32.1
+Stable Tag: 1.32.2
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -185,8 +185,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= Version 1.32.2 - 7th August 2025 =
+- Fix: Fixed an issue with the Turnstile widget on Elementor forms always being forced to dark mode.
+- Fix: Fixed an issue with Turnstile rendering twice on CheckoutWC checkout page in some cases.
+
 = Version 1.32.1 - 7th August 2025 =
-- Improvement: Improved the CheckoutWC integration (a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/53">#53</a>).
+- Improvement: Improved the CheckoutWC integration (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/53">#53</a>).
 - Tweak: Added missing MailPoet JS callback for the disable submit button.
 - Fix: Fixed a error in the woocommerce.js file.
 
