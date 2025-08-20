@@ -63,8 +63,8 @@ function cfturnstile_render_pre_block($block_content) {
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
 	// WooCommerce Checkout
-	if(function_exists( 'cfw_templates_disabled' ) && cfw_templates_disabled()) {
-		// CheckoutWC - permissioned init hook runs when CheckoutWC is enabled
+	// CheckoutWC: Only hook when CheckoutWC templates are enabled
+	if(function_exists( 'cfw_templates_disabled' ) && ! cfw_templates_disabled()) {
 		add_action('cfw_checkout_before_payment_method_tab_nav', 'cfturnstile_field_checkout', 10);
 	} elseif(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
 		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
