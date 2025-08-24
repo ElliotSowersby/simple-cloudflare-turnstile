@@ -1,6 +1,6 @@
 <?php
 if (!defined('ABSPATH')) {
-	exit;
+    exit;
 }
 
 /*
@@ -156,6 +156,9 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_wpuf_register',
             'cfturnstile_wpuf_forms',
         ),
+        'ninja-forms/ninja-forms.php' => array(
+            'cfturnstile_ninja_forms_all',
+        ),
     );
 
     foreach ($integrations as $plugin => $integration_settings) {
@@ -168,7 +171,7 @@ function cfturnstile_settings_list($all = false) {
     $settings[] = 'cfturnstile_log';
 
     $settings[] = 'cfturnstile_uninstall_remove'; // Always last
-    
+
     return $settings;
 }
 
@@ -179,9 +182,9 @@ function cfturnstile_settings_list($all = false) {
  * @return bool
  */
 if ( !function_exists( 'cft_is_plugin_active' ) ) {
-	function cft_is_plugin_active( $plugin ) {
-		return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'cft_is_plugin_active_for_network' ) && cft_is_plugin_active_for_network( $plugin ) ) );
-	}
+    function cft_is_plugin_active( $plugin ) {
+        return ( in_array( $plugin, apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) || ( function_exists( 'cft_is_plugin_active_for_network' ) && cft_is_plugin_active_for_network( $plugin ) ) );
+    }
 }
 
 /**
@@ -191,14 +194,14 @@ if ( !function_exists( 'cft_is_plugin_active' ) ) {
  * @return bool
  */
 if ( !function_exists( 'cft_is_plugin_active_for_network' ) ) {
-	function cft_is_plugin_active_for_network( $plugin ) {
-		if ( !is_multisite() ) {
-			return false;
-		}
-		$plugins = get_site_option( 'active_sitewide_plugins' );
-		if ( isset( $plugins[ $plugin ] ) ) {
-			return true;
-		}
-		return false;
-	}
+    function cft_is_plugin_active_for_network( $plugin ) {
+        if ( !is_multisite() ) {
+            return false;
+        }
+        $plugins = get_site_option( 'active_sitewide_plugins' );
+        if ( isset( $plugins[ $plugin ] ) ) {
+            return true;
+        }
+        return false;
+    }
 }
