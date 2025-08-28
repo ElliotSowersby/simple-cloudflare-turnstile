@@ -78,6 +78,13 @@ function turnstileMC4WPCallback() {
         el.style.opacity = '1';
     });
 }
+/* MailPoet */
+function turnstileMailpoetCallback() {
+    document.querySelectorAll('.mailpoet_submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
 /* BuddyPress */
 function turnstileBPCallback() {
     document.querySelectorAll('#buddypress #signup-form .submit').forEach(function(el) {

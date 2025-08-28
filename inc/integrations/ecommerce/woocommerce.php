@@ -63,7 +63,10 @@ function cfturnstile_render_pre_block($block_content) {
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
 	// WooCommerce Checkout
-	if(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
+	// CheckoutWC: Only hook when CheckoutWC templates are enabled
+	if(function_exists( 'cfw_templates_disabled' ) && ! cfw_templates_disabled()) {
+		add_action('cfw_checkout_before_payment_method_tab_nav', 'cfturnstile_field_checkout', 10);
+	} elseif(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
 		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_pre_block', 999, 1); // Before Payment block.
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
@@ -78,10 +81,8 @@ if(get_option('cfturnstile_woo_checkout')) {
 	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
 		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1); // Before Actions block, not sure if this option is still supported.
-
 	}
-	// CheckoutWC
-	add_action('cfw_checkout_payment_method_tab', 'cfturnstile_field_checkout', 10);
+
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {

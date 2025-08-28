@@ -273,6 +273,7 @@ function cfturnstile_form_disable($id, $option) {
  * Create shortcode to display Turnstile widget
  */
 add_shortcode('simple-turnstile', 'cfturnstile_shortcode');
+add_action('cfturnstile_display_widget', 'cfturnstile_shortcode', 10, 0);
 function cfturnstile_shortcode() {
 	ob_start();
 	echo cfturnstile_field_show('', '');
