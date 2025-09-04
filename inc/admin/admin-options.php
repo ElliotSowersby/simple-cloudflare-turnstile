@@ -1128,6 +1128,11 @@ function cfturnstile_settings_page() {
 
 					</table>
 
+					<!-- Notice to disable element caching -->
+					<div>
+						<p style="font-style: italic;"><span class="dashicons dashicons-warning"></span> <?php echo wp_kses_post( sprintf( __('If the Turnstile widget is not showing, you may need to disable <a href="%s" target="_blank">Element Caching</a> for the Elementor forms.', 'simple-cloudflare-turnstile'), 'https://elementor.com/help/element-caching-help/' ) ); ?></p>
+					</div>
+
 				</div>
 			<?php
 			} else {

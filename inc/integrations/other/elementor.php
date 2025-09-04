@@ -24,7 +24,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         array('cfturnstile', 'jquery'),
-        '1.0',
+        '2.0',
         true
       );
       
