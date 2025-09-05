@@ -78,7 +78,7 @@ function cfturnstile_settings_page() {
 ?>
 	<div class="sct-wrap wrap">
 
-		<h1 style="font-weight: bold;"><?php echo esc_html__('Simple Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
+		<h1 style="font-weight: bold;"><?php echo esc_html__('Simple CAPTCHA Alternative with Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
 
 		<p style="margin-bottom: 0;"><?php echo esc_html__('Easily add the free CAPTCHA service called "Cloudflare Turnstile" to your WordPress forms to help prevent spam.', 'simple-cloudflare-turnstile'); ?> <a href="https://www.cloudflare.com/en-gb/products/turnstile/" target="_blank"><?php echo esc_html__('Learn more.', 'simple-cloudflare-turnstile'); ?></a>
 
@@ -1636,7 +1636,7 @@ function cfturnstile_settings_page() {
 			<div class="sct-admin-promo">
 
 				<p style="font-weight: bold;">
-					<?php echo esc_html__('Thank you for using Simple Cloudflare Turnstile!', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('Thank you for using Simple CAPTCHA Alternative with Cloudflare Turnstile!', 'simple-cloudflare-turnstile'); ?>
 				</p>
 
 				<p style="margin-bottom: -5px;">
