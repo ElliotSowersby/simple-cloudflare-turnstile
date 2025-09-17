@@ -948,6 +948,38 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
+			<?php // Ultimate Addons for Elementor Forms
+			if (cft_is_plugin_active('ultimate-elementor/ultimate-elementor.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Ultimate Addons for Elementor Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Login Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_uae_login" <?php if (get_option('cfturnstile_uae_login')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Registration Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_uae_registration" <?php if (get_option('cfturnstile_uae_registration')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added before the submit button on UAE Login and Registration forms. This integration uses the official hooks provided by Ultimate Addons for Elementor.', 'simple-cloudflare-turnstile'); ?>
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/ultimate-elementor/" target="_blank">' . esc_html__('Ultimate Addons for Elementor', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
 			<?php // Formidable Forms
 			if (cft_is_plugin_active('formidable/formidable.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Formidable Forms', 'simple-cloudflare-turnstile'); ?></button>
