@@ -120,7 +120,7 @@ Currently available in [12 languages](https://translate.wordpress.org/projects/w
 
 ### Thanks to the Plugin Sponsors!
 
-If this plugin helps you, consider supporting development by becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>
+If this plugin helps you, consider supporting development by becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>.
 
 **Large Agency Sponsors**
 
@@ -131,7 +131,7 @@ If this plugin helps you, consider supporting development by becoming a <a href=
 				<a href="https://www.relywp.com"><img src="https://relywp.com/wp-content/uploads/2020/07/RelyWP-Logo-1.png" alt="RelyWP" width="150" /></a>
 			</td>
 			<td valign="middle">
-				Care Plans + WordPress &amp; WooCommerce Plugins
+				WordPress &amp; WooCommerce Plugins, and Care Plans
 			</td>
 		</tr>
 	</table>
@@ -154,7 +154,7 @@ If this plugin helps you, consider supporting development by becoming a <a href=
 	</table>
 </div>
 
-**Community Sponsor:**
+**Community Sponsors:**
 
 <a href="https://github.com/ElliotSowersby">Elliot Sowersby</a>
 
