@@ -122,11 +122,11 @@ Currently available in [12 languages](https://translate.wordpress.org/projects/w
 
 If this plugin helps you, consider supporting development by becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>
 
-**Gold Sponsors:**
+**Agency Sponsors:**
 
 <a href="https://www.relywp.com">RelyWP</a> - Care Plans + WordPress & WooCommerce Plugins
 
-**Silver Sponsors:**
+**Community Sponsor:**
 
 <a href="https://github.com/ElliotSowersby">Elliot Sowersby</a>
 
