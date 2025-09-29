@@ -122,9 +122,37 @@ Currently available in [12 languages](https://translate.wordpress.org/projects/w
 
 If this plugin helps you, consider supporting development by becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>
 
-**Agency Sponsors:**
+**Large Agency Sponsors**
 
-<a href="https://www.relywp.com">RelyWP</a> - Care Plans + WordPress & WooCommerce Plugins
+<div align="left">
+	<table>
+		<tr>
+			<td valign="middle" style="padding-right:16px;">
+				<a href="https://www.relywp.com"><img src="https://relywp.com/wp-content/uploads/2020/07/RelyWP-Logo-1.png" alt="RelyWP" width="150" /></a>
+			</td>
+			<td valign="middle">
+				Care Plans + WordPress &amp; WooCommerce Plugins
+			</td>
+		</tr>
+	</table>
+</div>
+
+**Small Agency Sponsors**
+
+<div align="left">
+	<table>
+		<tr>
+			<td valign="middle" style="padding-right:16px;">
+				<a href="https://www.couponaffiliates.com">
+                Coupon Affiliates
+                </a>
+            </td>
+            <td valign="middle">
+				WooCommerce Affiliate Plugin
+			</td>
+		</tr>
+	</table>
+</div>
 
 **Community Sponsor:**
 
