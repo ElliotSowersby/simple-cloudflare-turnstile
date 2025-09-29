@@ -120,7 +120,7 @@ Currently available in [12 languages](https://translate.wordpress.org/projects/w
 
 ### Thanks to the Plugin Sponsors!
 
-If this plugin helps you, consider supporting development by becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>.
+If this plugin helps you, or you want to support its development, please consider becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>.
 
 **Large Agency Sponsors**
 
