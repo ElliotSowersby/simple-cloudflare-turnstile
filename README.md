@@ -106,23 +106,13 @@ Yes, this plugin is completely free with no paid version, and does not include a
 
 Cloudflare Turnstile is also a completely free service.
 
-### Plugin Languages
-
-Currently available in [12 languages](https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/). Thank you to all the [contributers](https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/contributors/)! If you would like to help contribute translations, please [click here](https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/).
-
-### Other Information
-
-* For help & suggestions, please [create a support topic](https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0).
-* Follow the developer [@ElliotSowersby](https://twitter.com/ElliotSowersby) on Twitter.
-* [View on GitHub](https://github.com/elliotvs/simple-cloudflare-turnstile)
-
 ---
 
 ### Thanks to the Plugin Sponsors!
 
 If this plugin helps you, or you want to support its development, please consider becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>.
 
-**Large Agency Sponsors**
+**Gold Sponsors**
 
 <div align="left">
 	<table>
@@ -137,7 +127,7 @@ If this plugin helps you, or you want to support its development, please conside
 	</table>
 </div>
 
-**Small Agency Sponsors**
+**Silver Sponsors**
 
 <div align="left">
 	<table>
@@ -156,7 +146,7 @@ If this plugin helps you, or you want to support its development, please conside
 
 **Community Sponsors:**
 
-<a href="https://github.com/ElliotSowersby">Elliot Sowersby</a>
+<a href="https://github.com/sponsors/ElliotSowersby/">Be the first community sponsor!</a>
 
 ---
 
