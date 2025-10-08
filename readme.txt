@@ -242,6 +242,14 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= In Development =
+- New: Added support for defining API keys and all plugin settings via wp-config.php constants for enhanced security.
+- New: Settings defined as constants in wp-config.php now take priority over database settings.
+- New: Admin settings fields are automatically disabled with notices when controlled by wp-config.php constants.
+- New: Added multisite support for centralized API key configuration - when keys are defined as constants, one test applies network-wide.
+- New: Added helper functions: `cfturnstile_get_option()`, `cfturnstile_get_test_status()`, `cfturnstile_update_test_status()`, `cfturnstile_is_constant_defined()`, `cfturnstile_disabled_attr()`, and `cfturnstile_show_constant_notice()`.
+- Improvement: All option retrievals throughout the plugin now support constant-based configuration.
+
 = Version 1.33.1 - 5th September 2025 =
 - Other: Renamed the plugin from "Simple Cloudflare Turnstile"to "Simple CAPTCHA Alternative with Cloudflare Turnstile" due to trademark guidelines.
 

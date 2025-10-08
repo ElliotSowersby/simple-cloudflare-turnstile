@@ -80,10 +80,13 @@ The plugin includes several other features and options:
 * Disable Submit Button: Disable the submit button on forms until the Turnstile challenge is completed.
 * Custom Error Message: Set your own custom error message for failed submissions.
 * Whitelist: Prevent Turnstile from showing for logged in users, or certain IP addresses (wildcards are not supported).
+* wp-config.php Configuration: Define API keys and all plugin settings as constants in wp-config.php.
 
 ### Getting Started
 
 It's super quick and easy to get started with Cloudflare Turnstile!
+
+**Standard Setup (Via Admin UI):**
 
 1. Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
 2. Select which forms Turnstile should be added to and click save.
@@ -91,6 +94,19 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
 For more detailed instructions, please see our [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin).
+
+**Setup via wp-config.php (Recommended for Security):**
+
+1. Generate a "site key" and "secret key" in your Cloudflare account.
+2. Add constants to your wp-config.php file:
+   ```php
+   define('CFTURNSTILE_SITE_KEY', 'your-site-key');
+   define('CFTURNSTILE_SECRET_KEY', 'your-secret-key');
+   ```
+3. Optionally configure settings via constants (e.g., `define('CFTURNSTILE_LOGIN', true);`)
+4. Visit the plugin settings page and click "TEST API RESPONSE".
+
+Constants defined in wp-config.php take priority over database settings, providing enhanced security and centralized configuration for multisite networks.
 
 ### What is Cloudflare Turnstile?
 
