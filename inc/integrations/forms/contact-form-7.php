@@ -23,7 +23,7 @@ function cfturnstile_cf7_shortcode() {
 }
 
 // Add Turnstile to all CF7 forms at once.
-if ((!empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all'))) {
+if ((!empty(cfturnstile_get_option('cfturnstile_cf7_all')) && cfturnstile_get_option('cfturnstile_cf7_all'))) {
 	add_action('wpcf7_form_elements', 'cfturnstile_field_cf7', 10, 1);
 	function cfturnstile_field_cf7($content) {
 		$cfturnstile_key = cfturnstile_get_site_key();
@@ -53,7 +53,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 
 		$cf7_text = do_shortcode('[contact-form-7 id="' . $_wpcf7 . '"]');
 		$cfturnstile_key = cfturnstile_get_site_key();
-		if ((empty(get_option('cfturnstile_cf7_all')) || !get_option('cfturnstile_cf7_all'))
+		if ((empty(cfturnstile_get_option('cfturnstile_cf7_all')) || !cfturnstile_get_option('cfturnstile_cf7_all'))
 			&& false === strpos($cf7_text, $cfturnstile_key)
 		) {
 			return $result;

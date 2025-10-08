@@ -4,14 +4,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // MemberPress Login
-if(get_option('cfturnstile_login')) { add_action('mepr-login-form-before-submit','cfturnstile_field_mepr'); }
+if(cfturnstile_get_option('cfturnstile_login')) { add_action('mepr-login-form-before-submit','cfturnstile_field_mepr'); }
 function cfturnstile_field_mepr() { cfturnstile_field_show('.mepr-submit', 'turnstileMEPRCallback', 'memberpress', '-' . wp_rand()); }
 
 // MemberPress Register
-if(get_option('cfturnstile_mepr_register')) { add_action('mepr-checkout-before-submit','cfturnstile_field_mepr_register', 10, 1); }
+if(cfturnstile_get_option('cfturnstile_mepr_register')) { add_action('mepr-checkout-before-submit','cfturnstile_field_mepr_register', 10, 1); }
 function cfturnstile_field_mepr_register($membership_ID) { 
 
-  $LimitedToProductIDs = get_option('cfturnstile_mepr_product_ids');
+  $LimitedToProductIDs = cfturnstile_get_option('cfturnstile_mepr_product_ids');
   $ProductsNeedingCaptcha = explode("\n", str_replace("\r", "", $LimitedToProductIDs));
 
   // Only show Turnstile for those specific product ids
@@ -27,10 +27,10 @@ function cfturnstile_field_mepr_register($membership_ID) {
 }
 
 // MemberPress Check
-if(get_option('cfturnstile_mepr_register')) { add_filter( 'mepr-validate-signup', 'cfturnstile_mepr_check', 20, 1 ); }
+if(cfturnstile_get_option('cfturnstile_mepr_register')) { add_filter( 'mepr-validate-signup', 'cfturnstile_mepr_check', 20, 1 ); }
 function cfturnstile_mepr_check( $errors ) {
 
-  $LimitedToProductIDs = get_option('cfturnstile_mepr_product_ids');
+  $LimitedToProductIDs = cfturnstile_get_option('cfturnstile_mepr_product_ids');
   $ProductsNeedingCaptcha = explode("\n", str_replace("\r", "", $LimitedToProductIDs));
 
   // Start session

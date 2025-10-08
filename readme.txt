@@ -75,10 +75,13 @@ The plugin includes several other features and options:
 * Disable Submit Button: Disable the submit button on forms until the Turnstile challenge is completed.
 * Custom Error Message: Set your own custom error message for failed submissions.
 * Whitelist: Prevent Turnstile from showing for logged in users, or certain IP addresses (wildcards are not supported).
+* wp-config.php Configuration: Define API keys and all plugin settings as constants in wp-config.php.
 
 ## Getting Started ##
 
 It's super quick and easy to get started with Cloudflare Turnstile!
+
+**Standard Setup (Via Admin UI):**
 
 1. Simply generate a "site key" and "secret key" in your Cloudflare account, and add these in the plugin settings page.
 2. Select which forms Turnstile should be added to and click save.
@@ -86,6 +89,14 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
 For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
+
+**Setup via wp-config.php:**
+
+1. Generate a "site key" and "secret key" in your Cloudflare account.
+2. Add constants to your wp-config.php file:
+   `define('CFTURNSTILE_SITE_KEY', 'your-site-key');`
+   `define('CFTURNSTILE_SECRET_KEY', 'your-secret-key');`
+3. Visit the plugin settings page and click "TEST API RESPONSE".
 
 ## What is Cloudflare Turnstile? ##
 
@@ -147,16 +158,37 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 Yes, you can view a setup guide for the plugin <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">here</a>.
 
-= Can I define API keys in wp-config.php? =
+= Can I configure settings in wp-config.php? =
 
-Yes! For enhanced security and environment-specific configuration, you can define your Cloudflare Turnstile API keys in your wp-config.php file using constants:
+Yes! For enhanced security and environment-specific configuration, you can define Cloudflare Turnstile settings in your wp-config.php file using constants.
+
+**API Keys:**
 
 `define('CFTURNSTILE_SITE_KEY', 'your-site-key-here');`
 `define('CFTURNSTILE_SECRET_KEY', 'your-secret-key-here');`
 
-When keys are defined in wp-config.php, they will take priority over any keys stored in the database, and the admin settings fields will be hidden with a notice indicating the keys are configured via wp-config.php.
+**Additional Settings (Optional):**
 
-If either constant is empty or not defined, the plugin will fall back to using the keys from the database settings.
+You can also configure plugin settings via constants. Some examples:
+
+`define('CFTURNSTILE_LOGIN', true);           // Enable on WordPress login`
+`define('CFTURNSTILE_COMMENT', false);        // Disable on comments`
+`define('CFTURNSTILE_WOO_CHECKOUT', true);    // Enable on WooCommerce checkout`
+`define('CFTURNSTILE_THEME', 'dark');         // Set theme (light/dark/auto)`
+`define('CFTURNSTILE_LANGUAGE', 'de-de');     // Set language`
+`define('CFTURNSTILE_DISABLE_BUTTON', true);  // Disable submit until validated`
+
+**Priority Order:**
+
+1. wp-config.php constants (highest priority)
+2. Database settings (admin UI)
+3. Plugin defaults
+
+Constants will take priority over database settings. Admin settings fields for constant-controlled settings will be hidden with a notice.
+
+**Multisite:**
+
+On multisite networks, constants defined in wp-config.php apply to ALL sites in the network, providing centralized configuration.
 
 = Will there be more integrations be added in the future? =
 

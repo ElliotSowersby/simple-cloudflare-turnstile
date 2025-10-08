@@ -14,12 +14,12 @@ function cfturnstile_whitelisted() {
     // Filter
     $whitelisted = apply_filters('cfturnstile_whitelisted', false);
     // Logged In Users
-    if(get_option('cfturnstile_whitelist_users') && is_user_logged_in()) {
+    if(cfturnstile_get_option('cfturnstile_whitelist_users') && is_user_logged_in()) {
         $whitelisted = true;
     }
-    // If the IP address is within the list of IPs in get_option('cfturnstile_whitelist_ips')
-    if(get_option('cfturnstile_whitelist_ips')) {
-        $whitelist = get_option('cfturnstile_whitelist_ips');
+    // If the IP address is within the list of IPs in cfturnstile_get_option('cfturnstile_whitelist_ips')
+    if(cfturnstile_get_option('cfturnstile_whitelist_ips')) {
+        $whitelist = cfturnstile_get_option('cfturnstile_whitelist_ips');
         $whitelist_ips = explode("\n", str_replace("\r", "", $whitelist));
         $current_ip = cfturnstile_get_ip();
         foreach ($whitelist_ips as $whitelist_ip) {
@@ -35,9 +35,9 @@ function cfturnstile_whitelisted() {
             }
         }
     }
-    // If the User Agent is within the list of User Agents in get_option('cfturnstile_whitelist_agents')
-    if(get_option('cfturnstile_whitelist_agents')) {
-        $whitelist = get_option('cfturnstile_whitelist_agents');
+    // If the User Agent is within the list of User Agents in cfturnstile_get_option('cfturnstile_whitelist_agents')
+    if(cfturnstile_get_option('cfturnstile_whitelist_agents')) {
+        $whitelist = cfturnstile_get_option('cfturnstile_whitelist_agents');
         $whitelist_agents = explode("\n", str_replace("\r", "", $whitelist));
         $current_agent = sanitize_text_field($_SERVER['HTTP_USER_AGENT']);
         foreach ($whitelist_agents as $whitelist_agent) {

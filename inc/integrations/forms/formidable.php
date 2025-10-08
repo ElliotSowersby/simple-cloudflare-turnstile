@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_formidable')) {
+if(cfturnstile_get_option('cfturnstile_formidable')) {
 
 	// Get turnstile field: Formidable Forms
 	add_action('frm_submit_button_html','cfturnstile_field_formidable_form', 10, 2);
@@ -19,7 +19,7 @@ if(get_option('cfturnstile_formidable')) {
     	ob_end_clean();
     	wp_reset_postdata();
 
-      if(!empty(get_option('cfturnstile_formidable_pos')) && get_option('cfturnstile_formidable_pos') == "after") {
+      if(!empty(cfturnstile_get_option('cfturnstile_formidable_pos')) && cfturnstile_get_option('cfturnstile_formidable_pos') == "after") {
   		  return $button . $cfturnstile;
       } else {
         return $cfturnstile . $button;

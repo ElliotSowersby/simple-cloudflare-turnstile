@@ -29,9 +29,9 @@ function cfturnstile_field_checkout() {
 		return;
 	}
 
-	$guest_only = esc_attr( get_option('cfturnstile_guest_only') );
+	$guest_only = esc_attr( cfturnstile_get_option('cfturnstile_guest_only') );
 	if( !$guest_only || ($guest_only && !is_user_logged_in()) ) {
-		if(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
+		if(cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
 			echo "<br/>";
 		}
 		cfturnstile_field_show('', '', 'woocommerce-checkout', '-woo-checkout');
@@ -61,24 +61,24 @@ function cfturnstile_render_pre_block($block_content) {
 }
 
 // Woo Checkout Check
-if(get_option('cfturnstile_woo_checkout')) {
+if(cfturnstile_get_option('cfturnstile_woo_checkout')) {
 	// WooCommerce Checkout
 	// CheckoutWC: Only hook when CheckoutWC templates are enabled
 	if(function_exists( 'cfw_templates_disabled' ) && ! cfw_templates_disabled()) {
 		add_action('cfw_checkout_before_payment_method_tab_nav', 'cfturnstile_field_checkout', 10);
-	} elseif(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
+	} elseif(empty(cfturnstile_get_option('cfturnstile_woo_checkout_pos')) || cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
 		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_pre_block', 999, 1); // Before Payment block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
+	} elseif(cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
 		add_action('woocommerce_review_order_after_payment', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_post_block', 999, 1); // After Payment block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforebilling") {
+	} elseif(cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "beforebilling") {
 		add_action('woocommerce_before_checkout_billing_form', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-contact-information-block', 'cfturnstile_render_pre_block', 999, 1); // Before Contact Information block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterbilling") {
+	} elseif(cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "afterbilling") {
 		add_action('woocommerce_after_checkout_billing_form', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-shipping-methods-block', 'cfturnstile_render_pre_block', 999, 1); // Before Shipping Methods block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
+	} elseif(cfturnstile_get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
 		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
 		add_filter('render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1); // Before Actions block, not sure if this option is still supported.
 	}
@@ -91,7 +91,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 		if ( isset( $_POST['payment_method'] ) ) {
 			$chosen_payment_method = sanitize_text_field( $_POST['payment_method'] );
 			// Retrieve the selected payment methods from the cfturnstile_selected_payment_methods option
-			$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+			$selected_payment_methods = cfturnstile_get_option('cfturnstile_selected_payment_methods', array());
 			if(is_array($selected_payment_methods)) {
 				// Check if the chosen payment method is in the selected payment methods array
 				if ( in_array( $chosen_payment_method, $selected_payment_methods, true ) ) {
@@ -108,7 +108,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 		}
 
 		// Check if guest only enabled
-		$guest = esc_attr( get_option('cfturnstile_guest_only') );
+		$guest = esc_attr( cfturnstile_get_option('cfturnstile_guest_only') );
 		// Check
 		if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
 			$check = cfturnstile_check();
@@ -129,7 +129,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 			if ( $request->get_param('payment_method') !== null ) {
 				$chosen_payment_method = sanitize_text_field( $request->get_param('payment_method') );
 				// Retrieve the selected payment methods from the cfturnstile_selected_payment_methods option
-			$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+			$selected_payment_methods = cfturnstile_get_option('cfturnstile_selected_payment_methods', array());
 			if(is_array($selected_payment_methods)) {
 				// Check if the chosen payment method is in the selected payment methods array
 					if ( in_array( $chosen_payment_method, $selected_payment_methods, true ) ) {
@@ -147,7 +147,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 			}
 			
 			// Check if guest only enabled
-			$guest = esc_attr( get_option('cfturnstile_guest_only') );
+			$guest = esc_attr( cfturnstile_get_option('cfturnstile_guest_only') );
 			// Check
 			if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
 				$extensions = $request->get_param( 'extensions' );
@@ -198,7 +198,7 @@ function cfturnstile_woo_checkout_clear($order_id) {
 }
 
 // Woo Checkout Pay Order Check
-if(get_option('cfturnstile_woo_checkout_pay')) {
+if(cfturnstile_get_option('cfturnstile_woo_checkout_pay')) {
 	add_action('woocommerce_pay_order_before_submit', 'cfturnstile_field_checkout', 10);
 	add_action('woocommerce_before_pay_action', 'cfturnstile_woo_checkout_pay_check', 10, 2);
 	function cfturnstile_woo_checkout_pay_check($order) {
@@ -211,9 +211,9 @@ if(get_option('cfturnstile_woo_checkout_pay')) {
 }
 
 // Woo Login Check
-if(get_option('cfturnstile_woo_login')) {
+if(cfturnstile_get_option('cfturnstile_woo_login')) {
 	add_action('woocommerce_login_form','cfturnstile_field_woo_login');
-	if(!get_option('cfturnstile_login')) {
+	if(!cfturnstile_get_option('cfturnstile_login')) {
 		add_action('authenticate', 'cfturnstile_woo_login_check', 21, 1);
 		function cfturnstile_woo_login_check($user) {
 
@@ -254,7 +254,7 @@ if(get_option('cfturnstile_woo_login')) {
 }
 
 // Woo Register Check
-if(get_option('cfturnstile_woo_register')) {
+if(cfturnstile_get_option('cfturnstile_woo_register')) {
 	add_action('woocommerce_register_form','cfturnstile_field_woo_register');
 	if(!is_admin()) { // Prevents admin registration from failing
 		add_action('woocommerce_register_post', 'cfturnstile_woo_register_check', 10, 3);
@@ -273,7 +273,7 @@ if(get_option('cfturnstile_woo_register')) {
 }
 
 // Woo Reset Check
-if(get_option('cfturnstile_woo_reset')) {
+if(cfturnstile_get_option('cfturnstile_woo_reset')) {
 	add_action('woocommerce_lostpassword_form','cfturnstile_field_woo_reset');
 	add_action('lostpassword_post','cfturnstile_woo_reset_check', 10, 1);
 	function cfturnstile_woo_reset_check($validation_errors) {

@@ -13,14 +13,14 @@ function cfturnstile_field_wpuf() {
 /* 
 * Login
 */
-if(get_option('cfturnstile_login')) {
+if(cfturnstile_get_option('cfturnstile_login')) {
     add_action('wpuf_login_form_bottom','cfturnstile_field_wpuf');
 }
 
 /*
 * Register
 */
-if(get_option('cfturnstile_wpuf_register')) {
+if(cfturnstile_get_option('cfturnstile_wpuf_register')) {
     add_action('wpuf_reg_form_bottom','cfturnstile_field_wpuf');
     add_action( 'wpuf_process_registration_errors', 'cfturnstile_wpuf_check_register', 10, 1 );
 }
@@ -45,7 +45,7 @@ function cfturnstile_wpuf_check_register( $validation_error ) {
 /*
 * Password Reset
 */
-if(get_option('cfturnstile_reset')) {
+if(cfturnstile_get_option('cfturnstile_reset')) {
     remove_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
     add_action('lostpassword_post','cfturnstile_wpuf_check_reset', 20);
 }
@@ -69,7 +69,7 @@ function cfturnstile_wpuf_check_reset() {
 /*
 * Forms
 */
-if(get_option('cfturnstile_wpuf_forms')) {
+if(cfturnstile_get_option('cfturnstile_wpuf_forms')) {
     add_action('wpuf_add_post_form_bottom','cfturnstile_field_wpuf_form');
     add_action( 'wpuf_add_post_validate', 'cfturnstile_wpuf_check', 20 );
 }

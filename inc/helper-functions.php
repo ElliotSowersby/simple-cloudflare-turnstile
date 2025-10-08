@@ -28,3 +28,107 @@ function cfturnstile_get_secret_key() {
 		: get_option('cfturnstile_secret');
 	return sanitize_text_field($secret);
 }
+
+/**
+ * Get Turnstile option value with wp-config.php constant support.
+ * Priority: wp-config.php constants > database options > fallback default
+ *
+ * Special handling: whitelist_ips and whitelist_agents allow empty string constants
+ * for security (locks down the whitelist completely via wp-config.php).
+ *
+ * @param string $option_name The option name (with or without 'cfturnstile_' prefix)
+ * @param mixed $default Default value if option doesn't exist
+ * @return mixed Option value from constant, database or default
+ */
+function cfturnstile_get_option($option_name, $default = false) {
+	if (strpos($option_name, 'cfturnstile_') !== 0) {
+		$option_name = 'cfturnstile_' . $option_name;
+	}
+
+	$constant_name = strtoupper($option_name);
+
+	// Check wp-config.php constant
+	if (defined($constant_name)) {
+		$constant_value = constant($constant_name);
+
+		if (is_bool($constant_value)) {
+			return $constant_value;
+		}
+		$security_fields = array('cfturnstile_whitelist_ips', 'cfturnstile_whitelist_agents');
+		if (in_array($option_name, $security_fields) && $constant_value === '') {
+			return '';
+		}
+
+		if ($constant_value !== '' && $constant_value !== null) {
+			if (is_numeric($constant_value)) {
+				return $constant_value;
+			}
+			return sanitize_text_field($constant_value);
+		}
+	}
+
+	// Check database option
+	$db_value = get_option($option_name, null);
+	if ($db_value !== null && $db_value !== false) {
+		return $db_value;
+	}
+
+	// Final fallback
+	return $default;
+}
+
+/**
+ * Check if a Turnstile option is defined as a wp-config.php constant.
+ * Used to determine if admin UI fields should be disabled.
+ *
+ * @param string $option_name The option name (with or without 'cfturnstile_' prefix)
+ * @return bool True if constant is defined and not empty (or empty for whitelist fields)
+ */
+function cfturnstile_is_constant_defined($option_name) {
+	if (strpos($option_name, 'cfturnstile_') !== 0) {
+		$option_name = 'cfturnstile_' . $option_name;
+	}
+
+	$constant_name = strtoupper($option_name);
+
+	if (defined($constant_name)) {
+		$constant_value = constant($constant_name);
+		$security_fields = array('cfturnstile_whitelist_ips', 'cfturnstile_whitelist_agents');
+		if (in_array($option_name, $security_fields) && $constant_value === '') {
+			return true;
+		}
+
+		// Consider constant as "defined" if it's not empty/null
+		if (is_bool($constant_value) || ($constant_value !== '' && $constant_value !== null)) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+/**
+ * Get disabled attribute if option is controlled by wp-config.php constant.
+ * Returns 'disabled' or empty string for use in form field attributes.
+ *
+ * @param string $option_name The option name (with or without 'cfturnstile_' prefix)
+ * @return string 'disabled' if constant is defined, empty string otherwise
+ */
+function cfturnstile_disabled_attr($option_name) {
+	return cfturnstile_is_constant_defined($option_name) ? 'disabled' : '';
+}
+
+/**
+ * Display notice if option is controlled by wp-config.php constant.
+ * Shows a small italicized message below form fields.
+ *
+ * @param string $option_name The option name (with or without 'cfturnstile_' prefix)
+ * @return void
+ */
+function cfturnstile_show_constant_notice($option_name) {
+	if (cfturnstile_is_constant_defined($option_name)) {
+		echo '<br><i style="font-size: 10px; color: #666;">' .
+		esc_html__('Controlled by wp-config.php constant', 'simple-cloudflare-turnstile') .
+		'</i>';
+	}
+}

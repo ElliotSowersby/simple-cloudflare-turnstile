@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_gravity')) {
+if(cfturnstile_get_option('cfturnstile_gravity')) {
 
   // Create shortcode
   add_shortcode('gravity-simple-turnstile', 'cfturnstile_gravity_shortcode');
@@ -32,7 +32,7 @@ if(get_option('cfturnstile_gravity')) {
 	add_action('gform_submit_button','cfturnstile_field_gravity_form', 10, 2);
 	function cfturnstile_field_gravity_form($button, $form) {
     if(!cfturnstile_form_disable($form['id'], 'cfturnstile_gravity_disable')) {
-      if(!empty(get_option('cfturnstile_gravity_pos')) && get_option('cfturnstile_gravity_pos') == "after") {
+      if(!empty(cfturnstile_get_option('cfturnstile_gravity_pos')) && cfturnstile_get_option('cfturnstile_gravity_pos') == "after") {
         return $button . do_shortcode('[gravity-simple-turnstile id="'.$form['id'].'"]');
       } else {
         return do_shortcode('[gravity-simple-turnstile id="'.$form['id'].'"]') . $button;

@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-if (get_option('cfturnstile_fluent')) {
+if (cfturnstile_get_option('cfturnstile_fluent')) {
 
 	// Get turnstile field: Fluent Forms
 	if(has_action('fluentform/render_item_submit_button')) {

@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_comment')) {
+if(cfturnstile_get_option('cfturnstile_comment')) {
 
   add_action('wpdiscuz_before_comments','cfturnstile_field_wpdiscuz_script');
   function cfturnstile_field_wpdiscuz_script() {
@@ -14,8 +14,8 @@ if(get_option('cfturnstile_comment')) {
   function cfturnstile_field_wpdiscuz( $currentUser, $uniqueId, $isMainForm ) {
       $uniqueId = sanitize_text_field($uniqueId);
       $turnstilecode = '<div id="cf-turnstile-wpd-'.esc_html($uniqueId).'" class="wpdiscuz-cfturnstile" style="margin-left: -2px; margin-top: 10px; margin-bottom: 10px; display: inline-flex;"></div><div style="clear: both;"></div>';
-    	$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
-      $cfturnstile_size = esc_attr(get_option('cfturnstile_size'), 'normal');
+    	$appearance = esc_attr(cfturnstile_get_option('cfturnstile_appearance', 'always'));
+      $cfturnstile_size = esc_attr(cfturnstile_get_option('cfturnstile_size'), 'normal');
       ?>
       <script>
       jQuery(document).ready(function() {
@@ -30,7 +30,7 @@ if(get_option('cfturnstile_comment')) {
             appearance: '<?php echo sanitize_text_field($appearance); ?>',
             size: '<?php echo sanitize_text_field($cfturnstile_size); ?>',
             action: 'wpdiscuz-comment',
-            <?php if(get_option('cfturnstile_disable_button')) { ?>
+            <?php if(cfturnstile_get_option('cfturnstile_disable_button')) { ?>
             callback: function(token) {
               jQuery('#wpd-field-submit-<?php echo esc_html($uniqueId); ?>').css('pointer-events', 'auto');
               jQuery('#wpd-field-submit-<?php echo esc_html($uniqueId); ?>').css('opacity', '1');
@@ -48,7 +48,7 @@ if(get_option('cfturnstile_comment')) {
         });
       });
       </script>
-      <?php if(get_option('cfturnstile_disable_button')) { ?>
+      <?php if(cfturnstile_get_option('cfturnstile_disable_button')) { ?>
     	<style>#wpd-field-submit-<?php echo esc_html($uniqueId); ?> { pointer-events: none; opacity: 0.5; }</style>
       <?php } ?>
       <?php

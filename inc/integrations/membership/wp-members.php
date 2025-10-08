@@ -4,7 +4,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Register Check
-if(get_option('cfturnstile_register')) {
+if(cfturnstile_get_option('cfturnstile_register')) {
 	add_filter( 'wpmem_pre_validate_form', 'cfturnstile_wpmem_register_check', 10, 2 );
 	function cfturnstile_wpmem_register_check($fields, $tag) {
 		$check = cfturnstile_check();

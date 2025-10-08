@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_forminator')) {
+if(cfturnstile_get_option('cfturnstile_forminator')) {
 
 	// Get turnstile field: Forminator Forms
 	add_filter( 'forminator_render_form_submit_markup', 'cfturnstile_field_forminator_form', 10, 4 );
@@ -58,7 +58,7 @@ if(get_option('cfturnstile_forminator')) {
             ob_end_clean();
             wp_reset_postdata();
 
-            if(!empty(get_option('cfturnstile_forminator_pos')) && get_option('cfturnstile_forminator_pos') == "after") {
+            if(!empty(cfturnstile_get_option('cfturnstile_forminator_pos')) && cfturnstile_get_option('cfturnstile_forminator_pos') == "after") {
                 return $html . $cfturnstile;
             } else {
                 return $cfturnstile . $html;

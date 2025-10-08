@@ -3,10 +3,10 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_wpforms')) {
+if(cfturnstile_get_option('cfturnstile_wpforms')) {
 
 	// Get turnstile field: WP Forms
-  if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") {
+  if(!empty(cfturnstile_get_option('cfturnstile_wpforms_pos')) && cfturnstile_get_option('cfturnstile_wpforms_pos') == "after") {
     add_action('wpforms_display_submit_after','cfturnstile_field_wpf_form', 10, 1);
   } else {
     add_action('wpforms_display_submit_before','cfturnstile_field_wpf_form', 10, 1);
@@ -14,7 +14,7 @@ if(get_option('cfturnstile_wpforms')) {
 	function cfturnstile_field_wpf_form($form_data) {
     if(!cfturnstile_form_disable($form_data['id'], 'cfturnstile_wpforms_disable')) {
       $uniqueId = wp_rand();
-      if(!empty(get_option('cfturnstile_wpforms_pos')) && get_option('cfturnstile_wpforms_pos') == "after") { echo "<br/><br/>"; }
+      if(!empty(cfturnstile_get_option('cfturnstile_wpforms_pos')) && cfturnstile_get_option('cfturnstile_wpforms_pos') == "after") { echo "<br/><br/>"; }
       cfturnstile_field_show('.wpforms-submit', 'turnstileWPFCallback', 'wpforms-' . $form_data['id'], '-wpf-' . $uniqueId);
     }
   }

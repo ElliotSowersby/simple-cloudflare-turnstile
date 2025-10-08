@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_elementor')) {
+if(cfturnstile_get_option('cfturnstile_elementor')) {
 
   // Enqueue Turnstile script for Elementor forms
   add_action('elementor/widget/before_render_content', 'cfturnstile_elementor_before_render', 10, 1);
@@ -14,7 +14,7 @@ if(get_option('cfturnstile_elementor')) {
     
     // Enqueue Turnstile API script
     if (!wp_script_is('cfturnstile', 'enqueued')) {
-      $defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
+      $defer = cfturnstile_get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
       wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, $defer);
     }
     
@@ -31,8 +31,8 @@ if(get_option('cfturnstile_elementor')) {
       // Pass settings to JavaScript
       wp_localize_script('cfturnstile-elementor-forms', 'cfturnstileElementorSettings', array(
         'sitekey' => cfturnstile_get_site_key(),
-        'position' => get_option('cfturnstile_elementor_pos', 'before'),
-        'theme' => get_option('cfturnstile_theme')
+        'position' => cfturnstile_get_option('cfturnstile_elementor_pos', 'before'),
+        'theme' => cfturnstile_get_option('cfturnstile_theme')
       ));
     }
   }

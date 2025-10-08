@@ -3,7 +3,7 @@ if (!defined("ABSPATH")) {
     exit();
 }
 
-if (get_option("cfturnstile_jetpack")) {
+if (cfturnstile_get_option("cfturnstile_jetpack")) {
     add_filter(
         "jetpack_contact_form_html",
         "cfturnstile_field_jetpack_form",

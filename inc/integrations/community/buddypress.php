@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-if(get_option('cfturnstile_bp_register')) {
+if(cfturnstile_get_option('cfturnstile_bp_register')) {
 
 	// Get turnstile field: BuddyPress
 	add_action('bp_before_registration_submit_buttons','cfturnstile_field_bp_register');

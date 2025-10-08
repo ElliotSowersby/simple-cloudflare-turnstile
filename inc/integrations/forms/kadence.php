@@ -2,7 +2,7 @@
 if (!defined('ABSPATH')) {
 	exit;
 }
-if (get_option("cfturnstile_kadence")) {
+if (cfturnstile_get_option("cfturnstile_kadence")) {
 
     // Enqueue Turnstile JS for Kadence Blocks Form
     add_action('wp_enqueue_scripts', 'cfturnstile_enqueue_kadence_script');

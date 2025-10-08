@@ -11,14 +11,14 @@ function cfturnstile_field_edd_register() { cfturnstile_field_show('#edd_registe
 
 // Get turnstile field: EDD Checkout
 function cfturnstile_field_edd_checkout() {
-    $guest = esc_attr( get_option('cfturnstile_edd_guest_only') );
+    $guest = esc_attr( cfturnstile_get_option('cfturnstile_edd_guest_only') );
 	if( !$guest || ( $guest && !is_user_logged_in() ) ) {
         cfturnstile_field_show('', '', 'edd-checkout', '-edd-checkout');
     }
 }
 
 // EDD Checkout Check
-if(get_option('cfturnstile_edd_checkout')) {
+if(cfturnstile_get_option('cfturnstile_edd_checkout')) {
 	add_action('edd_purchase_form_before_submit', 'cfturnstile_field_edd_checkout', 10);
 	add_action('edd_pre_process_purchase', 'cfturnstile_edd_checkout_check');
 	function cfturnstile_edd_checkout_check() {
@@ -29,7 +29,7 @@ if(get_option('cfturnstile_edd_checkout')) {
 			return;
 		}
 		// Get guest only
-		$guest = esc_attr( get_option('cfturnstile_edd_guest_only') );
+		$guest = esc_attr( cfturnstile_get_option('cfturnstile_edd_guest_only') );
 		// Check
 		if( !$guest || ( $guest && !is_user_logged_in() ) ) {
 			if(isset( $_POST['edd-process-checkout-nonce'] ) && wp_verify_nonce( sanitize_text_field($_POST['edd-process-checkout-nonce']), 'edd-process-checkout' )) {
@@ -47,7 +47,7 @@ if(get_option('cfturnstile_edd_checkout')) {
 }
 
 // EDD Login Check
-if(get_option('cfturnstile_edd_login')) {
+if(cfturnstile_get_option('cfturnstile_edd_login')) {
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 		add_action('edd_login_fields_after','cfturnstile_field_edd_login');
 		add_action('authenticate', 'cfturnstile_edd_login_check', 21, 1);
@@ -78,7 +78,7 @@ function cfturnstile_edd_default_login_check() {
 }
 
 // EDD Register Check
-if(get_option('cfturnstile_edd_register')) {
+if(cfturnstile_get_option('cfturnstile_edd_register')) {
 	add_action('edd_register_form_fields_before_submit','cfturnstile_field_edd_register');
 	add_action('edd_process_register_form', 'cfturnstile_edd_register_check', 10);
 	function cfturnstile_edd_register_check() {

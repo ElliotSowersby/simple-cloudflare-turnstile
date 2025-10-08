@@ -4,13 +4,13 @@ if (!defined('ABSPATH')) {
 }
 
 // Create Topic
-if (get_option('cfturnstile_bbpress_create')) {
+if (cfturnstile_get_option('cfturnstile_bbpress_create')) {
 
 	// Get field
 	add_action('bbp_theme_before_topic_form_submit_wrapper', 'cfturnstile_field_bbpress_create');
 	function cfturnstile_field_bbpress_create() {
-		$guest_only = get_option('cfturnstile_bbpress_guest_only');
-		$align = get_option('cfturnstile_bbpress_align');
+		$guest_only = cfturnstile_get_option('cfturnstile_bbpress_guest_only');
+		$align = cfturnstile_get_option('cfturnstile_bbpress_align');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
 			cfturnstile_field_show('#bbp_topic_submit', 'turnstileBBPressCreateCallback', 'bbpress-create', '-bb-create');
 			if ($align == "right") echo "<style>#bbpress-forums #cf-turnstile { float: right; }</style>";
@@ -22,13 +22,13 @@ if (get_option('cfturnstile_bbpress_create')) {
 }
 
 // Create Topic
-if (get_option('cfturnstile_bbpress_reply')) {
+if (cfturnstile_get_option('cfturnstile_bbpress_reply')) {
 
 	// Get field
 	add_action('bbp_theme_before_reply_form_submit_wrapper', 'cfturnstile_field_bbpress_reply');
 	function cfturnstile_field_bbpress_reply() {
-		$guest_only = get_option('cfturnstile_bbpress_guest_only');
-		$align = get_option('cfturnstile_bbpress_align');
+		$guest_only = cfturnstile_get_option('cfturnstile_bbpress_guest_only');
+		$align = cfturnstile_get_option('cfturnstile_bbpress_align');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
 			cfturnstile_field_show('#bbp_reply_submit', 'turnstileBBPressReplyCallback', 'bbpress-reply', '-bb-reply');
 			if ($align == "right") echo "<style>#bbpress-forums .cf-turnstile { float: right; }</style>";
@@ -42,7 +42,7 @@ if (get_option('cfturnstile_bbpress_reply')) {
 // Validate Function
 function cfturnstile_bbpress_register_check() {
 	if(!cfturnstile_whitelisted()) {
-		$guest_only = get_option('cfturnstile_bbpress_guest_only');
+		$guest_only = cfturnstile_get_option('cfturnstile_bbpress_guest_only');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
 			if ('POST' === $_SERVER['REQUEST_METHOD'] && isset($_POST['cf-turnstile-response'])) {
 				$check = cfturnstile_check();

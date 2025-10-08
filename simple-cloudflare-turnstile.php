@@ -61,7 +61,7 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  */
 function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && sanitize_text_field($_GET['page']) == 'cfturnstile') {
-		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
+		$defer = cfturnstile_get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', $defer);
@@ -92,11 +92,11 @@ if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) 
 		// Get current theme
 		$current_theme = wp_get_theme();
 		// Check defer scripts option
-		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
+		$defer = cfturnstile_get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		/* Turnstile */
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), null, $defer);
 		/* Disable Button */
-		if (get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), array('cfturnstile'), '5.0', $defer); }
+		if (cfturnstile_get_option('cfturnstile_disable_button')) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), array('cfturnstile'), '5.0', $defer); }
 		/* WooCommerce */
 		if (cft_is_plugin_active('woocommerce/woocommerce.php')) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '1.2', $defer); }
 		/* WPDiscuz */

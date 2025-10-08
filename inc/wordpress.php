@@ -10,7 +10,7 @@ function cfturnstile_field_login() {
 	if(isset($_SESSION['cfturnstile_login_checked'])) {
 		unset($_SESSION['cfturnstile_login_checked']);
 	}
-	if(get_option('cfturnstile_login_only', 0)) {
+	if(cfturnstile_get_option('cfturnstile_login_only', 0)) {
 		$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
 		$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 		if ($current_url_path !== $login_url_path) {
@@ -37,7 +37,7 @@ function cfturnstile_field_reset() {
 /*
  * WP Login Check
  */
-if(get_option('cfturnstile_login')) {
+if(cfturnstile_get_option('cfturnstile_login')) {
 	add_action('login_form','cfturnstile_field_login');
 	add_action('authenticate', 'cfturnstile_wp_login_check', 21, 1);
 	function cfturnstile_wp_login_check($user) {
@@ -50,7 +50,7 @@ if(get_option('cfturnstile_login')) {
 		if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
 		// Skip if not on login page
-		if(get_option('cfturnstile_login_only', 0)) {
+		if(cfturnstile_get_option('cfturnstile_login_only', 0)) {
 			$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
 			$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 			if ($current_url_path !== $login_url_path) {
@@ -104,10 +104,10 @@ if(get_option('cfturnstile_login')) {
 	add_filter('login_form_middle', 'cfturnstile_wp_login_form_field', 10, 1);
 }
 
-/* 
+/*
  * WP Register Check
  */
-if(get_option('cfturnstile_register')) {
+if(cfturnstile_get_option('cfturnstile_register')) {
 	add_action('register_form','cfturnstile_field_register');
 	add_action('registration_errors', 'cfturnstile_wp_register_check', 10, 3);
 	function cfturnstile_wp_register_check($errors, $sanitized_user_login, $user_email) {
@@ -119,7 +119,7 @@ if(get_option('cfturnstile_register')) {
 		if ( isset($_POST['edd_register_nonce']) && wp_verify_nonce( sanitize_text_field($_POST['edd_register_nonce']), 'edd-register-nonce' ) ) { return $errors; } // Skip EDD
 
 		// Skip if not on login page
-		if(get_option('cfturnstile_register_only', 0)) {
+		if(cfturnstile_get_option('cfturnstile_register_only', 0)) {
 			$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
 			$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 			if ($current_url_path !== $login_url_path) {
@@ -146,7 +146,7 @@ if(get_option('cfturnstile_register')) {
 /*
  * WP Password Reset Check
  */
-if(get_option('cfturnstile_reset')) {
+if(cfturnstile_get_option('cfturnstile_reset')) {
   if(!is_admin()) {
   	add_action('lostpassword_form','cfturnstile_field_reset');
   	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
@@ -168,7 +168,7 @@ if(get_option('cfturnstile_reset')) {
 /*
  * WP Comment Check
  */
-if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
+if(cfturnstile_get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php')) {
   if( !is_admin() || wp_doing_ajax() ) {
 	add_action("comment_form_after", "cfturnstile_comment_form_after");
 	function cfturnstile_comment_form_after() {
@@ -184,18 +184,18 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 			do_action("cfturnstile_enqueue_scripts");
 			$unique_id = wp_rand();
 			$key = esc_attr( cfturnstile_get_site_key() );
-			$theme = esc_attr( get_option('cfturnstile_theme') );
-			$language = esc_attr(get_option('cfturnstile_language'));
-			$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
-			$cfturnstile_size = esc_attr(get_option('cfturnstile_size'), 'normal');
+			$theme = esc_attr( cfturnstile_get_option('cfturnstile_theme') );
+			$language = esc_attr(cfturnstile_get_option('cfturnstile_language'));
+			$appearance = esc_attr(cfturnstile_get_option('cfturnstile_appearance', 'always'));
+			$cfturnstile_size = esc_attr(cfturnstile_get_option('cfturnstile_size', 'normal'));
 			if(!$language) { $language = 'auto'; }
 			$submit_before = '';
 			$submit_after = '';
 			$callback = '';
-			if(get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
+			if(cfturnstile_get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
 			$submit_before .= '<span id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile cf-turnstile-comments" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-size="'.sanitize_text_field($cfturnstile_size).'" data-retry="auto" data-retry-interval="1000"></span>';
 			$submit_before .= '<br class="cf-turnstile-br cf-turnstile-br-comments">';
-			if(get_option('cfturnstile_disable_button')) {
+			if(cfturnstile_get_option('cfturnstile_disable_button')) {
 				$submit_before .= '<span class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
 				$submit_after .= "</span>";
 			}
@@ -203,7 +203,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 			// Script to render turnstile when clicking reply
 			$script = '<script type="text/javascript">document.addEventListener("DOMContentLoaded", function() { document.body.addEventListener("click", function(event) { if (event.target.matches(".comment-reply-link, #cancel-comment-reply-link")) { turnstile.reset(".comment-form .cf-turnstile"); } }); });</script>';
 			// If ajax comments are enabled, we need to re-render the turnstile after the comment is submitted
-			if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') || cft_is_plugin_active('wp-ajaxify-comments/wp-ajaxify-comments.php') || get_option('cfturnstile_ajax_comments')) {
+			if(cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') || cft_is_plugin_active('wp-ajaxify-comments/wp-ajaxify-comments.php') || cfturnstile_get_option('cfturnstile_ajax_comments')) {
 				$script .= '<script type="text/javascript">jQuery(document).ajaxComplete(function() { setTimeout(function() { turnstile.remove("#cf-turnstile-c-'.$unique_id.'");turnstile.render("#cf-turnstile-c-'.$unique_id.'"); }, 1000); });</script>';
 			}
 			// Return button
