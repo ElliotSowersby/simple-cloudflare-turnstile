@@ -104,6 +104,10 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_jetpack',
             'cfturnstile_jetpack_disable',
         ),
+        'ultimate-elementor/ultimate-elementor.php' => array(
+            'cfturnstile_uae_login',
+            'cfturnstile_uae_registration',
+        ),
         'formidable/formidable.php' => array(
             'cfturnstile_formidable',
             'cfturnstile_formidable_pos',
