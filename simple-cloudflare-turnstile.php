@@ -38,7 +38,7 @@ function cfturnstile_settings_redirect() {
  *
  * @param array $actions
  * @param string $plugin_file
- * 
+ *
  * @return array
  */
 add_filter('plugin_action_links', 'cfturnstile_settings_link_plugin', 10, 5);
@@ -136,7 +136,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/other/perf.php');
 		}
-		
+
 		// Include WordPress
 		include(plugin_dir_path(__FILE__) . 'inc/wordpress.php');
 
@@ -164,7 +164,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		if (cft_is_plugin_active('mailpoet/mailpoet.php')) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/newsletters/mailpoet.php');
 		}
-		
+
 		// Include Contact Form 7
 		if (cft_is_plugin_active('contact-form-7/wp-contact-form-7.php')) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/contact-form-7.php');
@@ -253,6 +253,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		// Jetpack Forms
 		if (cft_is_plugin_active('jetpack/jetpack.php')) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/jetpack.php');
+		}
+
+		// Include Ninja Forms
+		if (cft_is_plugin_active('ninja-forms/ninja-forms.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/ninja-forms/ninja-forms.php');
 		}
 	}
 

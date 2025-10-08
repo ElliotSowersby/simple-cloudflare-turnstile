@@ -1,0 +1,20 @@
+<script id="tmpl-nf-field-simplecloudflareturnstile" type="text/template">
+
+	<input id="nf-field-{{{ data.widget.field_id }}}" name="nf-field-{{{ data.widget.field_id }}}" class="{{{ data.renderClasses() }}} nf-element cf-turnstile-response-{{{ data.widget.guid }}}" type="hidden" value="" />
+
+	<div id="cf-turnstile-{{{ data.widget.guid }}}"
+	class="cf-turnstile cf-turnstile-{{{ data.widget.guid }}} cf-turnstile-alignment-{{{ data.widget.alignment }}}"
+	data-sitekey="{{{ data.widget.site_key }}}"
+	data-theme="{{{ data.widget.theme }}}"
+	data-language="{{{ data.widget.language }}}"
+	data-size="{{{ data.widget.size }}}"
+	data-appearance="{{{ data.widget.appearance }}}"
+	data-action="{{{ data.widget.form_id }}}"
+	data-guid="{{{ data.widget.guid }}}"
+	data-form_id="{{{ data.widget.form_id }}}"
+	data-field_id="{{{ data.widget.field_id }}}"
+	data-retry="auto"
+	data-retry-interval="750"
+	data-response-field="false"></div>
+	
+</script>
