@@ -132,3 +132,45 @@ function cfturnstile_show_constant_notice($option_name) {
 		'</i>';
 	}
 }
+
+/**
+ * Get the appropriate test status based on key source.
+ * Uses network-wide test status when constants are defined in multisite,
+ * otherwise uses per-site option.
+ *
+ * @return string 'yes', 'no', or empty
+ */
+function cfturnstile_get_test_status() {
+	if (defined('CFTURNSTILE_SITE_KEY') && CFTURNSTILE_SITE_KEY !== '' &&
+		defined('CFTURNSTILE_SECRET_KEY') && CFTURNSTILE_SECRET_KEY !== '') {
+
+		if (is_multisite()) {
+			return get_site_option('cfturnstile_tested_network', '');
+		} else {
+			return get_option('cfturnstile_tested', '');
+		}
+	}
+
+	return get_option('cfturnstile_tested', '');
+}
+
+/**
+ * Update test status based on key source.
+ * Updates network-wide status when constants are defined in multisite,
+ * otherwise updates per-site option.
+ *
+ * @param string $status 'yes' or 'no'
+ */
+function cfturnstile_update_test_status($status) {
+	if (defined('CFTURNSTILE_SITE_KEY') && CFTURNSTILE_SITE_KEY !== '' &&
+		defined('CFTURNSTILE_SECRET_KEY') && CFTURNSTILE_SECRET_KEY !== '') {
+
+		if (is_multisite()) {
+			update_site_option('cfturnstile_tested_network', $status);
+		} else {
+			update_option('cfturnstile_tested', $status);
+		}
+	} else {
+		update_option('cfturnstile_tested', $status);
+	}
+}

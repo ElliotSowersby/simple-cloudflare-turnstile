@@ -129,7 +129,7 @@ if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) 
 	/**
 	 * Include Integrations
 	 */
-	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
+	if(empty(cfturnstile_get_test_status()) || cfturnstile_get_test_status() == 'yes') {
 
 		// Performance Plugins Compatibility
 		if (

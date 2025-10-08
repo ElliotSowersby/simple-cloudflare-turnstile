@@ -48,7 +48,7 @@ if(cfturnstile_get_option('cfturnstile_edd_checkout')) {
 
 // EDD Login Check
 if(cfturnstile_get_option('cfturnstile_edd_login')) {
-	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
+	if(empty(cfturnstile_get_test_status()) || cfturnstile_get_test_status() == 'yes') {
 		add_action('edd_login_fields_after','cfturnstile_field_edd_login');
 		add_action('authenticate', 'cfturnstile_edd_login_check', 21, 1);
 		function cfturnstile_edd_login_check($user){

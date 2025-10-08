@@ -19,4 +19,10 @@ if (get_option('cfturnstile_uninstall_remove')) {
     delete_option('cfturnstile_tested');
     // Remove the "cfturnstile_uninstall_remove" option itself
     delete_option('cfturnstile_uninstall_remove');
+
+    // Remove network-wide options (multisite)
+    if (is_multisite()) {
+        delete_site_option('cfturnstile_tested_network');
+        delete_site_option('cfturnstile_migration_version');
+    }
 }

@@ -54,7 +54,7 @@ if(cfturnstile_get_option('cfturnstile_pmp_checkout')) {
 
 // PMP Login Check
 if(cfturnstile_get_option('cfturnstile_login')) {
-	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
+	if(empty(cfturnstile_get_test_status()) || cfturnstile_get_test_status() == 'yes') {
 		add_filter('login_form_middle', 'cfturnstile_field_pmp_login', 10, 2);
         add_action('cfturnstile_wp_login_failed', 'cfturnstile_pmp_error', 21, 1);
         function cfturnstile_pmp_error() {

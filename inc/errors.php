@@ -10,10 +10,10 @@ add_action('admin_notices', 'cfturnstile_tested_notice');
 function cfturnstile_tested_notice() {
 	if(!isset($_GET['page']) || sanitize_text_field($_GET['page']) != 'cfturnstile') {
 		if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) {
-			// Get the option from the database
-			$cfturnstile_tested = get_option('cfturnstile_tested');
-			
-			// If the option is 'no', display the error notice
+			// Get the test status
+			$cfturnstile_tested = cfturnstile_get_test_status();
+
+			// If the status is 'no', display the error notice
 			if ($cfturnstile_tested === 'no') {
 				echo '<div class="notice notice-error is-dismissible">';
 				echo sprintf(

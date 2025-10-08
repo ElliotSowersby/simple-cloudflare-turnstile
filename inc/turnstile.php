@@ -199,7 +199,7 @@ function cfturnstile_check($postdata = "") {
 				foreach ($val as $key => $error_val) {
 					$results['error_code'] = $error_val;
 					if($error_val == 'invalid-input-secret') {
-						update_option('cfturnstile_tested', 'no'); // Disable if invalid secret
+						cfturnstile_update_test_status('no'); // Disable if invalid secret
 					}
 				}
 			}

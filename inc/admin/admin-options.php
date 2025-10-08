@@ -20,7 +20,7 @@ function cfturnstile_create_menu() {
 add_action('update_option_cfturnstile_key', 'cfturnstile_keys_updated', 10);
 add_action('update_option_cfturnstile_secret', 'cfturnstile_keys_updated', 10);
 function cfturnstile_keys_updated() {
-	update_option('cfturnstile_tested', 'no');
+	cfturnstile_update_test_status('no');
 }
 
 // Admin test form to check Turnstile response
@@ -46,7 +46,7 @@ function cfturnstile_admin_test() {
 					. '</p>';
 			} else {
 				if ($success == true) {
-					update_option('cfturnstile_tested', 'yes');
+					cfturnstile_update_test_status('yes');
 				} else {
 					if ($error == "missing-input-response") {
 						echo '<p style="font-weight: bold; color: red;">' . cfturnstile_failed_message() . '</p>';
@@ -93,7 +93,7 @@ function cfturnstile_settings_page() {
 		</div>
 
 		<?php
-		if (empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') != 'yes') {
+		if (empty(cfturnstile_get_test_status()) || cfturnstile_get_test_status() != 'yes') {
 			echo cfturnstile_admin_test();
 		}
 		?>
@@ -113,8 +113,13 @@ function cfturnstile_settings_page() {
 						<p style="font-size: 15px; font-size: 19px; margin-top: 0;"><?php echo esc_html__('API Key Settings:', 'simple-cloudflare-turnstile'); ?></p>
 
 						<?php
-						if (get_option('cfturnstile_tested') == 'yes') {
+						if (cfturnstile_get_test_status() == 'yes') {
 							echo '<p style=" font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . esc_html__('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
+
+							// Show network-wide status notice
+							if (is_multisite() && defined('CFTURNSTILE_SITE_KEY') && CFTURNSTILE_SITE_KEY !== '' && defined('CFTURNSTILE_SECRET_KEY') && CFTURNSTILE_SECRET_KEY !== '') {
+								echo '<p style="font-size: 13px; color: #666;"><span class="dashicons dashicons-admin-multisite"></span> ' . esc_html__('Using network-wide test status (API keys defined in wp-config.php).', 'simple-cloudflare-turnstile') . '</p>';
+							}
 						} ?>
 
 						<p style="margin-bottom: 2px;"><?php echo esc_html__('You can get your site key and secret key from here:', 'simple-cloudflare-turnstile'); ?> <a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">https://dash.cloudflare.com/?to=/:account/turnstile</a></p>

@@ -5,7 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Get turnstile field: Woo Login
 function cfturnstile_field_woo_login() {
-	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
+	if(empty(cfturnstile_get_test_status()) || cfturnstile_get_test_status() == 'yes') {
 		$unique_id = wp_rand();
 		cfturnstile_field_show('.woocommerce-form-login__submit', 'turnstileWooLoginCallback', 'woocommerce-login-' . $unique_id, '-woo-login-' . $unique_id, 'sct-woocommerce-login');
 	}
