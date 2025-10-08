@@ -1,10 +1,10 @@
-=== Simple Cloudflare Turnstile - CAPTCHA Alternative ===
+=== Simple CAPTCHA Alternative with Cloudflare Turnstile ===
 Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.32.3
+Stable Tag: 1.33.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -14,7 +14,7 @@ Add Cloudflare Turnstile to WordPress, WooCommerce, Contact Forms & more. The us
 
 Easily add Cloudflare Turnstile to all your WordPress website forms to protect them from spam!
 
-A user-friendly, privacy-preserving reCAPTCHA alternative.
+A user-friendly, privacy-preserving reCAPTCHA alternative. 100% free!
 
 ## Supported Forms ##
 
@@ -111,6 +111,12 @@ Currently available in <a href="https://translate.wordpress.org/projects/wp-plug
 * Follow the developer <a href="https://twitter.com/ElliotSowersby" target="_blank">@ElliotSowersby</a> on Twitter.
 * <a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank">View on GitHub</a>
 
+## Trademark Notice ##
+
+<i>Cloudflare, the Cloudflare logo, and Cloudflare Workers are trademarks and/or registered trademarks of Cloudflare, Inc. in the United States and other jurisdictions.</i>
+
+<i>This plugin is not affiliated with, endorsed, or sponsored by Cloudflare, Inc.</i>
+
 == Installation ==
 
 1. Upload 'simple-cloudflare-turnstile' to the '/wp-content/plugins/' directory.
@@ -147,7 +153,7 @@ More integrations may be added in the future, based on user feedback. So if you 
 
 = I need help, can I get support? =
 
-Please bare in mind, the <a href="https://simpleturnstile.com/">Simple Cloudflare Turnstile</a> plugin is 100% free, developed as a way to give back to the WordPress community.
+Please bare in mind, the <a href="https://simpleturnstile.com/">Simple CAPTCHA Alternative with Cloudflare Turnstile</a> plugin is 100% free, developed as a way to give back to the WordPress community.
 
 You can post a support thread on the WordPress.org forums to get help from the community, and we will also keep an eye on this quite frequently, providing support and answers where possible. However, we can not guarantee an answer every single support ticket.
 
@@ -171,7 +177,15 @@ View the Cloudflare <a href="https://www.cloudflare.com/en-gb/gdpr/introduction/
 
 = I see a 401 console error, is this a problem? =
 
-You can safely ignore the error. It is requesting a “Private Access Token (PAT) Open external link” that your device or browser does not support yet. <a href="https://developers.cloudflare.com/turnstile/frequently-asked-questions/#i-am-seeing-a-401-error-in-your-console-during-a-turnstile-security-check-is-this-a-problem">Click here</a> for more information.
+You can safely ignore the error.
+
+It is requesting a “Private Access Token (PAT) Open external link” that your device or browser does not support yet.
+
+<a href="https://developers.cloudflare.com/turnstile/frequently-asked-questions/#i-am-seeing-a-401-error-in-your-console-during-a-turnstile-security-check-is-this-a-problem">Click here</a> for more information.
+
+= Turnstile Error Codes in Browser Console =
+
+For details on errors codes being displayed in your browser console, please refer to the Cloudflare documentation <a href="https://developers.cloudflare.com/turnstile/troubleshooting/client-side-errors/error-codes/">here</a>.
 
 = The Turnstile Challenge is not appearing, what should I do? =
 
@@ -184,6 +198,13 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.33.1 - 5th September 2025 =
+- Other: Renamed the plugin from "Simple Cloudflare Turnstile"to "Simple CAPTCHA Alternative with Cloudflare Turnstile" due to trademark guidelines.
+
+= Version 1.33.0 - 4th September 2025 =
+- Tweak: Added some better compatibility with certain performance plugins that may be minifying/delaying JavaScript and causing issues with Turnstile loading.
+- Fix: Potential fix for some websites experiencing issues with Elementor forms.
 
 = Version 1.32.3 - 21st August 2025 =
 - Fix: Fixed an issue with the CheckoutWC integration.
