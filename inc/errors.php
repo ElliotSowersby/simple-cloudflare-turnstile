@@ -30,8 +30,8 @@ function cfturnstile_tested_notice() {
  * Gets the custom Turnstile failed message
  */
 function cfturnstile_failed_message($default = "") {
-	if (!$default && !empty(get_option('cfturnstile_error_message')) && get_option('cfturnstile_error_message')) {
-		return sanitize_text_field(get_option('cfturnstile_error_message'));
+	if (!$default && !empty(cfturnstile_get_option('cfturnstile_error_message')) && cfturnstile_get_option('cfturnstile_error_message')) {
+		return sanitize_text_field(cfturnstile_get_option('cfturnstile_error_message'));
 	} else {
 		return esc_html__('Please verify that you are human.', 'simple-cloudflare-turnstile');
 	}

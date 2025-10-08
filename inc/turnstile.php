@@ -261,8 +261,8 @@ function cfturnstile_log($response, $results) {
  * Check if form should show Turnstile
  */
 function cfturnstile_form_disable($id, $option) {
-	if(!empty(get_option($option)) && get_option($option)) {
-		$disabled = preg_replace('/\s+/', '', get_option($option));
+	if(!empty(cfturnstile_get_option($option)) && cfturnstile_get_option($option)) {
+		$disabled = preg_replace('/\s+/', '', cfturnstile_get_option($option));
 		$disabled = explode (",",$disabled);
 		if(in_array($id, $disabled)) return true;
 	}

@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) {
 	exit;
 }
 
-if (get_option("cfturnstile_mailpoet")) {
+if (cfturnstile_get_option("cfturnstile_mailpoet")) {
 
     // Add Turnstile to MailPoet
     function cfturnstile_field_mailpoet( $formHtml ) {

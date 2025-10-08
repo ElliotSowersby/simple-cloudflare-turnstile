@@ -28,7 +28,7 @@ register_activation_hook(__FILE__, function () {
 });
 add_action('admin_init', 'cfturnstile_settings_redirect');
 function cfturnstile_settings_redirect() {
-	if (get_option('cfturnstile_do_activation_redirect', false)) {
+	if (cfturnstile_get_option('cfturnstile_do_activation_redirect', false)) {
 		delete_option('cfturnstile_do_activation_redirect');
 		if(!is_multisite()) {
 			exit(wp_redirect("options-general.php?page=cfturnstile"));
