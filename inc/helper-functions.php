@@ -63,6 +63,12 @@ function cfturnstile_get_option($option_name, $default = false) {
 			if (is_numeric($constant_value)) {
 				return $constant_value;
 			}
+
+			$textarea_fields = array('cfturnstile_whitelist_ips', 'cfturnstile_whitelist_agents', 'cfturnstile_failure_message', 'cfturnstile_error_message');
+			if (in_array($option_name, $textarea_fields)) {
+				return sanitize_textarea_field($constant_value);
+			}
+
 			return sanitize_text_field($constant_value);
 		}
 	}
