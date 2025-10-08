@@ -28,7 +28,7 @@ function cfturnstile_admin_test() {
 ?>
 	<form action="" method="POST" class="cfturnstile-settings">
 		<?php
-		if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
+		if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) {
 			$check = cfturnstile_check();
 			$success = '';
 			$error = '';
@@ -126,15 +126,28 @@ function cfturnstile_settings_page() {
 
 			<table class="form-table">
 
-				<tr valign="top">
-					<th scope="row"><?php echo esc_html__('Site Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo esc_html(get_option('cfturnstile_key')); ?>" /></td>
-				</tr>
+				<?php if (defined('CFTURNSTILE_SITE_KEY') && CFTURNSTILE_SITE_KEY !== '' && defined('CFTURNSTILE_SECRET_KEY') && CFTURNSTILE_SECRET_KEY !== '') : ?>
+					<tr valign="top">
+						<td colspan="2">
+							<div class="notice notice-info inline" style="margin: 0; padding: 10px 15px;">
+								<p style="margin: 0.5em 0;">
+									<strong><?php echo esc_html__('API keys are defined in wp-config.php', 'simple-cloudflare-turnstile'); ?></strong><br>
+									<?php echo esc_html__('Your Site Key and Secret Key are configured via constants in your wp-config.php file and cannot be changed from this settings page.', 'simple-cloudflare-turnstile'); ?>
+								</p>
+							</div>
+						</td>
+					</tr>
+				<?php else : ?>
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Site Key', 'simple-cloudflare-turnstile'); ?></th>
+						<td><input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo esc_html(get_option('cfturnstile_key')); ?>" /></td>
+					</tr>
 
-				<tr valign="top">
-					<th scope="row"><?php echo esc_html__('Secret Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_html(get_option('cfturnstile_secret')); ?>" /></td>
-				</tr>
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Secret Key', 'simple-cloudflare-turnstile'); ?></th>
+						<td><input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_html(get_option('cfturnstile_secret')); ?>" /></td>
+					</tr>
+				<?php endif; ?>
 
 			</table>
 

@@ -23,7 +23,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		// Show Turnstile
 		do_action("cfturnstile_enqueue_scripts");
 		do_action("cfturnstile_before_field", esc_attr($unique_id));
-		$key = sanitize_text_field(get_option('cfturnstile_key'));
+		$key = cfturnstile_get_site_key();
 		$theme = sanitize_text_field(get_option('cfturnstile_theme'));
 		$language = sanitize_text_field(get_option('cfturnstile_language'));
 		$appearance = sanitize_text_field(get_option('cfturnstile_appearance', 'always'));
@@ -136,7 +136,7 @@ function cfturnstile_force_render($unique_id = '') {
 		return;
 	}
 	$unique_id = sanitize_text_field($unique_id);
-	$key = sanitize_text_field(get_option('cfturnstile_key'));
+	$key = cfturnstile_get_site_key();
 	if($unique_id) {
 	?>
 	<script>document.addEventListener("DOMContentLoaded", function() { setTimeout(function(){ var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>"); e&&!e.innerHTML.trim()&&(turnstile.remove("#cf-turnstile<?php echo esc_html($unique_id); ?>"), turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>", {sitekey:"<?php echo esc_html($key); ?>"})); }, 0); });</script>
@@ -173,8 +173,8 @@ function cfturnstile_check($postdata = "") {
 	}
 
 	// Get Turnstile Keys from Settings
-	$key = sanitize_text_field(get_option('cfturnstile_key'));
-	$secret = sanitize_text_field(get_option('cfturnstile_secret'));
+	$key = cfturnstile_get_site_key();
+	$secret = cfturnstile_get_secret_key();
 
 	if ($key && $secret) {
 

@@ -30,7 +30,7 @@ if(get_option('cfturnstile_elementor')) {
       
       // Pass settings to JavaScript
       wp_localize_script('cfturnstile-elementor-forms', 'cfturnstileElementorSettings', array(
-        'sitekey' => get_option('cfturnstile_key'),
+        'sitekey' => cfturnstile_get_site_key(),
         'position' => get_option('cfturnstile_elementor_pos', 'before'),
         'theme' => get_option('cfturnstile_theme')
       ));

@@ -8,8 +8,8 @@ if (!defined('ABSPATH')) {
  */
 add_action('admin_notices', 'cfturnstile_tested_notice');
 function cfturnstile_tested_notice() {
-	if(!isset($_GET['page']) || $_GET['page'] != 'cfturnstile') {
-		if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
+	if(!isset($_GET['page']) || sanitize_text_field($_GET['page']) != 'cfturnstile') {
+		if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) {
 			// Get the option from the database
 			$cfturnstile_tested = get_option('cfturnstile_tested');
 			

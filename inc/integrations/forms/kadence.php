@@ -27,7 +27,7 @@ if (get_option("cfturnstile_kadence")) {
                 $recaptcha_field = preg_replace('/<div class="cf-turnstile-failed-text.*?<\/div>/', '', $recaptcha_field);
                 // Pass the site key to the JavaScript file
                 wp_localize_script('cfturnstile-kadence', 'cfTurnstileVars', [
-                    'sitekey' => get_option('cfturnstile_key'),
+                    'sitekey' => cfturnstile_get_site_key(),
                     'field' => $recaptcha_field
                 ]);
             }

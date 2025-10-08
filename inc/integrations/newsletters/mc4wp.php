@@ -24,7 +24,7 @@ function cfturnstile_mc4wp_register_check( $errors, $form ) {
 		$post = get_post($form->ID);
 
 		$mc4wp_text = do_shortcode( '[mc4wp_form id="' . $form->ID . '"]' );
-		$cfturnstile_key = sanitize_text_field( get_option( 'cfturnstile_key' ) );
+		$cfturnstile_key = cfturnstile_get_site_key();
 		if ( !has_shortcode( $post->post_content, 'mc4wp-simple-turnstile') ) { return $errors; }
 
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] && isset( $_POST['cf-turnstile-response'] ) ) {

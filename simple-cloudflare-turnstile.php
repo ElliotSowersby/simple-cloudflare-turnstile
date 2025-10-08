@@ -12,6 +12,9 @@
  * WC tested up to: 10.0
  **/
 
+// Include Helper Functions
+require_once(plugin_dir_path(__FILE__) . 'inc/helper-functions.php');
+
 // Include Admin Files
 include(plugin_dir_path(__FILE__) . 'inc/admin/admin-options.php');
 include(plugin_dir_path(__FILE__) . 'inc/admin/register-settings.php');
@@ -38,7 +41,7 @@ function cfturnstile_settings_redirect() {
  *
  * @param array $actions
  * @param string $plugin_file
- * 
+ *
  * @return array
  */
 add_filter('plugin_action_links', 'cfturnstile_settings_link_plugin', 10, 5);
@@ -57,7 +60,7 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  * Enqueue admin scripts
  */
 function cfturnstile_admin_script_enqueue() {
-	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
+	if (isset($_GET['page']) && sanitize_text_field($_GET['page']) == 'cfturnstile') {
 		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
@@ -74,7 +77,7 @@ include(plugin_dir_path(__FILE__) . 'inc/errors.php');
 /**
  * If keys are set, load Turnstile
  */
-if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
+if (!empty(cfturnstile_get_site_key()) && !empty(cfturnstile_get_secret_key())) {
 
 	/**
 	 * Enqueue turnstile scripts and styles

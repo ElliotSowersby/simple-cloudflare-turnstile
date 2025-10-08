@@ -26,7 +26,7 @@ function cfturnstile_cf7_shortcode() {
 if ((!empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all'))) {
 	add_action('wpcf7_form_elements', 'cfturnstile_field_cf7', 10, 1);
 	function cfturnstile_field_cf7($content) {
-		$cfturnstile_key = sanitize_text_field(get_option('cfturnstile_key'));
+		$cfturnstile_key = cfturnstile_get_site_key();
 		if (false === strpos($content, $cfturnstile_key)) {
 			return preg_replace('/(<input[^>]*type="submit")/i', cfturnstile_cf7_shortcode() . '<br/>$1', $content);
 		} else {
@@ -52,7 +52,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		$data = $post->get_posted_data();
 
 		$cf7_text = do_shortcode('[contact-form-7 id="' . $_wpcf7 . '"]');
-		$cfturnstile_key = sanitize_text_field(get_option('cfturnstile_key'));
+		$cfturnstile_key = cfturnstile_get_site_key();
 		if ((empty(get_option('cfturnstile_cf7_all')) || !get_option('cfturnstile_cf7_all'))
 			&& false === strpos($cf7_text, $cfturnstile_key)
 		) {

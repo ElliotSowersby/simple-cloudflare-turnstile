@@ -26,7 +26,7 @@ if(get_option('cfturnstile_comment')) {
           <?php } ?>
           turnstile.remove('#cf-turnstile-wpd-<?php echo esc_html($uniqueId); ?>');
           turnstile.render('#cf-turnstile-wpd-<?php echo esc_html($uniqueId); ?>', {
-            sitekey: '<?php echo sanitize_text_field( get_option('cfturnstile_key') ); ?>',
+            sitekey: '<?php echo sanitize_text_field( cfturnstile_get_site_key() ); ?>',
             appearance: '<?php echo sanitize_text_field($appearance); ?>',
             size: '<?php echo sanitize_text_field($cfturnstile_size); ?>',
             action: 'wpdiscuz-comment',

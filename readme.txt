@@ -147,6 +147,17 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 Yes, you can view a setup guide for the plugin <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">here</a>.
 
+= Can I define API keys in wp-config.php? =
+
+Yes! For enhanced security and environment-specific configuration, you can define your Cloudflare Turnstile API keys in your wp-config.php file using constants:
+
+`define('CFTURNSTILE_SITE_KEY', 'your-site-key-here');`
+`define('CFTURNSTILE_SECRET_KEY', 'your-secret-key-here');`
+
+When keys are defined in wp-config.php, they will take priority over any keys stored in the database, and the admin settings fields will be hidden with a notice indicating the keys are configured via wp-config.php.
+
+If either constant is empty or not defined, the plugin will fall back to using the keys from the database settings.
+
 = Will there be more integrations be added in the future? =
 
 More integrations may be added in the future, based on user feedback. So if you have any suggestions please feel free to submit a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a>.

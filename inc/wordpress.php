@@ -183,7 +183,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 		if(!cfturnstile_whitelisted()) {
 			do_action("cfturnstile_enqueue_scripts");
 			$unique_id = wp_rand();
-			$key = esc_attr( get_option('cfturnstile_key') );
+			$key = esc_attr( cfturnstile_get_site_key() );
 			$theme = esc_attr( get_option('cfturnstile_theme') );
 			$language = esc_attr(get_option('cfturnstile_language'));
 			$appearance = esc_attr(get_option('cfturnstile_appearance', 'always'));
