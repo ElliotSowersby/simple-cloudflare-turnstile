@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA Alternative with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.33.1
+ * Version: 1.34.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -15,6 +15,8 @@
 // Include Admin Files
 include(plugin_dir_path(__FILE__) . 'inc/admin/admin-options.php');
 include(plugin_dir_path(__FILE__) . 'inc/admin/register-settings.php');
+include(plugin_dir_path(__FILE__) . 'inc/admin/export-import.php');
+include(plugin_dir_path(__FILE__) . 'inc/config-keys.php');
 
 /**
  * On activate redirect to settings page
@@ -58,10 +60,11 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
  */
 function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
-		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
+	$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
-		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', $defer);
+	// Load Turnstile API without defer on the settings page for reliable admin test rendering
+	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', array());
 	}
 }
 add_action('admin_enqueue_scripts', 'cfturnstile_admin_script_enqueue');
@@ -265,4 +268,4 @@ add_action( 'before_woocommerce_init', function() {
 	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
 	}
-} );
+});

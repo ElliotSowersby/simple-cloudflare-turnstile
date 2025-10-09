@@ -37,3 +37,26 @@ document.addEventListener("DOMContentLoaded", function() {
         updateDescription(this.value);
     });
 });
+/* wp-config define keys toggle */
+document.addEventListener('DOMContentLoaded', function() {
+  var toggles = document.querySelectorAll('.sct-wpconfig-toggle');
+  toggles.forEach(function(link){
+    link.addEventListener('click', function(e){
+      e.preventDefault();
+      var details = this.nextElementSibling;
+      if(!details) return;
+      var isOpen = details.style.display === 'block';
+      details.style.display = isOpen ? 'none' : 'block';
+      var icon = this.querySelector('.dashicons');
+      if(icon){
+        if(isOpen){
+          icon.classList.remove('dashicons-arrow-up-alt2');
+          icon.classList.add('dashicons-arrow-down-alt2');
+        } else {
+          icon.classList.remove('dashicons-arrow-down-alt2');
+          icon.classList.add('dashicons-arrow-up-alt2');
+        }
+      }
+    });
+  });
+});

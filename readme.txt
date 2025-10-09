@@ -1,10 +1,10 @@
 === Simple CAPTCHA Alternative with Cloudflare Turnstile ===
 Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
-Donate link: https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS
+Donate link: https://github.com/sponsors/ElliotSowersby/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.33.1
+Stable Tag: 1.34.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -111,6 +111,12 @@ Currently available in <a href="https://translate.wordpress.org/projects/wp-plug
 * Follow the developer <a href="https://twitter.com/ElliotSowersby" target="_blank">@ElliotSowersby</a> on Twitter.
 * <a href="https://github.com/elliotvs/simple-cloudflare-turnstile" target="_blank">View on GitHub</a>
 
+## Support The Plugin ##
+
+Special thanks to all <a href="https://github.com/sponsors/ElliotSowersby/">sponsors</a> that help support the development of this plugin.
+
+If you would like to support the continued development and support of this plugin, you can <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS">make a donation via PayPal</a> or <a href="https://github.com/sponsors/ElliotSowersby/">sponsor the plugin on GitHub</a>.
+
 ## Trademark Notice ##
 
 <i>Cloudflare, the Cloudflare logo, and Cloudflare Workers are trademarks and/or registered trademarks of Cloudflare, Inc. in the United States and other jurisdictions.</i>
@@ -199,8 +205,16 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ===
 
+= Version 1.34.0 - 9th October 2025 =
+- New: Added ability to define the Site Key and Secret Key in the wp-config.php file, using the constants "CF_TURNSTILE_SITE_KEY" and "CF_TURNSTILE_SECRET_KEY". This is useful for developers, or if you want to prevent the keys from being changed in the admin settings page.
+- New: Added an export/import tool to the settings page, to allow you to easily export your settings and import them on another website.
+- Tweak: Updated the WooCommerce checkout "cfturnstile_checkout_checked" session to clear in more cases to prevent potential issues.
+- Fix: Added better support for smart payment buttons on WooCommerce checkout, to prevent Turnstile from blocking the checkout in some cases.
+- Fix: Fixed an issue with the "Pay for Order" page when using block checkout.
+- Fix: Fixed an issue with the wp_login_form() function integration.
+
 = Version 1.33.1 - 5th September 2025 =
-- Other: Renamed the plugin from "Simple Cloudflare Turnstile"to "Simple CAPTCHA Alternative with Cloudflare Turnstile" due to trademark guidelines.
+- Other: Renamed the plugin from "Simple Cloudflare Turnstile" to "Simple CAPTCHA Alternative with Cloudflare Turnstile" due to trademark guidelines.
 
 = Version 1.33.0 - 4th September 2025 =
 - Tweak: Added some better compatibility with certain performance plugins that may be minifying/delaying JavaScript and causing issues with Turnstile loading.

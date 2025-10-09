@@ -153,6 +153,8 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_mepr_product_ids',
         ),
         'wp-user-frontend/wpuf.php' => array(
+            'cfturnstile_wpuf_login',
+            'cfturnstile_wpuf_reset',
             'cfturnstile_wpuf_register',
             'cfturnstile_wpuf_forms',
         ),

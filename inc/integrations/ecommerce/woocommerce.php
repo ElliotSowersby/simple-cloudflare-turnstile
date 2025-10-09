@@ -85,6 +85,8 @@ if(get_option('cfturnstile_woo_checkout')) {
 
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
+	// Some gateways (e.g., PayPal smart buttons) may start flows before early hooks; double-check after validation
+	add_action('woocommerce_after_checkout_validation', 'cfturnstile_woo_checkout_check', 10, 0);
 	function cfturnstile_woo_checkout_check() {
 		// Skip if Turnstile disabled for payment method
 		$skip = 0;
@@ -137,7 +139,6 @@ if(get_option('cfturnstile_woo_checkout')) {
 					}
 				}
 			}
-		
 
 			// Start session
 			if (!session_id()) { session_start(); }
@@ -193,9 +194,26 @@ if(get_option('cfturnstile_woo_checkout')) {
 // On payment complete clear session
 add_action('woocommerce_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
 add_action('woocommerce_store_api_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
+add_action('woocommerce_thankyou', 'cfturnstile_woo_checkout_clear', 10, 1);
 function cfturnstile_woo_checkout_clear($order_id) {
 	if(isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
 }
+
+// Additional clears to prevent lingering validation across cart or session changes
+function cfturnstile_woo_clear_session() {
+	if (!session_id()) { session_start(); }
+	if (isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
+}
+// Cart events
+add_action('woocommerce_cart_emptied', 'cfturnstile_woo_clear_session', 10, 0);
+add_action('woocommerce_cart_item_removed', 'cfturnstile_woo_clear_session', 10, 0);
+add_action('woocommerce_after_cart_item_quantity_update', 'cfturnstile_woo_clear_session', 10, 0);
+add_action('woocommerce_add_to_cart', 'cfturnstile_woo_clear_session', 10, 0);
+// Coupon changes
+add_action('woocommerce_applied_coupon', 'cfturnstile_woo_clear_session', 10, 0);
+add_action('woocommerce_removed_coupon', 'cfturnstile_woo_clear_session', 10, 0);
+// Logout
+add_action('wp_logout', 'cfturnstile_woo_clear_session', 10, 0);
 
 // Woo Checkout Pay Order Check
 if(get_option('cfturnstile_woo_checkout_pay')) {
@@ -289,7 +307,7 @@ if(get_option('cfturnstile_woo_reset')) {
 
 // Check if WooCommerce block checkout page
 function cfturnstile_is_block_based_checkout() {
-    if ( is_checkout() ) {
+    if ( is_checkout() && !isset($_GET['pay_for_order']) ) {
         $checkout_page_id = wc_get_page_id( 'checkout' );
         if ( $checkout_page_id && has_block( 'woocommerce/checkout', get_post( $checkout_page_id )->post_content ) ) {
             return true;

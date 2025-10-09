@@ -113,11 +113,35 @@ function cfturnstile_settings_page() {
 						<p style="font-size: 15px; font-size: 19px; margin-top: 0;"><?php echo esc_html__('API Key Settings:', 'simple-cloudflare-turnstile'); ?></p>
 
 						<?php
-						if (get_option('cfturnstile_tested') == 'yes') {
-							echo '<p style=" font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . esc_html__('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
-						} ?>
+						// wp-config.php override info
+						$cf_const_site   = ( defined('CF_TURNSTILE_SITE_KEY') && CF_TURNSTILE_SITE_KEY );
+						$cf_const_secret = ( defined('CF_TURNSTILE_SECRET_KEY') && CF_TURNSTILE_SECRET_KEY );
+						?>
+
+						<?php
+						if ( !$cf_const_site && !$cf_const_secret ) {
+							if (get_option('cfturnstile_tested') == 'yes') {
+								echo '<p style=" font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . esc_html__('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
+							}
+						}
+						?>
 
 						<p style="margin-bottom: 2px;"><?php echo esc_html__('You can get your site key and secret key from here:', 'simple-cloudflare-turnstile'); ?> <a href="https://dash.cloudflare.com/?to=/:account/turnstile" target="_blank">https://dash.cloudflare.com/?to=/:account/turnstile</a></p>
+
+						<?php
+						if ( $cf_const_site || $cf_const_secret ) {
+							$which = array();
+							if ( $cf_const_site ) { $which[] = esc_html__('Site Key', 'simple-cloudflare-turnstile'); }
+							if ( $cf_const_secret ) { $which[] = esc_html__('Secret Key', 'simple-cloudflare-turnstile'); }
+							$which_text = implode(' & ', $which);
+							printf(
+								'<p style="margin: 15px 0 0 0; font-weight:600; color:#1e8c1e;"><span class="dashicons dashicons-lock"></span> %s</p>',
+								esc_html__('Using keys defined in wp-config.php. Be sure to test your forms to confirm they are working.', 'simple-cloudflare-turnstile')
+							);
+						}
+						?>
+
+
 
 					</th>
 				</tr>
@@ -128,15 +152,74 @@ function cfturnstile_settings_page() {
 
 				<tr valign="top">
 					<th scope="row"><?php echo esc_html__('Site Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo esc_html(get_option('cfturnstile_key')); ?>" /></td>
+					<td>
+						<?php $cf_const_site = ( defined('CF_TURNSTILE_SITE_KEY') && CF_TURNSTILE_SITE_KEY ); ?>
+						<?php if ($cf_const_site) : ?>
+							<?php
+							$cf_key_placeholder = esc_attr(get_option('cfturnstile_key'));
+							?>
+							<p>
+								<?php echo esc_html($cf_key_placeholder); ?>
+							</p>
+							<input type="hidden" name="cfturnstile_key" value="" />
+						<?php else : ?>
+							<input type="text" style="width: 240px;" name="cfturnstile_key" value="<?php echo esc_attr(get_option('cfturnstile_key')); ?>" />
+						<?php endif; ?>
+					</td>
 				</tr>
 
 				<tr valign="top">
 					<th scope="row"><?php echo esc_html__('Secret Key', 'simple-cloudflare-turnstile'); ?></th>
-					<td><input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_html(get_option('cfturnstile_secret')); ?>" /></td>
+					<td>
+						<?php $cf_const_secret = ( defined('CF_TURNSTILE_SECRET_KEY') && CF_TURNSTILE_SECRET_KEY ); ?>
+						<?php if ($cf_const_secret) : ?>
+							<?php // Replace the last 20 characters of key with 20 asterisks
+							$cf_secret = esc_attr(get_option('cfturnstile_secret'));
+							$cf_secret_placeholder = substr($cf_secret, 0, 20) . '********************';
+							?>
+							<p>
+								<?php echo esc_html($cf_secret_placeholder); ?>
+							</p>
+							<input type="hidden" name="cfturnstile_secret" value="" />
+						<?php else : ?>
+							<input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_attr(get_option('cfturnstile_secret')); ?>" />
+						<?php endif; ?>
+					</td>
 				</tr>
 
 			</table>
+			
+			<?php if(!$cf_const_site || !$cf_const_secret) { ?>
+			<?php
+			$cf_site_opt = get_option('cfturnstile_key');
+			$site_snippet_val = $cf_site_opt ? $cf_site_opt : 'your-site-key';
+			$cf_secret_opt = get_option('cfturnstile_secret');
+			$secret_snippet_val = $cf_secret_opt ? $cf_secret_opt : 'your-secret-key';
+			?>
+			<div style="max-width: 760px; margin: 6px 0 24px 0;">
+				<a href="#" class="sct-wpconfig-toggle" style="color:#2271b1; text-decoration:none; font-size:13px;">
+					<?php echo esc_html__('Optional: Define keys in wp-config.php', 'simple-cloudflare-turnstile'); ?>
+					<span class="dashicons dashicons-arrow-down-alt2"
+					style="vertical-align: text-bottom; font-size: 12px; display: inline-block; margin-bottom: -7px; width: 15px;"></span>
+				</a>
+				<div class="sct-wpconfig-details" style="display:none; margin-top:6px;">
+					<p>
+						<?php echo esc_html__('You can optionally define your API keys in your wp-config.php file so the keys are not stored in the database.', 'simple-cloudflare-turnstile'); ?>
+					</p>
+					<p>
+						<?php echo esc_html__('To do this, add the following lines to your wp-config.php file before the line that says "/* That\'s all, stop editing! Happy publishing. */":', 'simple-cloudflare-turnstile'); ?>
+					</p>
+					<span style="font-size:13px; background:#f9f9f9; border:1px solid #e1e1e1; padding:10px; display:inline-block;">
+					define('CF_TURNSTILE_SITE_KEY', '<?php echo esc_html($site_snippet_val); ?>');
+					<br/>
+					define('CF_TURNSTILE_SECRET_KEY', '<?php echo esc_html($secret_snippet_val); ?>');
+					</span>
+					<p>
+						<?php echo esc_html__('Warning: This is not required. Only do this if you are comfortable editing wp-config.php. If you define the keys here, they will override the settings above.', 'simple-cloudflare-turnstile'); ?>
+					</p>
+				</div>
+			</div>
+			<?php } ?>
 
 			<hr style="margin: 20px 0 10px 0;">
 
@@ -1551,6 +1634,42 @@ function cfturnstile_settings_page() {
 			
 		</form>
 
+		<!-- Export/Import Settings (Accordion) -->
+		<button type="button" class="sct-accordion" id="sct-accordion-export-import"><?php echo esc_html__('Export / Import Settings', 'simple-cloudflare-turnstile'); ?></button>
+		<div class="sct-panel">
+			<p style="margin: 0 0 15px 0; border-bottom: 1px solid #f3f3f3; padding-bottom: 15px;">
+				<?php echo esc_html__('Export all plugin settings to a JSON file, or import from a JSON file exported from this plugin.', 'simple-cloudflare-turnstile'); ?>
+			</p>
+			<div style="display:flex; gap:20px; flex-wrap:wrap;">
+				<div style="flex:1; min-width:280px;">
+					<h3 style="margin:8px 0; font-size:14px;">&ZeroWidthSpace;<?php echo esc_html__('Export Settings', 'simple-cloudflare-turnstile'); ?></h3>
+					<form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+						<input type="hidden" name="action" value="cfturnstile_export_settings" />
+						<?php wp_nonce_field('cfturnstile_export_settings'); ?>
+						<label style="display:block; font-size:12px; margin:6px 0;">
+							<input type="checkbox" name="include_keys" value="1" style="float: none;">
+							<?php echo esc_html__('Include API keys (sensitive)', 'simple-cloudflare-turnstile'); ?>
+						</label>
+						<?php submit_button( esc_html__('Download JSON', 'simple-cloudflare-turnstile'), 'secondary', 'submit', false ); ?>
+					</form>
+				</div>
+
+				<div style="flex:1; min-width:280px;">
+					<h3 style="margin:8px 0; font-size:14px;">&ZeroWidthSpace;<?php echo esc_html__('Import Settings', 'simple-cloudflare-turnstile'); ?></h3>
+					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
+						<input type="hidden" name="action" value="cfturnstile_import_settings" />
+						<?php wp_nonce_field('cfturnstile_import_settings'); ?>
+						<input type="file" name="cfturnstile_import_file" accept="application/json,.json" />
+						<br/>
+						<?php submit_button( esc_html__('Import JSON', 'simple-cloudflare-turnstile'), 'primary', 'submit', false ); ?>
+						<p style="font-size:11px; margin-top:6px;">
+							<?php echo esc_html__('Note: Site/Secret keys defined in wp-config.php will not be overwritten by import.', 'simple-cloudflare-turnstile'); ?>
+						</p>
+					</form>
+				</div>
+			</div>
+		</div>
+
 		<?php if(get_option('cfturnstile_log_enable')) { ?>
 		<br/><button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo esc_html__('Turnstile Debug Log', 'simple-cloudflare-turnstile'); ?></button>
 			<div class="sct-panel">
@@ -1636,7 +1755,7 @@ function cfturnstile_settings_page() {
 			<div class="sct-admin-promo">
 
 				<p style="font-weight: bold;">
-					<?php echo esc_html__('Thank you for using Simple CAPTCHA Alternative with Cloudflare Turnstile!', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('Support and Resources:', 'simple-cloudflare-turnstile'); ?>
 				</p>
 
 				<p style="margin-bottom: -5px;">
@@ -1656,7 +1775,8 @@ function cfturnstile_settings_page() {
 				</a></p>
 
 				<p>
-					- <?php echo esc_html__('Want to support the developer?', 'simple-cloudflare-turnstile'); ?> <?php echo esc_html__('Feel free to', 'simple-cloudflare-turnstile'); ?> <a href="https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS" target="_blank"><?php echo esc_html__('Donate', 'simple-cloudflare-turnstile'); ?></a>
+					- <?php echo esc_html__('Want to support the ongoing development and maintenance of this plugin?', 'simple-cloudflare-turnstile'); ?>
+					<?php echo sprintf( wp_kses( __( 'You can <a href="%s" target="_blank">make a donation</a> or <a href="%s" target="_blank">sponsor the developer on GitHub</a>.', 'simple-cloudflare-turnstile' ), array( 'a' => array( 'href' => array(), 'target' => array() ) ) ), 'https://www.paypal.com/donate/?hosted_button_id=RX28BBH7L5XDS', 'https://github.com/sponsors/ElliotSowersby/' ); ?>
 				</p>
 
 				<p style="font-size: 12px;">
