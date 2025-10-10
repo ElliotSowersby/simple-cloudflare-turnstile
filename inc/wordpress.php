@@ -95,7 +95,7 @@ if(get_option('cfturnstile_login')) {
 		if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
 	}
 	/* Hook into wp_login_form() to add the Turnstile field */
-	function cfturnstile_wp_login_form_field($content, $args) {
+	function cfturnstile_wp_login_form_field($content = "", $args = array()) {
 		ob_start();
 		cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand());
 		$field = ob_get_clean();

@@ -111,6 +111,8 @@ function cfturnstile_failed_text($unique_id) {
 	if(get_option('cfturnstile_failure_message_enable')) {
 	$failed_text = get_option('cfturnstile_failure_message');
 	if(!$failed_text) { $failed_text = esc_html__('Failed to verify you are human. Please contact us if you are having issues.', 'simple-cloudflare-turnstile'); }
+	$failed_text = str_replace("'", "\'", $failed_text);
+	$failed_text = str_replace('"', '\"', $failed_text);
 	?>
 	<div class="cf-turnstile-failed-text cf-turnstile-failed-text<?php echo esc_attr($unique_id); ?>"></div>
 	<script>

@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://github.com/sponsors/ElliotSowersby/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.34.0
+Stable Tag: 1.34.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.34.1 - 10th October 2025 =
+- Fix: Fixed an issue with custom login forms causing an error since version 1.34.0.
+- Fix: Fixed an issue with the "Extra Failure Message" when using quotes in the text.
 
 = Version 1.34.0 - 9th October 2025 =
 - New: Added ability to define the Site Key and Secret Key in the wp-config.php file, using the constants "CF_TURNSTILE_SITE_KEY" and "CF_TURNSTILE_SECRET_KEY". This is useful for developers, or if you want to prevent the keys from being changed in the admin settings page.
