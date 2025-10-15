@@ -84,8 +84,6 @@ if(get_option('cfturnstile_woo_checkout')) {
 	}
 
 	// Check Turnstile
-	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
-	// Some gateways (e.g., PayPal smart buttons) may start flows before early hooks; double-check after validation
 	add_action('woocommerce_after_checkout_validation', 'cfturnstile_woo_checkout_check', 10, 0);
 	function cfturnstile_woo_checkout_check() {
 		// Skip if Turnstile disabled for payment method

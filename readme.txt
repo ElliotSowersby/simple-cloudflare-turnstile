@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://github.com/sponsors/ElliotSowersby/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.34.1
+Stable Tag: 1.34.2
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.34.2 - 15th October 2025 =
+- Fix: Fixed an issue with WooCommerce checkout in some cases.
 
 = Version 1.34.1 - 10th October 2025 =
 - Fix: Fixed an issue with custom login forms causing an error since version 1.34.0.
