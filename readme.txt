@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://github.com/sponsors/ElliotSowersby/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.34.2
+Stable Tag: 1.34.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -204,6 +204,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.34.3 - 16th October 2025 =
+- Fix: Fixed an issue with some express payment methods. These will now automatically skip the Turnstile check preventing the error message from showing.
 
 = Version 1.34.2 - 15th October 2025 =
 - Fix: Fixed an issue with WooCommerce checkout in some cases.

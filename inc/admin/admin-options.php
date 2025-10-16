@@ -647,6 +647,21 @@ function cfturnstile_settings_page() {
 							<td><input type="checkbox" name="cfturnstile_woo_checkout_pay" <?php if (get_option('cfturnstile_woo_checkout_pay')) { ?>checked<?php } ?>></td>
 						</tr>
 
+						<?php
+						// Visual-only WooPayments Express indicators (not saved).
+						$wcpay_active   = function_exists('cft_is_plugin_active') ? cft_is_plugin_active('woocommerce-payments/woocommerce-payments.php') : false;
+						$wcstripe_active = function_exists('cft_is_plugin_active') ? cft_is_plugin_active('woocommerce-gateway-stripe/woocommerce-gateway-stripe.php') : false;
+						if ( $wcpay_active ) {
+						?>
+						<tr valign="top">
+						<td colspan="2">
+							<i style="font-size: 10px;">
+								<?php echo esc_html__('Note: Currently Turnstile is not able to perform spam checks for some "Express Checkout" payment methods (e.g. PayPal, Google Pay, Apple Pay, Amazon Pay) and will skip them automatically.', 'simple-cloudflare-turnstile'); ?>
+							</i>
+							<br/>
+						</td>
+						<?php } ?>
+
 					</table>
 
 					<?php if ( class_exists( 'WooCommerce' ) ) { ?>
@@ -673,8 +688,6 @@ function cfturnstile_settings_page() {
 							
 								<i style="font-size: 10px;">
 									<?php echo esc_html__("If selected below, Turnstile check will not be run for that specific payment method.", 'simple-cloudflare-turnstile'); ?>
-									<br/>
-									<?php echo esc_html__("Useful for 'Express Checkout' payment methods compatibility.", 'simple-cloudflare-turnstile'); ?>
 								</i>
 
 								<?php
@@ -690,6 +703,46 @@ function cfturnstile_settings_page() {
 								</p>
 								<?php endforeach; ?>
 								</div>
+								<?php } ?>
+
+								<?php
+								// Visual-only WooPayments Express indicators (not saved).
+								$wcpay_active   = function_exists('cft_is_plugin_active') ? cft_is_plugin_active('woocommerce-payments/woocommerce-payments.php') : false;
+								if ( $wcpay_active ) {
+									$wcpay_settings = get_option( 'woocommerce_woocommerce_payments_settings', array() );
+									$payment_request_enabled = false;
+									// Older/newer keys that may indicate payment request buttons are enabled.
+									if ( isset( $wcpay_settings['payment_request'] ) ) {
+										$payment_request_enabled = ( 'yes' === $wcpay_settings['payment_request'] );
+									} elseif ( isset( $wcpay_settings['payment_request_enabled'] ) ) {
+										$payment_request_enabled = ( 'yes' === $wcpay_settings['payment_request_enabled'] );
+									}
+									$upe_ids = array();
+									if ( isset( $wcpay_settings['enabled_payment_method_ids'] ) ) {
+										$upe_ids = (array) $wcpay_settings['enabled_payment_method_ids'];
+									} elseif ( isset( $wcpay_settings['upe_enabled_payment_method_ids'] ) ) {
+										$upe_ids = (array) $wcpay_settings['upe_enabled_payment_method_ids'];
+									}
+									$link_enabled = in_array( 'link', $upe_ids, true );
+									?>
+									<hr style="margin: 12px 0 12px 0; border: 0; border-top: 1px solid #f3f3f3;" />
+									<p style="font-weight: 600; margin: 8px 0 4px 0;">
+										<?php echo esc_html__( 'WooPayments Express', 'simple-cloudflare-turnstile' ); ?>
+									</p>
+									<div style="max-width: 200px;">
+										<p>
+											<input type="checkbox" disabled <?php checked( $payment_request_enabled ); ?> />
+											<label><?php echo esc_html__( 'Apple Pay', 'simple-cloudflare-turnstile' ); ?></label>
+										</p>
+										<p>
+											<input type="checkbox" disabled <?php checked( $payment_request_enabled ); ?> />
+											<label><?php echo esc_html__( 'Google Pay', 'simple-cloudflare-turnstile' ); ?></label>
+										</p>
+										<p>
+											<input type="checkbox" disabled <?php checked( $link_enabled ); ?> />
+											<label><?php echo esc_html__( 'Link by Stripe', 'simple-cloudflare-turnstile' ); ?></label>
+										</p>
+									</div>
 								<?php } ?>
 
 							</div>
