@@ -58,7 +58,7 @@ if(get_option('cfturnstile_login')) {
 			}
 		}
 
-		// Custom skip filter
+		// Custom skip filter (integrations can return true to bypass global WP login check)
 		if (apply_filters('cfturnstile_wp_login_checks', false) === true) {
 			return $user;
 		}

@@ -90,7 +90,7 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 3. Finally, click the "TEST API RESPONSE" button to make sure the Turnstile API response is working OK.
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin).
+For more detailed instructions, please see our [setup guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide).
 
 ### What is Cloudflare Turnstile?
 
@@ -160,7 +160,7 @@ If this plugin helps you, or you want to support its development, please conside
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin).
+For more detailed instructions, please see our [setup guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide).
 
 Video walkthrough: https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
@@ -168,7 +168,7 @@ Video walkthrough: https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 ### Do you have a setup guide?
 
-Yes, you can view a setup guide for the plugin [here](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin).
+Yes, you can view a setup guide for the plugin [here](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide).
 
 ### Will there be more integrations be added in the future?
 
@@ -182,7 +182,7 @@ You can post a support thread on the WordPress.org forums to get help from the c
 
 [Click here to create a support topic.](https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0)
 
-The support forums are the only place you should submit a support ticket for 100% free support from us and the WordPress community.
+The support forums are the only place you should submit a support ticket for 100% free support from the developer and the WordPress community.
 
 ### Is the plugin free?
 
@@ -212,7 +212,7 @@ For details on errors codes being displayed in your browser console, please refe
 
 ### The Turnstile Challenge is not appearing, what should I do?
 
-Firstly, make sure you have completed the [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin) correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
+Firstly, make sure you have completed the [setup guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide) correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
 
 If you are still having issues, please post a [support topic](https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0) on the WordPress.org forums.
 

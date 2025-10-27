@@ -55,6 +55,14 @@
     border-bottom: 1px solid #f3f3f3;
 }
 
+.sct-wpconfig-details {
+  background: #f9f9f9;
+  border: 1px solid #e1e1e1;
+  padding: 0px 10px;
+  border-radius: 6px;
+  margin-top: 10px;
+}
+
 .sct-accordion:after {
   content: '\25BC';
   font-size: 12px;
@@ -167,7 +175,7 @@
 }
 .sct-wrap .sct-panel input[type="text"], .sct-wrap .sct-panel select {
   padding: 2px 8px;
-  min-width: 150px !important;
+  min-width: 150px;
   max-width: 200px;
 }
 
@@ -178,4 +186,44 @@
   display: inline-block;
   margin-top: -2px;
   margin-left: -5px;
+}
+
+/* Support section styles */
+.sct-admin-promo.sct-support .sct-support-item {
+  display: flex;
+  align-items: center; /* vertically center button and text */
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0px;
+  border-top: 1px solid #f1f1f1;
+}
+.sct-admin-promo.sct-support .sct-support-text {
+  font-size: 13px !important;
+  line-height: 1.5;
+}
+.sct-admin-promo.sct-support .sct-support-btn.button {
+  font-size: 15px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  white-space: nowrap;
+  margin-left: auto;
+  width: 120px; /* equal width */
+  flex: 0 0 120px; /* lock width in flex layout */
+  box-sizing: border-box; /* include padding in width */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+@media (max-width: 480px) {
+  .sct-admin-promo.sct-support .sct-support-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .sct-admin-promo.sct-support .sct-support-btn {
+    margin-top: 6px;
+    width: 100%;
+    flex: 0 0 auto;
+  }
 }

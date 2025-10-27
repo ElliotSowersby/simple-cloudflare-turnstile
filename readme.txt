@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://github.com/sponsors/ElliotSowersby/
 Requires at least: 4.7
 Tested up to: 6.8
-Stable Tag: 1.34.3
+Stable Tag: 1.35.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -85,7 +85,7 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 3. Finally, click the "TEST API RESPONSE" button to make sure the Turnstile API response is working OK.
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a>.
 
 ## What is Cloudflare Turnstile? ##
 
@@ -133,7 +133,7 @@ If you would like to support the continued development and support of this plugi
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a>.
 
 https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
@@ -151,7 +151,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 = Do you have a setup guide? =
 
-Yes, you can view a setup guide for the plugin <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">here</a>.
+Yes, you can view a setup guide for the plugin <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">here</a>.
 
 = Will there be more integrations be added in the future? =
 
@@ -165,7 +165,7 @@ You can post a support thread on the WordPress.org forums to get help from the c
 
 <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">Click here to create a support topic.</a>
 
-The support forums are the only place you should submit a support ticket for 100% free support from us and the WordPress community.
+The support forums are the only place you should submit a support ticket for 100% free support from the developer and the WordPress community.
 
 = Is the plugin free? =
 
@@ -195,7 +195,7 @@ For details on errors codes being displayed in your browser console, please refe
 
 = The Turnstile Challenge is not appearing, what should I do? =
 
-Firstly, make sure you have completed the <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_source=plugin" target="_blank">setup guide</a> correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
+Firstly, make sure you have completed the <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a> correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
 
 If you are still having issues, please post a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a> on the WordPress.org forums.
 
@@ -204,6 +204,17 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.35.0 - 27th October 2025 =
+- New: Improvement to Elementor integration to work better with Elementor element caching.
+- New: Added new "Integration Method" for the Elementor integration. The "Load Scripts Globally" option may work better for certain types of caching.
+- Tweak: Updated the Elementor JS code from using jQuery to vanilla JS.
+- Tweak: Added an option in the "Advanced Settings" to toggle "Performance Plugin Compatibility".
+- Tweak: Ultimate Member forms now have a unique fixed ID instead of a random one each time.
+- Tweak: For WooCommerce checkout, added an alternative check for duplicate execution within a single request.
+- Tweak: Made some changes to the settings page, updated the setup guide link, and updated donation/sponsor details.
+- Fix: Fixed an issue with Turnstile being ignored by certain payment methods like PayPal express, in some cases.
+- Fix: Fixed an issue when the "WordPress Login" option is enabled, but "WooCommerce Login" is disabled, the WooCommerce login still gave a verification failed error.
 
 = Version 1.34.3 - 16th October 2025 =
 - Fix: Fixed an issue with some express payment methods. These will now automatically skip the Turnstile check preventing the error message from showing.

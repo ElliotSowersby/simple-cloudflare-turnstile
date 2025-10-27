@@ -43,6 +43,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_disable_button',
         'cfturnstile_error_message',
         'cfturnstile_defer_scripts',
+        'cfturnstile_perf_compat',
         'cfturnstile_language',
         'cfturnstile_appearance',
         'cfturnstile_size',
@@ -131,6 +132,9 @@ function cfturnstile_settings_list($all = false) {
         'elementor-pro/elementor-pro.php' => array(
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',
+            'cfturnstile_elementor_method',
+            'cfturnstile_elementor_global_pages',
+            'cfturnstile_elementor_global_scope',
         ),
         'mailpoet/mailpoet.php' => array(
             'cfturnstile_mailpoet',
@@ -141,6 +145,9 @@ function cfturnstile_settings_list($all = false) {
         'pro-elements/pro-elements.php' => array(
             'cfturnstile_elementor',
             'cfturnstile_elementor_pos',
+            'cfturnstile_elementor_method',
+            'cfturnstile_elementor_global_scope',
+            'cfturnstile_elementor_global_pages',
         ),
         'ultimate-member/ultimate-member.php' => array(
             'cfturnstile_um_login',

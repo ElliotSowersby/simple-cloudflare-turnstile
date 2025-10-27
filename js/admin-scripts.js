@@ -60,3 +60,72 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 });
+
+/* Elementor Integration Method Toggle */
+document.addEventListener("DOMContentLoaded", function() {
+    const elementorMethodSelect = document.getElementById('cfturnstile_elementor_method');
+    if (elementorMethodSelect) {
+    const globalControls = document.getElementById('cfturnstile-elementor-global-controls');
+    const pagesWrap = document.getElementById('cfturnstile-elementor-global-pages-wrap');
+    const scopeSelect = document.getElementById('cfturnstile_elementor_global_scope');
+
+    const updateVisibility = () => {
+      const selectedValue = elementorMethodSelect.value;
+      // Hide all method descriptions
+      document.querySelectorAll('.cfturnstile-elementor-method-description').forEach(function(div) {
+        div.style.display = 'none';
+      });
+      // Show the selected method description
+      const selectedDiv = document.getElementById('cfturnstile-elementor-method-' + selectedValue);
+      if (selectedDiv) selectedDiv.style.display = 'inline-block';
+
+      // Toggle global controls visibility
+      if (globalControls) {
+        globalControls.style.display = (selectedValue === 'global') ? '' : 'none';
+      }
+
+      // Toggle pages wrap based on scope select
+      if (pagesWrap && scopeSelect) {
+        pagesWrap.style.display = (scopeSelect.value === 'specific') ? '' : 'none';
+      }
+
+      // Toggle scope descriptions
+      document.querySelectorAll('.cfturnstile-elementor-scope-description').forEach(function(div){
+        div.style.display = 'none';
+      });
+      if (scopeSelect && selectedValue === 'global') {
+        const scopeDiv = document.getElementById('cfturnstile-elementor-scope-' + scopeSelect.value);
+        if (scopeDiv) scopeDiv.style.display = 'block';
+      }
+    };
+
+    elementorMethodSelect.addEventListener('change', updateVisibility);
+    if (scopeSelect) scopeSelect.addEventListener('change', updateVisibility);
+    // Init on load
+    updateVisibility();
+    }
+});
+
+/* Failure Message Toggle */
+document.addEventListener("DOMContentLoaded", function() {
+  const failureMessages = document.querySelectorAll('.cfturnstile-failure-message');
+  const toggleInput = document.querySelector('input[name="cfturnstile_failure_message_enable"]');
+
+  // If elements aren't present on this page, safely exit
+  if (!toggleInput || failureMessages.length === 0) return;
+
+  // Helper to set visibility
+  const setVisibility = (checked) => {
+    failureMessages.forEach(el => {
+      el.style.display = checked ? '' : 'none';
+    });
+  };
+
+  // Initialize based on current state
+  setVisibility(toggleInput.checked);
+
+  // Update on change
+  toggleInput.addEventListener('change', function() {
+    setVisibility(this.checked);
+  });
+});

@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA Alternative with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.34.3
+ * Version: 1.35.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -61,7 +61,7 @@ function cfturnstile_settings_link_plugin($actions, $plugin_file) {
 function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
 	$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
-		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.8', true);
+		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.9', true);
 		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.9');
 	// Load Turnstile API without defer on the settings page for reliable admin test rendering
 	wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit", array(), '', array());
@@ -132,10 +132,10 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	if(empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') == 'yes') {
 
 		// Performance Plugins Compatibility
-		if (
-			cft_is_plugin_active('sg-cachepress/sg-cachepress.php') ||
+		if ( get_option('cfturnstile_perf_compat', 1) &&
+			(cft_is_plugin_active('sg-cachepress/sg-cachepress.php') ||
 			cft_is_plugin_active('litespeed-cache/litespeed-cache.php') ||
-			cft_is_plugin_active('wp-rocket/wp-rocket.php')
+			cft_is_plugin_active('wp-rocket/wp-rocket.php'))
 		) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/other/perf.php');
 		}

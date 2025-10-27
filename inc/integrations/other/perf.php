@@ -13,6 +13,7 @@ function cfturnstile_sg_js_combine_exclude( $exclude_list ) {
     $exclude_list[] = 'cfturnstile';
     return $exclude_list;
 }
+
 /**
  * LiteSpeed Cache Compatibility
 */
@@ -64,14 +65,12 @@ add_filter( 'rocket_delay_js_exclusions', 'cfturnstile_wprocket_exclude' );
 add_filter( 'rocket_exclude_js', 'cfturnstile_wprocket_exclude' );
 add_filter( 'rocket_defer_js_exclusions', 'cfturnstile_wprocket_exclude' );
 function cfturnstile_wprocket_exclude_external( $list ) {
-    // Exclude Cloudflare Turnstile API
     $list[] = 'challenges.cloudflare.com/turnstile';
     return $list;
 }
 function cfturnstile_wprocket_exclude( $list ) {
-    // Exclude our handles/paths
-    $list[] = 'turnstile'; // generic handle match
-    $list[] = 'cfturnstile'; // our handle
+    $list[] = 'turnstile';
+    $list[] = 'cfturnstile'; 
     $list[] = 'simple-cloudflare-turnstile/js/integrations/elementor-forms.js';
     $list[] = 'simple-cloudflare-turnstile/js/disable-submit.js';
     return $list;

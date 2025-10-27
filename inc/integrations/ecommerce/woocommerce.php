@@ -85,7 +85,15 @@ if(get_option('cfturnstile_woo_checkout')) {
 
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
+	add_action('woocommerce_after_checkout_validation', 'cfturnstile_woo_checkout_check');
 	function cfturnstile_woo_checkout_check() {
+
+		// Prevent duplicate execution within a single request.
+		static $cfturnstile_wc_checkout_ran = false;
+		if ( $cfturnstile_wc_checkout_ran ) {
+			return;
+		}
+
 		// Skip if Turnstile disabled for payment method
 		$skip = 0;
 		if ( isset( $_POST['payment_method'] ) ) {
@@ -118,6 +126,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 			} else {
 				$nonce = wp_create_nonce( 'cfturnstile_checkout_check' );
 				$_SESSION['cfturnstile_checkout_checked'] = $nonce;
+				$cfturnstile_wc_checkout_ran = true; // Mark as executed
 			}
 		}
 	}
@@ -284,6 +293,17 @@ if(get_option('cfturnstile_woo_login')) {
 			if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
 		}
 	}
+}
+
+// WP login check to skip when Woo login is disabled
+add_filter( 'cfturnstile_wp_login_checks', 'cfturnstile_woo_skip_wp_login_check', 10, 1 );
+function cfturnstile_woo_skip_wp_login_check( $skip ) {
+	// If the WooCommerce login integration is disabled but a Woo login form is submitted,
+	// skip the global WordPress login Turnstile check.
+	if ( ! get_option( 'cfturnstile_woo_login' ) && isset( $_POST['woocommerce-login-nonce'] ) ) {
+		return true;
+	}
+	return $skip;
 }
 
 // Woo Register Check
