@@ -257,6 +257,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		if (cft_is_plugin_active('jetpack/jetpack.php')) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/jetpack.php');
 		}
+
+		// Ultimate Addons for Elementor Forms
+		if (cft_is_plugin_active('ultimate-elementor/ultimate-elementor.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/forms/ultimate-addons-elementor.php');
+		}
 	}
 
 }
