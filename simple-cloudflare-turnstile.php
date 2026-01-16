@@ -149,6 +149,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/woocommerce.php');
 		}
 
+		// Include Sunshine Photo Cart
+		if (cft_is_plugin_active('sunshine-photo-cart/sunshine-photo-cart.php')) {
+			include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/sunshine-photo-cart.php');
+		}
+
 		// Include EDD
 		if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) {
 			include(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/edd.php');

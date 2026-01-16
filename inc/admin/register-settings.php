@@ -85,6 +85,13 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_edd_login',
             'cfturnstile_edd_register',
         ),
+        'sunshine-photo-cart/sunshine-photo-cart.php' => array(
+            'cfturnstile_sunshine_login',
+            'cfturnstile_sunshine_register',
+            'cfturnstile_sunshine_reset',
+            'cfturnstile_sunshine_checkout',
+            'cfturnstile_sunshine_guest_only',
+        ),
         'paid-memberships-pro/paid-memberships-pro.php' => array(
             'cfturnstile_pmp_checkout',
             'cfturnstile_pmp_guest_only',
