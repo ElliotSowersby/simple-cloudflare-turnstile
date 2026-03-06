@@ -25,6 +25,13 @@ function cfturnstile_field_woo_reset() {
 
 // Get turnstile field: Woo Checkout
 function cfturnstile_field_checkout() {
+	// Prevent duplicate rendering when both classic action and block render filter fire on the same request.
+	static $rendered = false;
+	if ( $rendered ) {
+		return;
+	}
+	$rendered = true;
+
 	if(is_wc_endpoint_url('order-received')) {
 		return;
 	}
@@ -62,26 +69,50 @@ function cfturnstile_render_pre_block($block_content) {
 
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
-	// WooCommerce Checkout
-	// CheckoutWC: Only hook when CheckoutWC templates are enabled
-	if(function_exists( 'cfw_templates_disabled' ) && ! cfw_templates_disabled()) {
-		add_action('cfw_checkout_before_payment_method_tab_nav', 'cfturnstile_field_checkout', 10);
-	} elseif(empty(get_option('cfturnstile_woo_checkout_pos')) || get_option('cfturnstile_woo_checkout_pos') == "beforepay") {
-		add_action('woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10);
-		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_pre_block', 999, 1); // Before Payment block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
-		add_action('woocommerce_review_order_after_payment', 'cfturnstile_field_checkout', 10);
-		add_filter('render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_post_block', 999, 1); // After Payment block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforebilling") {
-		add_action('woocommerce_before_checkout_billing_form', 'cfturnstile_field_checkout', 10);
-		add_filter('render_block_woocommerce/checkout-contact-information-block', 'cfturnstile_render_pre_block', 999, 1); // Before Contact Information block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "afterbilling") {
-		add_action('woocommerce_after_checkout_billing_form', 'cfturnstile_field_checkout', 10);
-		add_filter('render_block_woocommerce/checkout-shipping-methods-block', 'cfturnstile_render_pre_block', 999, 1); // Before Shipping Methods block.
-	} elseif(get_option('cfturnstile_woo_checkout_pos') == "beforesubmit") {
-		add_action('woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10);
-		add_filter('render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1); // Before Actions block, not sure if this option is still supported.
-	}
+	// Defer hook registration to 'wp' so is_checkout() is available and we can detect
+	// block vs. classic checkout, registering only the appropriate hook for each type.
+	add_action('wp', function() {
+		// CheckoutWC: Only hook when CheckoutWC templates are enabled.
+		if ( function_exists( 'cfw_templates_disabled' ) && ! cfw_templates_disabled() ) {
+			add_action( 'cfw_checkout_before_payment_method_tab_nav', 'cfturnstile_field_checkout', 10 );
+			return;
+		}
+
+		$is_block = function_exists( 'cfturnstile_is_block_based_checkout' ) && cfturnstile_is_block_based_checkout();
+		$pos      = get_option( 'cfturnstile_woo_checkout_pos' );
+
+		if ( empty( $pos ) || $pos === 'beforepay' ) {
+			if ( $is_block ) {
+				add_filter( 'render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_pre_block', 999, 1 );
+			} else {
+				add_action( 'woocommerce_review_order_before_payment', 'cfturnstile_field_checkout', 10 );
+			}
+		} elseif ( $pos === 'afterpay' ) {
+			if ( $is_block ) {
+				add_filter( 'render_block_woocommerce/checkout-payment-block', 'cfturnstile_render_post_block', 999, 1 );
+			} else {
+				add_action( 'woocommerce_review_order_after_payment', 'cfturnstile_field_checkout', 10 );
+			}
+		} elseif ( $pos === 'beforebilling' ) {
+			if ( $is_block ) {
+				add_filter( 'render_block_woocommerce/checkout-contact-information-block', 'cfturnstile_render_pre_block', 999, 1 );
+			} else {
+				add_action( 'woocommerce_before_checkout_billing_form', 'cfturnstile_field_checkout', 10 );
+			}
+		} elseif ( $pos === 'afterbilling' ) {
+			if ( $is_block ) {
+				add_filter( 'render_block_woocommerce/checkout-shipping-methods-block', 'cfturnstile_render_pre_block', 999, 1 );
+			} else {
+				add_action( 'woocommerce_after_checkout_billing_form', 'cfturnstile_field_checkout', 10 );
+			}
+		} elseif ( $pos === 'beforesubmit' ) {
+			if ( $is_block ) {
+				add_filter( 'render_block_woocommerce/checkout-actions-block', 'cfturnstile_render_pre_block', 999, 1 );
+			} else {
+				add_action( 'woocommerce_review_order_before_submit', 'cfturnstile_field_checkout', 10 );
+			}
+		}
+	}, 1 );
 
 	// Check Turnstile
 	add_action('woocommerce_checkout_process', 'cfturnstile_woo_checkout_check');
