@@ -10,6 +10,27 @@ function cfturnstile_field_login() {
 	if(isset($_SESSION['cfturnstile_login_checked'])) {
 		unset($_SESSION['cfturnstile_login_checked']);
 	}
+	
+	// Skip if this is a PMP login form (PMP integration handles it)
+	if(function_exists('pmpro_getOption')) {
+		$page_id = pmpro_getOption("login_page_id");
+		if($page_id) {
+			// Use is_page() which works better in hook contexts, or check global $post
+			global $post;
+			if(is_page($page_id)) {
+				return;
+			}
+			if(isset($post) && isset($post->ID) && $post->ID == $page_id) {
+				return;
+			}
+			// Fallback to get_the_ID()
+			$current_page_id = get_the_ID();
+			if($current_page_id && $current_page_id == $page_id) {
+				return;
+			}
+		}
+	}
+	
 	if(get_option('cfturnstile_login_only', 0)) {
 		$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
 		$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -95,12 +116,39 @@ if(get_option('cfturnstile_login')) {
 	}
 	/* Hook into wp_login_form() to add the Turnstile field */
 	function cfturnstile_wp_login_form_field($content = "", $args = array()) {
+		// Skip if PMP already added a Turnstile field (check for PMP's unique ID or callback)
+		if(strpos($content, 'cf-turnstile-pmp-login') !== false || 
+		   strpos($content, 'turnstilePMPLoginCallback') !== false ||
+		   strpos($content, 'data-action="pmp-login"') !== false) {
+			return $content;
+		}
+		
+		// Skip if this is a PMP login form (PMP integration handles it)
+		if(function_exists('pmpro_getOption')) {
+			$page_id = pmpro_getOption("login_page_id");
+			if($page_id && isset($args['form_id']) && $args['form_id'] == 'loginform') {
+				// Use is_page() which works better in hook contexts, or check global $post
+				global $post;
+				if(is_page($page_id)) {
+					return $content;
+				}
+				if(isset($post) && isset($post->ID) && $post->ID == $page_id) {
+					return $content;
+				}
+				// Fallback to get_the_ID()
+				$current_page_id = get_the_ID();
+				if($current_page_id && $current_page_id == $page_id) {
+					return $content;
+				}
+			}
+		}
+		
 		ob_start();
 		cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand());
 		$field = ob_get_clean();
 		return $content . $field;
 	}
-	add_filter('login_form_middle', 'cfturnstile_wp_login_form_field', 10, 1);
+	add_filter('login_form_middle', 'cfturnstile_wp_login_form_field', 11, 1);
 }
 
 /* 

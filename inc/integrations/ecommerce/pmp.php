@@ -7,9 +7,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 function cfturnstile_field_pmp_login($string, $args) {
     if(function_exists('pmpro_getOption')) {
         $page_id = pmpro_getOption("login_page_id");
-        $current_page_id = get_the_ID();
-        if($current_page_id == $page_id) {
-            if($args['form_id'] == 'loginform') {
+        if($page_id && isset($args['form_id']) && $args['form_id'] == 'loginform') {
+            // Use multiple detection methods for better reliability
+            global $post;
+            $is_pmp_page = false;
+            
+            if(is_page($page_id)) {
+                $is_pmp_page = true;
+            } elseif(isset($post) && isset($post->ID) && $post->ID == $page_id) {
+                $is_pmp_page = true;
+            } else {
+                $current_page_id = get_the_ID();
+                if($current_page_id && $current_page_id == $page_id) {
+                    $is_pmp_page = true;
+                }
+            }
+            
+            if($is_pmp_page) {
                 ob_start();
                 cfturnstile_field_show('#wp-submit', 'turnstilePMPLoginCallback', 'pmp-login', '-pmp-login');
                 $cfturnstile = ob_get_contents();
