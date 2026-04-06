@@ -52,7 +52,7 @@ function turnstilePMPLoginCallback() {
 }
 /* Elementor */
 function turnstileElementorCallback() {
-    document.querySelectorAll('.elementor-field-type-submit .elementor-button').forEach(function(el) {
+    document.querySelectorAll('.elementor-form button[type="submit"]').forEach(function(el) {
         el.style.pointerEvents = 'auto';
         el.style.opacity = '1';
     });

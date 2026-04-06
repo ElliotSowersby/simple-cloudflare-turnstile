@@ -1,4 +1,7 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 /**
  * Allow defining keys in wp-config.php and override the saved options everywhere.
  *

@@ -81,10 +81,19 @@ function cfturnstile_settings_page() {
 		<h1 style="font-weight: bold;"><?php echo esc_html__('Simple CAPTCHA Alternative with Cloudflare Turnstile', 'simple-cloudflare-turnstile'); ?></h1>
 
 		<?php
-		// Check Cloudflare Status
-		$cf_status_check = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', array('timeout' => 5));
+		// Check Cloudflare Status (cached for 2 minutes to avoid an HTTP request on every settings page load)
 		$cfturnstile_failover = get_option('cfturnstile_failover');
-		if ( is_wp_error( $cf_status_check ) || wp_remote_retrieve_response_code( $cf_status_check ) >= 500 ) {
+		$cf_status_transient  = get_transient( 'cfturnstile_admin_cf_status' );
+		if ( $cf_status_transient === false ) {
+			$cf_status_check     = wp_remote_post( 'https://challenges.cloudflare.com/turnstile/v0/siteverify', array( 'timeout' => 5 ) );
+			$cf_admin_is_down    = is_wp_error( $cf_status_check ) || wp_remote_retrieve_response_code( $cf_status_check ) >= 500;
+			$cf_admin_error_msg  = is_wp_error( $cf_status_check ) ? $cf_status_check->get_error_message() : '';
+			set_transient( 'cfturnstile_admin_cf_status', array( 'down' => $cf_admin_is_down, 'error' => $cf_admin_error_msg ), 2 * MINUTE_IN_SECONDS );
+		} else {
+			$cf_admin_is_down   = $cf_status_transient['down'];
+			$cf_admin_error_msg = $cf_status_transient['error'];
+		}
+		if ( $cf_admin_is_down ) {
 			?>
 			<div class="notice notice-error inline" style="margin: 10px 0 20px 0;">
 				<p>
@@ -95,7 +104,7 @@ function cfturnstile_settings_page() {
 					} else {
 						echo esc_html__('Turnstile will not function until the API is reachable again. To avoid this issue in the future, consider enabling Cloudflare Failover in the settings below.', 'simple-cloudflare-turnstile');
 					} ?>
-					<?php if ( is_wp_error( $cf_status_check ) ) { echo ' (' . esc_html($cf_status_check->get_error_message()) . ')'; } ?>
+					<?php if ( ! empty( $cf_admin_error_msg ) ) { echo ' (' . esc_html( $cf_admin_error_msg ) . ')'; } ?>
 				</p>
 			</div>
 			<?php
@@ -401,6 +410,27 @@ function cfturnstile_settings_page() {
 							<div class="wcu-appearance-always" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is always displayed for all visitors.', 'simple-cloudflare-turnstile' ); ?></i></div>
 							<div class="wcu-appearance-execute" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed after the challenge begins.', 'simple-cloudflare-turnstile' ); ?></i></div>
 							<div class="wcu-appearance-interaction-only" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'Turnstile Widget is only displayed in cases where an interaction is required. This essentially makes it "invisible" for most valid users.', 'simple-cloudflare-turnstile' ); ?></i></div>
+						</td>
+					</tr>
+
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Refresh Timeout', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<select name="cfturnstile_refresh_timeout" style="width: 100%;">
+								<option value="auto" <?php if ( ! get_option('cfturnstile_refresh_timeout') || get_option('cfturnstile_refresh_timeout') === 'auto' ) { ?>selected<?php } ?>>
+									<?php esc_html_e('Auto (default)', 'simple-cloudflare-turnstile'); ?>
+								</option>
+								<option value="manual" <?php if ( get_option('cfturnstile_refresh_timeout') === 'manual' ) { ?>selected<?php } ?>>
+									<?php esc_html_e('Manual', 'simple-cloudflare-turnstile'); ?>
+								</option>
+								<option value="never" <?php if ( get_option('cfturnstile_refresh_timeout') === 'never' ) { ?>selected<?php } ?>>
+									<?php esc_html_e('Never', 'simple-cloudflare-turnstile'); ?>
+								</option>
+							</select>
+							<br/><br/>
+							<div class="wcu-refresh-timeout-auto" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'The widget automatically refreshes when an interactive challenge times out. Recommended for most use cases.', 'simple-cloudflare-turnstile' ); ?></i></div>
+							<div class="wcu-refresh-timeout-manual" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'The visitor is prompted to manually refresh the widget after a timeout.', 'simple-cloudflare-turnstile' ); ?></i></div>
+							<div class="wcu-refresh-timeout-never" style="display: none;"><i style="font-size: 10px;"><?php echo esc_html__( 'The widget shows a timeout message and will not refresh until the page is reloaded.', 'simple-cloudflare-turnstile' ); ?></i></div>
 						</td>
 					</tr>
 
@@ -1851,7 +1881,7 @@ function cfturnstile_settings_page() {
 								$last_plugin = end($not_installed);
 								foreach ($not_installed as $not_plugin) {
 									if ($not_plugin == $last_plugin && count($not_installed) > 1) echo 'and ';
-									echo $not_plugin;
+									echo wp_kses( $not_plugin, array( 'a' => array( 'href' => array(), 'target' => array() ) ) );
 									if ($not_plugin != $last_plugin) {
 										echo ', ';
 									} else {

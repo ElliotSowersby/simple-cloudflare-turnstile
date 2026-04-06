@@ -4,9 +4,12 @@ function cfturnstile_init_elementor_forms() {
   var position = settings.position || 'before';
   var mode = settings.mode || 'turnstile';
   var recaptchaSiteKey = settings.recaptchaSiteKey || '';
+  var disableSubmit = settings.disableSubmit || false;
   
+  if (!window._cft_elementor_idx) { window._cft_elementor_idx = 0; }
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
-  elementorForms.forEach(function(form, index) {
+  elementorForms.forEach(function(form) {
+    var index = window._cft_elementor_idx++;
     if (form.querySelector('.cf-turnstile') || form.querySelector('.g-recaptcha') || form.querySelector('input[name="cfturnstile_failsafe"]')) {
       form.classList.add('cft-processed');
       return;
@@ -42,6 +45,12 @@ function cfturnstile_init_elementor_forms() {
     }
 
     if (submitButton && window.turnstile && sitekey) {
+      // Disable submit button if option is enabled
+      if (disableSubmit) {
+        submitButton.style.pointerEvents = 'none';
+        submitButton.style.opacity = '0.5';
+      }
+
       var turnstileDiv = document.createElement('div');
       turnstileDiv.className = 'elementor-turnstile-field cf-turnstile';
       turnstileDiv.id = 'cf-turnstile-elementor-fallback-' + index;
@@ -59,6 +68,11 @@ function cfturnstile_init_elementor_forms() {
         sitekey: sitekey,
         theme: settings.theme || 'auto',
         callback: function(token) {
+          // Re-enable submit button when Turnstile is complete
+          if (disableSubmit && submitButton) {
+            submitButton.style.pointerEvents = 'auto';
+            submitButton.style.opacity = '1';
+          }
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);
           }
@@ -75,62 +89,94 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Listen to Elementor frontend init to handle cached elements
-document.addEventListener('elementor/frontend/init', function() {
+jQuery(window).on('elementor/frontend/init', function() {
   cfturnstile_init_elementor_forms();
+
+  // Hook into Elementor's widget ready system for forms loaded dynamically (e.g. in popups)
+  if (window.elementorFrontend && elementorFrontend.hooks) {
+    elementorFrontend.hooks.addAction('frontend/element_ready/form.default', function($scope) {
+      cfturnstile_init_elementor_forms();
+    });
+    elementorFrontend.hooks.addAction('frontend/element_ready/login.default', function($scope) {
+      cfturnstile_init_elementor_forms();
+    });
+  }
 });
 
 // Handle form submit button clicks for re-rendering
 document.addEventListener('click', function(event) {
-  if (event.target.matches('.elementor-form button[type="submit"]')) {
+  var submitBtn = event.target.closest('.elementor-form button[type="submit"]');
+  if (submitBtn) {
     var settings = window.cfturnstileElementorSettings || {};
     var mode = settings.mode || 'turnstile';
     if (mode !== 'turnstile' || !window.turnstile) {
       return;
     }
-    var submittedForm = event.target.closest('.elementor-form');
+    var submittedForm = submitBtn.closest('.elementor-form');
     
     setTimeout(function() {
-      if (!window.turnstile) {
+      if (!window.turnstile || !submittedForm) {
         return;
       }
-      turnstile.remove('.elementor-form .cf-turnstile');
-      turnstile.render('.elementor-form .cf-turnstile', {
-        sitekey: cfturnstileElementorSettings.sitekey,
-        callback: 'turnstileCallback',
-        theme: cfturnstileElementorSettings.theme || 'auto'
-      });
+      var widget = submittedForm.querySelector('.cf-turnstile');
+      if (widget) {
+        turnstile.remove(widget);
+        turnstile.render(widget, {
+          sitekey: cfturnstileElementorSettings.sitekey,
+          callback: 'turnstileCallback',
+          theme: cfturnstileElementorSettings.theme || 'auto'
+        });
+      }
     }, 2000);
   }
 });
 
-// Handle Elementor popup show events
-document.addEventListener('elementor/popup/show', function(event) {
+// Handle Elementor popup show events (jQuery event - must use jQuery to listen)
+jQuery(document).on('elementor/popup/show', function(event, id, instance) {
   setTimeout(function() {
+    // First, inject Turnstile into any unprocessed forms inside the popup
+    cfturnstile_init_elementor_forms();
+
     var settings = window.cfturnstileElementorSettings || {};
     var mode = settings.mode || 'turnstile';
+    var disableSubmit = settings.disableSubmit || false;
     if (mode !== 'turnstile' || !window.turnstile) {
       return;
     }
-    var popupTurnstile = document.querySelector('.elementor-popup-modal .cf-turnstile');
-    if (!popupTurnstile) {
-      return;
-    }
 
-    var failedText = document.querySelector('.cf-turnstile-failed-text');
-    if (failedText) {
-      failedText.style.display = 'none';
-    }
-    
-    turnstile.remove('.elementor-popup-modal .cf-turnstile');
-    
-    turnstile.render('.elementor-popup-modal .cf-turnstile', {
-      sitekey: cfturnstileElementorSettings.sitekey,
-      callback: 'turnstileCallback',
-      theme: cfturnstileElementorSettings.theme || 'auto'
+    // Re-render all Turnstile widgets inside popup modals (they need explicit render after DOM insertion)
+    var popupTurnstiles = document.querySelectorAll('.elementor-popup-modal .cf-turnstile');
+    popupTurnstiles.forEach(function(widget) {
+      var failedText = widget.parentNode ? widget.parentNode.querySelector('.cf-turnstile-failed-text') : null;
+      if (failedText) {
+        failedText.style.display = 'none';
+      }
+
+      // Find the form and submit button for this widget
+      var form = widget.closest('.elementor-form');
+      var submitButton = form ? form.querySelector('button[type="submit"]') : null;
+
+      // Disable submit button if option is enabled
+      if (disableSubmit && submitButton) {
+        submitButton.style.pointerEvents = 'none';
+        submitButton.style.opacity = '0.5';
+      }
+      
+      turnstile.remove(widget);
+      turnstile.render(widget, {
+        sitekey: cfturnstileElementorSettings.sitekey,
+        callback: function(token) {
+          // Re-enable submit button when Turnstile is complete
+          if (disableSubmit && submitButton) {
+            submitButton.style.pointerEvents = 'auto';
+            submitButton.style.opacity = '1';
+          }
+          if (typeof turnstileElementorCallback === 'function') {
+            turnstileElementorCallback(token);
+          }
+        },
+        theme: cfturnstileElementorSettings.theme || 'auto'
+      });
     });
-
-    popupTurnstile.style.marginTop = '-5px';
-    popupTurnstile.style.marginBottom = '20px';
-
-  }, 1000);
+  }, 500);
 });

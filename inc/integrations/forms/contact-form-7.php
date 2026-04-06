@@ -12,8 +12,15 @@ function cfturnstile_cf7_shortcode() {
 	echo '<div class="cf7-cf-turnstile" style="margin-top: 0px; margin-bottom: -15px;">';
 	echo cfturnstile_field_show('.wpcf7-submit', 'turnstileCF7Callback', 'contact-form-7', '-cf7-' . $id);
 	?>
-	<script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-<?php echo $id; ?>')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-<?php echo $id; ?>');},1000)}})})});</script>
+	<script>document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll('.wpcf7-form').forEach(function(e){e.addEventListener('submit',function(){if(document.getElementById('cf-turnstile-cf7-<?php echo esc_js( $id ); ?>')){setTimeout(function(){turnstile.reset('#cf-turnstile-cf7-<?php echo esc_js( $id ); ?>');},1000)}})})});</script>
 	<?php
+	$disable_script = "function turnstileCF7Callback() {
+    document.querySelectorAll('.wpcf7-submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+	}";
+	wp_add_inline_script('cfturnstile', $disable_script);
 	echo '</div>';
 	$thecontent = ob_get_contents();
 	ob_end_clean();
@@ -51,11 +58,21 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 
 		$data = $post->get_posted_data();
 
-		$cf7_text = do_shortcode('[contact-form-7 id="' . $_wpcf7 . '"]');
-		$cfturnstile_key = sanitize_text_field(get_option('cfturnstile_key'));
-		if ((empty(get_option('cfturnstile_cf7_all')) || !get_option('cfturnstile_cf7_all'))
-			&& false === strpos($cf7_text, $cfturnstile_key)
-		) {
+		// Check if "Enable on all CF7 Forms" option is enabled
+		$cf7_all_enabled = !empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all');
+		
+		// Check if the form contains our shortcode [cf7-simple-turnstile]
+		$form_has_shortcode = false;
+		if ($_wpcf7 && class_exists('WPCF7_ContactForm')) {
+			$contact_form = WPCF7_ContactForm::get_instance($_wpcf7);
+			if ($contact_form) {
+				$form_content = $contact_form->prop('form');
+				$form_has_shortcode = (false !== strpos($form_content, '[cf7-simple-turnstile]'));
+			}
+		}
+		
+		// Only validate if SCT is enabled for this form (either via "all forms" option or shortcode)
+		if (!$cf7_all_enabled && !$form_has_shortcode) {
 			return $result;
 		}
 

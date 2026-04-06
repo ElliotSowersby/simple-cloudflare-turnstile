@@ -52,6 +52,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_language',
         'cfturnstile_appearance',
         'cfturnstile_size',
+        'cfturnstile_refresh_timeout',
         'cfturnstile_widget_label_enable',
         'cfturnstile_widget_label_text',
         'cfturnstile_failure_message_enable',

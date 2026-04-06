@@ -51,7 +51,9 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		$language = sanitize_text_field(get_option('cfturnstile_language'));
 		$appearance = sanitize_text_field(get_option('cfturnstile_appearance', 'always'));
 		$cfturnstile_size = sanitize_text_field(get_option('cfturnstile_size'), 'normal');
+		$refresh_timeout = sanitize_text_field(get_option('cfturnstile_refresh_timeout', 'auto'));
 			if(!$language) { $language = 'auto'; }
+			if(!$refresh_timeout) { $refresh_timeout = 'auto'; }
 		?>
 		<div id="cf-turnstile<?php echo esc_attr($unique_id); ?>"
 		class="cf-turnstile<?php if($class) { echo " " . esc_attr($class); } ?>" <?php if (get_option('cfturnstile_disable_button')) { ?>data-callback="<?php echo esc_attr($callback); ?>"<?php } ?>
@@ -61,9 +63,10 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 		data-size="<?php echo esc_attr($cfturnstile_size); ?>"
 		data-retry="auto" data-retry-interval="1000"
 		data-refresh-expired="auto"
+		data-refresh-timeout="<?php echo esc_attr($refresh_timeout); ?>"
 		data-action="<?php echo esc_attr($form_name); ?>"
+		data-callback="<?php echo esc_attr($callback); ?>"
 		<?php if(get_option('cfturnstile_failure_message_enable')) { ?>
-		data-callback="cfturnstileCallback"
 		data-error-callback="cfturnstileErrorCallback"
 		<?php } ?>
 		data-appearance="<?php echo esc_attr($appearance); ?>"></div>
@@ -165,7 +168,7 @@ function cfturnstile_force_render($unique_id = '') {
 	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {
 	?>
-	<script>document.addEventListener("DOMContentLoaded", function() { setTimeout(function(){ var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>"); e&&!e.innerHTML.trim()&&(turnstile.remove("#cf-turnstile<?php echo esc_html($unique_id); ?>"), turnstile.render("#cf-turnstile<?php echo esc_html($unique_id); ?>", {sitekey:"<?php echo esc_html($key); ?>"})); }, 100); });</script>
+	<script>document.addEventListener("DOMContentLoaded", function() { setTimeout(function(){ var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>"); if(e&&!e.innerHTML.trim()){turnstile.render(e, {sitekey:"<?php echo esc_html($key); ?>"});} }, 200); });</script>
 	<?php
 	}
 }
@@ -262,7 +265,7 @@ function cfturnstile_check($postdata = "") {
 
 	} else {
 
-		return false;
+		return array( 'success' => false );
 
 	}
 	
@@ -297,7 +300,7 @@ function cfturnstile_log($response, $results) {
 			'success' => $success,
 			'error' => $error_code,
 			'ip' => cfturnstile_get_ip(),
-			'page' => $_SERVER['REQUEST_URI'],
+			'page' => isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
 		);
 		// Max 50
 		if(count($cfturnstile_log) > 50) {

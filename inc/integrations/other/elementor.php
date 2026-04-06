@@ -27,7 +27,12 @@ if(get_option('cfturnstile_elementor')) {
         }
       } elseif ($scope === 'autodetect' && !$is_builder) {
         $current_id = function_exists('get_queried_object_id') ? get_queried_object_id() : 0;
-        if ( !$current_id || !cfturnstile_elementor_page_has_form($current_id) ) {
+        $has_form = $current_id && cfturnstile_elementor_page_has_form($current_id);
+        // Also check if any Elementor popups with forms might be triggered on this page
+        if ( !$has_form ) {
+          $has_form = cfturnstile_elementor_any_popup_has_form($current_id);
+        }
+        if ( !$has_form ) {
           return; // No form detected
         }
       }
@@ -75,7 +80,8 @@ if(get_option('cfturnstile_elementor')) {
         'align' => get_option('cfturnstile_elementor_align', 'left'),
         'theme' => get_option('cfturnstile_theme'),
         'mode' => $failsafe_mode ? $failsafe_mode : 'turnstile',
-        'recaptchaSiteKey' => get_option('cfturnstile_recaptcha_site_key')
+        'recaptchaSiteKey' => get_option('cfturnstile_recaptcha_site_key'),
+        'disableSubmit' => get_option('cfturnstile_disable_button') ? true : false
       ));
     }
   }
@@ -107,6 +113,64 @@ if(get_option('cfturnstile_elementor')) {
         }
         if (!empty($el['elements']) && is_array($el['elements'])){
           if (cfturnstile_elementor_elements_contain_form($el['elements'])) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Check if any published Elementor popup templates contain a form.
+   * Also checks if the current page references any popup (via action triggers in Elementor data).
+   * @param int $current_page_id
+   * @return bool
+   */
+  function cfturnstile_elementor_any_popup_has_form($current_page_id = 0) {
+    // Check if Elementor Pro popup post type exists
+    if ( !post_type_exists('elementor_library') ) {
+      return false;
+    }
+
+    // First, try to detect popup IDs referenced in the current page's Elementor data
+    $popup_ids = array();
+    if ( $current_page_id ) {
+      $data = get_post_meta($current_page_id, '_elementor_data', true);
+      if ( !empty($data) ) {
+        $data_str = is_string($data) ? $data : wp_json_encode($data);
+        // Elementor stores popup action triggers like "popup_id":"123"
+        if ( preg_match_all('/\"popup_id\"\s*:\s*\"(\d+)\"/', $data_str, $matches) ) {
+          $popup_ids = array_map('absint', $matches[1]);
+        }
+      }
+    }
+
+    // If we found specific popup references, only check those
+    if ( !empty($popup_ids) ) {
+      foreach ( $popup_ids as $popup_id ) {
+        if ( cfturnstile_elementor_page_has_form($popup_id) ) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    // Fallback: query all published popup templates for forms
+    $popups = get_posts(array(
+      'post_type'      => 'elementor_library',
+      'posts_per_page' => 50,
+      'post_status'    => 'publish',
+      'meta_query'     => array(
+        array(
+          'key'   => '_elementor_template_type',
+          'value' => 'popup',
+        ),
+      ),
+      'fields' => 'ids',
+    ));
+    if ( !empty($popups) ) {
+      foreach ( $popups as $popup_id ) {
+        if ( cfturnstile_elementor_page_has_form($popup_id) ) {
+          return true;
         }
       }
     }

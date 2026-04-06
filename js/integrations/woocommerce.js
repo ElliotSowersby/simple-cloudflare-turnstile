@@ -1,5 +1,6 @@
 /* Woo Checkout */
 jQuery( document ).ready(function() {
+
     var cfturnstileWooCheckoutAttempted = false;
 
     // Track actual submission attempts so we don't reset on every checkout refresh.
@@ -93,10 +94,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function cfturnstileWooBlockCheckoutRender() {
+
             var turnstileItem = document.getElementById('cf-turnstile-woo-checkout');
             if (!turnstileItem) return;
 
-            // If already initialized by us, try reset to preserve state but clear token
+            // If already initialized, try reset to preserve state but clear token
             if (turnstileItem.getAttribute('data-sct-init') === 'true' && turnstileItem.hasChildNodes()) {
                 try {
                     turnstile.reset(turnstileItem);
@@ -126,7 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             cfturnstileWooBlockClickTimer = setTimeout(function() {
                 cfturnstileWooBlockCheckoutRender();
-            }, 1250);
+            }, 2000);
         });
 
         // Render Turnstile when the checkout data is updated and the widget is not present or not initialized

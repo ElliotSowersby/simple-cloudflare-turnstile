@@ -43,7 +43,6 @@ function cfturnstile_field_checkout() {
 // Render after checkout block
 function cfturnstile_render_post_block($block_content) {
 	ob_start();
-	echo $block_content;
 	cfturnstile_field_checkout();
 	$block_content = ob_get_contents();
 	ob_end_clean();
@@ -52,6 +51,12 @@ function cfturnstile_render_post_block($block_content) {
 
 // Render before checkout block
 function cfturnstile_render_pre_block($block_content) {
+	$already_ran_turnstile_block = false;
+	if ( ! $already_ran_turnstile_block ) {
+		$already_ran_turnstile_block = true;
+	} else {
+		return $block_content;
+	}
 	ob_start();
 	cfturnstile_field_checkout();
 	echo $block_content;
@@ -215,7 +220,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 				'schema_callback' => function() {
 					return array(
 						'token' => array(
-							'description'       => __( 'Turnstile token.', 'cfturnstile' ),
+							'description'       => __( 'Turnstile token.', 'simple-cloudflare-turnstile' ),
 							'type'              => 'string',
 							'context'           => array( 'view', 'edit' ),
 							'sanitize_callback' => 'sanitize_text_field',

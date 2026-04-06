@@ -10,12 +10,17 @@ if (!defined('ABSPATH')) {
  * @return bool
  */
 function cfturnstile_is_cloudflare_down() {
-    $resp = wp_remote_get('https://challenges.cloudflare.com/turnstile/v0/api.js?render=auto', array('timeout' => 5));
-    if ( is_wp_error($resp) ) {
-        return true;
+    $cached = get_transient( 'cfturnstile_cf_status' );
+    if ( $cached !== false ) {
+        return $cached === 'down';
     }
-    $code = wp_remote_retrieve_response_code($resp);
-    return ($code >= 500);
+
+    $resp    = wp_remote_get( 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=auto', array( 'timeout' => 5 ) );
+    $is_down = is_wp_error( $resp ) || wp_remote_retrieve_response_code( $resp ) >= 500;
+
+    set_transient( 'cfturnstile_cf_status', $is_down ? 'down' : 'up', 2 * MINUTE_IN_SECONDS );
+
+    return $is_down;
 }
 
 /**
