@@ -191,6 +191,37 @@ function cfturnstile_sunshine_modal_scripts() {
 add_action( 'wp_footer', 'cfturnstile_sunshine_modal_scripts', 999 );
 
 /**
+ * Skip WordPress global login Turnstile check for Sunshine login forms.
+ * Sunshine has its own Turnstile validation via sunshine_login_validation,
+ * and Turnstile tokens are single-use — the WP authenticate filter would
+ * try to verify an already-consumed token and fail.
+ */
+add_filter( 'cfturnstile_wp_login_checks', 'cfturnstile_sunshine_skip_wp_login_check', 10, 1 );
+function cfturnstile_sunshine_skip_wp_login_check( $skip ) {
+	// Sunshine login form.
+	if ( isset( $_POST['sunshine_login'] ) && wp_verify_nonce( sanitize_text_field( $_POST['sunshine_login'] ), 'sunshine_login' ) ) {
+		return true;
+	}
+	// Sunshine signup form — wp_signon() triggers authenticate after registration.
+	if ( isset( $_POST['security'] ) && wp_verify_nonce( sanitize_text_field( $_POST['security'] ), 'sunshine_signup' ) ) {
+		return true;
+	}
+	return $skip;
+}
+
+/**
+ * Skip WordPress global registration Turnstile check for Sunshine signup forms.
+ * Same single-use token issue as login.
+ */
+add_filter( 'cfturnstile_wp_register_checks', 'cfturnstile_sunshine_skip_wp_register_check', 10, 1 );
+function cfturnstile_sunshine_skip_wp_register_check( $skip ) {
+	if ( isset( $_POST['security'] ) && wp_verify_nonce( sanitize_text_field( $_POST['security'] ), 'sunshine_signup' ) ) {
+		return true;
+	}
+	return $skip;
+}
+
+/**
  * Sunshine Photo Cart Login - Display hook.
  */
 if ( get_option( 'cfturnstile_sunshine_login' ) ) {
