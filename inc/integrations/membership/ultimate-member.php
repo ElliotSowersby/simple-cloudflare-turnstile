@@ -17,9 +17,9 @@ if(get_option('cfturnstile_um_register')) { add_action( 'um_submit_form_errors_h
 if(get_option('cfturnstile_um_password')) { add_action( 'um_reset_password_errors_hook', 'cfturnstile_um_check', 20, 1 ); }
 function cfturnstile_um_check( $args ) {
 
-  // Check if already validated
-  if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
-    unset($_SESSION['cfturnstile_login_checked']);
+  // Check if already validated (cache-friendly, no PHP session)
+  if( cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
+    cfturnstile_clear_verified( 'cfturnstile_login_checked' );
     return;
   }
 
@@ -35,8 +35,7 @@ function cfturnstile_um_check( $args ) {
     if($success != true) {
       UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );
     } else {
-      $nonce = wp_create_nonce( 'cfturnstile_login_check' );
-      $_SESSION['cfturnstile_login_checked'] = $nonce;
+      cfturnstile_set_verified( 'cfturnstile_login_checked' );
   }
   } else {
     UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );
@@ -48,8 +47,8 @@ function cfturnstile_um_check( $args ) {
 function cfturnstile_um_error_message() {
   echo '<p style="color: red; font-weight: bold;">' . cfturnstile_failed_message() . '</p>';
 }
-// Clear session on login
+// Clear verification flag on login
 add_action('um_user_login', 'cfturnstile_um_login_clear', 10, 1);
 function cfturnstile_um_login_clear($args) { 
-	if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+	cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 }

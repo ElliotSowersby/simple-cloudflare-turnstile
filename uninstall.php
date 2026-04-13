@@ -17,6 +17,12 @@ if (get_option('cfturnstile_uninstall_remove')) {
     }
     // Remove the "cfturnstile_tested" option
     delete_option('cfturnstile_tested');
+    // Remove the "cfturnstile_invalid_secret_notice" option
+    delete_option( 'cfturnstile_invalid_secret_notice' );
+    // Remove the "cfturnstile_soft_tested" option
+    delete_option( 'cfturnstile_soft_tested' );
+    // Remove the throttle transient
+    delete_transient( 'cfturnstile_invalid_secret_throttle' );
     // Remove the "cfturnstile_uninstall_remove" option itself
     delete_option('cfturnstile_uninstall_remove');
 }

@@ -33,12 +33,9 @@ function cfturnstile_mepr_check( $errors ) {
   $LimitedToProductIDs = get_option('cfturnstile_mepr_product_ids');
   $ProductsNeedingCaptcha = explode("\n", str_replace("\r", "", $LimitedToProductIDs));
 
-  // Start session
-  if (!session_id()) { session_start(); }
-
-  // Check if already validated
-  if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
-    unset($_SESSION['cfturnstile_login_checked']);
+  // Check if already validated (cache-friendly, no PHP session)
+  if( cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
+    cfturnstile_clear_verified( 'cfturnstile_login_checked' );
     return $errors;
   }
 
@@ -59,8 +56,7 @@ function cfturnstile_mepr_check( $errors ) {
     if($success != true) {
         $errors[] = cfturnstile_failed_message();
     } else {
-      $nonce = wp_create_nonce( 'cfturnstile_login_check' );
-      $_SESSION['cfturnstile_login_checked'] = $nonce;
+      cfturnstile_set_verified( 'cfturnstile_login_checked' );
     }
   } else {
     $errors[] = cfturnstile_failed_message();

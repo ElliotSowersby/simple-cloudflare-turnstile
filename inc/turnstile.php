@@ -248,12 +248,35 @@ function cfturnstile_check($postdata = "") {
 			$results['success'] = false;
 		}
 
-		foreach ($response as $key => $val) {
-			if ($key == 'error-codes') {
-				foreach ($val as $key => $error_val) {
+		foreach ( $response as $key => $val ) {
+			if ( 'error-codes' === $key ) {
+				foreach ( $val as $key => $error_val ) {
 					$results['error_code'] = $error_val;
-					if($error_val == 'invalid-input-secret') {
-						update_option('cfturnstile_tested', 'no'); // Disable if invalid secret
+					if ( 'invalid-input-secret' === $error_val ) {
+						// Rate-limit: only process once per 5 minutes to avoid repeated DB writes on high-traffic sites.
+						if ( false === get_transient( 'cfturnstile_invalid_secret_throttle' ) ) {
+							set_transient( 'cfturnstile_invalid_secret_throttle', 1, 5 * MINUTE_IN_SECONDS );
+							$already_flagged = ( 'no' === get_option( 'cfturnstile_soft_tested' ) );
+							update_option( 'cfturnstile_invalid_secret_notice', '1' );
+							update_option( 'cfturnstile_soft_tested', 'no' );
+							if ( ! $already_flagged ) {
+								$admin_email  = get_option( 'admin_email' );
+								$site_name    = get_bloginfo( 'name' );
+								$settings_url = admin_url( 'options-general.php?page=cfturnstile' );
+								$subject      = sprintf(
+									/* translators: %s: Site name. */
+									__( '[%s] Cloudflare Turnstile: Invalid Secret Key Detected', 'simple-cloudflare-turnstile' ),
+									$site_name
+								);
+								$message = sprintf(
+									/* translators: 1: Site name, 2: Settings page URL. */
+									__( "Cloudflare has reported that the Turnstile secret key on %1\$s is invalid (error: invalid-input-secret).\n\nTurnstile is still active on your forms, but verifications may be failing until the key is corrected.\n\nPlease check your API keys on the settings page:\n%2\$s", 'simple-cloudflare-turnstile' ),
+									$site_name,
+									$settings_url
+								);
+								wp_mail( $admin_email, $subject, $message );
+							}
+						}
 					}
 				}
 			}

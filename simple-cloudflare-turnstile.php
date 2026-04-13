@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA Alternative with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.38.0
+ * Version: 1.38.1
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -121,6 +121,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	 * Include Functions
 	 */
 	include_once(plugin_dir_path(__FILE__) . 'inc/failsafe.php');
+	include_once(plugin_dir_path(__FILE__) . 'inc/verification.php');
 	include_once(plugin_dir_path(__FILE__) . 'inc/turnstile.php');
 
 	/**

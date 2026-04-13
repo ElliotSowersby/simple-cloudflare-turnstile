@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 6.9
-Stable Tag: 1.38.0
+Stable Tag: 1.38.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,11 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.38.1 - 13th April 2026 =
+- Tweak: Replaced all PHP session usage with WordPress transients for the duplicate submission checks, to prevent full-page caching from being broken by the PHPSESSID cookie and Cache-Control headers.
+- Tweak: An invalid-input-secret error from Cloudflare no longer disables Turnstile on all forms. Instead, the admin is notified and a soft re-test prompt is displayed on the settings page.
+- Security: Fixed a broken authentication vulnerability on WooCommerce checkout potentially allowing one successful Turnstile submission to be reused for multiple checks. (Reported by David Marín via Patchstack.)
 
 = Version 1.38.0 - 6th April 2026 =
 - New: Added a "Refresh Timeout" option to the advanced settings.

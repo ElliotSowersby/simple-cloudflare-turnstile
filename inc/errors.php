@@ -27,6 +27,65 @@ function cfturnstile_tested_notice() {
 }
 
 /**
+ * Display persistent admin warning if an invalid secret key was detected.
+ * Dismissible via AJAX — stays until the admin clicks to dismiss.
+ */
+add_action( 'admin_notices', 'cfturnstile_invalid_secret_notice' );
+function cfturnstile_invalid_secret_notice() {
+	if ( '1' !== get_option( 'cfturnstile_invalid_secret_notice' ) ) {
+		return;
+	}
+	$settings_url = admin_url( 'options-general.php?page=cfturnstile' );
+	$ajax_url     = esc_url( admin_url( 'admin-ajax.php' ) );
+	$nonce        = wp_create_nonce( 'cfturnstile_dismiss_invalid_secret' );
+	?>
+	<div class="notice notice-warning" id="cfturnstile-invalid-secret-notice">
+		<p>
+			<strong><?php esc_html_e( 'Cloudflare Turnstile:', 'simple-cloudflare-turnstile' ); ?></strong>
+			<?php
+			echo wp_kses_post(
+				sprintf(
+					/* translators: %s: URL to the plugin settings page. */
+					__( 'Your Turnstile secret key was rejected by Cloudflare (<code>invalid-input-secret</code>). Please verify your API keys on the <a href="%s">settings page</a>. Turnstile will continue to protect your forms, but verifications may fail until the key is corrected.', 'simple-cloudflare-turnstile' ),
+					esc_url( $settings_url )
+				)
+			);
+			?>
+		</p>
+		<p>
+			<a href="#" id="cfturnstile-dismiss-invalid-secret" class="button button-small">
+				<?php esc_html_e( 'Dismiss', 'simple-cloudflare-turnstile' ); ?>
+			</a>
+		</p>
+	</div>
+	<script>
+	document.getElementById( 'cfturnstile-dismiss-invalid-secret' ).addEventListener( 'click', function( e ) {
+		e.preventDefault();
+		var notice = document.getElementById( 'cfturnstile-invalid-secret-notice' );
+		notice.style.display = 'none';
+		var xhr = new XMLHttpRequest();
+		xhr.open( 'POST', '<?php echo esc_url( $ajax_url ); ?>', true );
+		xhr.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded' );
+		xhr.send( 'action=cfturnstile_dismiss_invalid_secret&_wpnonce=<?php echo esc_attr( $nonce ); ?>' );
+	});
+	</script>
+	<?php
+}
+
+/**
+ * AJAX handler to dismiss the invalid secret notice.
+ */
+add_action( 'wp_ajax_cfturnstile_dismiss_invalid_secret', 'cfturnstile_dismiss_invalid_secret_handler' );
+function cfturnstile_dismiss_invalid_secret_handler() {
+	check_ajax_referer( 'cfturnstile_dismiss_invalid_secret', '_wpnonce' );
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( 'Unauthorized', 403 );
+	}
+	delete_option( 'cfturnstile_invalid_secret_notice' );
+	wp_send_json_success();
+}
+
+/**
  * Gets the custom Turnstile failed message
  */
 function cfturnstile_failed_message($default = "") {

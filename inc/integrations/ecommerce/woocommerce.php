@@ -113,30 +113,28 @@ if(get_option('cfturnstile_woo_checkout')) {
 			}
 		}
 
-		// Start session
-		if (!session_id()) { session_start(); }
-		// Check if already validated
-		if(isset($_SESSION['cfturnstile_checkout_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_checkout_checked']), 'cfturnstile_checkout_check' )) {
-			return;
-		}
-
 		// Check if guest only enabled
 		$guest = esc_attr( get_option('cfturnstile_guest_only') );
-		// Check
+		// Check — always require a fresh Turnstile token (tokens are single-use).
 		if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
 				wc_add_notice( cfturnstile_failed_message(), 'error');
-			} else {
-				$nonce = wp_create_nonce( 'cfturnstile_checkout_check' );
-				$_SESSION['cfturnstile_checkout_checked'] = $nonce;
-				$cfturnstile_wc_checkout_ran = true; // Mark as executed
 			}
+			// Always mark as executed so the second hook doesn't re-verify
+			// the same (now consumed) token and produce duplicate errors.
+			$cfturnstile_wc_checkout_ran = true;
 		}
 	}
 	add_action('woocommerce_store_api_checkout_update_order_from_request', 'cfturnstile_woo_checkout_block_check', 10, 2);
 	function cfturnstile_woo_checkout_block_check($order, $request) {
+		// Prevent duplicate execution within a single request.
+		static $cfturnstile_wc_block_checkout_ran = false;
+		if ( $cfturnstile_wc_block_checkout_ran ) {
+			return;
+		}
+
 		// Skip if Turnstile disabled for payment method
 		$skip = 0;
 		if ( $request->get_method() === 'POST' ) {
@@ -177,31 +175,25 @@ if(get_option('cfturnstile_woo_checkout')) {
 				}
 			}
 
-			// Start session
-			if (!session_id()) { session_start(); }
-			// Check if already validated
-			if(isset($_SESSION['cfturnstile_checkout_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_checkout_checked']), 'cfturnstile_checkout_check' )) {
-				return;
-			}
-			
 			// Check if guest only enabled
 			$guest = esc_attr( get_option('cfturnstile_guest_only') );
-			// Check
+			// Check — always require a fresh Turnstile token (tokens are single-use).
 			if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
 				$extensions = $request->get_param( 'extensions' );
 				$token = ( is_array( $extensions ) && isset( $extensions['simple-cloudflare-turnstile']['token'] ) ) ? $extensions['simple-cloudflare-turnstile']['token'] : '';
 
 				if ( empty( $token ) ) {
+					$cfturnstile_wc_block_checkout_ran = true;
 					throw new \Exception( cfturnstile_failed_message() );
 				}
 				
 				$check = cfturnstile_check( $token );
 				$success = $check['success'];
+				// Always mark as executed so duplicate hooks don't re-verify
+				// the same (now consumed) token and produce duplicate errors.
+				$cfturnstile_wc_block_checkout_ran = true;
 				if($success != true) {
 					throw new \Exception( cfturnstile_failed_message() );
-				} else {
-					$nonce = wp_create_nonce( 'cfturnstile_checkout_check' );
-					$_SESSION['cfturnstile_checkout_checked'] = $nonce;
 				}
 			}
 		}
@@ -231,21 +223,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 		);
 	}
 }
-// On payment complete clear session
-add_action('woocommerce_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
-add_action('woocommerce_store_api_checkout_order_processed', 'cfturnstile_woo_checkout_clear', 10, 1);
-add_action('woocommerce_thankyou', 'cfturnstile_woo_checkout_clear', 10, 1);
-function cfturnstile_woo_checkout_clear($order_id) {
-	if(isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
-}
 
-// Additional clears to prevent lingering validation across session changes
-function cfturnstile_woo_clear_session() {
-	if (!session_id()) { session_start(); }
-	if (isset($_SESSION['cfturnstile_checkout_checked'])) { unset($_SESSION['cfturnstile_checkout_checked']); }
-}
-// Logout
-add_action('wp_logout', 'cfturnstile_woo_clear_session', 10, 0);
 
 // Woo Checkout Pay Order Check
 if(get_option('cfturnstile_woo_checkout_pay')) {
@@ -274,11 +252,8 @@ if(get_option('cfturnstile_woo_login')) {
 			if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return $user; } // Skip REST API
 			if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
-			// Start session
-			if (!session_id()) { session_start(); }
-
-			// Check if already validated
-			if(isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
+			// Check if already validated (cache-friendly, no PHP session)
+			if( cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
 				return $user;
 			}
 
@@ -288,17 +263,16 @@ if(get_option('cfturnstile_woo_login')) {
 			if($success != true) {
 				$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
 			} else {
-				$nonce = wp_create_nonce( 'cfturnstile_login_check' );
-				$_SESSION['cfturnstile_login_checked'] = $nonce;
+				cfturnstile_set_verified( 'cfturnstile_login_checked' );
 			}
 			
 			return $user;
 			
 		}
-		// Clear session on login
+		// Clear verification flag on login
 		add_action('wp_login', 'cfturnstile_woo_login_clear', 10, 2);
 		function cfturnstile_woo_login_clear($user_login, $user) {
-			if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+			cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 		}
 	}
 }

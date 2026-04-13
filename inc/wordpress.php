@@ -7,9 +7,7 @@ if (!defined('ABSPATH')) {
  * Display the turnstile field on the login form.
  */
 function cfturnstile_field_login() {
-	if(isset($_SESSION['cfturnstile_login_checked'])) {
-		unset($_SESSION['cfturnstile_login_checked']);
-	}
+	cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 	if(get_option('cfturnstile_login_only', 0)) {
 		$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
 		$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -62,14 +60,11 @@ if(get_option('cfturnstile_login')) {
 			return $user;
 		}
 
-		// Start session
-		if (!session_id()) { session_start(); }
-
 		// Check if already validated
-		if(isset($user->ID) && isset($_SESSION['cfturnstile_login_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_login_checked']), 'cfturnstile_login_check' )) {
+		if(isset($user->ID) && cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
 			return $user;
 		} else {
-			unset($_SESSION['cfturnstile_login_checked']);
+			cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 		}
 
 		// Check Turnstile
@@ -80,18 +75,17 @@ if(get_option('cfturnstile_login')) {
 			do_action('cfturnstile_wp_login_failed');
 		} else {
 			if (isset($user->ID)) {
-				$nonce = wp_create_nonce( 'cfturnstile_login_check' );
-				$_SESSION['cfturnstile_login_checked'] = $nonce;
+				cfturnstile_set_verified( 'cfturnstile_login_checked' );
 			}
 		}
 		
 		return $user;
 		
 	}
-	// Clear session on login
+	// Clear verification flag on login
 	add_action('wp_login', 'cfturnstile_wp_login_clear', 10, 2);
 	function cfturnstile_wp_login_clear($user_login, $user) {
-		if(isset($_SESSION['cfturnstile_login_checked'])) { unset($_SESSION['cfturnstile_login_checked']); }
+		cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 	}
 	/* Hook into wp_login_form() to add the Turnstile field */
 	function cfturnstile_wp_login_form_field($content = "", $args = array()) {

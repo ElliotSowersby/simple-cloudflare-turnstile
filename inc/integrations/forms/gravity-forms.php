@@ -46,6 +46,7 @@ if(get_option('cfturnstile_gravity')) {
 
   function cfturnstile_gravity_check($validation_result)
   {
+    global $cfturnstile_gravity_error;
     $form = $validation_result['form'];
     // if whitelisted or form is disabled, return
     if (cfturnstile_whitelisted() || cfturnstile_form_disable($form['id'], 'cfturnstile_gravity_disable')) {
@@ -54,7 +55,7 @@ if(get_option('cfturnstile_gravity')) {
     
     // If not a POST request return
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {
-      $_SESSION['cf-turnstile-response'] = cfturnstile_failed_message();
+      $cfturnstile_gravity_error = cfturnstile_failed_message();
       $validation_result['is_valid'] = false;
       add_filter('gform_validation_message_' . $form['id'], 'cfturnstile_gravity_validation_message', 10, 2);
       return $validation_result;
@@ -64,7 +65,7 @@ if(get_option('cfturnstile_gravity')) {
     $success = $check['success'];
     // if check fails, return error
     if ($success != true) {
-      $_SESSION['cf-turnstile-response'] = cfturnstile_failed_message();
+      $cfturnstile_gravity_error = cfturnstile_failed_message();
       $validation_result['is_valid'] = false;
       add_filter('gform_validation_message_' . $form['id'], 'cfturnstile_gravity_validation_message', 10, 2);
 
@@ -76,9 +77,10 @@ if(get_option('cfturnstile_gravity')) {
 
   function cfturnstile_gravity_validation_message($message, $form)
   {
-    if (isset($_SESSION['cf-turnstile-response'])) {
-      $error = $_SESSION['cf-turnstile-response'];
-      unset($_SESSION['cf-turnstile-response']);
+    global $cfturnstile_gravity_error;
+    if (isset($cfturnstile_gravity_error)) {
+      $error = $cfturnstile_gravity_error;
+      $cfturnstile_gravity_error = null;
 
       $message = '<div class="gform_validation_errors" id="gform_' . $form['id'] . '_validation_container">
       <h2 class="gform_submission_error hide_summary"><span class="gform-icon gform-icon--close"></span>

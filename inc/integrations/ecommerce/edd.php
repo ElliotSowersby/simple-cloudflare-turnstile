@@ -22,10 +22,9 @@ if(get_option('cfturnstile_edd_checkout')) {
 	add_action('edd_purchase_form_before_submit', 'cfturnstile_field_edd_checkout', 10);
 	add_action('edd_pre_process_purchase', 'cfturnstile_edd_checkout_check');
 	function cfturnstile_edd_checkout_check() {
-		if (!session_id()) { session_start(); }
-		// Check if already validated
-		if(isset($_SESSION['cfturnstile_edd_checkout_checked']) && wp_verify_nonce( sanitize_text_field($_SESSION['cfturnstile_edd_checkout_checked']), 'cfturnstile_edd_checkout' )) {
-			unset($_SESSION['cfturnstile_edd_checkout_checked']);
+		// Check if already validated (cache-friendly, no PHP session)
+		if( cfturnstile_get_verified( 'cfturnstile_edd_checkout_checked' ) ) {
+			cfturnstile_clear_verified( 'cfturnstile_edd_checkout_checked' );
 			return;
 		}
 		// Get guest only
@@ -38,8 +37,7 @@ if(get_option('cfturnstile_edd_checkout')) {
 				if($success != true) {
 					edd_set_error( 'cfturnstile_error', cfturnstile_failed_message() );
 				} else {
-					$nonce = wp_create_nonce( 'cfturnstile_edd_checkout' );
-					$_SESSION['cfturnstile_edd_checkout_checked'] = $nonce;
+					cfturnstile_set_verified( 'cfturnstile_edd_checkout_checked' );
 				}
 			}
 		}

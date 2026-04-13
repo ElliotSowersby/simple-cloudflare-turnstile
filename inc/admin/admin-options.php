@@ -20,11 +20,14 @@ function cfturnstile_create_menu() {
 add_action('update_option_cfturnstile_key', 'cfturnstile_keys_updated', 10);
 add_action('update_option_cfturnstile_secret', 'cfturnstile_keys_updated', 10);
 function cfturnstile_keys_updated() {
-	update_option('cfturnstile_tested', 'no');
+	update_option( 'cfturnstile_tested', 'no' );
+	delete_option( 'cfturnstile_invalid_secret_notice' );
+	delete_option( 'cfturnstile_soft_tested' );
+	delete_transient( 'cfturnstile_invalid_secret_throttle' );
 }
 
 // Admin test form to check Turnstile response
-function cfturnstile_admin_test() {
+function cfturnstile_admin_test( $soft = false ) {
 ?>
 	<form action="" method="POST" class="cfturnstile-settings">
 		<?php
@@ -34,19 +37,24 @@ function cfturnstile_admin_test() {
 			$error = '';
 			if (isset($check['success'])) $success = $check['success'];
 			if (isset($check['error_code'])) $error = $check['error_code'];
-			if ($success != true) {
+			if ( $success != true && ! $soft ) {
 				echo '<div style="padding: 20px 20px 25px 20px; margin: 20px 0 28px 0; background: #fff; border-radius: 20px; max-width: 500px; border: 2px solid #d5d5d5;">';
 				echo '<p style="font-weight: 600; font-size: 19px; margin-top: 0; margin-bottom: 0;">' . esc_html__('Almost done...', 'simple-cloudflare-turnstile') . '</p>';
 			}
-			if (!isset($_POST['cf-turnstile-response'])) {
+			if ( ! isset($_POST['cf-turnstile-response']) ) {
+				if(! $soft ) {
 				echo '<p>'
 					. '<span style="color: red; font-weight: bold;">' . esc_html__('API keys have been updated. Please test the Turnstile API response below.', 'simple-cloudflare-turnstile') . '</span>'
 					. '<br/>'
 					. esc_html__('Turnstile will not be added to any forms until the test is successfully complete.', 'simple-cloudflare-turnstile')
 					. '</p>';
+				}
 			} else {
 				if ($success == true) {
-					update_option('cfturnstile_tested', 'yes');
+					update_option( 'cfturnstile_tested', 'yes' );
+					delete_option( 'cfturnstile_invalid_secret_notice' );
+					delete_option( 'cfturnstile_soft_tested' );
+					delete_transient( 'cfturnstile_invalid_secret_throttle' );
 				} else {
 					if ($error == "missing-input-response") {
 						echo '<p style="font-weight: bold; color: red;">' . cfturnstile_failed_message() . '</p>';
@@ -65,7 +73,9 @@ function cfturnstile_admin_test() {
 				echo '<button type="submit" style="margin-top: 10px; padding: 7px 10px; background: #1c781c; color: #fff; font-weight: bold; border: 1px solid #176017; border-radius: 4px; cursor: pointer;">
 				' . esc_html__('TEST RESPONSE', 'simple-cloudflare-turnstile') . ' <span class="dashicons dashicons-arrow-right-alt"></span>
 				</button>';
-				echo '</div>';
+				if ( ! $soft ) {
+					echo '</div>';
+				}
 			}
 		}
 		?>
@@ -75,6 +85,7 @@ function cfturnstile_admin_test() {
 
 // Show Settings Page
 function cfturnstile_settings_page() {
+	
 ?>
 	<div class="sct-wrap wrap">
 
@@ -124,8 +135,21 @@ function cfturnstile_settings_page() {
 		</div>
 
 		<?php
-		if (empty(get_option('cfturnstile_tested')) || get_option('cfturnstile_tested') != 'yes') {
+		if ( empty( get_option( 'cfturnstile_tested' ) ) || get_option( 'cfturnstile_tested' ) != 'yes' ) {
 			echo cfturnstile_admin_test();
+		} elseif ( 'no' === get_option( 'cfturnstile_soft_tested' ) ) {
+			// Buffer the test form output so we can process the POST before deciding whether to show the wrapper.
+			ob_start();
+			cfturnstile_admin_test( true );
+			$soft_test_output = ob_get_clean();
+			// Re-check after processing — if the test passed, the flag will have been deleted.
+			if ( 'no' === get_option( 'cfturnstile_soft_tested' ) ) {
+				echo '<div style="padding: 20px 20px 25px 20px; margin: 20px 0 28px 0; background: #fff; border-radius: 20px; max-width: 500px; border: 2px solid #f0c33c;">';
+				echo '<p style="font-weight: 600; font-size: 19px; margin-top: 0; margin-bottom: 0;"><span class="dashicons dashicons-warning" style="color: #f0c33c; font-size: 28px; margin-right: 5px;"></span> ' . esc_html__( 'Re-test Recommended', 'simple-cloudflare-turnstile' ) . '</p>';
+				echo '<p>' . esc_html__( 'Cloudflare reported an invalid secret key error. Turnstile is still active on your forms, but verifications may be failing. Please re-test your API keys below.', 'simple-cloudflare-turnstile' ) . '</p>';
+				echo $soft_test_output;
+				echo '</div>';
+			}
 		}
 		?>
 
@@ -151,7 +175,7 @@ function cfturnstile_settings_page() {
 
 						<?php
 						if ( !$cf_const_site && !$cf_const_secret ) {
-							if (get_option('cfturnstile_tested') == 'yes') {
+							if ( get_option('cfturnstile_tested') == 'yes' && 'no' !== get_option( 'cfturnstile_soft_tested' ) ) {
 								echo '<p style=" font-weight: bold; color: #1e8c1e;"><span class="dashicons dashicons-yes-alt"></span> ' . esc_html__('Success! Turnstile is working correctly with your API keys.', 'simple-cloudflare-turnstile') . '</p>';
 							}
 						}
