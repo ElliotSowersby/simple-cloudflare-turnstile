@@ -52,6 +52,13 @@ if(get_option('cfturnstile_gravity')) {
     if (cfturnstile_whitelisted() || cfturnstile_form_disable($form['id'], 'cfturnstile_gravity_disable')) {
       return $validation_result;
     }
+
+    // Support multi-page forms
+    $target_page = rgpost( 'gform_target_page_number_' . $form['id'] );
+    $has_token = ! empty( $_POST['cf-turnstile-response'] );
+    if ( ! $has_token && ! empty( $target_page ) && intval( $target_page ) !== 0 ) {
+      return $validation_result;
+    }
     
     // If not a POST request return
     if ('POST' !== $_SERVER['REQUEST_METHOD']) {

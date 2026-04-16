@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 6.9
-Stable Tag: 1.38.1
+Stable Tag: 1.38.2
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.38.2 - 16th April 2026 =
+- Tweak: Added the transient based duplicate submission check to WooCommerce checkout, to prevent potential duplicate submission check failing issues since the last update.
+- Tweak: Added improved support for Gravity Forms multi-page forms, to prevent the duplicate submission check from failing on page 2 and beyond.
 
 = Version 1.38.1 - 13th April 2026 =
 - Tweak: Replaced all PHP session usage with WordPress transients for the duplicate submission checks, to prevent full-page caching from being broken by the PHPSESSID cookie and Cache-Control headers.

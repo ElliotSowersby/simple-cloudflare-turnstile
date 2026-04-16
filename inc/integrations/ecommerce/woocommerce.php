@@ -117,13 +117,18 @@ if(get_option('cfturnstile_woo_checkout')) {
 		$guest = esc_attr( get_option('cfturnstile_guest_only') );
 		// Check — always require a fresh Turnstile token (tokens are single-use).
 		if( !$skip && (!$guest || ( $guest && !is_user_logged_in() )) ) {
+			// If this token already passed verification, skip re-check.
+			if ( cfturnstile_get_verified( 'cfturnstile_checkout_checked' ) ) {
+				$cfturnstile_wc_checkout_ran = true;
+				return;
+			}
 			$check = cfturnstile_check();
 			$success = $check['success'];
 			if($success != true) {
 				wc_add_notice( cfturnstile_failed_message(), 'error');
+			} else {
+				cfturnstile_set_verified( 'cfturnstile_checkout_checked' );
 			}
-			// Always mark as executed so the second hook doesn't re-verify
-			// the same (now consumed) token and produce duplicate errors.
 			$cfturnstile_wc_checkout_ran = true;
 		}
 	}
@@ -183,19 +188,43 @@ if(get_option('cfturnstile_woo_checkout')) {
 				$token = ( is_array( $extensions ) && isset( $extensions['simple-cloudflare-turnstile']['token'] ) ) ? $extensions['simple-cloudflare-turnstile']['token'] : '';
 
 				if ( empty( $token ) ) {
-					$cfturnstile_wc_block_checkout_ran = true;
 					throw new \Exception( cfturnstile_failed_message() );
+				}
+
+				// Store token so the cleanup callback can access it.
+				global $cfturnstile_block_checkout_token;
+				$cfturnstile_block_checkout_token = $token;
+
+				// If this token already passed verification, skip re-check.
+				if ( cfturnstile_get_verified( 'cfturnstile_block_checkout_checked', $token ) ) {
+					$cfturnstile_wc_block_checkout_ran = true;
+					return;
 				}
 				
 				$check = cfturnstile_check( $token );
 				$success = $check['success'];
-				// Always mark as executed so duplicate hooks don't re-verify
-				// the same (now consumed) token and produce duplicate errors.
 				$cfturnstile_wc_block_checkout_ran = true;
 				if($success != true) {
 					throw new \Exception( cfturnstile_failed_message() );
+				} else {
+					cfturnstile_set_verified( 'cfturnstile_block_checkout_checked', $token );
 				}
 			}
+		}
+	}
+
+	// Clear checkout verification transients after all validation hooks have run
+	add_action('woocommerce_after_checkout_validation', 'cfturnstile_woo_checkout_clear_transient', 9999);
+	function cfturnstile_woo_checkout_clear_transient() {
+		cfturnstile_clear_verified( 'cfturnstile_checkout_checked' );
+	}
+
+	// Block checkout: clear the transient after the order is processed
+	add_action('woocommerce_store_api_checkout_order_processed', 'cfturnstile_woo_block_checkout_clear_transient', 9999);
+	function cfturnstile_woo_block_checkout_clear_transient() {
+		global $cfturnstile_block_checkout_token;
+		if ( ! empty( $cfturnstile_block_checkout_token ) ) {
+			cfturnstile_clear_verified( 'cfturnstile_block_checkout_checked', $cfturnstile_block_checkout_token );
 		}
 	}
 
