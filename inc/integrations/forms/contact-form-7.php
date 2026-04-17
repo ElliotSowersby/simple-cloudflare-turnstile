@@ -49,7 +49,13 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 	if (!class_exists('WPCF7_Submission')) {
 		return $result;
 	}
-	
+
+	// Prevent duplicate execution within a single request.
+	static $cfturnstile_cf7_ran = false;
+	if ( $cfturnstile_cf7_ran ) {
+		return $result;
+	}
+
 	$post = WPCF7_Submission::get_instance();
 
 	$_wpcf7 = !empty($_POST['_wpcf7']) ? absint($_POST['_wpcf7']) : 0;
@@ -85,6 +91,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		$token = isset($data['cf-turnstile-response']) ? $data['cf-turnstile-response'] : '';
 		$check = cfturnstile_check($token);
 		$success = $check['success'];
+		$cfturnstile_cf7_ran = true;
 		if ($success != true) {
 			$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
 			return $result;

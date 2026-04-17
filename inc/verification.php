@@ -7,8 +7,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Build a transient key from the Turnstile token in the current POST.
  *
  * @param string $key   Verification key, e.g. 'cfturnstile_checkout_checked'.
- * @param string $token Optional. Explicit token value (e.g. from block checkout
- *                      extensions data). Falls back to $_POST['cf-turnstile-response'].
+ * @param string $token Optional. Explicit token value (e.g. from block checkout extensions data). Falls back to $_POST['cf-turnstile-response'].
  * @return string|false Transient key, or false if no token is present.
  */
 function cfturnstile_transient_key( $key, $token = '' ) {
@@ -26,16 +25,16 @@ function cfturnstile_transient_key( $key, $token = '' ) {
  * Store a verification flag tied to the current Turnstile token.
  *
  * Uses a short-lived transient keyed to the token so each token can only
- * be used once.  Turnstile tokens are single-use by design.
+ * be used once. Turnstile tokens are single-use by design.
  *
- * @param string $key   Verification key, e.g. 'cfturnstile_checkout_checked'.
- * @param string $token Optional. Explicit token value for contexts where the
- *                      token is not in $_POST (e.g. block checkout).
+ * @param string $key    Verification key, e.g. 'cfturnstile_checkout_checked'.
+ * @param string $token  Optional. Explicit token value for contexts where the token is not in $_POST (e.g. block checkout).
+ * @param int    $expire Optional. Transient TTL in seconds. Default 10.
  */
-function cfturnstile_set_verified( $key, $token = '' ) {
+function cfturnstile_set_verified( $key, $token = '', $expire = 10 ) {
 	$transient_key = cfturnstile_transient_key( $key, $token );
 	if ( $transient_key ) {
-		set_transient( $transient_key, 1, 10 );
+		set_transient( $transient_key, 1, $expire );
 	}
 }
 
@@ -43,8 +42,7 @@ function cfturnstile_set_verified( $key, $token = '' ) {
  * Check whether a verification flag is set for the current Turnstile token.
  *
  * @param string $key   Verification key, e.g. 'cfturnstile_checkout_checked'.
- * @param string $token Optional. Explicit token value for contexts where the
- *                      token is not in $_POST (e.g. block checkout).
+ * @param string $token Optional. Explicit token value for contexts where the token is not in $_POST (e.g. block checkout).
  * @return bool
  */
 function cfturnstile_get_verified( $key, $token = '' ) {
@@ -59,8 +57,7 @@ function cfturnstile_get_verified( $key, $token = '' ) {
  * Clear a verification flag.
  *
  * @param string $key   Verification key.
- * @param string $token Optional. Explicit token value for contexts where the
- *                      token is not in $_POST (e.g. block checkout).
+ * @param string $token Optional. Explicit token value for contexts where the token is not in $_POST (e.g. block checkout).
  */
 function cfturnstile_clear_verified( $key, $token = '' ) {
 	$transient_key = cfturnstile_transient_key( $key, $token );

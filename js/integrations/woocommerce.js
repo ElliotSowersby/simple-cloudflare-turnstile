@@ -14,23 +14,25 @@ jQuery( document ).ready(function() {
     }
 
     jQuery( document.body ).on( 'update_checkout updated_checkout applied_coupon_in_checkout removed_coupon_in_checkout', function() {
-        // Re-render if the widget container was replaced/emptied.
-        if ( jQuery('#cf-turnstile-woo-checkout').is(':empty') ) {
-            turnstileWooCheckoutReset();
+        // Re-render if the widget container was replaced/emptied or is missing entirely.
+        var $widget = jQuery('#cf-turnstile-woo-checkout');
+        if ( !$widget.length || $widget.is(':empty') ) {
+            // Use longer delay to ensure DOM replacement is complete.
+            setTimeout( turnstileWooCheckoutReset, 300 );
             return;
         }
 
         // After a failed submit, Woo will typically refresh the checkout fragments.
         // Reset here (only after an attempted submit) to avoid the stale/used token issue.
         if ( cfturnstileWooCheckoutAttempted && jQuery('.woocommerce-error, .woocommerce-NoticeGroup-checkout .woocommerce-error').length ) {
-            setTimeout( turnstileWooCheckoutReset, 50 );
+            setTimeout( turnstileWooCheckoutReset, 300 );
             cfturnstileWooCheckoutAttempted = false;
         }
     });
 
     // Woo triggers this when the AJAX checkout submission returns an error.
     jQuery( document.body ).on( 'checkout_error', function() {
-        setTimeout( turnstileWooCheckoutReset, 50 );
+        setTimeout( turnstileWooCheckoutReset, 500 );
         cfturnstileWooCheckoutAttempted = false;
     });
 });

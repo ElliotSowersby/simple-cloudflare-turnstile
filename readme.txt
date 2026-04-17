@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 6.9
-Stable Tag: 1.38.2
+Stable Tag: 1.38.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.38.3 - 17th April 2026 =
+- Tweak: Made some tweaks to the WooCommerce checkout duplicate submission check, with a longer expiration for the transient, and improved the auto re-render for Turnstile on payment error in certain cases.
+- Tweak: Small tweak to the Contact Form 7 integration code with a basic static duplication check.
 
 = Version 1.38.2 - 16th April 2026 =
 - Tweak: Added the transient based duplicate submission check to WooCommerce checkout, to prevent potential duplicate submission check failing issues since the last update.

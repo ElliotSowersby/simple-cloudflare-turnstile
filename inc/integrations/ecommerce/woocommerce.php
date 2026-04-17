@@ -127,7 +127,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 			if($success != true) {
 				wc_add_notice( cfturnstile_failed_message(), 'error');
 			} else {
-				cfturnstile_set_verified( 'cfturnstile_checkout_checked' );
+				cfturnstile_set_verified( 'cfturnstile_checkout_checked', '', 120 );
 			}
 			$cfturnstile_wc_checkout_ran = true;
 		}
@@ -207,7 +207,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 				if($success != true) {
 					throw new \Exception( cfturnstile_failed_message() );
 				} else {
-					cfturnstile_set_verified( 'cfturnstile_block_checkout_checked', $token );
+					cfturnstile_set_verified( 'cfturnstile_block_checkout_checked', $token, 120 );
 				}
 			}
 		}
