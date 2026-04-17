@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 6.9
-Stable Tag: 1.38.3
+Stable Tag: 1.38.4
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -205,6 +205,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.38.4 - 17th April 2026 =
+- Fix: Fixed Turnstile verification failures on WooCommerce checkout caused by payment gateway plugins (e.g. PayPal Commerce, Amazon Pay, Mollie) consuming the single-use token during pre-checkout AJAX validation requests.
+- Fix: Fixed a fatal error occurring on pages where WooCommerce has been selectively disabled (e.g. via Plugin Organizer).
 
 = Version 1.38.3 - 17th April 2026 =
 - Tweak: Made some tweaks to the WooCommerce checkout duplicate submission check, with a longer expiration for the transient, and improved the auto re-render for Turnstile on payment error in certain cases.

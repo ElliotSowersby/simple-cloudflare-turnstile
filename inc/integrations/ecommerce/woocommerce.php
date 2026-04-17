@@ -65,6 +65,19 @@ function cfturnstile_render_pre_block($block_content) {
 	return $block_content;
 }
 
+/**
+ * Check if the current request is a non-checkout WooCommerce AJAX call.
+ *
+ * @return bool True if the request is a wc-ajax call that is NOT the actual checkout.
+ */
+function cfturnstile_is_non_checkout_ajax() {
+	$wc_ajax = isset( $_GET['wc-ajax'] ) ? sanitize_text_field( $_GET['wc-ajax'] ) : '';
+	if ( $wc_ajax && $wc_ajax !== 'checkout' ) {
+		return true;
+	}
+	return false;
+}
+
 // Woo Checkout Check
 if(get_option('cfturnstile_woo_checkout')) {
 	// WooCommerce Checkout
@@ -96,6 +109,11 @@ if(get_option('cfturnstile_woo_checkout')) {
 		// Prevent duplicate execution within a single request.
 		static $cfturnstile_wc_checkout_ran = false;
 		if ( $cfturnstile_wc_checkout_ran ) {
+			return;
+		}
+
+		// Skip non-checkout wc-ajax requests (e.g. payment gateway pre-validation) to preserve the token.
+		if ( cfturnstile_is_non_checkout_ajax() ) {
 			return;
 		}
 
@@ -137,6 +155,11 @@ if(get_option('cfturnstile_woo_checkout')) {
 		// Prevent duplicate execution within a single request.
 		static $cfturnstile_wc_block_checkout_ran = false;
 		if ( $cfturnstile_wc_block_checkout_ran ) {
+			return;
+		}
+
+		// Skip non-checkout wc-ajax requests (e.g. payment gateway pre-validation) to preserve the token.
+		if ( cfturnstile_is_non_checkout_ajax() ) {
 			return;
 		}
 
@@ -353,7 +376,7 @@ if(get_option('cfturnstile_woo_reset')) {
 
 // Check if WooCommerce block checkout page
 function cfturnstile_is_block_based_checkout() {
-    if ( is_checkout() && !isset($_GET['pay_for_order']) ) {
+    if ( function_exists('is_checkout') && is_checkout() && !isset($_GET['pay_for_order']) ) {
         $checkout_page_id = wc_get_page_id( 'checkout' );
         if ( $checkout_page_id && has_block( 'woocommerce/checkout', get_post( $checkout_page_id )->post_content ) ) {
             return true;
