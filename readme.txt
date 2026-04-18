@@ -62,6 +62,7 @@ You can currently enable Turnstile on the following forms:
 * WP User Manager Forms
 * wpDiscuz Comments Form
 * CheckoutWC & Flux Checkout
+* Sunshine Photo Cart
 
 This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
