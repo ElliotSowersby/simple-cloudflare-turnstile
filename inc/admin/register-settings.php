@@ -86,6 +86,13 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_edd_login',
             'cfturnstile_edd_register',
         ),
+        'sunshine-photo-cart/sunshine-photo-cart.php' => array(
+            'cfturnstile_sunshine_login',
+            'cfturnstile_sunshine_register',
+            'cfturnstile_sunshine_reset',
+            'cfturnstile_sunshine_checkout',
+            'cfturnstile_sunshine_guest_only',
+        ),
         'paid-memberships-pro/paid-memberships-pro.php' => array(
             'cfturnstile_pmp_checkout',
             'cfturnstile_pmp_guest_only',
@@ -108,6 +115,10 @@ function cfturnstile_settings_list($all = false) {
         'fluentform/fluentform.php' => array(
             'cfturnstile_fluent',
             'cfturnstile_fluent_disable',
+        ),
+        'sureforms/sureforms.php' => array(
+            'cfturnstile_sureforms',
+            'cfturnstile_sureforms_disable',
         ),
         'jetpack/jetpack.php' => array(
             'cfturnstile_jetpack',

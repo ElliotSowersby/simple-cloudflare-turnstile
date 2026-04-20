@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple CAPTCHA Alternative with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.38.4
+ * Version: 1.39.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 10.6
+ * WC tested up to: 10.7
  **/
 
 // Include Admin Files
@@ -161,6 +161,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/pmp.php');
 		}
 
+		// Include Sunshine Photo Cart
+		if (cft_is_plugin_active('sunshine-photo-cart/sunshine-photo-cart.php')) {
+			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/ecommerce/sunshine-photo-cart.php');
+		}
+
 		// Include MC4WP
 		if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) {
 			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/newsletters/mc4wp.php');
@@ -184,6 +189,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		// Include Fluent Forms
 		if (cft_is_plugin_active('fluentform/fluentform.php')) {
 			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/forms/fluent-forms.php');
+		}
+
+		// Include SureForms
+		if (cft_is_plugin_active('sureforms/sureforms.php')) {
+			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/forms/sureforms.php');
 		}
 
 		// Include Formidable Forms

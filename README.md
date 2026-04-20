@@ -50,6 +50,7 @@ You can currently enable Turnstile on the following forms:
 * Forminator Forms
 * Jetpack Forms
 * Kadence Forms
+* SureForms
 
 **Other Integrations**
 
@@ -67,6 +68,7 @@ You can currently enable Turnstile on the following forms:
 * WP User Manager Forms
 * wpDiscuz Comments Form
 * CheckoutWC & Flux Checkout
+* Sunshine Photo Cart
 
 This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
@@ -108,47 +110,10 @@ Cloudflare Turnstile is also a completely free service.
 
 ---
 
-### Thanks to the Plugin Sponsors!
+### Support the Plugin!
 
-If this plugin helps you, or you want to support its development, please consider becoming a <a href="https://github.com/sponsors/ElliotSowersby/">GitHub Sponsor</a>.
+If this plugin helps you, please consider supporting its continued maintenance and development by making a [donation]<https://elliotsowersby.com/donate/>.
 
-**Gold Sponsors**
-
-<div align="left">
-	<table>
-		<tr>
-			<td valign="middle" style="padding-right:16px;">
-				<a href="https://www.relywp.com">
-				<img src="https://relywp.com/wp-content/uploads/2020/07/RelyWP-Logo-1.png" alt="RelyWP" width="150" />
-				</a>
-			</td>
-			<td valign="middle">
-				WordPress &amp; WooCommerce Plugins, and Care Plans
-			</td>
-		</tr>
-	</table>
-</div>
-
-**Silver Sponsors**
-
-<div align="left">
-	<table>
-		<tr>
-			<td valign="middle" style="padding-right:16px;">
-				<a href="https://www.couponaffiliates.com">
-                <img src="https://couponaffiliates.com/wp-content/uploads/2021/06/couponaffiliates-logo.png" alt="RelyWP" width="150" />
-				</a>
-            </td>
-            <td valign="middle">
-				WooCommerce Affiliate Plugin
-			</td>
-		</tr>
-	</table>
-</div>
-
-**Community Sponsors:**
-
-<a href="https://github.com/sponsors/ElliotSowersby/">Be the first community sponsor!</a>
 
 ---
 
@@ -253,6 +218,8 @@ Developed & maintained by [@ElliotSowersby](https://twitter.com/ElliotSowersby).
 View on GitHub: https://github.com/elliotvs/simple-cloudflare-turnstile
 
 Support forum: https://wordpress.org/support/plugin/simple-cloudflare-turnstile/
+
+Leave a review: https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post
 
 Translations: https://translate.wordpress.org/projects/wp-plugins/simple-cloudflare-turnstile/
 

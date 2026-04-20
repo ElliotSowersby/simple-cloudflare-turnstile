@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 6.9
-Stable Tag: 1.38.4
+Stable Tag: 1.39.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,7 @@ You can currently enable Turnstile on the following forms:
 * Forminator Forms
 * Jetpack Forms
 * Kadence Forms
+* SureForms
 
 **Other Integrations**
 
@@ -62,6 +63,7 @@ You can currently enable Turnstile on the following forms:
 * WP User Manager Forms
 * wpDiscuz Comments Form
 * CheckoutWC & Flux Checkout
+* Sunshine Photo Cart
 
 This plugin is also compatible with WordPress Multisite, and most two-factor authentication (2FA) plugins.
 
@@ -205,6 +207,11 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.39.0 - 20th April 2026 =
+- New: Added integration for the "SureForms" plugin.
+- New: Added integration for the "Sunshine Photo Cart" plugin (<a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/70">#70</a>).
+- Tweak: Adjusted the "Widget Label Text" alignment in some cases so it always shows above the widget.
 
 = Version 1.38.4 - 17th April 2026 =
 - Fix: Fixed Turnstile verification failures on WooCommerce checkout caused by payment gateway plugins (e.g. PayPal Commerce, Amazon Pay, Mollie) consuming the single-use token during pre-checkout AJAX validation requests.

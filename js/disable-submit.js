@@ -155,3 +155,17 @@ function turnstileBBPressCreateCallback() {
         el.style.opacity = '1';
     });
 }
+/* SureForms */
+function turnstilesureformsCallback() {
+    document.querySelectorAll('.srfm-submit-container .srfm-submit-button').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}
+/* Sunshine Photo Cart */
+function turnstileSunshineCheckoutCallback() {
+    document.querySelectorAll('#sunshine--checkout--submit').forEach(function(el) {
+        el.style.pointerEvents = 'auto';
+        el.style.opacity = '1';
+    });
+}

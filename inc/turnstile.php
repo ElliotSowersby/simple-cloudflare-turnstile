@@ -43,7 +43,7 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 				$label_text = wp_strip_all_tags($label_text);
 			}
 			?>
-			<p class="cfturnstile-widget-label" style="font-size: 14px; margin: 0 0 6px 0;"><small><?php echo esc_html($label_text); ?></small></p>
+			<p class="cfturnstile-widget-label" style="font-size: 14px; margin: 0 0 6px 0; width: 100%;"><small><?php echo esc_html($label_text); ?></small></p>
 			<?php
 		}
 		$key = sanitize_text_field(get_option('cfturnstile_key'));

@@ -952,6 +952,56 @@ function cfturnstile_settings_page() {
 			}
 			?>
 
+			<?php // Sunshine Photo Cart
+			if (cft_is_plugin_active('sunshine-photo-cart/sunshine-photo-cart.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Sunshine Photo Cart', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Sunshine Login', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_sunshine_login" <?php if (get_option('cfturnstile_sunshine_login')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Sunshine Register', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_sunshine_register" <?php if (get_option('cfturnstile_sunshine_register')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Sunshine Reset Password', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_sunshine_reset" <?php if (get_option('cfturnstile_sunshine_reset')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Sunshine Checkout', 'simple-cloudflare-turnstile'); ?>
+								<br /><br />
+								- <?php echo esc_html__('Guest Checkout Only', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td>
+								<input style="margin-top: 5px;" type="checkbox" name="cfturnstile_sunshine_checkout" <?php if (get_option('cfturnstile_sunshine_checkout')) { ?>checked<?php } ?>>
+								<br /><br />
+								<input style="margin-top: 5px;" type="checkbox" name="cfturnstile_sunshine_guest_only" <?php if (get_option('cfturnstile_sunshine_guest_only')) { ?>checked<?php } ?>>
+							</td>
+						</tr>
+
+					</table>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://www.sunshinephotocart.com/" target="_blank">' . esc_html__('Sunshine Photo Cart', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
 			<?php // EDD
 			if (cft_is_plugin_active('easy-digital-downloads/easy-digital-downloads.php') || cft_is_plugin_active('easy-digital-downloads-pro/easy-digital-downloads.php')) { ?>
 				<button type="button" class="sct-accordion"><?php echo esc_html__('Easy Digital Downloads', 'simple-cloudflare-turnstile'); ?></button>
@@ -1250,6 +1300,45 @@ function cfturnstile_settings_page() {
 			<?php
 			} else {
 				array_push($not_installed, '<a href="https://wordpress.org/plugins/fluentform/" target="_blank">' . esc_html__('Fluent Forms', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
+
+			<?php // SureForms
+			if (cft_is_plugin_active('sureforms/sureforms.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('SureForms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable on all SureForms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_sureforms" <?php if (get_option('cfturnstile_sureforms')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added above the submit button, on ALL your forms created with SureForms.', 'simple-cloudflare-turnstile'); ?>
+
+					<table class="form-table" style="margin-bottom: -10px;">
+						<tr valign="top">
+							<th scope="row"><?php echo esc_html__('Disabled Form IDs', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<input type="text" name="cfturnstile_sureforms_disable" value="<?php echo esc_attr(get_option('cfturnstile_sureforms_disable')); ?>" />
+							</td>
+						</tr>
+					</table>
+					<i style="font-size: 10px;">
+						<?php echo sprintf(__('If you want to DISABLE the Turnstile widget on certain forms, enter the %s ID in this field.', 'simple-cloudflare-turnstile'), 'SureForms'); ?>
+						<?php echo esc_html__('Separate each ID with a comma, for example: 5,10', 'simple-cloudflare-turnstile'); ?>
+					</i>
+
+				</div>
+
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://wordpress.org/plugins/sureforms/" target="_blank">' . esc_html__('SureForms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
 
