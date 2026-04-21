@@ -35,6 +35,23 @@ function cfturnstile_whitelisted() {
             }
         }
     }
+    // Excluded Page URLs
+    if (get_option('cfturnstile_whitelist_pages')) {
+        $whitelist_pages = explode("\n", str_replace("\r", "", get_option('cfturnstile_whitelist_pages')));
+        
+        $current_url = '';
+        if ( isset( $_SERVER['REQUEST_URI'] ) ) {
+            $current_url = sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) );
+        }
+
+        foreach ( $whitelist_pages as $whitelist_page ) {
+            $whitelist_page = sanitize_text_field( trim( $whitelist_page ) );
+            if ( $current_url && $whitelist_page && strpos( $current_url, $whitelist_page ) !== false ) {
+                $whitelisted = true;
+                break;
+            }
+        }
+    }
     // If the User Agent is within the list of User Agents in get_option('cfturnstile_whitelist_agents')
     if (get_option( 'cfturnstile_whitelist_agents' )) {
         $whitelist        = get_option( 'cfturnstile_whitelist_agents' );
