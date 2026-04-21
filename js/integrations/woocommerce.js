@@ -88,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function setTurnstileExtensionData(token) {
             var dispatch = wp.data.dispatch('wc/store/checkout');
+            if (!dispatch) return;
             if (typeof dispatch.setExtensionData === 'function') {
                 dispatch.setExtensionData('simple-cloudflare-turnstile', { token: token });
             } else if (typeof dispatch.__internalSetExtensionData === 'function') {
