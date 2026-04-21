@@ -67,6 +67,7 @@ function cfturnstile_settings_list($all = false) {
         'cfturnstile_whitelist_users',
         'cfturnstile_whitelist_ips',
         'cfturnstile_whitelist_agents',
+        'cfturnstile_whitelist_pages',
     );
 
     $integrations = array(

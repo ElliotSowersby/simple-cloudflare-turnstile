@@ -85,6 +85,16 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_action("cfturnstile_enqueue_scripts", "cfturnstile_script_enqueue");
 	add_action("login_enqueue_scripts", "cfturnstile_script_enqueue");
 	function cfturnstile_script_enqueue() {
+		// Hook to completely disable scripts
+		if ( apply_filters('simple_cloudflare_turnstile_disable', false) ) {
+			return;
+		}
+		
+		// If page/user is whitelisted, do not load scripts
+		if ( function_exists('cfturnstile_whitelisted') && cfturnstile_whitelisted() ) {
+			return;
+		}
+
 		// Get current theme
 		$current_theme = wp_get_theme();
 		// Check defer scripts option

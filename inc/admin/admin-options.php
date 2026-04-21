@@ -591,6 +591,14 @@ function cfturnstile_settings_page() {
 						</td>
 					</tr>
 
+					<tr valign="top">
+						<th scope="row"><?php echo esc_html__('Excluded Page URLs', 'simple-cloudflare-turnstile'); ?></th>
+						<td>
+							<textarea style="width: 240px;" name="cfturnstile_whitelist_pages"><?php echo sanitize_textarea_field(get_option('cfturnstile_whitelist_pages')); ?></textarea>
+							<br /><i style="font-size: 10px;"><?php echo esc_html__('Enter keyword or paths (one per line) to disable Turnstile on specific pages. Examples: /my-account/ or popup. If the URL contains this text, Turnstile will be disabled completely.', 'simple-cloudflare-turnstile'); ?></i>
+						</td>
+					</tr>
+
 				</table>
 
 			</div>
