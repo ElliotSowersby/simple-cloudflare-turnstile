@@ -7,10 +7,19 @@
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
+ * Domain Path: /languages
  *
  * WC requires at least: 3.4
  * WC tested up to: 10.7
  **/
+
+/**
+ * Load plugin textdomain.
+ */
+add_action( 'init', 'cfturnstile_load_textdomain' );
+function cfturnstile_load_textdomain() {
+	load_plugin_textdomain( 'simple-cloudflare-turnstile', false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
+}
 
 // Include Admin Files
 include_once(plugin_dir_path(__FILE__) . 'inc/admin/admin-options.php');
