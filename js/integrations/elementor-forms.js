@@ -76,6 +76,12 @@ function cfturnstile_init_elementor_forms() {
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);
           }
+        },
+        'error-callback': function() {
+          if (disableSubmit && submitButton) {
+            submitButton.style.pointerEvents = 'none';
+            submitButton.style.opacity = '0.5';
+          }
         }
       });
       
@@ -124,12 +130,41 @@ document.addEventListener('click', function(event) {
         turnstile.render(widget, {
           sitekey: cfturnstileElementorSettings.sitekey,
           callback: 'turnstileCallback',
-          theme: cfturnstileElementorSettings.theme || 'auto'
+          theme: cfturnstileElementorSettings.theme || 'auto',
+          'error-callback': function() {
+            var submitBtn = submittedForm.querySelector('button[type="submit"]');
+            var disableSubmit = cfturnstileElementorSettings.disableSubmit || false;
+            if (disableSubmit && submitBtn) {
+              submitBtn.style.pointerEvents = 'none';
+              submitBtn.style.opacity = '0.5';
+            }
+          }
         });
       }
     }, 2000);
   }
 });
+
+// Intercept form submission to ensure Turnstile is completed
+document.addEventListener('submit', function(event) {
+  var form = event.target;
+  if (form && form.classList && form.classList.contains('elementor-form')) {
+    var settings = window.cfturnstileElementorSettings || {};
+    var mode = settings.mode || 'turnstile';
+    if (mode !== 'turnstile' || !window.turnstile) {
+      return;
+    }
+    
+    var widget = form.querySelector('.cf-turnstile');
+    if (widget) {
+      var responseInput = form.querySelector('[name="cf-turnstile-response"]');
+      if (!responseInput || !responseInput.value) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }
+  }
+}, true);
 
 // Handle Elementor popup show events (jQuery event - must use jQuery to listen)
 jQuery(document).on('elementor/popup/show', function(event, id, instance) {
@@ -173,6 +208,12 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
           }
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);
+          }
+        },
+        'error-callback': function() {
+          if (disableSubmit && submitButton) {
+            submitButton.style.pointerEvents = 'none';
+            submitButton.style.opacity = '0.5';
           }
         },
         theme: cfturnstileElementorSettings.theme || 'auto'
