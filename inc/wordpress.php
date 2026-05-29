@@ -63,8 +63,6 @@ if(get_option('cfturnstile_login')) {
 		// Check if already validated
 		if(isset($user->ID) && cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
 			return $user;
-		} else {
-			cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 		}
 
 		// Check Turnstile
@@ -88,13 +86,21 @@ if(get_option('cfturnstile_login')) {
 		cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 	}
 	/* Hook into wp_login_form() to add the Turnstile field */
-	function cfturnstile_wp_login_form_field($content = "", $args = array()) {
+	function cfturnstile_wp_login_form_field( $content = '' ) {
+		if (
+			false !== strpos( $content, 'cf-turnstile' )
+			|| false !== strpos( $content, 'cfturnstile_failsafe' )
+			|| false !== strpos( $content, 'g-recaptcha' )
+		) {
+			return $content;
+		}
+
 		ob_start();
-		cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand());
+		cfturnstile_field_show( '#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand() );
 		$field = ob_get_clean();
 		return $content . $field;
 	}
-	add_filter('login_form_middle', 'cfturnstile_wp_login_form_field', 10, 1);
+	add_filter( 'login_form_middle', 'cfturnstile_wp_login_form_field', 20, 1 );
 }
 
 /* 

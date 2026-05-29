@@ -1,3 +1,9 @@
+function cfturnstile_elementor_set_submit(btn, enabled) {
+  if (!btn) return;
+  btn.style.pointerEvents = enabled ? 'auto' : 'none';
+  btn.style.opacity     = enabled ? '1'    : '0.5';
+}
+
 function cfturnstile_init_elementor_forms() {
   var settings = window.cfturnstileElementorSettings || {};
   var sitekey = settings.sitekey || '';
@@ -5,6 +11,7 @@ function cfturnstile_init_elementor_forms() {
   var mode = settings.mode || 'turnstile';
   var recaptchaSiteKey = settings.recaptchaSiteKey || '';
   var disableSubmit = settings.disableSubmit || false;
+  var widgetSize = settings.size || 'normal';
   
   if (!window._cft_elementor_idx) { window._cft_elementor_idx = 0; }
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
@@ -47,8 +54,7 @@ function cfturnstile_init_elementor_forms() {
     if (submitButton && window.turnstile && sitekey) {
       // Disable submit button if option is enabled
       if (disableSubmit) {
-        submitButton.style.pointerEvents = 'none';
-        submitButton.style.opacity = '0.5';
+        cfturnstile_elementor_set_submit(submitButton, false);
       }
 
       var turnstileDiv = document.createElement('div');
@@ -67,21 +73,21 @@ function cfturnstile_init_elementor_forms() {
       turnstile.render('#cf-turnstile-elementor-fallback-' + index, {
         sitekey: sitekey,
         theme: settings.theme || 'auto',
+        size: widgetSize,
         callback: function(token) {
           // Re-enable submit button when Turnstile is complete
           if (disableSubmit && submitButton) {
-            submitButton.style.pointerEvents = 'auto';
-            submitButton.style.opacity = '1';
+            cfturnstile_elementor_set_submit(submitButton, true);
           }
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);
           }
         },
         'error-callback': function() {
-          if (disableSubmit && submitButton) {
-            submitButton.style.pointerEvents = 'none';
-            submitButton.style.opacity = '0.5';
-          }
+          if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
+        },
+        'expired-callback': function() {
+          if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
         }
       });
       
@@ -109,60 +115,62 @@ jQuery(window).on('elementor/frontend/init', function() {
   }
 });
 
-// Handle form submit button clicks for re-rendering
-document.addEventListener('click', function(event) {
-  var submitBtn = event.target.closest('.elementor-form button[type="submit"]');
-  if (submitBtn) {
-    var settings = window.cfturnstileElementorSettings || {};
-    var mode = settings.mode || 'turnstile';
-    if (mode !== 'turnstile' || !window.turnstile) {
-      return;
+// Re-render Turnstile only after Elementor reports a submit error (e.g. failed validation)
+function cfturnstile_elementor_rerender(form) {
+  if (!form || !window.turnstile) return;
+  var settings = window.cfturnstileElementorSettings || {};
+  var widget = form.querySelector('.cf-turnstile');
+  if (!widget) return;
+  var submitButton = form.querySelector('button[type="submit"]');
+  var disableSubmit = settings.disableSubmit || false;
+  if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
+  try { turnstile.remove(widget); } catch (e) {}
+  turnstile.render(widget, {
+    sitekey: settings.sitekey,
+    theme: settings.theme || 'auto',
+    size: settings.size || 'normal',
+    callback: function(token) {
+      if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, true); }
+      if (typeof turnstileElementorCallback === 'function') {
+        turnstileElementorCallback(token);
+      }
+    },
+    'error-callback': function() {
+      if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
+    },
+    'expired-callback': function() {
+      if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
     }
-    var submittedForm = submitBtn.closest('.elementor-form');
-    
-    setTimeout(function() {
-      if (!window.turnstile || !submittedForm) {
-        return;
-      }
-      var widget = submittedForm.querySelector('.cf-turnstile');
-      if (widget) {
-        turnstile.remove(widget);
-        turnstile.render(widget, {
-          sitekey: cfturnstileElementorSettings.sitekey,
-          callback: 'turnstileCallback',
-          theme: cfturnstileElementorSettings.theme || 'auto',
-          'error-callback': function() {
-            var submitBtn = submittedForm.querySelector('button[type="submit"]');
-            var disableSubmit = cfturnstileElementorSettings.disableSubmit || false;
-            if (disableSubmit && submitBtn) {
-              submitBtn.style.pointerEvents = 'none';
-              submitBtn.style.opacity = '0.5';
-            }
-          }
-        });
-      }
-    }, 2000);
-  }
+  });
+}
+
+jQuery(document).on('submit_error submit_success', '.elementor-form', function() {
+  var settings = window.cfturnstileElementorSettings || {};
+  if ((settings.mode || 'turnstile') !== 'turnstile') return;
+  cfturnstile_elementor_rerender(this);
 });
 
-// Intercept form submission to ensure Turnstile is completed
+// Block submission until Turnstile is completed (client-side guard).
+// Server-side validation in cfturnstile_elementor_check is the source of truth;
+// this just avoids a wasted round-trip and gives immediate feedback.
 document.addEventListener('submit', function(event) {
   var form = event.target;
-  if (form && form.classList && form.classList.contains('elementor-form')) {
-    var settings = window.cfturnstileElementorSettings || {};
-    var mode = settings.mode || 'turnstile';
-    if (mode !== 'turnstile' || !window.turnstile) {
-      return;
-    }
-    
-    var widget = form.querySelector('.cf-turnstile');
-    if (widget) {
-      var responseInput = form.querySelector('[name="cf-turnstile-response"]');
-      if (!responseInput || !responseInput.value) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-      }
-    }
+  if (!form.classList || !form.classList.contains('elementor-form')) return;
+  var settings = window.cfturnstileElementorSettings || {};
+  if ((settings.mode || 'turnstile') !== 'turnstile' || !window.turnstile) return;
+
+  var widget = form.querySelector('.cf-turnstile');
+  if (!widget) return;
+  var token = '';
+  try { token = turnstile.getResponse(widget) || ''; } catch (e) {}
+  if (!token) {
+    var responseInput = form.querySelector('[name="cf-turnstile-response"]');
+    token = responseInput ? (responseInput.value || '') : '';
+  }
+  if (!token) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    try { widget.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
   }
 }, true);
 
@@ -192,31 +200,26 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
       var submitButton = form ? form.querySelector('button[type="submit"]') : null;
 
       // Disable submit button if option is enabled
-      if (disableSubmit && submitButton) {
-        submitButton.style.pointerEvents = 'none';
-        submitButton.style.opacity = '0.5';
-      }
+      if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
       
       turnstile.remove(widget);
       turnstile.render(widget, {
         sitekey: cfturnstileElementorSettings.sitekey,
         callback: function(token) {
           // Re-enable submit button when Turnstile is complete
-          if (disableSubmit && submitButton) {
-            submitButton.style.pointerEvents = 'auto';
-            submitButton.style.opacity = '1';
-          }
+          if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, true); }
           if (typeof turnstileElementorCallback === 'function') {
             turnstileElementorCallback(token);
           }
         },
         'error-callback': function() {
-          if (disableSubmit && submitButton) {
-            submitButton.style.pointerEvents = 'none';
-            submitButton.style.opacity = '0.5';
-          }
+          if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
         },
-        theme: cfturnstileElementorSettings.theme || 'auto'
+        'expired-callback': function() {
+          if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
+        },
+        theme: cfturnstileElementorSettings.theme || 'auto',
+        size: cfturnstileElementorSettings.size || 'normal'
       });
     });
   }, 500);

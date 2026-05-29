@@ -36,6 +36,7 @@ You can currently enable Turnstile on the following forms:
 
 * Checkout
 * Pay For Order
+* Account Details Form
 * Login Form
 * Registration Form
 * Password Reset Form

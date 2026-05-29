@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
-Tested up to: 6.9
-Stable Tag: 1.39.0
+Tested up to: 7.0
+Stable Tag: 1.40.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,7 @@ You can currently enable Turnstile on the following forms:
 
 * Checkout
 * Pay For Order
+* Account Details Form
 * Login Form
 * Registration Form
 * Password Reset Form
@@ -207,6 +208,24 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.40.0 - 29th May 2026 =
+- New: Added an option to enable Turnstile on the WooCommerce Account Details form.
+- Tweak: Added a warning message to the "Logged In Users" whitelist option.
+- Tweak: Added an additional check to prevent the Turnstile widget from rendering twice on WooCommerce checkout in rare cases.
+- Tweak: Prevent any kind of form submission (shortkeys etc) for the default login form when Turnstile is not completed, if the "Disable Submit Button" option is enabled.
+- Tweak: Prevent any kind of form submission (shortkeys etc) for Elementor forms when Turnstile is not completed <a href="https://github.com/ElliotSowersby/simple-cloudflare-turnstile/pull/84">#84</a>.
+- Tweak: Force-render inline script now loads via wp_add_inline_script in the footer, fixing rendering issues in some cases when "Defer Scripts" is disabled.
+- Fix: Fixed widget size setting (Flexible/Compact) not being applied to Elementor forms.
+- Fix: Fixed a mobile performance issue in some cases. Replaced the fixed 200ms setTimeout fallback which could cause scroll-locking and double-rendering.
+- Fix: Performance plugin compatibility hooks now register correctly regardless of which performance plugin is active.
+- Fix: Improved WooCommerce checkout login form Turnstile rendering, which was not working for some themes.
+- Fix: Fixed a JS error on WooCommerce classic checkout when the Blocks checkout store isn't registered.
+- Fix: Fixed duplicate Turnstile widget on Paid Memberships Pro login page.
+- Fix: Fixed a JS error with wpDiscuz integration when Perfmatters plugin was active.
+
+= Version 1.39.1 - 1st May 2026 =
+- Fix: Fixed a potential issue with the Turnstile check on login forms failing in certain cases when it runs multiple checks in the same request.
 
 = Version 1.39.0 - 20th April 2026 =
 - New: Added integration for the "SureForms" plugin.

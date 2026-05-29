@@ -165,11 +165,14 @@ function cfturnstile_force_render($unique_id = '') {
 		return;
 	}
 	$unique_id = sanitize_text_field($unique_id);
-	$key = sanitize_text_field(get_option('cfturnstile_key'));
 	if($unique_id) {
-	?>
-	<script>document.addEventListener("DOMContentLoaded", function() { setTimeout(function(){ var e=document.getElementById("cf-turnstile<?php echo esc_html($unique_id); ?>"); if(e&&!e.innerHTML.trim()){turnstile.render(e, {sitekey:"<?php echo esc_html($key); ?>"});} }, 200); });</script>
-	<?php
+		if ( ! wp_script_is('cfturnstile-render', 'registered') ) {
+			wp_register_script('cfturnstile-render', '', array('cfturnstile'), false, array('in_footer' => true));
+		}
+		wp_enqueue_script('cfturnstile-render');
+		$escaped_id = esc_js($unique_id);
+		$script = '(function(){var a=0,d=false,q=false;function r(){if(d)return;var e=document.getElementById("cf-turnstile' . $escaped_id . '");if(!e)return;if(e.innerHTML.trim()){d=true;return;}if(window.turnstile&&typeof window.turnstile.render==="function"){try{window.turnstile.render(e);d=true;}catch(_){}}}function w(){r();if(d)return;if(window.turnstile&&typeof window.turnstile.ready==="function"&&!q){q=true;try{window.turnstile.ready(r);}catch(_){}}if(!d&&a++<100){setTimeout(w,100);}}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",w);}else{w();}})();';
+		wp_add_inline_script('cfturnstile-render', $script);
 	}
 }
 

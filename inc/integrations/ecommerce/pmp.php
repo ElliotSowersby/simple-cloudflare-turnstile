@@ -1,24 +1,39 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
+}
+
+// Check if the current page is the Paid Memberships Pro login page.
+function cfturnstile_is_pmp_login_page() {
+	if ( ! function_exists( 'pmpro_getOption' ) ) {
+		return false;
+	}
+
+	$page_id = absint( pmpro_getOption( 'login_page_id' ) );
+	if ( ! $page_id ) {
+		return false;
+	}
+
+	if ( is_page( $page_id ) || absint( get_queried_object_id() ) === $page_id ) {
+		return true;
+	}
+
+	return absint( get_the_ID() ) === $page_id;
 }
 
 // Get turnstile field: PMP Login
-function cfturnstile_field_pmp_login($string, $args) {
-    if(function_exists('pmpro_getOption')) {
-        $page_id = pmpro_getOption("login_page_id");
-        $current_page_id = get_the_ID();
-        if($current_page_id == $page_id) {
-            if($args['form_id'] == 'loginform') {
-                ob_start();
-                cfturnstile_field_show('#wp-submit', 'turnstilePMPLoginCallback', 'pmp-login', '-pmp-login');
-                $cfturnstile = ob_get_contents();
-                ob_end_clean();
-                return $string . $cfturnstile;
-            }
-        }
-    }
-    return $string;
+function cfturnstile_field_pmp_login( $string, $args ) {
+	$form_id = is_array( $args ) && isset( $args['form_id'] ) ? (string) $args['form_id'] : '';
+
+	if ( 'loginform' !== $form_id || ! cfturnstile_is_pmp_login_page() ) {
+		return $string;
+	}
+
+	ob_start();
+	cfturnstile_field_show( '#wp-submit', 'turnstilePMPLoginCallback', 'pmp-login', '-pmp-login' );
+	$cfturnstile = ob_get_clean();
+
+	return $string . $cfturnstile;
 }
 
 // Get turnstile field: PMP Register

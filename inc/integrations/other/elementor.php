@@ -69,7 +69,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         $deps,
-        '2.5',
+        '2.6',
         true
       );
       
@@ -79,6 +79,7 @@ if(get_option('cfturnstile_elementor')) {
         'position' => get_option('cfturnstile_elementor_pos', 'before'),
         'align' => get_option('cfturnstile_elementor_align', 'left'),
         'theme' => get_option('cfturnstile_theme'),
+        'size' => get_option('cfturnstile_size', 'normal'),
         'mode' => $failsafe_mode ? $failsafe_mode : 'turnstile',
         'recaptchaSiteKey' => get_option('cfturnstile_recaptcha_site_key'),
         'disableSubmit' => get_option('cfturnstile_disable_button') ? true : false

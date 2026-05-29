@@ -33,6 +33,8 @@ function cfturnstile_autoptimize_js_exclude( $exclude ) {
         'challenges.cloudflare.com/turnstile',
         'turnstile',
         'cfturnstile',
+        'wpdiscuzEditorOptions',
+        'wpdiscuz-combo',
         'simple-cloudflare-turnstile/js/integrations/elementor-forms.js',
         'simple-cloudflare-turnstile/js/disable-submit.js',
     );
@@ -52,6 +54,8 @@ function cfturnstile_perfmatters_delay_exclude( $list ) {
     $list[] = 'challenges.cloudflare.com/turnstile';
     $list[] = 'turnstile';
     $list[] = 'cfturnstile';
+    $list[] = 'wpdiscuzEditorOptions';
+    $list[] = 'wpdiscuz-combo';
     return $list;
 }
 
@@ -71,6 +75,8 @@ function cfturnstile_wprocket_exclude_external( $list ) {
 function cfturnstile_wprocket_exclude( $list ) {
     $list[] = 'turnstile';
     $list[] = 'cfturnstile'; 
+    $list[] = 'wpdiscuzEditorOptions';
+    $list[] = 'wpdiscuz-combo';
     $list[] = 'simple-cloudflare-turnstile/js/integrations/elementor-forms.js';
     $list[] = 'simple-cloudflare-turnstile/js/disable-submit.js';
     return $list;

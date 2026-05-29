@@ -74,6 +74,7 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_woo_login',
             'cfturnstile_woo_register',
             'cfturnstile_woo_reset',
+            'cfturnstile_woo_account',
             'cfturnstile_woo_checkout',
             'cfturnstile_guest_only',
             'cfturnstile_woo_checkout_pos',

@@ -76,10 +76,13 @@ function turnstileWooCheckoutReset() {
         try { turnstile.render('#cf-turnstile-woo-checkout'); } catch (e2) {}
     }
 }
-/* On click ".checkout .showlogin" link re-render */
-jQuery('.showlogin').on('click', function() {
-    turnstile.remove('.sct-woocommerce-login');
-    turnstile.render('.sct-woocommerce-login');
+
+/* On click "show login" link re-render */
+jQuery('.showlogin, .show-login, .e-show-login, .woocommerce-form-login-toggle a').on('click', function() {
+    setTimeout(function() {
+        turnstile.remove('.sct-woocommerce-login');
+        turnstile.render('.sct-woocommerce-login');
+    }, 250);
 });
 
 /* Woo Checkout Block */
@@ -88,6 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function setTurnstileExtensionData(token) {
             var dispatch = wp.data.dispatch('wc/store/checkout');
+            if (!dispatch) return;
             if (typeof dispatch.setExtensionData === 'function') {
                 dispatch.setExtensionData('simple-cloudflare-turnstile', { token: token });
             } else if (typeof dispatch.__internalSetExtensionData === 'function') {

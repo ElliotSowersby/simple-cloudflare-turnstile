@@ -571,7 +571,7 @@ function cfturnstile_settings_page() {
 							<?php echo esc_html__('Logged In Users', 'simple-cloudflare-turnstile'); ?>
 						</th>
 						<td><input style="margin-top: 5px;" type="checkbox" name="cfturnstile_whitelist_users" <?php if (get_option('cfturnstile_whitelist_users')) { ?>checked<?php } ?>>
-							<i style="font-size: 10px;"><?php echo esc_html__('When enabled, logged in users will not see the Turnstile challenge.', 'simple-cloudflare-turnstile'); ?></i>
+							<i style="font-size: 10px;"><?php echo esc_html__('When enabled, logged in users will not see the Turnstile challenge. Warning: This can make it possible for attackers to bypass Turnstile if they simply access a logged-in account.', 'simple-cloudflare-turnstile'); ?></i>
 						</td>
 					</tr>
 					
@@ -794,6 +794,13 @@ function cfturnstile_settings_page() {
 								<?php echo esc_html__('WooCommerce Reset Password', 'simple-cloudflare-turnstile'); ?>
 							</th>
 							<td><input type="checkbox" name="cfturnstile_woo_reset" <?php if (get_option('cfturnstile_woo_reset')) { ?>checked<?php } ?>></td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('WooCommerce Account Details', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_woo_account" <?php if (get_option('cfturnstile_woo_account')) { ?>checked<?php } ?>></td>
 						</tr>
 
 						<tr valign="top">
