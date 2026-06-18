@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: Simple CAPTCHA Alternative with Cloudflare Turnstile
+ * Plugin Name: Simple CAPTCHA with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.40.0
+ * Version: 1.41.0
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -15,6 +15,8 @@
 // Include Admin Files
 include_once(plugin_dir_path(__FILE__) . 'inc/admin/admin-options.php');
 include_once(plugin_dir_path(__FILE__) . 'inc/admin/register-settings.php');
+include_once(plugin_dir_path(__FILE__) . 'inc/admin/analytics-tab.php');
+include_once(plugin_dir_path(__FILE__) . 'inc/admin/export-tab.php');
 include_once(plugin_dir_path(__FILE__) . 'inc/admin/export-import.php');
 include_once(plugin_dir_path(__FILE__) . 'inc/config-keys.php');
 
@@ -62,7 +64,7 @@ function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
 		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.10', true);
-		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.10');
+		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.12');
 		// Load Turnstile API without defer on the settings page for reliable admin test rendering
 		wp_enqueue_script("cfturnstile", "https://challenges.cloudflare.com/turnstile/v0/api.js?render=auto", array(), '', array());
 	}
@@ -100,8 +102,10 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		}
 		/* Disable Button / Login Submit Block */
 		if ( (get_option('cfturnstile_disable_button') || get_option('cfturnstile_login')) && !wp_script_is('cfturnstile-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-js', plugins_url('/js/disable-submit.js', __FILE__), array('cfturnstile'), '5.2', $script_args); }
+		/* Interaction Only / Execute Helper (toggles widget label and spacer when the widget is visible) */
+		if ( get_option('cfturnstile_appearance', 'always') !== 'always' && !wp_script_is('cfturnstile-label-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-label-js', plugins_url('/js/interaction-label.js', __FILE__), array(), '1.1', $script_args); }
 		/* WooCommerce */
-		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '1.4', $script_args); }
+		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '1.5', $script_args); }
 		/* WPDiscuz */
 		if ( cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') && !wp_style_is('cfturnstile-css', 'enqueued') ) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
 		/* Blocksy */
@@ -132,6 +136,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	 * Include Whitelist
 	 */
 	include_once(plugin_dir_path(__FILE__) . 'inc/whitelist.php');
+
+	/**
+	 * Include Analytics
+	 */
+	include_once(plugin_dir_path(__FILE__) . 'inc/analytics.php');
 
 	/**
 	 * Include Integrations

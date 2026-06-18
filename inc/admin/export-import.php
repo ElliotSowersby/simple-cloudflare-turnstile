@@ -29,7 +29,7 @@ function cfturnstile_handle_export_settings() {
 
     foreach ($option_names as $name) {
         // Skip potentially large/PII-heavy runtime logs
-        if ($name === 'cfturnstile_log') {
+        if ($name === 'cfturnstile_log' || $name === 'cfturnstile_analytics') {
             continue;
         }
         // Optionally exclude API keys by default
@@ -63,7 +63,7 @@ function cfturnstile_handle_import_settings() {
     }
     check_admin_referer('cfturnstile_import_settings');
 
-    $redirect = admin_url('options-general.php?page=cfturnstile');
+    $redirect = admin_url('options-general.php?page=cfturnstile&tab=export');
 
     if (!isset($_FILES['cfturnstile_import_file']) || !is_array($_FILES['cfturnstile_import_file'])) {
         wp_safe_redirect(add_query_arg(array('cfturnstile_import' => 'error', 'reason' => 'nofile'), $redirect));
@@ -117,7 +117,7 @@ function cfturnstile_handle_import_settings() {
             continue; // skip unknown options
         }
         // Skip runtime logs import
-        if ($key === 'cfturnstile_log') {
+        if ($key === 'cfturnstile_log' || $key === 'cfturnstile_analytics') {
             continue;
         }
         // Do not override wp-config constants

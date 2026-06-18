@@ -119,6 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 turnstile.render(turnstileItem, {
                     sitekey: turnstileItem.dataset.sitekey,
+                    appearance: turnstileItem.dataset.appearance || 'always',
                     callback: setTurnstileExtensionData,
                     'expired-callback': function() { setTurnstileExtensionData(''); }
                 });

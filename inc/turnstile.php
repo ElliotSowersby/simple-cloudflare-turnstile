@@ -42,8 +42,11 @@ function cfturnstile_field_show($button_id = '', $callback = '', $form_name = ''
 			} else {
 				$label_text = wp_strip_all_tags($label_text);
 			}
+			$label_interaction = ( get_option('cfturnstile_appearance', 'always') === 'interaction-only' );
+			$label_class = 'cfturnstile-widget-label' . ( $label_interaction ? ' cfturnstile-widget-label-interaction' : '' );
+			$label_style = 'font-size: 14px; margin: 0 0 6px 0; width: 100%;' . ( $label_interaction ? ' display: none;' : '' );
 			?>
-			<p class="cfturnstile-widget-label" style="font-size: 14px; margin: 0 0 6px 0; width: 100%;"><small><?php echo esc_html($label_text); ?></small></p>
+			<p class="<?php echo esc_attr($label_class); ?>" style="<?php echo esc_attr($label_style); ?>"><small><?php echo esc_html($label_text); ?></small></p>
 			<?php
 		}
 		$key = sanitize_text_field(get_option('cfturnstile_key'));
@@ -101,8 +104,9 @@ function cfturnstile_always_br($unique_id) {
 		<br class="cf-turnstile-br cf-turnstile-br<?php echo esc_attr($unique_id); ?>">
 		<?php
 	} else {
+		// Interaction Only / Execute: only show the spacer when the widget is actually visible.
 		?>
-		<style>#cf-turnstile<?php echo esc_html($unique_id); ?> iframe { margin-bottom: 15px; }</style>
+		<br class="cf-turnstile-br cf-turnstile-br<?php echo esc_attr($unique_id); ?> cfturnstile-widget-spacer-interaction" style="display: none;">
 		<?php
 	}
 }
@@ -295,46 +299,6 @@ function cfturnstile_check($postdata = "") {
 
 	}
 	
-}
-
-/* 
- * Add Turnstile check to a "cfturnstile_log" option
- */
-add_action('cfturnstile_after_check', 'cfturnstile_log', 10, 2);
-function cfturnstile_log($response, $results) {
-	if(get_option('cfturnstile_log_enable')) {
-		// Get log
-		$cfturnstile_log = get_option('cfturnstile_log');
-		if(!$cfturnstile_log) {
-			$cfturnstile_log = array();
-		}
-		// If $results['error_code'] is not set, set it to empty
-		if(!isset($results['error_code'])) {
-			$results['error_code'] = '';
-		}
-		// Get Values
-		$error_code = $results['error_code'];
-		// Success Yes or No
-		if($response->success) {
-			$success = true;
-		} else {
-			$success = false;
-		}
-		// Add to log
-		$cfturnstile_log[] = array(
-			'date' => date('Y-m-d H:i:s'),
-			'success' => $success,
-			'error' => $error_code,
-			'ip' => cfturnstile_get_ip(),
-			'page' => isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '',
-		);
-		// Max 50
-		if(count($cfturnstile_log) > 50) {
-			array_shift($cfturnstile_log);
-		}
-		// Update log
-		update_option('cfturnstile_log', $cfturnstile_log);
-	}
 }
 
 /**

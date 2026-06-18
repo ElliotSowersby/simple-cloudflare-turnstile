@@ -215,6 +215,12 @@
   justify-content: center;
   gap: 6px;
 }
+.sct-support-item .button i.dashicons {
+  font-size: 16px;
+  width: 16px;
+  margin-top: -1px;
+  color: #fff !important;
+}
 @media (max-width: 480px) {
   .sct-admin-promo.sct-support .sct-support-item {
     flex-direction: column;
@@ -225,5 +231,261 @@
     margin-top: 6px;
     width: 100%;
     flex: 0 0 auto;
+  }
+}
+
+.sct-tabs {
+  margin: 22px 0 18px;
+  max-width: 720px;
+}
+
+.sct-tabs .nav-tab {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  font-weight: 600;
+}
+
+.sct-tab-content {
+  max-width: 720px;
+}
+
+.sct-tab-intro {
+  margin: 0 0 14px;
+  color: #50575e;
+}
+
+.sct-admin-card {
+  background: #fff;
+  border: 1px solid #dcdcde;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+  margin: 0 0 18px;
+  padding: 18px;
+}
+
+.sct-admin-card h2 {
+  font-size: 17px;
+  line-height: 1.3;
+  margin: 0 0 12px;
+}
+
+.sct-admin-card h3 {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 20px 0 10px;
+}
+
+.sct-export-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sct-checkbox-row {
+  align-items: flex-start;
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.sct-checkbox-row input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.sct-analytics-options .button,
+.sct-export-tab .button {
+  margin-top: 8px;
+}
+
+.sct-analytics-cards {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 14px 0 18px;
+}
+
+.sct-analytics-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 13px;
+}
+
+.sct-analytics-card span,
+.sct-analytics-card small {
+  color: #50575e;
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.sct-analytics-card strong {
+  color: #1d2327;
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  margin: 4px 0;
+}
+
+.sct-analytics-heading {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.sct-analytics-heading p {
+  color: #646970;
+  margin: 0;
+}
+
+.sct-reset-analytics-form {
+  flex: 0 0 auto;
+  margin: 0;
+}
+
+.sct-reset-analytics-form .button {
+  font-size: 12px;
+  line-height: 26px;
+  margin: 0;
+  min-height: 28px;
+  padding: 0 8px;
+}
+
+.sct-debug-log-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin: 0 0 12px;
+}
+
+.sct-debug-log-heading h2 {
+  margin: 0;
+}
+
+.sct-debug-log-actions {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.sct-reset-log-form {
+  margin: 0;
+}
+
+.sct-debug-log-actions .button,
+.sct-small-button {
+  font-size: 12px;
+  line-height: 26px;
+  margin: 0;
+  min-height: 28px;
+  padding: 0 8px;
+}
+
+.sct-rate-row {
+  background: #f6f7f7;
+  border: 1px solid #e2e4e7;
+  border-radius: 6px;
+  box-sizing: border-box;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr auto;
+  margin: 0 0 18px;
+  padding: 12px;
+}
+
+.sct-rate-row span {
+  color: #50575e;
+  font-weight: 600;
+}
+
+.sct-rate-bar {
+  background: #dcdcde;
+  border-radius: 6px;
+  grid-column: 1 / -1;
+  height: 8px;
+  overflow: hidden;
+}
+
+.sct-rate-bar span {
+  background: #2271b1;
+  display: block;
+  height: 100%;
+}
+
+.sct-table-wrap {
+  border: 1px solid #dcdcde;
+  border-radius: 6px;
+  margin: 8px 0 18px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.sct-table-wrap table {
+  border: 0;
+  margin: 0;
+}
+
+.sct-analytics-table th,
+.sct-analytics-table td,
+.sct-debug-log-table th,
+.sct-debug-log-table td {
+  white-space: nowrap;
+}
+
+.sct-error-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.sct-error-chips span {
+  align-items: center;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 6px;
+  color: #7c2d12;
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px 9px;
+}
+
+.sct-muted {
+  color: #646970;
+  margin: 0 0 14px;
+}
+
+.sct-error-help {
+  color: #50575e;
+  font-size: 10px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+
+@media (max-width: 782px) {
+  .sct-export-grid,
+  .sct-analytics-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .sct-export-grid,
+  .sct-analytics-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .sct-debug-log-heading {
+    flex-direction: column;
+  }
+
+  .sct-debug-log-actions {
+    justify-content: flex-start;
   }
 }

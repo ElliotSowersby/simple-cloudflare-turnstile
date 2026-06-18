@@ -65,14 +65,33 @@ if(get_option('cfturnstile_elementor')) {
       if ( $failsafe_mode === '' ) {
         $deps[] = 'cfturnstile';
       }
+
+      // Load the interaction-only label helper if needed and make it a dependency
+      if ( get_option('cfturnstile_widget_label_enable', 0) && get_option('cfturnstile_appearance', 'always') === 'interaction-only' ) {
+        if ( !wp_script_is('cfturnstile-label-js', 'enqueued') ) {
+          wp_enqueue_script('cfturnstile-label-js', plugins_url('simple-cloudflare-turnstile/js/interaction-label.js'), array(), '1.0', true);
+        }
+        $deps[] = 'cfturnstile-label-js';
+      }
+
       wp_enqueue_script(
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         $deps,
-        '2.6',
+        '2.8',
         true
       );
-      
+
+      // Resolve widget label text
+      $label_enable = get_option('cfturnstile_widget_label_enable', 0) ? true : false;
+      $label_text = get_option('cfturnstile_widget_label_text');
+      $label_text = is_string($label_text) ? trim($label_text) : '';
+      if ($label_text === '') {
+        $label_text = __('Let us know you are human:', 'simple-cloudflare-turnstile');
+      } else {
+        $label_text = wp_strip_all_tags($label_text);
+      }
+
       // Pass settings to JavaScript
       wp_localize_script('cfturnstile-elementor-forms', 'cfturnstileElementorSettings', array(
         'sitekey' => get_option('cfturnstile_key'),
@@ -80,9 +99,12 @@ if(get_option('cfturnstile_elementor')) {
         'align' => get_option('cfturnstile_elementor_align', 'left'),
         'theme' => get_option('cfturnstile_theme'),
         'size' => get_option('cfturnstile_size', 'normal'),
+        'appearance' => get_option('cfturnstile_appearance', 'always'),
         'mode' => $failsafe_mode ? $failsafe_mode : 'turnstile',
         'recaptchaSiteKey' => get_option('cfturnstile_recaptcha_site_key'),
-        'disableSubmit' => get_option('cfturnstile_disable_button') ? true : false
+        'disableSubmit' => get_option('cfturnstile_disable_button') ? true : false,
+        'labelEnable' => $label_enable,
+        'labelText' => $label_text
       ));
     }
   }

@@ -54,6 +54,9 @@ function cfturnstile_field_checkout() {
 
 // Render after checkout block
 function cfturnstile_render_post_block($block_content) {
+	if ( function_exists( 'is_wc_endpoint_url' ) && ( is_wc_endpoint_url( 'order-pay' ) || is_wc_endpoint_url( 'order-received' ) ) ) {
+		return $block_content;
+	}
 	ob_start();
 	cfturnstile_field_checkout();
 	$block_content = ob_get_contents();
@@ -63,6 +66,9 @@ function cfturnstile_render_post_block($block_content) {
 
 // Render before checkout block
 function cfturnstile_render_pre_block($block_content) {
+	if ( function_exists( 'is_wc_endpoint_url' ) && ( is_wc_endpoint_url( 'order-pay' ) || is_wc_endpoint_url( 'order-received' ) ) ) {
+		return $block_content;
+	}
 	$already_ran_turnstile_block = false;
 	if ( ! $already_ran_turnstile_block ) {
 		$already_ran_turnstile_block = true;
@@ -317,7 +323,7 @@ if(get_option('cfturnstile_woo_login')) {
 			if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
 			// Check if already validated (cache-friendly, no PHP session)
-			if( cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
+			if( cfturnstile_get_verified( 'cfturnstile_login_checked_' . $user->ID ) ) {
 				return $user;
 			}
 
@@ -327,16 +333,11 @@ if(get_option('cfturnstile_woo_login')) {
 			if($success != true) {
 				$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
 			} else {
-				cfturnstile_set_verified( 'cfturnstile_login_checked' );
+				cfturnstile_set_verified( 'cfturnstile_login_checked_' . $user->ID, '', 300 );
 			}
 			
 			return $user;
 			
-		}
-		// Clear verification flag on login
-		add_action('wp_login', 'cfturnstile_woo_login_clear', 10, 2);
-		function cfturnstile_woo_login_clear($user_login, $user) {
-			cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 		}
 	}
 }
@@ -361,12 +362,11 @@ if(get_option('cfturnstile_woo_register')) {
 	function cfturnstile_woo_register_check($username, $email, $validation_errors) {
 		if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return; } // Skip XMLRPC
 		if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return; } // Skip REST API
-		if(!is_checkout()) {
-			$check = cfturnstile_check();
-			$success = $check['success'];
-			if($success != true) {
-				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
-			}
+		if(function_exists('is_checkout') && is_checkout()) { return; } // Skip if on checkout page, to avoid conflicts with the checkout integration
+		$check = cfturnstile_check();
+		$success = isset( $check['success'] ) ? $check['success'] : false;
+		if($success != true) {
+			$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
 		}
 	}
 }
@@ -378,7 +378,7 @@ if(get_option('cfturnstile_woo_reset')) {
 	function cfturnstile_woo_reset_check($validation_errors) {
 		if(isset($_POST['woocommerce-lost-password-nonce'])) {
 			$check = cfturnstile_check();
-			$success = $check['success'];
+			$success = isset( $check['success'] ) ? $check['success'] : false;
 			if($success != true) {
 				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
 			}

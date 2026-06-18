@@ -63,4 +63,5 @@ if (get_option('cfturnstile_fluent')) {
 		}
 
 	}
+	
 }

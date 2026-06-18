@@ -5,8 +5,18 @@ if (!defined('ABSPATH')) {
 
 // Create shortcode
 add_shortcode('cf7-simple-turnstile', 'cfturnstile_cf7_shortcode');
-add_filter('wpcf7_form_elements', 'do_shortcode');
+add_filter('wpcf7_form_elements', 'cfturnstile_cf7_do_shortcode');
+function cfturnstile_cf7_do_shortcode($content) {
+	if (is_string($content) && false !== strpos($content, '[cf7-simple-turnstile]')) {
+		return do_shortcode($content);
+	}
+	return $content;
+}
 function cfturnstile_cf7_shortcode() {
+	// If user is whitelisted, render nothing so CF7's form HTML is untouched.
+	if (function_exists('cfturnstile_whitelisted') && cfturnstile_whitelisted()) {
+		return '';
+	}
 	ob_start();
 	$id = wp_rand();
 	echo '<div class="cf7-cf-turnstile" style="margin-top: 0px; margin-bottom: -15px;">';
@@ -33,9 +43,28 @@ function cfturnstile_cf7_shortcode() {
 if ((!empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all'))) {
 	add_action('wpcf7_form_elements', 'cfturnstile_field_cf7', 10, 1);
 	function cfturnstile_field_cf7($content) {
+		// If user is whitelisted, leave the CF7 form HTML untouched.
+		if (function_exists('cfturnstile_whitelisted') && cfturnstile_whitelisted()) {
+			return $content;
+		}
+		// If the form already uses [cf7-simple-turnstile] (or its rendered widget is present), don't inject again.
+		if (class_exists('WPCF7_ContactForm')) {
+			$current_form = WPCF7_ContactForm::get_current();
+			if ($current_form) {
+				$form_def = $current_form->prop('form');
+				if (is_string($form_def) && false !== strpos($form_def, '[cf7-simple-turnstile]')) {
+					return $content;
+				}
+			}
+		}
 		$cfturnstile_key = sanitize_text_field(get_option('cfturnstile_key'));
 		if (false === strpos($content, $cfturnstile_key)) {
-			return preg_replace('/(<input[^>]*type="submit")/i', cfturnstile_cf7_shortcode() . '<br/>$1', $content);
+			$widget = cfturnstile_cf7_shortcode() . '<br/>';
+			$replaced = preg_replace('/(<(?:input|button)[^>]*type="submit")/i', $widget . '$1', $content, 1, $count);
+			if ($count > 0) {
+				return $replaced;
+			}
+			return preg_replace('/(<button\b(?![^>]*type=)[^>]*)/i', $widget . '$1', $content, 1);
 		} else {
 			return $content;
 		}
@@ -62,6 +91,11 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 
 	if (!empty($post)) {
 
+		// Skip entirely for whitelisted users so we never invalidate their submission.
+		if (cfturnstile_whitelisted()) {
+			return $result;
+		}
+
 		$data = $post->get_posted_data();
 
 		// Check if "Enable on all CF7 Forms" option is enabled
@@ -82,10 +116,6 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 			return $result;
 		}
 
-		if(cfturnstile_whitelisted()) {
-			return $result;
-		}
-
 		$message = cfturnstile_failed_message();
 
 		$token = isset($data['cf-turnstile-response']) ? $data['cf-turnstile-response'] : '';
@@ -94,12 +124,22 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		$cfturnstile_cf7_ran = true;
 		if ($success != true) {
 			$result->invalidate(array('type' => 'captcha', 'name' => 'cf-turnstile'), $message);
+			$GLOBALS['cfturnstile_cf7_failed_message'] = $message;
 			return $result;
 		}
 		
 	}
 
 	return $result;
+}
+
+// Replace CF7's generic "One or more fields have an error" with the Turnstile-specific message.
+add_filter('wpcf7_display_message', 'cfturnstile_cf7_display_message', 10, 2);
+function cfturnstile_cf7_display_message($message, $status) {
+	if ('validation_error' === $status && !empty($GLOBALS['cfturnstile_cf7_failed_message'])) {
+		return $GLOBALS['cfturnstile_cf7_failed_message'];
+	}
+	return $message;
 }
 
 // Add form tag

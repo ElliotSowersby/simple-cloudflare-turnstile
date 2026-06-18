@@ -1,10 +1,10 @@
-=== Simple CAPTCHA Alternative with Cloudflare Turnstile ===
+=== Simple CAPTCHA with Cloudflare Turnstile ===
 Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.0
-Stable Tag: 1.40.0
+Stable Tag: 1.41.0
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,20 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.41.0 - 18th June 2026 =
+- New: Added a new "Analytics" option which when enabled will start tracking some basic analytics data for Turnstile form submissions. This includes the number of successful and failed submissions, and the reasons for any failures.
+- Improvement: Added some new tabs to the settings page, with a "Settings" tab for all the main settings, a new "Analytics" tab for the new analytics feature and the debug logging, and an "Import" tab for the import/export feature.
+- Tweak: Updated the verified transient check to work better with certain 2FA plugins.
+- Tweak: Updated the Contact Form 7 integration to now show the correct error message when the Turnstile check fails.
+- Tweak: The "Widget Label Text" is now hidden when "Interaction Only" is selected, and only displayed when the widget actually requires an interaction.
+- Tweak: Added spacing below the widget when it shows in "Interaction Only" mode, which is hidden when the widget is not displayed.
+- Tweak: The Turnstile widget now re-renders shortly after clicking the login button on the wp-login.php page, to ensure a fresh token is ready in case of a failed login.
+- Fix: Fixed an issue with Turnstile not rendering on the block checkout "pay for order" page in some cases.
+- Fix: Fixed the "Show Widget Label Text" option not displaying on Elementor forms.
+- Fix: Fixed the "Logged In Users" whitelist option not bypassing Turnstile on Contact Form 7 submissions.
+- Fix: Fixed the "Appearance Mode" setting not being applied to Elementor forms and the WooCommerce block checkout, causing the widget to always display even when "Interaction Only" was selected.
+- Other: Renamed the plugin from "Simple CAPTCHA Alternative with Cloudflare Turnstile" to "Simple CAPTCHA with Cloudflare Turnstile".
 
 = Version 1.40.0 - 29th May 2026 =
 - New: Added an option to enable Turnstile on the WooCommerce Account Details form.

@@ -57,16 +57,33 @@ function cfturnstile_init_elementor_forms() {
         cfturnstile_elementor_set_submit(submitButton, false);
       }
 
+      var labelEl = null;
+      if (settings.labelEnable && settings.labelText) {
+        labelEl = document.createElement('p');
+        labelEl.className = 'cfturnstile-widget-label';
+        labelEl.style.cssText = 'font-size: 14px; margin: 0 0 6px 0; width: 100%;';
+        if ((settings.appearance || 'always') === 'interaction-only') {
+          labelEl.className += ' cfturnstile-widget-label-interaction';
+          labelEl.style.display = 'none';
+        }
+        var smallEl = document.createElement('small');
+        smallEl.textContent = settings.labelText;
+        labelEl.appendChild(smallEl);
+      }
+
       var turnstileDiv = document.createElement('div');
       turnstileDiv.className = 'elementor-turnstile-field cf-turnstile';
       turnstileDiv.id = 'cf-turnstile-elementor-fallback-' + index;
       turnstileDiv.style.cssText = 'display: block; margin: 10px 0 15px 0; width: 100%;';
-      
+
       if (position === 'after') {
-        submitButton.parentNode.insertBefore(turnstileDiv, submitButton.nextSibling);
+        if (labelEl) submitButton.parentNode.insertBefore(labelEl, submitButton.nextSibling);
+        submitButton.parentNode.insertBefore(turnstileDiv, labelEl ? labelEl.nextSibling : submitButton.nextSibling);
       } else if (position === 'afterform') {
+        if (labelEl) form.appendChild(labelEl);
         form.appendChild(turnstileDiv);
       } else {
+        if (labelEl) submitButton.parentNode.insertBefore(labelEl, submitButton);
         submitButton.parentNode.insertBefore(turnstileDiv, submitButton);
       }
       
@@ -74,6 +91,7 @@ function cfturnstile_init_elementor_forms() {
         sitekey: sitekey,
         theme: settings.theme || 'auto',
         size: widgetSize,
+        appearance: settings.appearance || 'always',
         callback: function(token) {
           // Re-enable submit button when Turnstile is complete
           if (disableSubmit && submitButton) {
@@ -90,7 +108,11 @@ function cfturnstile_init_elementor_forms() {
           if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
         }
       });
-      
+
+      if (labelEl && labelEl.classList.contains('cfturnstile-widget-label-interaction') && typeof window.cfturnstileInitInteractionLabels === 'function') {
+        window.cfturnstileInitInteractionLabels();
+      }
+
       form.classList.add('cft-processed');
     }
   });
@@ -129,6 +151,7 @@ function cfturnstile_elementor_rerender(form) {
     sitekey: settings.sitekey,
     theme: settings.theme || 'auto',
     size: settings.size || 'normal',
+    appearance: settings.appearance || 'always',
     callback: function(token) {
       if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, true); }
       if (typeof turnstileElementorCallback === 'function') {
@@ -205,6 +228,7 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
       turnstile.remove(widget);
       turnstile.render(widget, {
         sitekey: cfturnstileElementorSettings.sitekey,
+        appearance: cfturnstileElementorSettings.appearance || 'always',
         callback: function(token) {
           // Re-enable submit button when Turnstile is complete
           if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, true); }

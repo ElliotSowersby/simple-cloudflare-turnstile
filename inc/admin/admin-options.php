@@ -83,6 +83,32 @@ function cfturnstile_admin_test( $soft = false ) {
 <?php
 }
 
+function cfturnstile_get_admin_tab() {
+	$tab = isset($_GET['tab']) ? sanitize_key(wp_unslash($_GET['tab'])) : 'settings';
+	$allowed_tabs = array('settings', 'analytics', 'export');
+
+	return in_array($tab, $allowed_tabs, true) ? $tab : 'settings';
+}
+
+function cfturnstile_render_admin_tabs($active_tab) {
+	$tabs = array(
+		'settings' => __('Settings', 'simple-cloudflare-turnstile'),
+		'analytics' => __('Analytics', 'simple-cloudflare-turnstile'),
+		'export' => __('Import', 'simple-cloudflare-turnstile'),
+	);
+
+	echo '<nav class="nav-tab-wrapper sct-tabs">';
+	foreach ($tabs as $tab => $label) {
+		$url = add_query_arg(array('page' => 'cfturnstile', 'tab' => $tab), admin_url('options-general.php'));
+		$class = 'nav-tab';
+		if ($active_tab === $tab) {
+			$class .= ' nav-tab-active';
+		}
+		echo '<a class="' . esc_attr($class) . '" href="' . esc_url($url) . '">' . esc_html($label) . '</a>';
+	}
+	echo '</nav>';
+}
+
 // Show Settings Page
 function cfturnstile_settings_page() {
 	
@@ -133,6 +159,13 @@ function cfturnstile_settings_page() {
 			</p>
 
 		</div>
+
+		<?php
+		$cfturnstile_active_tab = cfturnstile_get_admin_tab();
+		cfturnstile_render_admin_tabs($cfturnstile_active_tab);
+		?>
+
+		<?php if ('settings' === $cfturnstile_active_tab) { ?>
 
 		<?php
 		if ( empty( get_option( 'cfturnstile_tested' ) ) || get_option( 'cfturnstile_tested' ) != 'yes' ) {
@@ -237,7 +270,7 @@ function cfturnstile_settings_page() {
 							</p>
 							<input type="hidden" name="cfturnstile_secret" value="" />
 						<?php else : ?>
-							<input type="text" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_attr(get_option('cfturnstile_secret')); ?>" />
+							<input type="password" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_attr(get_option('cfturnstile_secret')); ?>" />
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -2030,164 +2063,13 @@ function cfturnstile_settings_page() {
 				<?php echo esc_html__('Delete all of this plugins saved options when the plugin is deleted via plugins page.', 'simple-cloudflare-turnstile'); ?>
 			</div>
 
-			<div style="font-size: 10px; margin-top: 15px;">
-				<!-- Enable Logging -->
-				<input type="checkbox" name="cfturnstile_log_enable" <?php if (get_option('cfturnstile_log_enable')) { ?>checked<?php } ?> style="transform: scale(0.7); margin: -2px 0 0 0;">
-				<?php echo esc_html__('Enable debug logging of Turnstile form submission events.', 'simple-cloudflare-turnstile'); ?>
-			</div>
-			
 		</form>
 
-		<!-- Export/Import Settings (Accordion) -->
-		<button type="button" class="sct-accordion" id="sct-accordion-export-import"><?php echo esc_html__('Export / Import Settings', 'simple-cloudflare-turnstile'); ?></button>
-		<div class="sct-panel">
-			<p style="margin: 0 0 15px 0; border-bottom: 1px solid #f3f3f3; padding-bottom: 15px;">
-				<?php echo esc_html__('Export all plugin settings to a JSON file, or import from a JSON file exported from this plugin.', 'simple-cloudflare-turnstile'); ?>
-			</p>
-			<div style="display:flex; gap:20px; flex-wrap:wrap;">
-				<div style="flex:1; min-width:280px;">
-					<h3 style="margin:8px 0; font-size:14px;">&ZeroWidthSpace;<?php echo esc_html__('Export Settings', 'simple-cloudflare-turnstile'); ?></h3>
-					<form method="post" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
-						<input type="hidden" name="action" value="cfturnstile_export_settings" />
-						<?php wp_nonce_field('cfturnstile_export_settings'); ?>
-						<label style="display:block; font-size:12px; margin:6px 0;">
-							<input type="checkbox" name="include_keys" value="1" style="float: none;">
-							<?php echo esc_html__('Include API keys (sensitive)', 'simple-cloudflare-turnstile'); ?>
-						</label>
-						<?php submit_button( esc_html__('Download JSON', 'simple-cloudflare-turnstile'), 'secondary', 'submit', false ); ?>
-					</form>
-				</div>
-
-				<div style="flex:1; min-width:280px;">
-					<h3 style="margin:8px 0; font-size:14px;">&ZeroWidthSpace;<?php echo esc_html__('Import Settings', 'simple-cloudflare-turnstile'); ?></h3>
-					<form method="post" enctype="multipart/form-data" action="<?php echo esc_url( admin_url('admin-post.php') ); ?>">
-						<input type="hidden" name="action" value="cfturnstile_import_settings" />
-						<?php wp_nonce_field('cfturnstile_import_settings'); ?>
-						<input type="file" name="cfturnstile_import_file" accept="application/json,.json" />
-						<br/>
-						<?php submit_button( esc_html__('Import JSON', 'simple-cloudflare-turnstile'), 'primary', 'submit', false ); ?>
-						<p style="font-size:11px; margin-top:6px;">
-							<?php echo esc_html__('Note: Site/Secret keys defined in wp-config.php will not be overwritten by import.', 'simple-cloudflare-turnstile'); ?>
-						</p>
-					</form>
-				</div>
-			</div>
-		</div>
-
-		<?php if(get_option('cfturnstile_log_enable')) { ?>
-		<br/><button type="button" class="sct-accordion" id="sct-accordion-whitelist"><?php echo esc_html__('Turnstile Debug Log', 'simple-cloudflare-turnstile'); ?></button>
-			<div class="sct-panel">
-
-				<?php
-				$cfturnstile_log = get_option('cfturnstile_log');
-				if ($cfturnstile_log) {
-					$cfturnstile_log_reversed = array_reverse($cfturnstile_log);
-					$cfturnstile_csv_escape = function($value) {
-						$value = (string) $value;
-						$value = str_replace(array("\r\n", "\r"), "\n", $value);
-						$value = str_replace('"', '""', $value);
-						return '"' . $value . '"';
-					};
-					$cfturnstile_log_text =
-						$cfturnstile_csv_escape(__( 'Date', 'simple-cloudflare-turnstile' )) . ',' .
-						$cfturnstile_csv_escape(__( 'Success', 'simple-cloudflare-turnstile' )) . ',' .
-						$cfturnstile_csv_escape(__( 'Response', 'simple-cloudflare-turnstile' )) . ',' .
-						$cfturnstile_csv_escape(__( 'IP', 'simple-cloudflare-turnstile' )) . ',' .
-						$cfturnstile_csv_escape(__( 'URL', 'simple-cloudflare-turnstile' )) . "\n";
-					foreach ($cfturnstile_log_reversed as $log_item) {
-						$log_date = isset($log_item['date']) ? $log_item['date'] : '';
-						$log_date = $log_date ? date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log_date)) : '';
-						$log_success = !empty($log_item['success']) ? 'Yes' : 'No';
-						$log_response = '';
-						if (empty($log_item['success'])) {
-							$error_val = isset($log_item['error']) ? $log_item['error'] : '';
-							if (is_array($error_val)) {
-								$error_val = implode(', ', array_map('sanitize_text_field', $error_val));
-							}
-							$log_response = sanitize_text_field($error_val);
-						} else {
-							$log_response = __( 'Success', 'simple-cloudflare-turnstile' );
-						}
-						$log_ip = isset($log_item['ip']) ? sanitize_text_field($log_item['ip']) : '';
-						$log_page = isset($log_item['page']) ? sanitize_text_field($log_item['page']) : '';
-						$cfturnstile_log_text .=
-							$cfturnstile_csv_escape($log_date) . ',' .
-							$cfturnstile_csv_escape($log_success) . ',' .
-							$cfturnstile_csv_escape($log_response) . ',' .
-							$cfturnstile_csv_escape($log_ip) . ',' .
-							$cfturnstile_csv_escape($log_page) . "\n";
-					}
-
-					echo '<p style="margin: 0 0 10px 0;">';
-					echo '<button type="button" class="button button-secondary" id="cfturnstile-copy-log" data-target="cfturnstile-debug-log-text">' . esc_html__('Copy Debug Log', 'simple-cloudflare-turnstile') . '</button>';
-					echo '</p>';
-					echo '<textarea id="cfturnstile-debug-log-text" readonly style="position:absolute; left:-9999px; top:-9999px;">' . esc_textarea($cfturnstile_log_text) . '</textarea>';
-
-				echo '<div style="max-height: 200px; overflow: auto; border: 1px solid #ddd; padding: 0px;">';
-					echo '<table>';
-						echo '<tr valign="top">';
-						echo '<td>';
-						echo '<table class="widefat">';
-						echo '<thead>';
-						echo '<tr>';
-						echo '<th>' . esc_html__('Date', 'simple-cloudflare-turnstile') . '</th>';
-						echo '<th>' . esc_html__('Success', 'simple-cloudflare-turnstile') . '</th>';
-						echo '<th>' . esc_html__('Response', 'simple-cloudflare-turnstile') . '</th>';
-						echo '<th>' . esc_html__('Info', 'simple-cloudflare-turnstile') . '</th>';
-						echo '</tr>';
-						echo '</thead>';
-						echo '<tbody>';
-						foreach ($cfturnstile_log_reversed as $log) {
-							echo '<tr>';
-							$log['date'] = date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($log['date']));
-							echo '<td>' . esc_html($log['date']) . '</td>';
-							echo '<td>' . ($log['success'] ? '<span style="color: green;">Yes</span>' : '<span style="color: red;">No</span>') . '</td>';
-							echo '<td>';
-							if(!$log['success']) {
-								$error_val = $log['error'];
-								echo esc_html($error_val);
-							} else {
-								echo '<span>' . esc_html__('Success', 'simple-cloudflare-turnstile') . '</span>';
-							}
-							echo '</td>';
-							echo '<td>';
-							echo '<strong>' . esc_html__('IP:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html($log['ip']) . '<br />';
-							echo '<strong>' . esc_html__('URL:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html($log['page']);
-							echo '</td>';
-						}
-						echo '</tr>';
-						echo '</tbody>';
-						echo '</table>';
-						echo '</td>';
-						echo '</tr>';
-					echo '</table>';
-				echo '</div>';
-				// Error code meanings
-				echo '<div style="margin-top: 20px; font-size: 9px;">';
-				echo '<strong><u>' . esc_html__('Error Codes', 'simple-cloudflare-turnstile') . '</strong></u><br />';
-				echo '- <strong>missing-input-response:</strong> ' . cfturnstile_error_message('missing-input-response') . esc_html__(' (Visitor submitted form when Turnstile was not successfully completed.)', 'simple-cloudflare-turnstile') . '<br />';
-				echo '- <strong>missing-input-secret:</strong> ' . cfturnstile_error_message('missing-input-secret') . '<br />';
-				echo '- <strong>invalid-input-secret:</strong> ' . cfturnstile_error_message('invalid-input-secret') . '<br />';
-				echo '- <strong>invalid-input-response:</strong> ' . cfturnstile_error_message('invalid-input-response') . '<br />';
-				echo '- <strong>bad-request:</strong> ' . cfturnstile_error_message('bad-request') . '<br />';
-				echo '- <strong>timeout-or-duplicate:</strong> ' . cfturnstile_error_message('timeout-or-duplicate') . '<br />';
-				echo '- <strong>internal-error:</strong> ' . cfturnstile_error_message('internal-error') . '<br />';
-				echo '</div>';
-				} else {
-					echo '<p style="margin: 0 0 10px 0;">';
-					echo '<button type="button" class="button button-secondary" id="cfturnstile-copy-log" data-target="cfturnstile-debug-log-text" disabled>' . esc_html__('Copy Log', 'simple-cloudflare-turnstile') . '</button>';
-					echo '</p>';
-					echo '<textarea id="cfturnstile-debug-log-text" readonly style="position:absolute; left:-9999px; top:-9999px;"></textarea>';
-					echo '<p>' . esc_html__('No events logged yet.', 'simple-cloudflare-turnstile') . '</p>';
-				}
-				?>
-			</div>
-		<?php } else {
-			if(get_option('cfturnstile_log')) {
-				delete_option('cfturnstile_log');
-			}
-		}
-		?>
+		<?php } elseif ('analytics' === $cfturnstile_active_tab) { ?>
+			<?php cfturnstile_render_analytics_tab(); ?>
+		<?php } elseif ('export' === $cfturnstile_active_tab) { ?>
+			<?php cfturnstile_render_export_tab(); ?>
+		<?php } ?>
 
 	</div>
 

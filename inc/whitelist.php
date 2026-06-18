@@ -14,8 +14,19 @@ function cfturnstile_whitelisted() {
     // Filter
     $whitelisted = apply_filters('cfturnstile_whitelisted', false);
     // Logged In Users
-    if(get_option('cfturnstile_whitelist_users') && is_user_logged_in()) {
-        $whitelisted = true;
+    if(get_option('cfturnstile_whitelist_users')) {
+        if (is_user_logged_in()) {
+            $whitelisted = true;
+        } elseif (
+            function_exists('wp_validate_auth_cookie')
+            && !empty($_COOKIE[LOGGED_IN_COOKIE])
+            && wp_validate_auth_cookie($_COOKIE[LOGGED_IN_COOKIE], 'logged_in')
+        ) {
+            // REST API requests (e.g. CF7's public /feedback endpoint) drop the
+            // current user when no X-WP-Nonce header is sent, even though the
+            // visitor has valid login cookies. Verify the signed cookie directly.
+            $whitelisted = true;
+        }
     }
     // If the IP address is within the list of IPs in get_option('cfturnstile_whitelist_ips')
     if(get_option('cfturnstile_whitelist_ips')) {

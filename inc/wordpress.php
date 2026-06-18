@@ -60,8 +60,11 @@ if(get_option('cfturnstile_login')) {
 			return $user;
 		}
 
+		// Bind the verification flag to the user being authenticated so a token validated for one account can't be replayed against another.
+		$verified_key = isset($user->ID) ? 'cfturnstile_login_checked_' . $user->ID : 'cfturnstile_login_checked';
+
 		// Check if already validated
-		if(isset($user->ID) && cfturnstile_get_verified( 'cfturnstile_login_checked' ) ) {
+		if(isset($user->ID) && cfturnstile_get_verified( $verified_key ) ) {
 			return $user;
 		}
 
@@ -73,17 +76,12 @@ if(get_option('cfturnstile_login')) {
 			do_action('cfturnstile_wp_login_failed');
 		} else {
 			if (isset($user->ID)) {
-				cfturnstile_set_verified( 'cfturnstile_login_checked' );
+				cfturnstile_set_verified( 'cfturnstile_login_checked_' . $user->ID, '', 300 );
 			}
 		}
 		
 		return $user;
 		
-	}
-	// Clear verification flag on login
-	add_action('wp_login', 'cfturnstile_wp_login_clear', 10, 2);
-	function cfturnstile_wp_login_clear($user_login, $user) {
-		cfturnstile_clear_verified( 'cfturnstile_login_checked' );
 	}
 	/* Hook into wp_login_form() to add the Turnstile field */
 	function cfturnstile_wp_login_form_field( $content = '' ) {
@@ -101,6 +99,16 @@ if(get_option('cfturnstile_login')) {
 		return $content . $field;
 	}
 	add_filter( 'login_form_middle', 'cfturnstile_wp_login_form_field', 20, 1 );
+
+	/* Re-render Turnstile shortly after clicking the login button, in case the submission fails (e.g. used/expired token) */
+	function cfturnstile_login_rerender_script() {
+		if ( ! wp_script_is( 'cfturnstile', 'enqueued' ) ) {
+			return;
+		}
+		$script = 'document.addEventListener("DOMContentLoaded",function(){var b=document.getElementById("wp-submit");if(!b)return;b.addEventListener("click",function(){setTimeout(function(){if(typeof turnstile==="undefined")return;var w=document.querySelector("#loginform .cf-turnstile");if(!w)return;try{turnstile.reset(w);}catch(e){try{turnstile.remove(w);turnstile.render(w);}catch(e2){}}},2000);});});';
+		wp_add_inline_script( 'cfturnstile', $script );
+	}
+	add_action( 'login_enqueue_scripts', 'cfturnstile_login_rerender_script', 20 );
 }
 
 /* 
@@ -200,10 +208,10 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 				} else {
 					$label_text = wp_strip_all_tags($label_text);
 				}
-				$submit_before .= '<p class="cfturnstile-widget-label" style="font-size: 14px; margin: 0 0 6px 0;"><small>' . esc_html($label_text) . '</small></p>';
+				$submit_before .= '<p class="cfturnstile-widget-label' . ( $appearance === 'interaction-only' ? ' cfturnstile-widget-label-interaction' : '' ) . '" style="font-size: 14px; margin: 0 0 6px 0;' . ( $appearance === 'interaction-only' ? ' display: none;' : '' ) . '"><small>' . esc_html($label_text) . '</small></p>';
 			}
 			$submit_before .= '<span id="cf-turnstile-c-'.$unique_id.'" class="cf-turnstile cf-turnstile-comments" data-action="wordpress-comment" data-callback="'.$callback.'" data-sitekey="'.sanitize_text_field($key).'" data-theme="'.sanitize_text_field($theme).'" data-language="'.sanitize_text_field($language).'" data-appearance="'.sanitize_text_field($appearance).'" data-size="'.sanitize_text_field($cfturnstile_size).'" data-retry="auto" data-retry-interval="1000"></span>';
-			$submit_before .= '<br class="cf-turnstile-br cf-turnstile-br-comments">';
+			$submit_before .= '<br class="cf-turnstile-br cf-turnstile-br-comments' . ( $appearance === 'interaction-only' ? ' cfturnstile-widget-spacer-interaction' : '' ) . '"' . ( $appearance === 'interaction-only' ? ' style="display: none;"' : '' ) . '>';
 			if(get_option('cfturnstile_disable_button')) {
 				$submit_before .= '<span class="cf-turnstile-comment" style="pointer-events: none; opacity: 0.5;">';
 				$submit_after .= "</span>";

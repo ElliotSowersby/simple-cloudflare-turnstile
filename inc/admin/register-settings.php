@@ -7,12 +7,51 @@ if (!defined('ABSPATH')) {
 * Register settings
 */
 function cfturnstile_register_settings() {
-    $active_settings = cfturnstile_settings_list();
+    $analytics_settings = cfturnstile_analytics_settings_list();
+    $runtime_settings = cfturnstile_runtime_settings_list();
+    $active_settings = array_diff(cfturnstile_settings_list(), $analytics_settings, $runtime_settings);
     foreach ($active_settings as $setting) {
         register_setting('cfturnstile-settings-group', $setting);
     }
+    foreach ($analytics_settings as $setting) {
+        register_setting('cfturnstile-analytics-settings-group', $setting, array(
+            'sanitize_callback' => 'cfturnstile_sanitize_checkbox_option',
+        ));
+    }
 }
 add_action('admin_init', 'cfturnstile_register_settings');
+
+function cfturnstile_sanitize_checkbox_option($value) {
+    return cfturnstile_is_checkbox_enabled($value) ? 1 : 0;
+}
+
+function cfturnstile_is_checkbox_enabled($value) {
+    if (is_bool($value)) {
+        return $value;
+    }
+    if (is_numeric($value)) {
+        return 1 === (int) $value;
+    }
+    if (!is_scalar($value)) {
+        return false;
+    }
+
+    return in_array(strtolower(trim((string) $value)), array('1', 'on', 'yes', 'true'), true);
+}
+
+function cfturnstile_analytics_settings_list() {
+    return array(
+        'cfturnstile_log_enable',
+        'cfturnstile_advanced_analytics',
+    );
+}
+
+function cfturnstile_runtime_settings_list() {
+    return array(
+        'cfturnstile_log',
+        'cfturnstile_analytics',
+    );
+}
 
 /*
 * Delete inactive settings
@@ -195,6 +234,8 @@ function cfturnstile_settings_list($all = false) {
 
     $settings[] = 'cfturnstile_log_enable';
     $settings[] = 'cfturnstile_log';
+    $settings[] = 'cfturnstile_advanced_analytics';
+    $settings[] = 'cfturnstile_analytics';
 
     $settings[] = 'cfturnstile_uninstall_remove'; // Always last
     
