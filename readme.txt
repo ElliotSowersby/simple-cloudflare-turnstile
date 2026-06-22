@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.0
-Stable Tag: 1.41.0
+Stable Tag: 1.41.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,12 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ===
+
+= Version 1.41.1 - 22nd June 2026 =
+- Tweak: Added a view button to show the secret key in the settings page, which is hidden by default.
+- Tweak: Made a few small changes to the settings page.
+- Tweak: On the Ultimate Member login form, added a check to prevent further login validation if Turnstile failed.
+- Fix: Fixed an issue with the Ultimate Member login form since the last update.
 
 = Version 1.41.0 - 18th June 2026 =
 - New: Added a new "Analytics" option which when enabled will start tracking some basic analytics data for Turnstile form submissions. This includes the number of successful and failed submissions, and the reasons for any failures.

@@ -270,7 +270,8 @@ function cfturnstile_settings_page() {
 							</p>
 							<input type="hidden" name="cfturnstile_secret" value="" />
 						<?php else : ?>
-							<input type="password" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_attr(get_option('cfturnstile_secret')); ?>" />
+							<input type="password" id="cfturnstile_secret" style="width: 240px;" name="cfturnstile_secret" value="<?php echo esc_attr(get_option('cfturnstile_secret')); ?>" />
+							<button type="button" class="button sct-toggle-secret" data-target="cfturnstile_secret" aria-pressed="false" style="margin-left: 6px;"><?php echo esc_html__('View', 'simple-cloudflare-turnstile'); ?></button>
 						<?php endif; ?>
 					</td>
 				</tr>
@@ -2084,12 +2085,13 @@ function cfturnstile_settings_page() {
 				<div class="sct-support-item" style="border-top: 1px solid #f1f1f1;">
 
 					<p>
-						<?php echo esc_html__('100% free plugin by', 'simple-cloudflare-turnstile'); ?> <a href="https://elliotsowersby.com/?utm_source=simplecloudflareturnstile&utm_medium=promo" target="_blank"> Elliot Sowersby</a> (<a href="https://relywp.com/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=promo" target="_blank">RelyWP</a>)
+						- <?php echo esc_html__('Not sure how to setup this plugin?', 'simple-cloudflare-turnstile'); ?>
+						<a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=settings-sidebar-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?></a>
 					</p>
 
 					<p>
-						- <?php echo esc_html__('Not sure how to use this plugin?', 'simple-cloudflare-turnstile'); ?>
-						<a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=settings-sidebar-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?></a>
+						- <?php echo esc_html__('Want to learn more about the plugin features?', 'simple-cloudflare-turnstile'); ?>
+						<a href="https://simpleturnstile.com/documentation/" target="_blank" title="View our Turnstile plugin documentation."><?php echo esc_html__('View documentation', 'simple-cloudflare-turnstile'); ?></a>
 					</p>
 
 					<p>- <?php echo esc_html__('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank" title="<?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?>."><?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?></a></p>
@@ -2136,6 +2138,17 @@ function cfturnstile_settings_page() {
 						<i class="dashicons dashicons-external" style="font-size: 14px; line-height: 22px;"></i>
 					</a>
 				</div>
+
+			</div>
+
+			<div class="sct-admin-promo" style="margin-top: 15px; padding: 15px 20px;">
+
+				<p style="margin: 0; display: flex; align-items: center; justify-content: space-between;">
+					<span><?php echo esc_html__('100% free plugin by', 'simple-cloudflare-turnstile'); ?> <a href="https://elliotsowersby.com/?utm_source=simplecloudflareturnstile&utm_medium=promo" target="_blank">Elliot Sowersby</a></span>
+					<a href="https://relywp.com/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=promo" target="_blank" style="margin-left: 8px; flex-shrink: 0;">
+						<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . '../../inc/images/relywp.png' ); ?>" alt="RelyWP" style="height: 42px; width: auto; vertical-align: middle; display: inline-block; margin-right: 5px;" />
+					</a>
+				</p>
 
 			</div>
 

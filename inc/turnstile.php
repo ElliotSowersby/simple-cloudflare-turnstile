@@ -186,7 +186,7 @@ function cfturnstile_force_render($unique_id = '') {
  * @param string $postdata
  * @return bool
  */
-function cfturnstile_check($postdata = "") {
+function cfturnstile_check($postdata = "", $form_action = "") {
 
 	$results = array();
 
@@ -289,7 +289,7 @@ function cfturnstile_check($postdata = "") {
 			}
 		}
 
-		do_action('cfturnstile_after_check', $response, $results);
+		do_action('cfturnstile_after_check', $response, $results, $form_action);
 
 		return $results;
 

@@ -234,7 +234,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
   	function cfturnstile_wp_comment_check($commentdata) {
 		if(is_admin()) { return $commentdata; }
 		if(!empty($_POST)) {
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'wordpress-comment');
 			$success = $check['success'];
 			if($success != true) {
 				wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );

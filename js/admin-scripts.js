@@ -4,6 +4,26 @@ document.addEventListener("DOMContentLoaded", function() {
 		document.querySelector("#sct-accordion-wordpress").click();
 	}
 });
+/* Toggle Secret Key Visibility */
+document.addEventListener("DOMContentLoaded", function() {
+	document.querySelectorAll(".sct-toggle-secret").forEach(function(button) {
+		button.addEventListener("click", function() {
+			var input = document.getElementById(this.getAttribute("data-target"));
+			if (!input) {
+				return;
+			}
+			if (input.type === "password") {
+				input.type = "text";
+				this.setAttribute("aria-pressed", "true");
+				this.textContent = "Hide";
+			} else {
+				input.type = "password";
+				this.setAttribute("aria-pressed", "false");
+				this.textContent = "View";
+			}
+		});
+	});
+});
 var acc = document.getElementsByClassName("sct-accordion");
 var i;
 for (i = 0; i < acc.length; i++) {
