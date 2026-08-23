@@ -108,6 +108,31 @@ if(get_option('cfturnstile_elementor')) {
         'labelText' => $label_text
       ));
     }
+
+    // Elementor v4 (atomic) forms use different markup and a different submit flow,
+    // so they need their own handler alongside the v3 one.
+    if ( cfturnstile_elementor_has_atomic_forms() && !wp_script_is('cfturnstile-elementor-atomic-forms', 'enqueued') ) {
+      wp_enqueue_script(
+        'cfturnstile-elementor-atomic-forms',
+        plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-atomic-forms.js'),
+        array('cfturnstile-elementor-forms'),
+        '1.0',
+        true
+      );
+    }
+  }
+
+  /**
+   * Whether this install can render Elementor v4 atomic forms.
+   * The `e-form` element ships with Elementor 4.0+, but only Elementor Pro registers
+   * the fields and the AJAX endpoint that actually process a submission.
+   * @return bool
+   */
+  function cfturnstile_elementor_has_atomic_forms() {
+    if ( !defined('ELEMENTOR_VERSION') || version_compare(ELEMENTOR_VERSION, '4.0', '<') ) {
+      return false;
+    }
+    return defined('ELEMENTOR_PRO_VERSION');
   }
 
   /**
@@ -131,9 +156,12 @@ if(get_option('cfturnstile_elementor')) {
   function cfturnstile_elementor_elements_contain_form($elements){
     foreach((array)$elements as $el){
       if (is_array($el)) {
-        if (isset($el['elType']) && $el['elType'] === 'widget' && isset($el['widgetType'])){
+        $el_type = isset($el['elType']) ? $el['elType'] : '';
+        // Elementor v4 stores the atomic form as its own element type, not as a widget.
+        if ($el_type === 'e-form') return true;
+        if ($el_type === 'widget' && isset($el['widgetType'])){
           $wt = $el['widgetType'];
-          if ($wt === 'form' || $wt === 'login') return true;
+          if ($wt === 'form' || $wt === 'login' || $wt === 'e-form') return true;
         }
         if (!empty($el['elements']) && is_array($el['elements'])){
           if (cfturnstile_elementor_elements_contain_form($el['elements'])) return true;
@@ -219,6 +247,79 @@ if(get_option('cfturnstile_elementor')) {
     $ajax_handler->add_error( '', '' );
     $ajax_handler->is_success = false;
     }
+    }
+  }
+
+
+  /**
+   * Elementor v4 (atomic) forms.
+   *
+   * These forms do not run through `elementor_pro/forms/validation`; they post to their own
+   * AJAX action instead. Elementor exposes `elementor_pro/atomic_forms/spam_check`, but that
+   * filter replaces the response with a fixed "flagged as spam" message, so we hook the AJAX
+   * action directly at priority 1 - ahead of Elementor's own handler at priority 10 - which
+   * lets us return the site's configured failure message and stops an invalid submission
+   * before any form action (email, webhook, submission storage) runs.
+   */
+  add_action('init', 'cfturnstile_elementor_atomic_register_check', 5);
+  function cfturnstile_elementor_atomic_register_check() {
+    if ( !cfturnstile_elementor_has_atomic_forms() ) {
+      return;
+    }
+    add_action('wp_ajax_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 1);
+    add_action('wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 1);
+  }
+
+  function cfturnstile_elementor_atomic_check() {
+
+    // phpcs:disable WordPress.Security.NonceVerification.Missing -- Elementor verifies its own
+    // nonce in ajax_send_form(). Here we only read and remove the fields we injected ourselves.
+    $fields = isset($_POST['form_fields']) && is_array($_POST['form_fields']) ? $_POST['form_fields'] : array();
+
+    $token = '';
+    $kept  = array();
+
+    foreach ( $fields as $field ) {
+
+      if ( !is_array($field) ) {
+        $kept[] = $field;
+        continue;
+      }
+
+      $id   = isset($field['id']) ? sanitize_text_field(wp_unslash($field['id'])) : '';
+      $name = isset($field['name']) ? sanitize_text_field(wp_unslash($field['name'])) : '';
+      $value = isset($field['value']) && is_string($field['value']) ? sanitize_text_field(wp_unslash($field['value'])) : '';
+
+      if ( $id === 'cf-turnstile-response' || $name === 'cf-turnstile-response' ) {
+        $token = $value;
+        continue; // Never let the token end up in the stored submission or the notification email.
+      }
+
+      if ( $id === 'cfturnstile_failsafe' || $name === 'cfturnstile_failsafe' ) {
+        $_POST['cfturnstile_failsafe'] = $value; // Read back by cfturnstile_check().
+        continue;
+      }
+
+      $kept[] = $field; // Untouched, so it stays slashed exactly as WordPress delivered it.
+    }
+    // phpcs:enable WordPress.Security.NonceVerification.Missing
+
+    if ( $fields ) {
+      $_POST['form_fields'] = array_values($kept);
+    }
+
+    if ( cfturnstile_whitelisted() ) {
+      return;
+    }
+
+    if ( 'POST' !== ( isset($_SERVER['REQUEST_METHOD']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_METHOD'])) : '' ) ) {
+      wp_send_json_error( array( 'message' => cfturnstile_failed_message() ) );
+    }
+
+    $check = cfturnstile_check($token);
+
+    if ( empty($check['success']) ) {
+      wp_send_json_error( array( 'message' => cfturnstile_failed_message() ) );
     }
   }
 
