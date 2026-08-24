@@ -18,7 +18,13 @@
 	'use strict';
 
 	var FORM_SELECTOR = '[data-element_type="e-form"]';
+	// Elementor's own handler toggles exactly this set while a submission is in flight,
+	// so we use the same selector for enabling/disabling and stay in sync with it.
 	var SUBMIT_SELECTOR = 'button[type="submit"], input[type="submit"]';
+	// Base class of the atomic submit-button widget. Preferred as the insertion anchor
+	// because it identifies the real submit widget even when a nested component happens
+	// to contain another submit button.
+	var SUBMIT_ANCHOR = '.e-form-submit-button-base';
 	var TOKEN_NAME = 'cf-turnstile-response';
 	var FAILSAFE_NAME = 'cfturnstile_failsafe';
 	var PROCESSED_CLASS = 'cft-atomic-processed';
@@ -79,8 +85,15 @@
 	/**
 	 * Insert an element according to the configured position setting.
 	 */
+	/**
+	 * The element the widget is positioned relative to.
+	 */
+	function findSubmitAnchor(form) {
+		return form.querySelector(SUBMIT_ANCHOR) || form.querySelector(SUBMIT_SELECTOR);
+	}
+
 	function insertAtPosition(form, node, position) {
-		var submitButton = form.querySelector(SUBMIT_SELECTOR);
+		var submitButton = findSubmitAnchor(form);
 		if (position === 'afterform' || !submitButton || !submitButton.parentNode) {
 			form.appendChild(node);
 			return;
