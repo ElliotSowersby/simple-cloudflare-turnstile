@@ -79,7 +79,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         $deps,
-        '2.8',
+        '2.9',
         true
       );
 
@@ -116,7 +116,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-atomic-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-atomic-forms.js'),
         array('cfturnstile-elementor-forms'),
-        '1.0',
+        '1.1',
         true
       );
     }

@@ -65,6 +65,25 @@
 		});
 	}
 
+	/**
+	 * Apply the configured alignment. The Turnstile iframe sits in a block-level child that
+	 * fills the container, so text-align has no effect; a flex container is what actually
+	 * moves it.
+	 */
+	function applyAlign(node, align) {
+		if (!node) {
+			return;
+		}
+		var justify = 'flex-start';
+		if (align === 'center') {
+			justify = 'center';
+		} else if (align === 'right') {
+			justify = 'flex-end';
+		}
+		node.style.display = 'flex';
+		node.style.justifyContent = justify;
+	}
+
 	function buildLabel(settings) {
 		if (!settings.labelEnable || !settings.labelText) {
 			return null;
@@ -72,6 +91,7 @@
 		var label = document.createElement('p');
 		label.className = 'cfturnstile-widget-label';
 		label.style.cssText = 'font-size: 14px; margin: 0 0 6px 0; width: 100%;';
+		label.style.textAlign = ( settings.align === 'center' || settings.align === 'right' ) ? settings.align : 'left';
 		if ((settings.appearance || 'always') === 'interaction-only') {
 			label.className += ' cfturnstile-widget-label-interaction';
 			label.style.display = 'none';
@@ -217,6 +237,7 @@
 					recaptcha.className = 'g-recaptcha';
 					recaptcha.setAttribute('data-sitekey', settings.recaptchaSiteKey);
 					recaptcha.style.cssText = 'display: block; margin: 10px 0 15px 0; width: 100%;';
+					applyAlign(recaptcha, settings.align);
 					insertAtPosition(form, recaptcha, position);
 				}
 
@@ -234,6 +255,7 @@
 			widget.className = 'elementor-turnstile-field cf-turnstile';
 			widget.id = 'cf-turnstile-elementor-atomic-' + index;
 			widget.style.cssText = 'display: block; margin: 10px 0 15px 0; width: 100%;';
+			applyAlign(widget, settings.align);
 
 			if (label) {
 				insertAtPosition(form, label, position);

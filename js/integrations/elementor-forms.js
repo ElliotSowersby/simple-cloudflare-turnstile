@@ -4,6 +4,15 @@ function cfturnstile_elementor_set_submit(btn, enabled) {
   btn.style.opacity     = enabled ? '1'    : '0.5';
 }
 
+function cfturnstile_elementor_apply_align(node, align) {
+  if (!node) return;
+  var justify = 'flex-start';
+  if (align === 'center') { justify = 'center'; }
+  else if (align === 'right') { justify = 'flex-end'; }
+  node.style.display = 'flex';
+  node.style.justifyContent = justify;
+}
+
 function cfturnstile_init_elementor_forms() {
   var settings = window.cfturnstileElementorSettings || {};
   var sitekey = settings.sitekey || '';
@@ -12,6 +21,7 @@ function cfturnstile_init_elementor_forms() {
   var recaptchaSiteKey = settings.recaptchaSiteKey || '';
   var disableSubmit = settings.disableSubmit || false;
   var widgetSize = settings.size || 'normal';
+  var align = settings.align || 'left';
   
   if (!window._cft_elementor_idx) { window._cft_elementor_idx = 0; }
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
@@ -37,6 +47,7 @@ function cfturnstile_init_elementor_forms() {
         recaptchaDiv.className = 'g-recaptcha';
         recaptchaDiv.setAttribute('data-sitekey', recaptchaSiteKey);
         recaptchaDiv.style.cssText = 'display: block; margin: 10px 0 15px 0; width: 100%;';
+        cfturnstile_elementor_apply_align(recaptchaDiv, align);
 
         if (position === 'after') {
           submitButton.parentNode.insertBefore(recaptchaDiv, submitButton.nextSibling);
@@ -62,6 +73,7 @@ function cfturnstile_init_elementor_forms() {
         labelEl = document.createElement('p');
         labelEl.className = 'cfturnstile-widget-label';
         labelEl.style.cssText = 'font-size: 14px; margin: 0 0 6px 0; width: 100%;';
+        labelEl.style.textAlign = (align === 'center' || align === 'right') ? align : 'left';
         if ((settings.appearance || 'always') === 'interaction-only') {
           labelEl.className += ' cfturnstile-widget-label-interaction';
           labelEl.style.display = 'none';
@@ -75,6 +87,7 @@ function cfturnstile_init_elementor_forms() {
       turnstileDiv.className = 'elementor-turnstile-field cf-turnstile';
       turnstileDiv.id = 'cf-turnstile-elementor-fallback-' + index;
       turnstileDiv.style.cssText = 'display: block; margin: 10px 0 15px 0; width: 100%;';
+      cfturnstile_elementor_apply_align(turnstileDiv, align);
 
       if (position === 'after') {
         if (labelEl) submitButton.parentNode.insertBefore(labelEl, submitButton.nextSibling);
