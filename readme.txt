@@ -3,8 +3,8 @@ Contributors: ElliotVS, RelyWP
 Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
-Tested up to: 7.0
-Stable Tag: 1.42.1
+Tested up to: 7.1
+Stable Tag: 1.42.3
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -207,7 +207,21 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
-== Changelog ===
+== Changelog ==
+
+= Version 1.42.2 - 7th September 2026 =
+- Fix: Fixed the Turnstile widget not being reset after a failed submission on forms that submit without a page reload, such as AJAX login forms and single page (SPA) themes. The used token was sent again on the next attempt, which always failed with a Turnstile error until the page was fully reloaded.
+- Fix: Fixed the Turnstile widget not appearing on the WooCommerce checkout when the section chosen in the "Widget Position" setting was not part of the checkout, such as on a checkout page still using an older version of the Checkout block, when a block has been removed in the editor, or with a theme that has its own checkout template. The order was still rejected for a missing challenge, so the checkout showed an error with no widget to complete. The widget now falls back to a position above the "Place Order" button.
+- Fix: Fixed the "After Payment" widget position removing the entire payment section, including the payment methods, from the WooCommerce block checkout.
+- Fix: Fixed the Turnstile widget not appearing on the WooCommerce app authorization screen (/wc-auth/), which could leave you unable to authorize an app when WooCommerce Login protection is enabled. You are now sent to the WordPress login form to complete the challenge, then returned to the authorization screen.
+- Fix: Fixed the "cloudflare turnstile" button in the Contact Form 7 form editor inserting nothing when clicked. It now inserts the [cf7_simple_turnstile] tag.
+- Fix: Fixed the Turnstile error message not being shown on the Gravity Forms User Registration login form ([gravityform action="login"]). The form quietly refused to log you in when the challenge had not been completed, with nothing on screen to explain why.
+- Security: Fixed a vulnerability where the Turnstile check on the WordPress login and lost password forms could be bypassed by adding a fake WooCommerce nonce field to the request. The check is now only skipped for a genuine WooCommerce form submission, with a verified nonce.
+- Security: Fixed a vulnerability where the Turnstile check on the WooCommerce lost password form could be bypassed by leaving the form's nonce field out of the request, allowing password reset emails to be sent for any account with no verification. The check now runs for every request WooCommerce accepts as a password reset, on any URL.
+- Security: Fixed a vulnerability where the Turnstile check on the WooCommerce checkout could be bypassed by adding a wc-ajax parameter to the request, allowing orders to be placed with no verification at all. This could be used to run automated card testing against your payment gateway.
+- Security: Fixed a vulnerability in the Contact Form 7 integration, where the whole rendered form was passed through the WordPress shortcode parser. Contact Form 7 reflects submitted values back into the form, so an unauthenticated visitor could run any shortcode registered on the site, with attributes of their choosing, just by submitting it as a field value. The Turnstile widget is now rendered by Contact Form 7 itself, and no shortcode parser is run over the form. Reported by Jakub Herman via WPScan.
+- Security: Fixed a vulnerability where the Turnstile check on Gravity Forms could be bypassed by adding a page number to the request. This was intended to let multi-page forms move between pages without a challenge, but it was accepted on any form, including the login form added by the Gravity Forms User Registration add-on, which could then be submitted with no verification at all. The check is now only skipped on forms that really do have more than one page.
+- Tweak: The Turnstile form-tag for Contact Form 7 is now [cf7_simple_turnstile], which is the name Contact Form 7 accepts. Your existing [cf7-simple-turnstile] tags keep working and do not need to be changed. As a result of the security fix above, other shortcodes placed inside a Contact Form 7 form are no longer expanded by this plugin.
 
 = Version 1.42.1 - 27th July 2026 =
 - Fix: Fixed an issue since 1.42.0 where the submit button could stay disabled after the Turnstile challenge was completed, when the "Disable Submit Button" option is enabled. On the login form this could lock you out of your site.

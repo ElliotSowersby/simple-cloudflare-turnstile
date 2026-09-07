@@ -53,10 +53,12 @@ if(get_option('cfturnstile_gravity')) {
       return $validation_result;
     }
 
-    // Support multi-page forms
+    // Support multi-page forms, where moving between pages posts without a token.
+    // Only forms that actually have pages can do this, otherwise the posted target page
+    // could be used to skip the check entirely on any other form.
     $target_page = rgpost( 'gform_target_page_number_' . $form['id'] );
     $has_token = ! empty( $_POST['cf-turnstile-response'] );
-    if ( ! $has_token && ! empty( $target_page ) && intval( $target_page ) !== 0 ) {
+    if ( ! $has_token && ! empty( $target_page ) && intval( $target_page ) !== 0 && cfturnstile_gravity_has_pages( $form ) ) {
       return $validation_result;
     }
     
@@ -65,6 +67,7 @@ if(get_option('cfturnstile_gravity')) {
       $cfturnstile_gravity_error = cfturnstile_failed_message();
       $validation_result['is_valid'] = false;
       add_filter('gform_validation_message_' . $form['id'], 'cfturnstile_gravity_validation_message', 10, 2);
+      cfturnstile_gravity_login_form_error($form, $cfturnstile_gravity_error);
       return $validation_result;
     }
 
@@ -75,11 +78,45 @@ if(get_option('cfturnstile_gravity')) {
       $cfturnstile_gravity_error = cfturnstile_failed_message();
       $validation_result['is_valid'] = false;
       add_filter('gform_validation_message_' . $form['id'], 'cfturnstile_gravity_validation_message', 10, 2);
+      cfturnstile_gravity_login_form_error($form, $cfturnstile_gravity_error);
 
       return $validation_result;
     }
-  
+
     return $validation_result;
+  }
+
+  // Check if a form has pages, and can therefore move between them
+  function cfturnstile_gravity_has_pages($form) {
+    $fields = rgar($form, 'fields');
+    if (empty($fields) || !is_array($fields)) {
+      return false;
+    }
+    foreach ($fields as $field) {
+      $type = is_object($field) ? rgobj($field, 'type') : rgar($field, 'type');
+      if ($type === 'page') {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  // The User Registration add-on login form renders its own markup and never outputs the
+  // form validation message, so show the error on the last field of the form instead.
+  function cfturnstile_gravity_login_form_error($form, $error) {
+    if (intval(rgar($form, 'id')) !== 0 || !function_exists('gf_user_registration')) {
+      return;
+    }
+    $fields = rgar($form, 'fields');
+    if (empty($fields) || !is_array($fields)) {
+      return;
+    }
+    $field = end($fields);
+    if (!is_object($field)) {
+      return;
+    }
+    $field->failed_validation = true;
+    $field->validation_message = $error;
   }
 
   function cfturnstile_gravity_validation_message($message, $form)

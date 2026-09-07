@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.42.1
+ * Version: 1.42.3
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -79,6 +79,28 @@ function cfturnstile_api_bootstrap() {
 }
 
 /**
+ * Refresh a Turnstile token spent by a form that submits without a page reload.
+ *
+ * A token is single use - the server spends it the first time it checks it. On an AJAX or SPA
+ * form nothing re-renders the widget, so a rejected submission (a wrong password, a validation
+ * error) leaves the spent token sitting there still reading "Success!", and every retry posts
+ * that same dead token. Only a full reload recovered it, which an SPA route change is not. So if
+ * the page is still here a second after a submit, the token has been used up: hand the widget a
+ * fresh one, ready for the retry. A normal form post navigates away and never gets that far.
+ *
+ * Skipped while a two factor prompt is open, where the consumed token must survive to the final
+ * POST, and for a widget something else has already reset - its token will no longer match.
+ *
+ * Inlined rather than enqueued: it is under a kilobyte, and a file would cost a request on every
+ * page carrying a widget. Attached 'before' like the bootstrap, which keeps the API deferrable.
+ *
+ * @return string
+ */
+function cfturnstile_token_refresh() {
+	return '(function(w,d){if(w.cfturnstileRefresh)return;w.cfturnstileRefresh=1;var F="input[name=cf-turnstile-response]",u=false;function go(){u=true;}w.addEventListener("pagehide",go);w.addEventListener("beforeunload",go);d.addEventListener("submit",function(e){var f=e.target,s=[];if(!f||!f.querySelectorAll)return;f.querySelectorAll(".cf-turnstile").forEach(function(el){var i=el.querySelector(F);if(i&&i.value)s.push([el,i.value]);});if(!s.length)return;setTimeout(function(){if(u||!w.turnstile||d.querySelector("#wfls-prompt-overlay,#wfls-token,#fls_2fa_form,.fls_2fs"))return;s.forEach(function(x){var i=x[0].querySelector(F);if(i&&i.value===x[1]){try{w.turnstile.reset(x[0]);}catch(_){}}});},1000);},true);})(window,document);';
+}
+
+/**
  * Register the Turnstile API script with its bootstrap attached.
  *
  * Attached 'before', not 'after': if the API ran first it could invoke onload before the callback
@@ -99,6 +121,7 @@ function cfturnstile_register_api($args = array()) {
 	if ( ! $bootstrapped ) {
 		$bootstrapped = true;
 		wp_add_inline_script('cfturnstile', cfturnstile_api_bootstrap(), 'before');
+		wp_add_inline_script('cfturnstile', cfturnstile_token_refresh(), 'before');
 	}
 }
 

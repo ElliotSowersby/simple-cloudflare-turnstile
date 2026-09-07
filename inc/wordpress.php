@@ -220,7 +220,9 @@ if(get_option('cfturnstile_reset')) {
   	add_action('lostpassword_post','cfturnstile_wp_reset_check', 10, 1);
   	function cfturnstile_wp_reset_check($validation_errors) {
 
-		if(isset($_POST['woocommerce-lost-password-nonce'])) { return; } // Skip Woo
+		// Skip Woo: a genuine WooCommerce lost password submission is cfturnstile_woo_reset_check()'s
+		// to handle, and checking here as well would spend the single-use token twice.
+		if ( function_exists('cfturnstile_is_woo_lost_password_request') && cfturnstile_is_woo_lost_password_request() ) { return; }
 
 		if(stripos($_SERVER["SCRIPT_NAME"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
   			$check = cfturnstile_check();
