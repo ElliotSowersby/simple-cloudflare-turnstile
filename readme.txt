@@ -209,7 +209,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.42.2 - 7th September 2026 =
+= Version 1.42.3 - 7th September 2026 =
 - Fix: Fixed the Turnstile widget not being reset after a failed submission on forms that submit without a page reload, such as AJAX login forms and single page (SPA) themes. The used token was sent again on the next attempt, which always failed with a Turnstile error until the page was fully reloaded.
 - Fix: Fixed the Turnstile widget not appearing on the WooCommerce checkout when the section chosen in the "Widget Position" setting was not part of the checkout, such as on a checkout page still using an older version of the Checkout block, when a block has been removed in the editor, or with a theme that has its own checkout template. The order was still rejected for a missing challenge, so the checkout showed an error with no widget to complete. The widget now falls back to a position above the "Place Order" button.
 - Fix: Fixed the "After Payment" widget position removing the entire payment section, including the payment methods, from the WooCommerce block checkout.
