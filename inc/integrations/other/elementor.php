@@ -79,7 +79,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         $deps,
-        '2.8',
+        '2.9',
         true
       );
 
@@ -135,6 +135,8 @@ if(get_option('cfturnstile_elementor')) {
           $wt = $el['widgetType'];
           if ($wt === 'form' || $wt === 'login') return true;
         }
+        // Atomic (Elementor 4) forms are elements, not widgets - elType is the element type itself.
+        if (isset($el['elType']) && $el['elType'] === 'e-form') return true;
         if (!empty($el['elements']) && is_array($el['elements'])){
           if (cfturnstile_elementor_elements_contain_form($el['elements'])) return true;
         }
@@ -219,6 +221,31 @@ if(get_option('cfturnstile_elementor')) {
     $ajax_handler->add_error( '', '' );
     $ajax_handler->is_success = false;
     }
+    }
+  }
+
+  /**
+   * Atomic (Elementor 4) Forms Check
+   *
+   * Atomic forms do not run through elementor_pro/forms/validation - they post to their own
+   * admin-ajax action and build the payload in JavaScript. Hook the action ahead of Elementor's
+   * own handler (priority 10) so a missing or invalid token is rejected before any of the
+   * form's after-submit actions run, and so the plugin's own failure message is returned.
+   *
+   * The token is not part of Elementor's form_fields payload - elementor-forms.js appends it
+   * to the outgoing FormData, so it arrives as a normal $_POST value.
+   */
+  add_action('wp_ajax_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
+  add_action('wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
+  function cfturnstile_elementor_atomic_check(){
+    if ( 'POST' !== ( isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
+      wp_send_json_error( array( 'message' => cfturnstile_failed_message() ) );
+    }
+
+    $check = cfturnstile_check('', 'elementor-atomic-form');
+
+    if ( empty($check['success']) ) {
+      wp_send_json_error( array( 'message' => cfturnstile_failed_message() ) );
     }
   }
 

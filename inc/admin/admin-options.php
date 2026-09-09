@@ -1710,7 +1710,7 @@ function cfturnstile_settings_page() {
 
 					</table>
 
-					<?php echo esc_html__('When enabled, Turnstile will be added to your Elementor Pro forms. Use the options below to control where scripts are loaded and where the widget appears.', 'simple-cloudflare-turnstile'); ?>
+					<?php echo esc_html__('When enabled, Turnstile will be added to your Elementor Pro forms, including Atomic forms. Use the options below to control where scripts are loaded and where the widget appears.', 'simple-cloudflare-turnstile'); ?>
 
 					<table class="form-table" style="margin-bottom: -15px;">
 
