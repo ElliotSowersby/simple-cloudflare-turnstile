@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.42.3
+ * Version: 1.42.4
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -67,10 +67,8 @@ function cfturnstile_api_url() {
 }
 
 /**
- * Widget render queue, drained by Cloudflare's onload callback. Must run before the API script.
- *
- * Also exposes window.cfturnstileOpts(), which turns a widget's data-*-callback attributes into
- * the real functions explicit rendering needs. Takes an element or a selector.
+ * Widget render queue, drained by Cloudflare's onload callback. Also exposes
+ * window.cfturnstileOpts(), which maps a widget's data-*-callback attributes to functions.
  *
  * @return string
  */
@@ -79,37 +77,26 @@ function cfturnstile_api_bootstrap() {
 }
 
 /**
- * Refresh a Turnstile token spent by a form that submits without a page reload.
+ * Reset a widget one second after its form submits without leaving the page (AJAX/SPA forms),
+ * so a retry gets a fresh token instead of re-posting the spent one.
  *
- * A token is single use - the server spends it the first time it checks it. On an AJAX or SPA
- * form nothing re-renders the widget, so a rejected submission (a wrong password, a validation
- * error) leaves the spent token sitting there still reading "Success!", and every retry posts
- * that same dead token. Only a full reload recovered it, which an SPA route change is not. So if
- * the page is still here a second after a submit, the token has been used up: hand the widget a
- * fresh one, ready for the retry. A normal form post navigates away and never gets that far.
- *
- * Skipped while a two factor prompt is open, where the consumed token must survive to the final
- * POST, and for a widget something else has already reset - its token will no longer match.
- *
- * Inlined rather than enqueued: it is under a kilobyte, and a file would cost a request on every
- * page carrying a widget. Attached 'before' like the bootstrap, which keeps the API deferrable.
+ * Skipped while a 2FA prompt is open, when the token has already changed, and for forms that
+ * resubmit themselves after async work (the WooCommerce checkout, where card gateways intercept
+ * Place Order and woocommerce.js handles resets). Filterable via cfturnstile_token_refresh_skip_forms.
  *
  * @return string
  */
 function cfturnstile_token_refresh() {
-	return '(function(w,d){if(w.cfturnstileRefresh)return;w.cfturnstileRefresh=1;var F="input[name=cf-turnstile-response]",u=false;function go(){u=true;}w.addEventListener("pagehide",go);w.addEventListener("beforeunload",go);d.addEventListener("submit",function(e){var f=e.target,s=[];if(!f||!f.querySelectorAll)return;f.querySelectorAll(".cf-turnstile").forEach(function(el){var i=el.querySelector(F);if(i&&i.value)s.push([el,i.value]);});if(!s.length)return;setTimeout(function(){if(u||!w.turnstile||d.querySelector("#wfls-prompt-overlay,#wfls-token,#fls_2fa_form,.fls_2fs"))return;s.forEach(function(x){var i=x[0].querySelector(F);if(i&&i.value===x[1]){try{w.turnstile.reset(x[0]);}catch(_){}}});},1000);},true);})(window,document);';
+	$skip_forms = apply_filters( 'cfturnstile_token_refresh_skip_forms', 'form.checkout, form.woocommerce-checkout' );
+	$skip_forms = esc_js( (string) $skip_forms );
+	return '(function(w,d){if(w.cfturnstileRefresh)return;w.cfturnstileRefresh=1;var F="input[name=cf-turnstile-response]",S="' . $skip_forms . '",u=false;function go(){u=true;}w.addEventListener("pagehide",go);w.addEventListener("beforeunload",go);d.addEventListener("submit",function(e){var f=e.target,s=[];if(!f||!f.querySelectorAll)return;try{if(S&&f.matches&&f.matches(S))return;}catch(_){}f.querySelectorAll(".cf-turnstile").forEach(function(el){var i=el.querySelector(F);if(i&&i.value)s.push([el,i.value]);});if(!s.length)return;setTimeout(function(){if(u||!w.turnstile||d.querySelector("#wfls-prompt-overlay,#wfls-token,#fls_2fa_form,.fls_2fs"))return;s.forEach(function(x){var i=x[0].querySelector(F);if(i&&i.value===x[1]){try{w.turnstile.reset(x[0]);}catch(_){}}});},2000);},true);})(window,document);';
 }
 
 /**
- * Register the Turnstile API script with its bootstrap attached.
+ * Register the Turnstile API script with its bootstrap attached 'before', so the onload
+ * callback exists before the API can call it. Attached even if another plugin registered the handle.
  *
- * Attached 'before', not 'after': if the API ran first it could invoke onload before the callback
- * existed, and Cloudflare does not retry. ('before' also keeps the script defer-eligible.)
- *
- * The bootstrap is attached even when something else already claimed the handle, so our widgets
- * still render off whichever script that is - the watchdog picks it up if it carries no onload.
- *
- * @param array|bool $args Script args (strategy / in_footer), as accepted by wp_register_script().
+ * @param array|bool $args Script args, as accepted by wp_register_script().
  */
 function cfturnstile_register_api($args = array()) {
 	static $bootstrapped = false;
@@ -174,7 +161,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		/* Interaction Only / Execute Helper (toggles widget label and spacer when the widget is visible) */
 		if ( get_option('cfturnstile_appearance', 'always') !== 'always' && !wp_script_is('cfturnstile-label-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-label-js', plugins_url('/js/interaction-label.js', __FILE__), array(), '1.1', $script_args); }
 		/* WooCommerce */
-		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '1.9', $script_args); }
+		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '2.0', $script_args); }
 		/* WPDiscuz */
 		if ( cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') && !wp_style_is('cfturnstile-css', 'enqueued') ) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
 		/* Blocksy - match child themes too, whose style.css usually declares no text domain of its own */
@@ -196,10 +183,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 	add_filter('script_loader_tag', 'cfturnstile_add_data_attribute', 10, 2);
 
 	/**
-	 * Add data-cfasync="false" to our inline scripts too.
-	 *
-	 * script_loader_tag only fires for handles with a src, so it never sees these. Cloudflare
-	 * Rocket Loader rewrites unmarked inline scripts, and these are what render the widgets.
+	 * Add data-cfasync="false" to our inline scripts too, so Rocket Loader leaves them alone.
 	 */
 	function cfturnstile_add_inline_data_attribute($attributes) {
 		if ( isset($attributes['id']) && 0 === strpos($attributes['id'], 'cfturnstile') ) {
@@ -367,6 +351,11 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		// Fluent Security (FluentAuth)
 		if (cft_is_plugin_active('fluent-security/fluent-security.php')) {
 			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/other/fluent-auth.php');
+		}
+
+		// Wordfence / Wordfence Login Security (passkey login)
+		if (cft_is_plugin_active('wordfence/wordfence.php') || cft_is_plugin_active('wordfence-login-security/wordfence-login-security.php')) {
+			include_once(plugin_dir_path(__FILE__) . 'inc/integrations/other/wordfence.php');
 		}
 
 		// Jetpack Forms

@@ -10,8 +10,9 @@
 
     var WIDGET_ID = 'cf-turnstile-woo-checkout';
 
+    // Prefer the widget inside the submitted form; builders like Divi can leave a stray copy elsewhere.
     function cfturnstileWooWidget() {
-        return document.getElementById( WIDGET_ID );
+        return document.querySelector( 'form.checkout #' + WIDGET_ID ) || document.getElementById( WIDGET_ID );
     }
 
     function cfturnstileWooOnReady( fn ) {

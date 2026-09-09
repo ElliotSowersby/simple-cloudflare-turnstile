@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.42.3
+Stable Tag: 1.42.4
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,13 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.42.4 - 9th September 2026 =
+- Fix: Fixed an issue since 1.42.3 where WooCommerce checkout orders paid with a card gateway such as Stripe or WooPayments could be rejected with a Turnstile error. The token refresh added in 1.42.3 reset the checkout widget one second after "Place Order" was clicked, while the gateway was still processing the card in the browser, so the order was then submitted with no challenge token. The checkout widget is now left alone by that refresh, as the checkout already resets it after a failed order.
+- Fix: Fixed an issue since 1.42.3 where every order on a WooCommerce checkout page built with the Divi Builder's Checkout modules was rejected with a Turnstile error. The new fallback widget position was rendered inside the Divi Billing module, in a form that is never submitted, and a second copy of the widget was then added to the real checkout form but never activated, so no challenge token was sent with the order. The fallback now leaves the Divi module renders alone and only places the widget inside the real checkout form. If you downgraded to 1.42.1 to work around this, you can update again.
+- Tweak: Added the cfturnstile_is_partial_checkout_render filter, so other page builders that render the checkout template more than once can flag their extra renders.
+- Fix: Fixed passkey login failing with a Turnstile error when Wordfence 9.0.0's new Login Security passkeys are used with the WordPress login check enabled. Wordfence completes a passkey login through the normal WordPress authentication process in a background request that carries no Turnstile token, so the login was rejected with a missing challenge. A passkey is a phishing-resistant proof of the user's device that a bot cannot produce, so the Turnstile check is now skipped for a login Wordfence has already verified with a passkey. Username and password logins are still checked as before.
+- Fix: Fixed a WooCommerce checkout Turnstile token remaining usable for up to two minutes when the request that used it ended unexpectedly. A successful verification is remembered for the rest of the request so the same token is not sent to Cloudflare twice, and that record was normally discarded as soon as checkout validation finished. If the request stopped before that point, such as a fatal error or a payment gateway throwing an exception, the record was left behind and the same token could be submitted again until it expired. The record is now always discarded at the end of the request.
 
 = Version 1.42.3 - 7th September 2026 =
 - Fix: Fixed the Turnstile widget not being reset after a failed submission on forms that submit without a page reload, such as AJAX login forms and single page (SPA) themes. The used token was sent again on the next attempt, which always failed with a Turnstile error until the page was fully reloaded.
