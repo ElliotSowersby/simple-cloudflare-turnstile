@@ -478,7 +478,11 @@ function cfturnstile_atomic_patch_fetch() {
       }
     } catch (e) {}
 
-    var request = originalFetch.apply(this, arguments);
+    // Callers reaching fetch from strict mode code (bundles, ES modules) invoke it bare, so
+    // `this` arrives undefined. Current Chrome tolerates that, but engines that hold fetch to
+    // its WebIDL receiver throw "Illegal invocation" - fall back to the global rather than
+    // making that a property of whether this plugin happens to be active.
+    var request = originalFetch.apply(this || window, arguments);
 
     if (form) {
       var reset = function() {
