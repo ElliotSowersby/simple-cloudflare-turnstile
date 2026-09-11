@@ -25,6 +25,38 @@ function cfturnstile_elementor_token(form) {
   return token;
 }
 
+/**
+ * A form belonging to a popup document that has not been moved into a modal yet.
+ *
+ * Elementor Pro caches a popup's markup as an HTML string in its handler's onInit(), then rebuilds
+ * the popup from that string on every open. Anything rendered into the form while it is still
+ * inline gets baked into the cache as dead markup, so these forms are left to the popup/show
+ * handler below.
+ */
+function cfturnstile_elementor_is_unshown_popup(form) {
+  if (!form || !form.closest) return false;
+  return !!form.closest('[data-elementor-type="popup"]') && !form.closest('.elementor-popup-modal');
+}
+
+/**
+ * True when this container is backed by a widget Turnstile still knows about.
+ *
+ * A container rebuilt from Elementor's popup cache carries markup copied from an earlier render
+ * that is no longer a live widget. turnstile.remove() only warns and returns on such a container
+ * (it does not throw, so try/catch does not detect it) while turnstile.render() appends alongside
+ * the copy - which is how a popup ends up with two widgets and two response inputs. getResponse()
+ * does throw for an unknown container, so it is the reliable probe.
+ */
+function cfturnstile_elementor_widget_is_live(widget) {
+  if (!widget || !window.turnstile) return false;
+  try {
+    turnstile.getResponse(widget);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 function cfturnstile_init_elementor_forms() {
   var settings = window.cfturnstileElementorSettings || {};
   var sitekey = settings.sitekey || '';
@@ -37,6 +69,8 @@ function cfturnstile_init_elementor_forms() {
   if (!window._cft_elementor_idx) { window._cft_elementor_idx = 0; }
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
   elementorForms.forEach(function(form) {
+    if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
     var index = window._cft_elementor_idx++;
     if (form.querySelector('.cf-turnstile') || form.querySelector('.g-recaptcha') || form.querySelector('input[name="cfturnstile_failsafe"]')) {
       form.classList.add('cft-processed');
@@ -240,10 +274,23 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
       var form = widget.closest('.elementor-form');
       var submitButton = form ? form.querySelector('button[type="submit"]') : null;
 
+      // A widget Turnstile still owns is already rendered, and may hold a solved token that
+      // re-rendering would throw away.
+      if (cfturnstile_elementor_widget_is_live(widget)) {
+        if (disableSubmit && submitButton) {
+          cfturnstile_elementor_set_submit(submitButton, !!cfturnstile_elementor_token(form));
+        }
+        return;
+      }
+
       // Disable submit button if option is enabled
       if (disableSubmit && submitButton) { cfturnstile_elementor_set_submit(submitButton, false); }
-      
-      turnstile.remove(widget);
+
+      // Orphan markup rebuilt from Elementor's popup cache: clear it, or render() appends a second
+      // widget and the form posts two cf-turnstile-response inputs - the first one already spent.
+      try { turnstile.remove(widget); } catch (e) {}
+      widget.innerHTML = '';
+
       turnstile.render(widget, {
         sitekey: cfturnstileElementorSettings.sitekey,
         appearance: cfturnstileElementorSettings.appearance || 'always',
@@ -265,6 +312,22 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
       });
     });
   }, 500);
+});
+
+// Release the widgets of a popup that is closing. Elementor throws the popup DOM away and rebuilds
+// it from its cached string on the next open, so without this the widgets stay registered against
+// detached nodes for the rest of the page life. Deferred so the widget does not blink out of the
+// popup mid exit-animation - removing a detached container works just as well.
+jQuery(document).on('elementor/popup/hide', function(event, id) {
+  var modal = document.getElementById('elementor-popup-modal-' + id);
+  if (!modal || !window.turnstile) return;
+  var widgets = Array.prototype.slice.call(modal.querySelectorAll('.cf-turnstile'));
+  if (!widgets.length) return;
+  setTimeout(function() {
+    widgets.forEach(function(widget) {
+      try { turnstile.remove(widget); } catch (e) {}
+    });
+  }, 1000);
 });
 
 /* ---------------------------------------------------------------------------
@@ -348,6 +411,10 @@ function cfturnstile_init_elementor_atomic_forms() {
   });
 
   document.querySelectorAll(CFT_ATOMIC_FORM_SELECTOR + ':not(.cft-processed)').forEach(function(form) {
+    // Same popup caching trap as the classic forms above - wait until the popup is actually shown,
+    // at which point the observer below picks the form up with its atomic render options intact.
+    if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
     if (form.querySelector('.cf-turnstile, .g-recaptcha, input[name="cfturnstile_failsafe"]')) {
       form.classList.add('cft-processed');
       return;

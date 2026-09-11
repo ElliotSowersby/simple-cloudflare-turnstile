@@ -318,8 +318,44 @@ if(get_option('cfturnstile_woo_checkout')) {
 			return substr( $block_content, 0, $at ) . $widget . substr( $block_content, $at );
 		}
 
-		// No actions block: append after the checkout. The block checkout reads the token by id.
+		// The configured block is missing from the saved checkout markup. WooCommerce still shows it:
+		// every inner block with lock.default.remove renders client-side when absent, appended after
+		// the fields block's saved children. So the last slot inside the fields block is directly
+		// above those, which is where every remaining position wants the widget anyway.
+		$fields = cfturnstile_block_checkout_fields_end( $block_content );
+		if ( false !== $fields ) {
+			return substr( $block_content, 0, $fields ) . $widget . substr( $block_content, $fields );
+		}
+
+		// No fields block either: append after the checkout. The block checkout reads the token by id.
 		return $block_content . $widget;
+	}
+
+	/**
+	 * Offset of the closing tag of the checkout fields block, so the widget can be placed as its
+	 * last child. Appending after the whole checkout block instead drops the widget outside the
+	 * block's React root, where the theme lays it out on its own away from the form.
+	 *
+	 * @param string $block_content Rendered woocommerce/checkout block.
+	 * @return int|false Offset of the fields block's closing </div>, or false if not found.
+	 */
+	function cfturnstile_block_checkout_fields_end( $block_content ) {
+		if ( ! preg_match( '/<div[^>]*wp-block-woocommerce-checkout-fields-block[^>]*>/i', $block_content, $match, PREG_OFFSET_CAPTURE ) ) {
+			return false;
+		}
+
+		// Walk from the opening tag to its matching close, so nested blocks are skipped.
+		$offset = $match[0][1] + strlen( $match[0][0] );
+		$depth  = 1;
+		while ( $depth > 0 && preg_match( '/<(\/?)div\b[^>]*>/i', $block_content, $tag, PREG_OFFSET_CAPTURE, $offset ) ) {
+			$depth += ( '/' === $tag[1][0] ) ? -1 : 1;
+			$offset = $tag[0][1] + strlen( $tag[0][0] );
+			if ( 0 === $depth ) {
+				return $tag[0][1];
+			}
+		}
+
+		return false;
 	}
 
 	// Classic checkout fallbacks. Priority 9999 runs after woocommerce_checkout_payment (20), so
