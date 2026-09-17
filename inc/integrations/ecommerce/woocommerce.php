@@ -33,11 +33,20 @@ function cfturnstile_field_woo_account() {
  * Whether the checkout widget has already been handled on this request.
  * Shared so the fallback renderers can tell if the configured position ran.
  *
- * @param bool $mark Set the flag.
+ * The flag records that cfturnstile_field_checkout() ran, not that its output was kept. A render
+ * into a buffer that was then thrown away spends it all the same, leaving the real checkout with
+ * no widget while the order is still rejected for a missing token. So $reset clears it when a
+ * fresh checkout form starts, or when the finished markup turns out not to contain the widget.
+ *
+ * @param bool $mark  Set the flag.
+ * @param bool $reset Clear the flag.
  * @return bool
  */
-function cfturnstile_checkout_widget_rendered( $mark = false ) {
+function cfturnstile_checkout_widget_rendered( $mark = false, $reset = false ) {
 	static $rendered = false;
+	if ( $reset ) {
+		$rendered = false;
+	}
 	if ( $mark ) {
 		$rendered = true;
 	}
@@ -300,12 +309,20 @@ if(get_option('cfturnstile_woo_checkout')) {
 	// position hook and no-op once the widget has been handled.
 	add_filter( 'render_block_woocommerce/checkout', 'cfturnstile_render_block_checkout_fallback', 9999, 1 );
 	function cfturnstile_render_block_checkout_fallback( $block_content ) {
-		if ( cfturnstile_checkout_widget_rendered() || ! is_string( $block_content ) || '' === $block_content ) {
+		if ( ! is_string( $block_content ) || '' === $block_content ) {
 			return $block_content;
 		}
 		if ( cfturnstile_is_checkout_endpoint_page() ) {
 			return $block_content;
 		}
+
+		// Go by the markup, not the flag: every block position renders inside this block, so if the
+		// widget (or a failsafe marker standing in for it) is not here, it is not on the page, and
+		// the flag was spent on a render that was thrown away.
+		if ( false !== strpos( $block_content, 'id="cf-turnstile-woo-checkout"' ) || false !== strpos( $block_content, 'name="cfturnstile_failsafe"' ) ) {
+			return $block_content;
+		}
+		cfturnstile_checkout_widget_rendered( false, true );
 
 		$widget = cfturnstile_get_checkout_field();
 		if ( '' === trim( $widget ) ) {
@@ -363,6 +380,17 @@ if(get_option('cfturnstile_woo_checkout')) {
 	// (see cfturnstile_is_partial_checkout_render()): rendering there put the widget in a form that
 	// is never submitted and spent the flag, so the real form got nothing and every order failed.
 	if ( ! $cfturnstile_cfw_checkout ) {
+		// Each real checkout form starts with a clean slate, so a render earlier in the request
+		// whose output was discarded cannot leave this one without a widget. Partial renders are
+		// excluded so Divi's stripped forms still get nothing.
+		add_action( 'woocommerce_before_checkout_form', 'cfturnstile_checkout_form_start', -9999 );
+		function cfturnstile_checkout_form_start() {
+			if ( cfturnstile_is_checkout_endpoint_page() || cfturnstile_is_partial_checkout_render() ) {
+				return;
+			}
+			cfturnstile_checkout_widget_rendered( false, true );
+		}
+
 		add_action( 'woocommerce_checkout_order_review', 'cfturnstile_field_checkout_fallback', 9999 );
 		add_action( 'woocommerce_checkout_after_order_review', 'cfturnstile_field_checkout_fallback', 9999 );
 		function cfturnstile_field_checkout_fallback() {

@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.43.1
+Stable Tag: 1.43.2
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.43.2 - 17th September 2026 =
+- Fix: Fixed an issue since 1.42.3 where the Turnstile widget could be missing from the WooCommerce checkout while the order was still rejected for a missing challenge, leaving the checkout impossible to complete. A theme, page builder or template that renders the checkout more than once could use the widget up on a copy that is never shown. Each checkout form now gets its own widget, and the block checkout checks its own markup for one before deciding it is not needed.
 
 = Version 1.43.1 - 11th September 2026 =
 - Fix: Fixed an issue since 1.42.3 where the "Before Payment", "After Payment" and "Before Pay Button" widget positions could place the Turnstile widget outside the WooCommerce block checkout, away from the form, on a checkout page whose saved content is missing the payment or place order blocks. The widget is now always placed inside the checkout, above the payment section.
