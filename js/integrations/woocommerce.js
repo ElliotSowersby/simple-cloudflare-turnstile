@@ -123,11 +123,6 @@
     /* Woo Checkout Block */
     function cfturnstileWooBlockRun() {
 
-        // Block checkout only, the classic checkout uses the same widget id
-        if ( !document.querySelector( '.wp-block-woocommerce-checkout, .wc-block-checkout' ) || typeof wp === 'undefined' || !wp.data ) {
-            return;
-        }
-
         function setExtensionData( token ) {
             var dispatch = wp.data.dispatch( 'wc/store/checkout' );
             if ( !dispatch ) {
@@ -182,19 +177,23 @@
             } catch ( e ) {}
         }
 
-        // The order was sent but did not complete, so the token may be spent
+        // The order was sent but failed, possibly at the gateway after it (e.g. 3DS), so the token may be spent
         function resetAfterFailedSubmit() {
             var checkout = wp.data.select( 'wc/store/checkout' );
-            if ( !checkout || typeof checkout.isProcessing !== 'function' || typeof checkout.isAfterProcessing !== 'function' ) {
+            if ( !checkout || typeof checkout.isProcessing !== 'function' || typeof checkout.hasError !== 'function' ) {
                 return;
             }
-            if ( checkout.isProcessing() || checkout.isAfterProcessing() ) {
+            if ( checkout.isProcessing() ) {
                 submitted = true;
-            } else if ( submitted ) {
-                submitted = false;
-                if ( !checkout.isComplete() ) {
-                    renderBlockWidget();
-                }
+                return;
+            }
+            // Gateway still working, e.g. 3DS
+            if ( !submitted || ( checkout.isAfterProcessing() && !checkout.hasError() ) ) {
+                return;
+            }
+            submitted = false;
+            if ( checkout.hasError() || checkout.isIdle() ) {
+                renderBlockWidget();
             }
         }
 
@@ -212,21 +211,32 @@
         renderBlockWidget();
     }
 
-    cfturnstileWooOnReady( cfturnstileWooBlockRun );
-
-    // Wait for jQuery if a delay-JS optimizer loads it late
-    if ( typeof window.jQuery !== 'undefined' ) {
-        cfturnstileWooRun();
-    } else {
+    // Run fn once ready() passes, as a delay-JS optimizer only loads our dependencies on the first interaction
+    function cfturnstileWooWhen( ready, fn ) {
+        if ( ready() ) {
+            fn();
+            return;
+        }
         var tries = 0;
         var wait = setInterval( function () {
-            if ( typeof window.jQuery !== 'undefined' ) {
+            if ( ready() ) {
                 clearInterval( wait );
-                cfturnstileWooRun();
-            } else if ( ++tries > 1200 ) { // ~60s safety cap
+                fn();
+            } else if ( ++tries > 6000 ) { // ~10 min safety cap
                 clearInterval( wait );
             }
-        }, 50 );
+        }, 100 );
     }
+
+    // Block checkout only, the classic checkout uses the same widget id
+    cfturnstileWooOnReady( function () {
+        if ( document.querySelector( '.wp-block-woocommerce-checkout, .wc-block-checkout' ) ) {
+            cfturnstileWooWhen( function () {
+                return typeof wp !== 'undefined' && !!wp.data && !!wp.data.select( 'wc/store/checkout' );
+            }, cfturnstileWooBlockRun );
+        }
+    } );
+
+    cfturnstileWooWhen( function () { return typeof window.jQuery !== 'undefined'; }, cfturnstileWooRun );
 
 } )();
