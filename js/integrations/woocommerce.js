@@ -152,6 +152,11 @@
 
             // Already rendered into this element, reset in place
             if ( el === renderedEl && el.firstElementChild ) {
+                // No token yet, so nothing to clear
+                var input = el.querySelector( 'input[name="cf-turnstile-response"]' );
+                if ( input && !input.value ) {
+                    return;
+                }
                 try {
                     turnstile.reset( el );
                     setExtensionData( '' );
@@ -234,6 +239,18 @@
             cfturnstileWooWhen( function () {
                 return typeof wp !== 'undefined' && !!wp.data && !!wp.data.select( 'wc/store/checkout' );
             }, cfturnstileWooBlockRun );
+        }
+    } );
+
+    // Classic checkout: queue the widget if nothing else did, so it does not depend on Woo's jQuery events
+    cfturnstileWooOnReady( function () {
+        var el = document.querySelector( 'form.checkout #' + WIDGET_ID );
+        var queue = window.cfturnstileQueue = window.cfturnstileQueue || [];
+        if ( el && !el.firstElementChild && queue.indexOf( '-woo-checkout' ) === -1 ) {
+            queue.push( '-woo-checkout' );
+            if ( typeof window.cfturnstileRender === 'function' ) {
+                window.cfturnstileRender();
+            }
         }
     } );
 
