@@ -262,7 +262,7 @@ if(get_option('cfturnstile_comment') && !cft_is_plugin_active('wpdiscuz/class.Wp
 			$submit_before = '';
 			$submit_after = '';
 			$callback = '';
-			if(get_option('cfturnstile_disable_button')) { $callback = 'turnstileCommentCallback'; }
+			if( get_option('cfturnstile_disable_button') ) { $callback = 'turnstileCommentCallback'; }
 			if ( get_option('cfturnstile_widget_label_enable', 0) ) {
 				$label_text = get_option('cfturnstile_widget_label_text');
 				$label_text = is_string($label_text) ? trim($label_text) : '';

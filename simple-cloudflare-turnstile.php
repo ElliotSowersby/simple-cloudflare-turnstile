@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Simple CAPTCHA with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.43.2
+ * Version: 1.43.3
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
@@ -69,11 +69,12 @@ function cfturnstile_api_url() {
 /**
  * Widget render queue, drained by Cloudflare's onload callback. Also exposes
  * window.cfturnstileOpts(), which maps a widget's data-*-callback attributes to functions.
+ * Each queued id claims one container, so a form printed twice gets both widgets.
  *
  * @return string
  */
 function cfturnstile_api_bootstrap() {
-	return '(function(w,d){var q=w.cfturnstileQueue=w.cfturnstileQueue||[];if(w.cfturnstileRender)return;var ready=false,hooked=false,ticks=0,timer=null;var cbs=["callback","error-callback","expired-callback","timeout-callback","unsupported-callback","before-interactive-callback","after-interactive-callback"];function opts(e){var p={};for(var i=0;i<cbs.length;i++){(function(n){var v=e.getAttribute("data-"+n);if(!v)return;p[n]=function(){var f=w[v];if(typeof f==="function")return f.apply(w,arguments);};})(cbs[i]);}return p;}w.cfturnstileOpts=function(e){if(typeof e==="string")e=d.querySelector(e);return e&&e.getAttribute?opts(e):{};};function one(id){var e=d.getElementById("cf-turnstile"+id);if(!e)return false;if(e.firstElementChild)return true;try{w.turnstile.render(e,opts(e));return true;}catch(_){return false;}}function drain(){if(!ready)return;for(var i=q.length-1;i>=0;i--){if(one(q[i]))q.splice(i,1);}if(q.length&&!hooked&&d.readyState==="loading"){hooked=true;d.addEventListener("DOMContentLoaded",function(){hooked=false;drain();});}}function watch(){timer=null;if(!q.length)return;if(!ready&&w.turnstile&&typeof w.turnstile.render==="function")ready=true;drain();if(q.length&&++ticks<170)timer=setTimeout(watch,ticks<20?100:2000);}w.cfturnstileRender=function(){drain();if(q.length&&!timer)timer=setTimeout(watch,100);};w.cfturnstileOnload=function(){ready=true;w.cfturnstileRender();};w.cfturnstileRender();})(window,document);';
+	return '(function(w,d){var q=w.cfturnstileQueue=w.cfturnstileQueue||[];if(w.cfturnstileRender)return;var ready=false,hooked=false,ticks=0,timer=null;var cbs=["callback","error-callback","expired-callback","timeout-callback","unsupported-callback","before-interactive-callback","after-interactive-callback"];function opts(e){var p={};for(var i=0;i<cbs.length;i++){(function(n){var v=e.getAttribute("data-"+n);if(!v)return;p[n]=function(){var f=w[v];if(typeof f==="function")return f.apply(w,arguments);};})(cbs[i]);}return p;}w.cfturnstileOpts=function(e){if(typeof e==="string")e=d.querySelector(e);return e&&e.getAttribute?opts(e):{};};function one(id){var n="cf-turnstile"+id,e=d.getElementById(n);if(e&&e.cfturnstileQueued){e=null;var l=d.querySelectorAll(".cf-turnstile");for(var i=0;i<l.length;i++){if(l[i].id===n&&!l[i].cfturnstileQueued){e=l[i];break;}}}if(!e)return false;if(!e.firstElementChild){try{w.turnstile.render(e,opts(e));}catch(_){return false;}}e.cfturnstileQueued=1;return true;}function drain(){if(!ready)return;for(var i=q.length-1;i>=0;i--){if(one(q[i]))q.splice(i,1);}if(q.length&&!hooked&&d.readyState==="loading"){hooked=true;d.addEventListener("DOMContentLoaded",function(){hooked=false;drain();});}}function watch(){timer=null;if(!q.length)return;if(!ready&&w.turnstile&&typeof w.turnstile.render==="function")ready=true;drain();if(q.length&&++ticks<170)timer=setTimeout(watch,ticks<20?100:2000);}w.cfturnstileRender=function(){drain();if(q.length&&!timer)timer=setTimeout(watch,100);};w.cfturnstileOnload=function(){ready=true;w.cfturnstileRender();};w.cfturnstileRender();})(window,document);';
 }
 
 /**
@@ -87,7 +88,7 @@ function cfturnstile_api_bootstrap() {
  * @return string
  */
 function cfturnstile_token_refresh() {
-	$skip_forms = apply_filters( 'cfturnstile_token_refresh_skip_forms', 'form.checkout, form.woocommerce-checkout' );
+	$skip_forms = apply_filters( 'cfturnstile_token_refresh_skip_forms', 'form.checkout, form.woocommerce-checkout, form.wc-block-checkout__form' );
 	$skip_forms = esc_js( (string) $skip_forms );
 	return '(function(w,d){if(w.cfturnstileRefresh)return;w.cfturnstileRefresh=1;var F="input[name=cf-turnstile-response]",S="' . $skip_forms . '",u=false;function go(){u=true;}w.addEventListener("pagehide",go);w.addEventListener("beforeunload",go);d.addEventListener("submit",function(e){var f=e.target,s=[];if(!f||!f.querySelectorAll)return;try{if(S&&f.matches&&f.matches(S))return;}catch(_){}f.querySelectorAll(".cf-turnstile").forEach(function(el){var i=el.querySelector(F);if(i&&i.value)s.push([el,i.value]);});if(!s.length)return;setTimeout(function(){if(u||!w.turnstile||d.querySelector("#wfls-prompt-overlay,#wfls-token,#fls_2fa_form,.fls_2fs"))return;s.forEach(function(x){var i=x[0].querySelector(F);if(i&&i.value===x[1]){try{w.turnstile.reset(x[0]);}catch(_){}}});},2000);},true);})(window,document);';
 }
@@ -161,7 +162,7 @@ if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secr
 		/* Interaction Only / Execute Helper (toggles widget label and spacer when the widget is visible) */
 		if ( get_option('cfturnstile_appearance', 'always') !== 'always' && !wp_script_is('cfturnstile-label-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-label-js', plugins_url('/js/interaction-label.js', __FILE__), array(), '1.1', $script_args); }
 		/* WooCommerce */
-		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '2.0', $script_args); }
+		if ( cft_is_plugin_active('woocommerce/woocommerce.php') && !wp_script_is('cfturnstile-woo-js', 'enqueued') ) { wp_enqueue_script('cfturnstile-woo-js', plugins_url('/js/integrations/woocommerce.js', __FILE__), array('jquery', 'cfturnstile', 'wp-data'), '2.1', $script_args); }
 		/* WPDiscuz */
 		if ( cft_is_plugin_active('wpdiscuz/class.WpdiscuzCore.php') && !wp_style_is('cfturnstile-css', 'enqueued') ) { wp_enqueue_style('cfturnstile-css', plugins_url('/css/cfturnstile.css', __FILE__), array(), '1.2'); }
 		/* Blocksy - match child themes too, whose style.css usually declares no text domain of its own */

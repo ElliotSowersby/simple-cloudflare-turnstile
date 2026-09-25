@@ -488,7 +488,7 @@ cfturnstile_field_show(
 
 Defined in [`inc/turnstile.php:15`](inc/turnstile.php#L15). Prints markup directly and returns nothing. It handles whitelisting, the `cfturnstile_widget_disable` filter, failsafe rendering and script enqueuing internally — so calling it is normally all an integration needs to do.
 
-Pass a genuinely unique `$unique_id` (the bundled integrations use `wp_rand()` or the form id). Duplicate DOM ids mean Cloudflare renders into the first match only.
+Pass a `$unique_id` per form (the bundled integrations use the form id, `wp_rand()`, or `cfturnstile_request_unique_id()`). Keep it the same if the same form is printed more than once in a request, as page builders like Divi compare those copies. Each queued id renders one container, so repeated copies still get their own widget.
 
 </details>
 

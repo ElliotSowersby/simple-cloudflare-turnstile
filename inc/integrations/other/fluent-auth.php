@@ -6,12 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * FluentAuth (Fluent Security) compatibility.
  *
- * FluentAuth re-runs the WordPress authenticate chain via wp_signon() for logins it has
- * already verified through its own second step - email two-factor and magic login. Those
- * requests never carry a Turnstile token (the human check happened on the first-factor
- * login), so the global WordPress login check would reject them with "missing-input-response".
- * Skip the Turnstile login check for those specific, already-verified FluentAuth flows only.
- *
  * @see FluentAuth\App\Hooks\Handlers\TwoFaHandler::verify2FaEmailCode()
  * @see FluentAuth\App\Hooks\Handlers\MagicLoginHandler
  */

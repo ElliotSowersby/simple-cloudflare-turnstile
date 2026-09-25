@@ -209,9 +209,29 @@ function cfturnstile_footer_scripts_unavailable() {
 	if ( defined('REST_REQUEST') && REST_REQUEST ) {
 		return true;
 	}
+	// LiteSpeed Cache ESI blocks
+	if ( defined('LSCACHE_IS_ESI') && LSCACHE_IS_ESI ) {
+		return true;
+	}
 	// wp_print_footer_scripts covers the front end, wp-login.php and embeds; admin screens print
 	// their footer scripts on admin_print_footer_scripts instead.
 	return did_action('wp_print_footer_scripts') || did_action('admin_print_footer_scripts');
+}
+
+/**
+ * A random widget id suffix, reused for the same form within a request.
+ *
+ * Divi renders a module per breakpoint and swaps in any copy that differs on resize.
+ *
+ * @param string $key Form identifier, e.g. 'woo-login'.
+ * @return int
+ */
+function cfturnstile_request_unique_id( $key ) {
+	static $ids = array();
+	if ( ! isset( $ids[ $key ] ) ) {
+		$ids[ $key ] = wp_rand();
+	}
+	return $ids[ $key ];
 }
 
 /**
