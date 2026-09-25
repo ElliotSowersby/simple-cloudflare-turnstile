@@ -126,6 +126,12 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_edd_login',
             'cfturnstile_edd_register',
         ),
+        'easy-digital-downloads-pro/easy-digital-downloads.php' => array(
+            'cfturnstile_edd_checkout',
+            'cfturnstile_edd_guest_only',
+            'cfturnstile_edd_login',
+            'cfturnstile_edd_register',
+        ),
         'sunshine-photo-cart/sunshine-photo-cart.php' => array(
             'cfturnstile_sunshine_login',
             'cfturnstile_sunshine_register',

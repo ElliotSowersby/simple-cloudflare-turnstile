@@ -210,10 +210,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = Version 1.43.3 - 25th September 2026 =
+- New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
 - Fix: Fixed an issue where Android users could not type in the WooCommerce login, register or checkout forms on Divi sites, as the keyboard closed and the Turnstile widget disappeared when a field was tapped.
 - Fix: Fixed the Turnstile widget only being displayed on the first copy of a form that appears more than once on the same page.
 - Fix: Fixed an issue where the Turnstile widget was not displayed on the comment form when LiteSpeed Cache ESI is enabled, preventing logged-in users and returning commenters from posting a comment.
 - Fix: Fixed an issue where WooCommerce block checkout orders could be rejected with a Turnstile error after a failed attempt, such as when paying with PayPal.
+- Fix: Fixed an issue where the Easy Digital Downloads settings could not be enabled when using Easy Digital Downloads Pro.
 
 = Version 1.43.2 - 17th September 2026 =
 - Fix: Fixed an issue where the Turnstile widget could be missing from the WooCommerce checkout with certain themes or custom checkouts.

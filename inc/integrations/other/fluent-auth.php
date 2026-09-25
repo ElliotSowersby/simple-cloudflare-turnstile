@@ -6,7 +6,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * FluentAuth (Fluent Security) compatibility.
  *
- * @see FluentAuth\App\Hooks\Handlers\TwoFaHandler::verify2FaEmailCode()
+ * @see FluentAuth\App\Hooks\Handlers\TwoFaHandler::verifyChallenge()
+ * @see FluentAuth\App\Hooks\Handlers\TwoFaHandler::verify2FaEmailCode() (FluentAuth 2.x)
  * @see FluentAuth\App\Hooks\Handlers\MagicLoginHandler
  */
 add_filter( 'cfturnstile_wp_login_checks', 'cfturnstile_fluentauth_skip_wp_login_check', 10, 1 );
@@ -16,7 +17,18 @@ function cfturnstile_fluentauth_skip_wp_login_check( $skip ) {
 		return $skip;
 	}
 
-	// Email two-factor: FluentAuth verifies the emailed code, then re-authenticates via
+	// FluentAuth 3.x: every second factor (email code, authenticator app, passkey) is answered
+	// over admin-ajax, then the login is completed with wp_signon(). FluentAuth raises this flag
+	// only around that wp_signon(), after the proof has been verified, and the first factor
+	// already passed Turnstile. It is set in-process, so a request cannot fake it.
+	if (
+		method_exists( '\FluentAuth\App\Helpers\Helper', 'isTokenVerifiedLogin' )
+		&& \FluentAuth\App\Helpers\Helper::isTokenVerifiedLogin()
+	) {
+		return true;
+	}
+
+	// Email two-factor (FluentAuth 2.x): FluentAuth verifies the emailed code, then re-authenticates via
 	// wp_signon() over admin-ajax. Only trust this action during an AJAX request, so it
 	// cannot be appended to a wp-login.php credential POST to bypass the Turnstile check.
 	if (
