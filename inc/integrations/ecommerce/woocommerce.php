@@ -702,12 +702,13 @@ if(get_option('cfturnstile_woo_account')) {
 
 // Check if WooCommerce block checkout page
 function cfturnstile_is_block_based_checkout() {
-    if ( function_exists('is_checkout') && is_checkout() && !isset($_GET['pay_for_order']) ) {
+    if ( function_exists('is_checkout') && !isset($_GET['pay_for_order']) ) {
         // AJAX fragment refreshes only come from the classic checkout
         if ( wp_doing_ajax() ) {
             return false;
         }
-        // Go by the page being viewed, as a classic checkout page can exist alongside a block one
+        // Go by the page being viewed, as a classic checkout page can exist alongside a block one,
+        // and is_checkout() misses a Checkout block that is not on the main checkout page
         $post = get_post();
         if ( $post instanceof WP_Post ) {
             if ( has_block( 'woocommerce/checkout', $post ) ) {
@@ -718,7 +719,7 @@ function cfturnstile_is_block_based_checkout() {
             }
         }
         $checkout_page_id = wc_get_page_id( 'checkout' );
-        if ( $checkout_page_id && has_block( 'woocommerce/checkout', get_post( $checkout_page_id )->post_content ) ) {
+        if ( is_checkout() && $checkout_page_id && has_block( 'woocommerce/checkout', get_post( $checkout_page_id )->post_content ) ) {
             return true;
         }
     }

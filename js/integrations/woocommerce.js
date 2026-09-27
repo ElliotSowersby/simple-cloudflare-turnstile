@@ -25,6 +25,17 @@
         return ( typeof window.cfturnstileOpts === 'function' ) ? window.cfturnstileOpts( target ) : {};
     }
 
+    // Rendered but no token yet. Checks every input, as turnstile.remove() can leave an empty one behind
+    function cfturnstileWooAwaitingToken( el ) {
+        var inputs = el.querySelectorAll( 'input[name="cf-turnstile-response"]' );
+        for ( var i = 0; i < inputs.length; i++ ) {
+            if ( inputs[ i ].value ) {
+                return false;
+            }
+        }
+        return inputs.length > 0;
+    }
+
     /* Give the classic checkout widget a fresh token */
     function turnstileWooCheckoutReset() {
         if ( typeof turnstile === 'undefined' ) {
@@ -43,8 +54,7 @@
         }
 
         // No token yet, so nothing to clear
-        var input = el.querySelector( 'input[name="cf-turnstile-response"]' );
-        if ( input && !input.value ) {
+        if ( cfturnstileWooAwaitingToken( el ) ) {
             return;
         }
 
@@ -153,8 +163,7 @@
             // Already rendered into this element, reset in place
             if ( el === renderedEl && el.firstElementChild ) {
                 // No token yet, so nothing to clear
-                var input = el.querySelector( 'input[name="cf-turnstile-response"]' );
-                if ( input && !input.value ) {
+                if ( cfturnstileWooAwaitingToken( el ) ) {
                     return;
                 }
                 try {

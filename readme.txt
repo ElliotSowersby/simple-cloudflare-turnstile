@@ -209,7 +209,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.44.0 - 25th September 2026 =
+= Version 1.44.0 - 26th September 2026 =
 - New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
 - Fix: Fixed an issue where Android users could not type in the WooCommerce login, register or checkout forms on Divi sites, as the keyboard closed and the Turnstile widget disappeared when a field was tapped.
 - Fix: Fixed the Turnstile widget only being displayed on the first copy of a form that appears more than once on the same page.
