@@ -211,14 +211,21 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = Version 1.44.0 - 27th September 2026 =
 - New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
+- Tweak: Improved compatibility with "Delay JavaScript" in performance plugins such as LiteSpeed Cache, which could stop the Turnstile widget from displaying on the WooCommerce block checkout.
+- Tweak: Improved support for stores with a classic (shortcode) checkout page while the main checkout page uses the Checkout block, where the Turnstile widget could fail to display.
+- Tweak: Payment methods set to skip Turnstile are now also skipped on the WooCommerce "Pay for order" page, as on the checkout.
+- Tweak: A Turnstile token used on the WooCommerce block checkout can no longer be re-used in another session while that order is still being processed.
+- Tweak: The Turnstile widget is now displayed on every copy of a form that appears more than once on the same page, not just the first.
+- Tweak: Improved compatibility with LiteSpeed Cache ESI, so the Turnstile widget is displayed on the comment form for logged-in users and returning commenters.
+- Tweak: Improved compatibility with Easy Digital Downloads Pro, whose settings could previously not be enabled.
+- Tweak: Improved compatibility with Elementor forms added using a template (such as with the template shortcode, the Template widget or a Theme Builder template) when the Elementor "Autodetect pages with forms" option is selected, as Turnstile was not loaded on the page.
+- Tweak: Tightened the FluentAuth integration, so its two-factor compatibility for FluentAuth 2.x can no longer be used to skip the Turnstile check on other login forms, such as the WooCommerce login form.
+- Tweak: The "Analytics" tab now shows which form a failed submission came from, where most failed submissions were previously listed as "Unknown form". Elementor forms are now also listed by name, and Kadence forms are grouped into one entry instead of a new entry for every submission.
+- Tweak: The "Turnstile Debug Log" now shows which form each entry came from.
 - Fix: Fixed an issue where Android users could not type in the WooCommerce login, register or checkout forms on Divi sites, as the keyboard closed and the Turnstile widget disappeared when a field was tapped.
-- Fix: Fixed the Turnstile widget only being displayed on the first copy of a form that appears more than once on the same page.
-- Fix: Fixed an issue where the Turnstile widget was not displayed on the comment form when LiteSpeed Cache ESI is enabled, preventing logged-in users and returning commenters from posting a comment.
 - Fix: Fixed an issue where WooCommerce block checkout orders could be rejected with a Turnstile error after a failed attempt, such as when paying with PayPal.
-- Fix: Fixed an issue where the Turnstile widget was not displayed on the WooCommerce block checkout when "Delay JavaScript" is enabled in a performance plugin such as LiteSpeed Cache, causing orders to be rejected with a Turnstile error.
-- Fix: Fixed an issue where the Turnstile widget could fail to display on a classic (shortcode) WooCommerce checkout page when the store's main checkout page uses the Checkout block.
-- Fix: Fixed an issue where the Easy Digital Downloads settings could not be enabled when using Easy Digital Downloads Pro.
-- Fix: Fixed an issue where Elementor forms added using a template (such as with the template shortcode, the Template widget or a Theme Builder template) could not be submitted when the Elementor "Autodetect pages with forms" option was selected, as Turnstile was not loaded on the page.
+- Fix: Fixed an issue where WooCommerce block checkout orders were rejected with a Turnstile error for whitelisted visitors, and while the failsafe was active during a Cloudflare outage (including after completing the reCAPTCHA failsafe).
+- Fix: Fixed an issue where logged-in customers could not pay for an order on the WooCommerce "Pay for order" page when "Guest only" was enabled.
 
 = Version 1.43.2 - 17th September 2026 =
 - Fix: Fixed an issue where the Turnstile widget could be missing from the WooCommerce checkout with certain themes or custom checkouts.

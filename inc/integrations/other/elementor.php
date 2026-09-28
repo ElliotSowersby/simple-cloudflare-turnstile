@@ -79,7 +79,7 @@ if(get_option('cfturnstile_elementor')) {
         'cfturnstile-elementor-forms',
         plugins_url('simple-cloudflare-turnstile/js/integrations/elementor-forms.js'),
         $deps,
-        '3.0',
+        '3.1',
         true
       );
 
@@ -226,7 +226,7 @@ if(get_option('cfturnstile_elementor')) {
     if(!cfturnstile_whitelisted()) {
       $error_message = cfturnstile_failed_message();
     if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-    $check = cfturnstile_check();
+    $check = cfturnstile_check('', 'elementor-form');
     $success = $check['success'];
     if($success != true) {
       $ajax_handler->add_error_message( $error_message );

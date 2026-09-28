@@ -49,7 +49,7 @@ if (get_option("cfturnstile_jetpack")) {
     );
     function cfturnstile_jetpack_check($default)
     {
-        $check = cfturnstile_check();
+        $check = cfturnstile_check("", "jetpack-form");
         $success = $check["success"];
         if (!$success) {
             $error_message = cfturnstile_failed_message();

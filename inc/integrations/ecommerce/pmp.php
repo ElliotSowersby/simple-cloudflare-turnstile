@@ -56,7 +56,7 @@ if(get_option('cfturnstile_pmp_checkout')) {
 		$guest = esc_attr( get_option('cfturnstile_pmp_guest_only') );
 		// Check
 		if( !$guest || ( $guest && !is_user_logged_in() ) ) {
-            $check = cfturnstile_check();
+            $check = cfturnstile_check('', 'pmp-checkout');
             $success = $check['success'];
             if($success != true) {
                 pmpro_setMessage( cfturnstile_failed_message(), 'pmpro_error' );

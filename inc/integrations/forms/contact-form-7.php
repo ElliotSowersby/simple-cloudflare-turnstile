@@ -137,7 +137,7 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		$message = cfturnstile_failed_message();
 
 		$token = isset($data['cf-turnstile-response']) ? $data['cf-turnstile-response'] : '';
-		$check = cfturnstile_check($token);
+		$check = cfturnstile_check($token, 'contact-form-7');
 		$success = $check['success'];
 		$cfturnstile_cf7_ran = true;
 		if ($success != true) {

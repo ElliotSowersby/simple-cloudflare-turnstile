@@ -48,7 +48,7 @@ if ( get_option( 'cfturnstile_sureforms' ) ) {
 			}
 		}
 
-		$check = cfturnstile_check( $token );
+		$check = cfturnstile_check( $token, 'sureforms-' . $form_id );
 
 		// Clean up.
 		unset( $_POST['cf-turnstile-response'], $_POST['cfturnstile_failsafe'], $_POST['g-recaptcha-response'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing

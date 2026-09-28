@@ -32,7 +32,7 @@ if(get_option('cfturnstile_edd_checkout')) {
 		// Check
 		if( !$guest || ( $guest && !is_user_logged_in() ) ) {
 			if(isset( $_POST['edd-process-checkout-nonce'] ) && wp_verify_nonce( sanitize_text_field($_POST['edd-process-checkout-nonce']), 'edd-process-checkout' )) {
-				$check = cfturnstile_check();
+				$check = cfturnstile_check('', 'edd-checkout');
 				$success = $check['success'];
 				if($success != true) {
 					edd_set_error( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -51,7 +51,7 @@ if(get_option('cfturnstile_edd_login')) {
 		add_action('authenticate', 'cfturnstile_edd_login_check', 21, 1);
 		function cfturnstile_edd_login_check($user){
 			if(isset($_POST['edd_login_nonce']) && !edd_is_checkout()) {
-				$check = cfturnstile_check();
+				$check = cfturnstile_check('', 'edd-login');
 				$success = $check['success'];
 				if($success != true) {
 					wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
@@ -81,7 +81,7 @@ if(get_option('cfturnstile_edd_register')) {
 	add_action('edd_process_register_form', 'cfturnstile_edd_register_check', 10);
 	function cfturnstile_edd_register_check() {
 		if(!edd_is_checkout()) {
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'edd-register');
 			$success = $check['success'];
 			if($success != true) {
 				edd_set_error( 'cfturnstile_error', cfturnstile_failed_message() );

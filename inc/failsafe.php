@@ -58,21 +58,25 @@ function cfturnstile_render_allow_failsafe_marker() {
 /**
  * Verify Google reCAPTCHA response (used for failsafe)
  *
+ * @param string|null $response Optional. The reCAPTCHA response, for requests that don't POST it (e.g. the block checkout). Defaults to $_POST['g-recaptcha-response'].
+ * @param string      $form_action Optional. The form identifier, passed on to cfturnstile_after_check.
  * @return array $results
  */
-function cfturnstile_verify_recaptcha() {
+function cfturnstile_verify_recaptcha( $response = null, $form_action = '' ) {
     $results = array();
 
     $recaptcha_secret = trim( (string) get_option('cfturnstile_recaptcha_secret_key') );
     $recaptcha_response = '';
-    if ( isset($_POST['g-recaptcha-response']) ) {
+    if ( null !== $response ) {
+        $recaptcha_response = sanitize_text_field( $response );
+    } elseif ( isset($_POST['g-recaptcha-response']) ) {
         $recaptcha_response = sanitize_text_field( $_POST['g-recaptcha-response'] );
     }
     if ( empty($recaptcha_secret) || empty($recaptcha_response) ) {
         $results['success'] = false;
         $results['error_code'] = empty($recaptcha_secret) ? 'missing-input-secret' : 'missing-input-response';
         $recaptcha_resp_obj = (object) array( 'success' => false );
-        do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results);
+        do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results, $form_action);
         return $results;
     }
 
@@ -88,7 +92,7 @@ function cfturnstile_verify_recaptcha() {
         $results['success'] = false;
         $results['error_code'] = 'bad-request';
         $recaptcha_resp_obj = (object) array( 'success' => false );
-        do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results);
+        do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results, $form_action);
         return $results;
     }
     $recaptcha_body = wp_remote_retrieve_body( $recaptcha_verify );
@@ -99,7 +103,7 @@ function cfturnstile_verify_recaptcha() {
         $results['error_code'] = $recaptcha_json->{'error-codes'}[0];
     }
     $recaptcha_resp_obj = (object) array( 'success' => $recaptcha_success ? true : false );
-    do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results);
+    do_action('cfturnstile_after_check', $recaptcha_resp_obj, $results, $form_action);
     return $results;
 }
 
@@ -107,9 +111,10 @@ function cfturnstile_verify_recaptcha() {
  * Backend failover handler: if Cloudflare siteverify failed, apply configured failsafe.
  *
  * @param WP_Error|array $verify The result from wp_remote_post to Cloudflare siteverify
+ * @param string $form_action Optional. The form identifier, passed on to the reCAPTCHA check.
  * @return array|null Returns results array if handled by failsafe, or null to continue Turnstile path
  */
-function cfturnstile_handle_failover_backend($verify) {
+function cfturnstile_handle_failover_backend($verify, $form_action = '') {
     if ( ! get_option('cfturnstile_failover') ) {
         return null;
     }
@@ -118,7 +123,7 @@ function cfturnstile_handle_failover_backend($verify) {
     if ( $is_error || $code >= 500 ) {
         $type = get_option('cfturnstile_failsafe_type', 'allow');
         if ( $type === 'recaptcha' ) {
-            return cfturnstile_verify_recaptcha();
+            return cfturnstile_verify_recaptcha( null, $form_action );
         }
         return array('success' => true);
     }

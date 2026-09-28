@@ -24,7 +24,7 @@ if(get_option('cfturnstile_wpforms')) {
 	function cfturnstile_wpf_check($entry, $form_data) {
     if(!cfturnstile_whitelisted() && !cfturnstile_form_disable($form_data['id'], 'cfturnstile_wpforms_disable')) {
       if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-        $check = cfturnstile_check();
+        $check = cfturnstile_check('', 'wpforms-' . $form_data['id']);
         $success = $check['success'];
         if($success != true) {
           wpforms()->process->errors[ $form_data[ 'id' ] ][ 'header' ] = cfturnstile_failed_message();

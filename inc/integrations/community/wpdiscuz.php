@@ -97,7 +97,7 @@ if(get_option('cfturnstile_comment')) {
     }
     
     // Verify Turnstile
-    $check = cfturnstile_check();
+    $check = cfturnstile_check('', 'wpdiscuz-comment');
     $success = ( is_array($check) && isset($check['success']) ) ? $check['success'] : false;
     
     if ( $success !== true ) {

@@ -68,8 +68,9 @@ if(get_option('cfturnstile_login')) {
 			return $user;
 		}
 
-		// Check Turnstile
-		$check = cfturnstile_check();
+		// Check Turnstile (the WooCommerce login form is checked here too, while the WordPress login option is on)
+		$form_action = isset($_POST['woocommerce-login-nonce']) ? 'woocommerce-login' : 'wordpress-login';
+		$check = cfturnstile_check('', $form_action);
 		$success = $check['success'];
 		if($success != true) {
 			$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -202,7 +203,7 @@ if(get_option('cfturnstile_register')) {
 
 		if(is_user_logged_in() && current_user_can('manage_options')) { return $errors; } // Skip Logged In Admins
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check('', 'wordpress-register');
 		$success = $check['success'];
 		if($success != true) {
 			$errors->add( 'cfturnstile_error', sprintf('<strong>%s</strong>: %s',__( 'ERROR', 'simple-cloudflare-turnstile' ), cfturnstile_failed_message() ) );
@@ -225,7 +226,7 @@ if(get_option('cfturnstile_reset')) {
 		if ( function_exists('cfturnstile_is_woo_lost_password_request') && cfturnstile_is_woo_lost_password_request() ) { return; }
 
 		if(stripos($_SERVER["SCRIPT_NAME"], strrchr(wp_login_url(), '/')) !== false) { // Check if WP login page
-  			$check = cfturnstile_check();
+  			$check = cfturnstile_check('', 'wordpress-reset');
   			$success = $check['success'];
   			if($success != true) {
   				$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );

@@ -33,7 +33,7 @@ function cfturnstile_um_check( $args, $form_data = array() ) {
 
   // Check
   if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-    $check = cfturnstile_check();
+    $check = cfturnstile_check('', 'ultimate-member');
     $success = $check['success'];
     if($success != true) {
       UM()->form()->add_error( 'cfturnstile', cfturnstile_failed_message() );

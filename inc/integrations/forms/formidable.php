@@ -37,7 +37,7 @@ if(get_option('cfturnstile_formidable')) {
 	add_action('frm_validate_entry', 'cfturnstile_formidable_check', 10, 2);
 	function cfturnstile_formidable_check($errors, $values){
     if(!cfturnstile_form_disable($values['form_id'], 'cfturnstile_formidable_disable')) {
-      $check = cfturnstile_check();
+      $check = cfturnstile_check('', 'formidable-form-' . $values['form_id']);
       $success = $check['success'];
       if($success != true) {
   			$errors['cfturnstile_error'] = cfturnstile_failed_message();

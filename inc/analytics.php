@@ -6,8 +6,8 @@ if (!defined('ABSPATH')) {
 /*
  * Add Turnstile check to a "cfturnstile_log" option
  */
-add_action('cfturnstile_after_check', 'cfturnstile_log', 10, 2);
-function cfturnstile_log($response, $results) {
+add_action('cfturnstile_after_check', 'cfturnstile_log', 10, 3);
+function cfturnstile_log($response, $results, $form_action = '') {
 	if(cfturnstile_is_checkbox_enabled(get_option('cfturnstile_log_enable'))) {
 		// Get log
 		$cfturnstile_log = get_option('cfturnstile_log');
@@ -28,6 +28,7 @@ function cfturnstile_log($response, $results) {
 			'date' => current_time('mysql'),
 			'success' => $success,
 			'error' => $error_code,
+			'form' => cfturnstile_normalize_debug_log_value(cfturnstile_get_analytics_form_label($response, $form_action), 80),
 			'ip' => cfturnstile_normalize_debug_log_value(cfturnstile_get_ip(), 100),
 			'page' => cfturnstile_normalize_debug_log_value(isset( $_SERVER['REQUEST_URI'] ) ? wp_unslash( $_SERVER['REQUEST_URI'] ) : '', 250),
 		);
@@ -204,6 +205,7 @@ function cfturnstile_get_analytics_form_label($response, $form_action = '') {
 		'woocommerce-reset',
 		'woocommerce-account',
 		'mailpoet',
+		'kdforms',
 	);
 
 	foreach ( $randomized_prefixes as $prefix ) {

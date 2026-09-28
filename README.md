@@ -347,13 +347,13 @@ Pairs with the `cfturnstile-settings-section` action for add-ons that register t
 
 <br>
 
-**Fired in:** [`inc/turnstile.php:326`](inc/turnstile.php#L326), and three times in [`inc/failsafe.php`](inc/failsafe.php) for the reCAPTCHA fallback path.
+**Fired in:** [`inc/turnstile.php:346`](inc/turnstile.php#L346), and three times in [`inc/failsafe.php`](inc/failsafe.php) for the reCAPTCHA fallback path.
 
 | Parameter | Type | Description |
 |---|---|---|
 | `$response` | `stdClass` | Decoded siteverify body. On the failsafe path this is a minimal `(object) array( 'success' => bool )`. |
 | `$results` | `array` | `[ 'success' => bool, 'error_code' => string ]` — `error_code` is only set on failure. |
-| `$form_action` | `string` | The form identifier. **Only passed from `cfturnstile_check()`** — the failsafe path fires with two arguments. |
+| `$form_action` | `string` | The form identifier passed to `cfturnstile_check()` (e.g. `wordpress-login`, `wpforms-12`), on both the Turnstile and failsafe paths. Empty when the caller passed none. |
 
 ```php
 add_action( 'cfturnstile_after_check', function ( $response, $results, $form_action = '' ) {
@@ -368,7 +368,7 @@ add_action( 'cfturnstile_after_check', function ( $response, $results, $form_act
 ```
 
 > [!IMPORTANT]
-> Give `$form_action` a default value in your callback. Registering with `3` accepted args is safe, but the failsafe path supplies only two — a required third parameter would fatal there.
+> Give `$form_action` a default value in your callback. Before 1.44.0 the failsafe path supplied only two arguments, so a required third parameter would fatal on older versions of the plugin.
 
 </details>
 
@@ -601,7 +601,7 @@ A few behaviours are non-obvious enough to be worth stating outright:
 1. Create `inc/integrations/<category>/<plugin>.php` and include it from [`simple-cloudflare-turnstile.php`](simple-cloudflare-turnstile.php).
 2. Wrap everything in the enabling option, e.g. `if ( get_option( 'cfturnstile_myplugin' ) ) { … }`.
 3. **Render** — hook the plugin's "before submit button" equivalent and call `cfturnstile_field_show()` with a unique id, the submit selector, and a `$form_name` for analytics.
-4. **Verify** — hook its validation filter, call `cfturnstile_check()`, and return `cfturnstile_failed_message()` as the error.
+4. **Verify** — hook its validation filter, call `cfturnstile_check( $token, $form_name )` with the same `$form_name` as step 3, and return `cfturnstile_failed_message()` as the error. Cloudflare only echoes the widget's action back for valid tokens, so without `$form_name` blocked submissions show as "Unknown form" in Analytics.
 5. If the integration owns a login or registration form, return `true` from `cfturnstile_wp_login_checks` / `cfturnstile_wp_register_checks` while it's handling the request, so the global check doesn't spend the token first.
 6. Register the new option in [`inc/admin/register-settings.php`](inc/admin/register-settings.php) **and** add the settings-page UI in [`inc/admin/admin-options.php`](inc/admin/admin-options.php) — both, or saving will wipe it.
 7. Add the plugin to the "not installed" detection so the setting is explained when the plugin is absent.

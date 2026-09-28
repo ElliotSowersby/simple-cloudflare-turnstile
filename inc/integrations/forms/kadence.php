@@ -64,7 +64,7 @@ if (get_option("cfturnstile_kadence")) {
             return $nonce;
         }
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check('', 'kdforms');
         $success = $check['success'];
         if ($success != true) {
             wp_die(cfturnstile_failed_message());

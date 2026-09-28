@@ -16,7 +16,7 @@ if(get_option('cfturnstile_bp_register')) {
 	function cfturnstile_bp_register_check(){
 		if(!cfturnstile_whitelisted()) {
 			if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-				$check = cfturnstile_check();
+				$check = cfturnstile_check('', 'buddypress-register');
 				$success = $check['success'];
 				if($success != true) {
 					wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );

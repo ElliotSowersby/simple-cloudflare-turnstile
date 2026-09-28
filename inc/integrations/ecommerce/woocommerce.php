@@ -127,6 +127,11 @@ function cfturnstile_field_checkout() {
 			return;
 		}
 
+		// Failsafe reCAPTCHA on the block checkout needs its response passed to the Store API
+		if ( false !== strpos( $field, 'g-recaptcha' ) && cfturnstile_is_block_based_checkout() ) {
+			$field .= cfturnstile_woo_block_recaptcha_script();
+		}
+
 		if(get_option('cfturnstile_woo_checkout_pos') == "afterpay") {
 			echo "<br/>";
 		}
@@ -246,10 +251,55 @@ function cfturnstile_woo_block_checkout_shutdown_clear() {
 	if ( cfturnstile_checkout_clear_handled( 'cfturnstile_block_checkout_checked' ) ) {
 		return;
 	}
-	global $cfturnstile_block_checkout_token;
+	global $cfturnstile_block_checkout_token, $cfturnstile_block_checkout_key;
 	if ( ! empty( $cfturnstile_block_checkout_token ) ) {
-		cfturnstile_clear_verified( 'cfturnstile_block_checkout_checked', $cfturnstile_block_checkout_token );
+		cfturnstile_clear_verified( $cfturnstile_block_checkout_key, $cfturnstile_block_checkout_token );
 	}
+}
+
+/**
+ * Verification key for the block checkout pass, tied to the shopper's session so a token that
+ * passed in one session can't skip the check in another while that request is still running.
+ *
+ * @return string
+ */
+function cfturnstile_woo_block_checkout_verified_key() {
+	$session = ( function_exists( 'WC' ) && WC()->session ) ? (string) WC()->session->get_customer_id() : '';
+	return 'cfturnstile_block_checkout_checked_' . $session;
+}
+
+/**
+ * Whether a block checkout order with no token can go ahead. Whitelisted visitors get no widget,
+ * and neither does anyone while the failsafe is active, so they have no token to send.
+ *
+ * @param array|null $extensions Store API extension data.
+ * @return bool
+ */
+function cfturnstile_woo_block_checkout_without_token( $extensions ) {
+	if ( cfturnstile_whitelisted() || apply_filters( 'cfturnstile_widget_disable', false ) ) {
+		return true;
+	}
+
+	// Failsafe, only while Cloudflare is down, as on the classic checkout
+	if ( ! get_option( 'cfturnstile_failover' ) || ! cfturnstile_is_cloudflare_down() ) {
+		return false;
+	}
+	if ( 'recaptcha' === get_option( 'cfturnstile_failsafe_type', 'allow' ) ) {
+		$response = ( is_array( $extensions ) && isset( $extensions['simple-cloudflare-turnstile']['recaptcha'] ) ) ? $extensions['simple-cloudflare-turnstile']['recaptcha'] : '';
+		$check    = cfturnstile_verify_recaptcha( (string) $response, 'woocommerce-checkout' );
+		return ! empty( $check['success'] );
+	}
+	return true;
+}
+
+/**
+ * Failsafe reCAPTCHA on the block checkout: the Store API only sends extension data, so copy the
+ * reCAPTCHA response into it when Place Order is clicked.
+ *
+ * @return string
+ */
+function cfturnstile_woo_block_recaptcha_script() {
+	return '<script data-cfasync="false">(function(w,d){if(w.cfturnstileWooRecaptcha)return;w.cfturnstileWooRecaptcha=1;d.addEventListener("click",function(e){if(!e.target||!e.target.closest||!e.target.closest(".wc-block-components-checkout-place-order-button"))return;var r=d.querySelector(".wp-block-woocommerce-checkout textarea[name=g-recaptcha-response], .wc-block-checkout textarea[name=g-recaptcha-response]"),s=w.wp&&w.wp.data&&w.wp.data.dispatch("wc/store/checkout");if(!r||!s)return;if(typeof s.setExtensionData==="function"){s.setExtensionData("simple-cloudflare-turnstile",{token:"",recaptcha:r.value});}else if(typeof s.__internalSetExtensionData==="function"){s.__internalSetExtensionData("simple-cloudflare-turnstile",{token:"",recaptcha:r.value});}},true);})(window,document);</script>';
 }
 
 // Woo Checkout Check
@@ -401,7 +451,7 @@ if(get_option('cfturnstile_woo_checkout')) {
 				$cfturnstile_wc_checkout_ran = true;
 				return;
 			}
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'woocommerce-checkout');
 			$success = $check['success'];
 			if($success != true) {
 				wc_add_notice( cfturnstile_failed_message(), 'error');
@@ -470,26 +520,32 @@ if(get_option('cfturnstile_woo_checkout')) {
 				$token = ( is_array( $extensions ) && isset( $extensions['simple-cloudflare-turnstile']['token'] ) ) ? $extensions['simple-cloudflare-turnstile']['token'] : '';
 
 				if ( empty( $token ) ) {
+					// Whitelisted visitors and the failsafe get no widget, so no token either
+					if ( cfturnstile_woo_block_checkout_without_token( $extensions ) ) {
+						$cfturnstile_wc_block_checkout_ran = true;
+						return;
+					}
 					throw new \Exception( cfturnstile_failed_message() );
 				}
 
-				// Store token so the cleanup callback can access it.
-				global $cfturnstile_block_checkout_token;
+				// Store token and key so the cleanup callbacks can access them.
+				global $cfturnstile_block_checkout_token, $cfturnstile_block_checkout_key;
 				$cfturnstile_block_checkout_token = $token;
+				$cfturnstile_block_checkout_key   = cfturnstile_woo_block_checkout_verified_key();
 
-				// If this token already passed verification, skip re-check.
-				if ( cfturnstile_get_verified( 'cfturnstile_block_checkout_checked', $token ) ) {
+				// If this token already passed verification in this session, skip re-check.
+				if ( cfturnstile_get_verified( $cfturnstile_block_checkout_key, $token ) ) {
 					$cfturnstile_wc_block_checkout_ran = true;
 					return;
 				}
-				
-				$check = cfturnstile_check( $token );
+
+				$check = cfturnstile_check( $token, 'woocommerce-checkout' );
 				$success = $check['success'];
 				$cfturnstile_wc_block_checkout_ran = true;
 				if($success != true) {
 					throw new \Exception( cfturnstile_failed_message() );
 				} else {
-					cfturnstile_set_verified( 'cfturnstile_block_checkout_checked', $token, 120 );
+					cfturnstile_set_verified( $cfturnstile_block_checkout_key, $token, 120 );
 					add_action( 'shutdown', 'cfturnstile_woo_block_checkout_shutdown_clear' );
 				}
 			}
@@ -532,9 +588,9 @@ if(get_option('cfturnstile_woo_checkout')) {
 	function cfturnstile_woo_block_checkout_clear_transient() {
 		cfturnstile_checkout_clear_handled( 'cfturnstile_block_checkout_checked', true );
 
-		global $cfturnstile_block_checkout_token;
+		global $cfturnstile_block_checkout_token, $cfturnstile_block_checkout_key;
 		if ( ! empty( $cfturnstile_block_checkout_token ) ) {
-			cfturnstile_clear_verified( 'cfturnstile_block_checkout_checked', $cfturnstile_block_checkout_token );
+			cfturnstile_clear_verified( $cfturnstile_block_checkout_key, $cfturnstile_block_checkout_token );
 		}
 	}
 
@@ -556,6 +612,12 @@ if(get_option('cfturnstile_woo_checkout')) {
 							'context'           => array( 'view', 'edit' ),
 							'sanitize_callback' => 'sanitize_text_field',
 						),
+						'recaptcha' => array(
+							'description'       => __( 'reCAPTCHA response, sent while the failsafe is active.', 'simple-cloudflare-turnstile' ),
+							'type'              => array( 'string', 'null' ), // Optional, Woo passes null when it is not sent
+							'context'           => array( 'view', 'edit' ),
+							'sanitize_callback' => 'sanitize_text_field',
+						),
 					);
 				},
 			)
@@ -569,7 +631,16 @@ if(get_option('cfturnstile_woo_checkout_pay')) {
 	add_action('woocommerce_pay_order_before_submit', 'cfturnstile_field_checkout', 10);
 	add_action('woocommerce_before_pay_action', 'cfturnstile_woo_checkout_pay_check', 10, 2);
 	function cfturnstile_woo_checkout_pay_check($order) {
-		$check = cfturnstile_check();
+		// Same exemptions as the checkout: guest only (no widget is shown), and skipped payment methods
+		if ( get_option('cfturnstile_guest_only') && is_user_logged_in() ) {
+			return;
+		}
+		$selected_payment_methods = get_option('cfturnstile_selected_payment_methods', array());
+		if ( isset( $_POST['payment_method'] ) && is_array( $selected_payment_methods ) && in_array( sanitize_text_field( wp_unslash( $_POST['payment_method'] ) ), $selected_payment_methods, true ) ) {
+			return;
+		}
+
+		$check = cfturnstile_check('', 'woocommerce-checkout');
 		$success = $check['success'];
 		if($success != true) {
 			wc_add_notice( cfturnstile_failed_message(), 'error');
@@ -614,7 +685,7 @@ if(get_option('cfturnstile_woo_login')) {
 			}
 
 			// Check Turnstile
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'woocommerce-login');
 			$success = $check['success'];
 			if($success != true) {
 				$user = new WP_Error( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -654,7 +725,7 @@ if(get_option('cfturnstile_woo_register')) {
 		if(defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST) { return; } // Skip XMLRPC
 		if(defined( 'REST_REQUEST' ) && REST_REQUEST) { return; } // Skip REST API
 		if(function_exists('is_checkout') && is_checkout()) { return; } // Skip if on checkout page, to avoid conflicts with the checkout integration
-		$check = cfturnstile_check();
+		$check = cfturnstile_check('', 'woocommerce-register');
 		$success = isset( $check['success'] ) ? $check['success'] : false;
 		if($success != true) {
 			$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -671,7 +742,7 @@ if(get_option('cfturnstile_woo_reset')) {
 			return;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check('', 'woocommerce-reset');
 		$success = isset( $check['success'] ) ? $check['success'] : false;
 		if($success != true) {
 			$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -692,7 +763,7 @@ if(get_option('cfturnstile_woo_account')) {
 			return;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check('', 'woocommerce-account');
 		$success = isset( $check['success'] ) ? $check['success'] : false;
 		if($success != true) {
 			$validation_errors->add( 'cfturnstile_error', cfturnstile_failed_message() );

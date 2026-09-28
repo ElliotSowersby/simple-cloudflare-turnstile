@@ -17,7 +17,7 @@ if(get_option('cfturnstile_reset')) {
             return $pass;
         }
         if (function_exists('cfturnstile_check')) {
-            $check = cfturnstile_check();
+            $check = cfturnstile_check('', 'wordpress-reset');
             $success = $check['success'];
             if($success != true) {
                 return new WP_Error('cfturnstile_error', 'Please verify that you are human.');
@@ -33,7 +33,7 @@ if(get_option('cfturnstile_register')) {
     add_action('wpum_before_registration_start', 'cfturnstile_wpum_before_registration_start');
     function cfturnstile_wpum_before_registration_start() {
         if (function_exists('cfturnstile_check')) {
-            $check = cfturnstile_check();
+            $check = cfturnstile_check('', 'wordpress-register');
             $success = $check['success'];
             if($success != true) {
                 throw new Exception( 'Please verify that you are human.' );

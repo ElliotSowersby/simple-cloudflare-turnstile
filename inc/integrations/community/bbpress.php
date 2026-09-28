@@ -55,7 +55,8 @@ function cfturnstile_bbpress_register_check() {
 		$guest_only = get_option('cfturnstile_bbpress_guest_only');
 		if (!$guest_only || ($guest_only && !is_user_logged_in())) {
 			if ('POST' === $_SERVER['REQUEST_METHOD']) {
-				$check = cfturnstile_check();
+				$form_action = ('bbp_new_topic_pre_extras' === current_action()) ? 'bbpress-create' : 'bbpress-reply';
+				$check = cfturnstile_check('', $form_action);
 				$success = $check['success'];
 				if ($success != true) {
 					bbp_add_error('bbp_throw_error', cfturnstile_failed_message());

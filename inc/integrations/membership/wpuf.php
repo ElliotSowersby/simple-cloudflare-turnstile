@@ -28,7 +28,7 @@ if(get_option('cfturnstile_wpuf_register')) {
 function cfturnstile_wpuf_check_register( $validation_error ) {
     if(!cfturnstile_whitelisted()) {
         if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-            $check = cfturnstile_check();
+            $check = cfturnstile_check('', 'wp-user-frontend');
             $success = $check['success'];
             if($success != true) {
                 $validation_error->add( 'cfturnstile_error', cfturnstile_failed_message() );
@@ -52,7 +52,7 @@ if(get_option('cfturnstile_reset')) {
 // Function to check forms
 function cfturnstile_wpuf_check_reset() {
     if(!cfturnstile_whitelisted()) {
-        $check = cfturnstile_check();
+        $check = cfturnstile_check('', 'wordpress-reset');
         $success = $check['success'];
         if($success != true) {
             wp_die( '<p><strong>' . esc_html__( 'ERROR:', 'simple-cloudflare-turnstile' ) . '</strong> ' . cfturnstile_failed_message() . '</p>', 'simple-cloudflare-turnstile', array( 'response'  => 403, 'back_link' => 1, ) );
@@ -72,7 +72,7 @@ if(get_option('cfturnstile_wpuf_forms')) {
 // Function to check forms
 function cfturnstile_wpuf_check() {
     if(!cfturnstile_whitelisted()) {
-        $check = cfturnstile_check();
+        $check = cfturnstile_check('', 'wp-user-frontend');
         $success = $check['success'];
         if($success != true) {
             $errors = cfturnstile_failed_message();

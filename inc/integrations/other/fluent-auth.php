@@ -28,13 +28,17 @@ function cfturnstile_fluentauth_skip_wp_login_check( $skip ) {
 		return true;
 	}
 
-	// Email two-factor (FluentAuth 2.x): FluentAuth verifies the emailed code, then re-authenticates via
-	// wp_signon() over admin-ajax. Only trust this action during an AJAX request, so it
-	// cannot be appended to a wp-login.php credential POST to bypass the Turnstile check.
+	// Email two-factor (FluentAuth 2.x only, 3.x is handled above): FluentAuth verifies the emailed
+	// code, then re-authenticates via wp_signon() over admin-ajax. Only trust FluentAuth's own code
+	// request, which sends a login hash and no password. A login form (e.g. WooCommerce's, which is
+	// also processed on admin-ajax and wc-ajax requests) always sends a password.
 	if (
-		wp_doing_ajax()
-		&& isset( $_REQUEST['action'] )
+		! method_exists( '\FluentAuth\App\Helpers\Helper', 'isTokenVerifiedLogin' )
+		&& wp_doing_ajax()
+		&& isset( $_REQUEST['action'], $_REQUEST['login_hash'] )
 		&& 'fluent_auth_2fa_email' === sanitize_text_field( wp_unslash( $_REQUEST['action'] ) )
+		&& empty( $_POST['password'] )
+		&& empty( $_POST['pwd'] )
 	) {
 		return true;
 	}

@@ -71,7 +71,7 @@ if(get_option('cfturnstile_gravity')) {
       return $validation_result;
     }
 
-    $check = cfturnstile_check();
+    $check = cfturnstile_check('', 'gravity-form-' . $form['id']);
     $success = $check['success'];
     // if check fails, return error
     if ($success != true) {

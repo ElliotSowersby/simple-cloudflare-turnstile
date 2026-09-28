@@ -185,7 +185,7 @@ if(get_option('cfturnstile_forminator')) {
                 $_POST['cf-turnstile-response'] = $token;
             }
 
-            $check = cfturnstile_check($token);
+            $check = cfturnstile_check($token, 'forminator-form-' . $form_id);
             foreach ($_post_backup as $sync_key => $old_val) {
                 if ($old_val === null) {
                     unset($_POST[$sync_key]);

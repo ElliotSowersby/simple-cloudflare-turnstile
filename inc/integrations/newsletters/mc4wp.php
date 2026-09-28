@@ -28,7 +28,7 @@ function cfturnstile_mc4wp_register_check( $errors, $form ) {
 		if ( !has_shortcode( $post->post_content, 'mc4wp-simple-turnstile') ) { return $errors; }
 
 		if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'mc4wp');
 			$success = $check['success'];
 			if($success != true) {
 				$errors[] = 'cf_turnstile_error';

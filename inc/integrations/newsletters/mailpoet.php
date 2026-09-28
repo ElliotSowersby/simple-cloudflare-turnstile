@@ -53,7 +53,7 @@ if (get_option("cfturnstile_mailpoet")) {
             }
         }
 
-        $check = cfturnstile_check($token);
+        $check = cfturnstile_check($token, 'mailpoet');
         $success = (is_array($check) && isset($check['success'])) ? $check['success'] : false;
         if ($success != true) {
             throw new \MailPoet\UnexpectedValueException($error_message);

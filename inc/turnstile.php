@@ -267,7 +267,7 @@ function cfturnstile_check($postdata = "", $form_action = "") {
 		$failsafe_flag = sanitize_text_field($_POST['cfturnstile_failsafe']);
 		$failsafe_type = get_option('cfturnstile_failsafe_type', 'allow');
 		if ( $failsafe_flag === 'recaptcha' && $failsafe_type === 'recaptcha' ) {
-			return cfturnstile_verify_recaptcha();
+			return cfturnstile_verify_recaptcha( null, $form_action );
 		}
 		if ( $failsafe_flag === 'allow' && $failsafe_type === 'allow' ) {
 			return array('success' => true);
@@ -290,7 +290,7 @@ function cfturnstile_check($postdata = "", $form_action = "") {
 		$verify = wp_remote_post('https://challenges.cloudflare.com/turnstile/v0/siteverify', $headers);
 
 		// Failover if Cloudflare is down (centralized handler)
-		$handled = cfturnstile_handle_failover_backend($verify);
+		$handled = cfturnstile_handle_failover_backend($verify, $form_action);
 		if ( $handled !== null ) {
 			return $handled;
 		}

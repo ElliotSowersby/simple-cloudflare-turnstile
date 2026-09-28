@@ -385,6 +385,7 @@ function cfturnstile_render_debug_log_section() {
 				$cfturnstile_csv_escape(__('Date', 'simple-cloudflare-turnstile')) . ',' .
 				$cfturnstile_csv_escape(__('Success', 'simple-cloudflare-turnstile')) . ',' .
 				$cfturnstile_csv_escape(__('Response', 'simple-cloudflare-turnstile')) . ',' .
+				$cfturnstile_csv_escape(__('Form', 'simple-cloudflare-turnstile')) . ',' .
 				$cfturnstile_csv_escape(__('IP', 'simple-cloudflare-turnstile')) . ',' .
 				$cfturnstile_csv_escape(__('URL', 'simple-cloudflare-turnstile')) . "\n";
 			foreach ($cfturnstile_log_reversed as $log_item) {
@@ -395,12 +396,14 @@ function cfturnstile_render_debug_log_section() {
 				$log_success = !empty($log_item['success']) ? 'Yes' : 'No';
 				$error_val = isset($log_item['error']) ? $log_item['error'] : '';
 				$log_response = empty($log_item['success']) ? cfturnstile_format_debug_log_error($error_val) : __('Success', 'simple-cloudflare-turnstile');
+				$log_form = isset($log_item['form']) ? cfturnstile_sanitize_analytics_scalar($log_item['form']) : '';
 				$log_ip = isset($log_item['ip']) ? cfturnstile_sanitize_analytics_scalar($log_item['ip']) : '';
 				$log_page = isset($log_item['page']) ? cfturnstile_sanitize_analytics_scalar($log_item['page']) : '';
 				$cfturnstile_log_text .=
 					$cfturnstile_csv_escape($log_date) . ',' .
 					$cfturnstile_csv_escape($log_success) . ',' .
 					$cfturnstile_csv_escape($log_response) . ',' .
+					$cfturnstile_csv_escape($log_form) . ',' .
 					$cfturnstile_csv_escape($log_ip) . ',' .
 					$cfturnstile_csv_escape($log_page) . "\n";
 			}
@@ -432,6 +435,11 @@ function cfturnstile_render_debug_log_section() {
 				}
 				echo '</td>';
 				echo '<td>';
+				// Entries logged before 1.44.0 have no form
+				$log_form = isset($log['form']) ? cfturnstile_sanitize_analytics_scalar($log['form']) : '';
+				if ($log_form !== '') {
+					echo '<strong>' . esc_html__('Form:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html($log_form) . '<br />';
+				}
 				echo '<strong>' . esc_html__('IP:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html(isset($log['ip']) ? cfturnstile_sanitize_analytics_scalar($log['ip']) : '') . '<br />';
 				echo '<strong>' . esc_html__('URL:', 'simple-cloudflare-turnstile') . '</strong> ' . esc_html(isset($log['page']) ? cfturnstile_sanitize_analytics_scalar($log['page']) : '');
 				echo '</td>';

@@ -51,7 +51,7 @@ function cfturnstile_mepr_check( $errors ) {
   
   // Check Turnstile outcome
   if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
-    $check = cfturnstile_check();
+    $check = cfturnstile_check('', 'memberpress');
     $success = $check['success'];
     if($success != true) {
         $errors[] = cfturnstile_failed_message();

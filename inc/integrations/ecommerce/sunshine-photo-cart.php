@@ -262,7 +262,7 @@ if ( get_option( 'cfturnstile_sunshine_login' ) ) {
 			return $error;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check( '', 'sunshine-login' );
 		if ( true !== $check['success'] ) {
 			return cfturnstile_failed_message();
 		}
@@ -298,7 +298,7 @@ if ( get_option( 'cfturnstile_sunshine_register' ) ) {
 			return $error;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check( '', 'sunshine-register' );
 		if ( true !== $check['success'] ) {
 			return cfturnstile_failed_message();
 		}
@@ -334,7 +334,7 @@ if ( get_option( 'cfturnstile_sunshine_reset' ) ) {
 			return $error;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check( '', 'sunshine-reset' );
 		if ( true !== $check['success'] ) {
 			return cfturnstile_failed_message();
 		}
@@ -375,7 +375,7 @@ if ( get_option( 'cfturnstile_sunshine_checkout' ) ) {
 			return;
 		}
 
-		$check = cfturnstile_check();
+		$check = cfturnstile_check( '', 'sunshine-checkout' );
 		if ( true !== $check['success'] ) {
 			if ( function_exists( 'SPC' ) && isset( SPC()->cart ) ) {
 				SPC()->cart->add_error( cfturnstile_failed_message() );

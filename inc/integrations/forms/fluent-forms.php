@@ -46,7 +46,7 @@ if (get_option('cfturnstile_fluent')) {
 			}
 		}
 
-		$check = cfturnstile_check($token);
+		$check = cfturnstile_check($token, 'fluent-form-' . $form->id);
 		if ( is_array($_post_backup) ) {
 			foreach ($_post_backup as $sync_key => $old_val) {
 				if ($old_val === null) {

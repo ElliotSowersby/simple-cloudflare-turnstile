@@ -177,7 +177,7 @@ function cfturnstile_admin_test( $soft = false ) {
 	<form action="" method="POST" class="cfturnstile-settings">
 		<?php
 		if (!empty(get_option('cfturnstile_key')) && !empty(get_option('cfturnstile_secret'))) {
-			$check = cfturnstile_check();
+			$check = cfturnstile_check('', 'admin-test');
 			$success = '';
 			$error = '';
 			if (isset($check['success'])) $success = $check['success'];
