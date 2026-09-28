@@ -174,13 +174,23 @@ function cfturnstile_init_elementor_forms() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+// "Delay JavaScript" in performance plugins can run this file after DOMContentLoaded and
+// elementor/frontend/init have already fired (LiteSpeed Cache), or before jQuery has loaded
+// (Perfmatters, which this file is excluded from), so nothing here can rely on either.
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    cfturnstile_init_elementor_forms();
+  });
+} else {
   cfturnstile_init_elementor_forms();
-});
+}
 
-// Listen to Elementor frontend init to handle cached elements
-jQuery(window).on('elementor/frontend/init', function() {
+// Elementor frontend init, to handle cached elements
+function cfturnstile_elementor_frontend_init() {
   cfturnstile_init_elementor_forms();
+
+  // Elementor runs on jQuery, so it has loaded by now
+  cfturnstile_elementor_jquery_events();
 
   // Hook into Elementor's widget ready system for forms loaded dynamically (e.g. in popups)
   if (window.elementorFrontend && elementorFrontend.hooks) {
@@ -191,7 +201,27 @@ jQuery(window).on('elementor/frontend/init', function() {
       cfturnstile_init_elementor_forms();
     });
   }
-});
+}
+
+// Elementor sets its hooks just before it fires elementor/frontend/init, so if they exist it has already run.
+// Current Elementor fires the event natively as well, for when jQuery has not loaded yet.
+cfturnstile_elementor_jquery_events();
+if (window.elementorFrontend && elementorFrontend.hooks) {
+  cfturnstile_elementor_frontend_init();
+} else if (window.jQuery) {
+  jQuery(window).on('elementor/frontend/init', cfturnstile_elementor_frontend_init);
+} else {
+  window.addEventListener('elementor/frontend/init', cfturnstile_elementor_frontend_init);
+}
+
+// Elementor Pro fires the form and popup events through jQuery
+function cfturnstile_elementor_jquery_events() {
+  if (window._cft_elementor_jquery_events || !window.jQuery) return;
+  window._cft_elementor_jquery_events = true;
+  jQuery(document).on('submit_error submit_success', '.elementor-form', cfturnstile_elementor_submit_result);
+  jQuery(document).on('elementor/popup/show', cfturnstile_elementor_popup_show);
+  jQuery(document).on('elementor/popup/hide', cfturnstile_elementor_popup_hide);
+}
 
 // Re-render Turnstile only after Elementor reports a submit error (e.g. failed validation)
 function cfturnstile_elementor_rerender(form) {
@@ -224,11 +254,11 @@ function cfturnstile_elementor_rerender(form) {
   });
 }
 
-jQuery(document).on('submit_error submit_success', '.elementor-form', function() {
+function cfturnstile_elementor_submit_result() {
   var settings = window.cfturnstileElementorSettings || {};
   if ((settings.mode || 'turnstile') !== 'turnstile') return;
   cfturnstile_elementor_rerender(this);
-});
+}
 
 // Block submission until Turnstile is completed (client-side guard).
 // Server-side validation in cfturnstile_elementor_check is the source of truth;
@@ -251,8 +281,8 @@ document.addEventListener('submit', function(event) {
   }
 }, true);
 
-// Handle Elementor popup show events (jQuery event - must use jQuery to listen)
-jQuery(document).on('elementor/popup/show', function(event, id, instance) {
+// Handle Elementor popup show events
+function cfturnstile_elementor_popup_show(event, id, instance) {
   setTimeout(function() {
     // First, inject Turnstile into any unprocessed forms inside the popup
     cfturnstile_init_elementor_forms();
@@ -315,13 +345,13 @@ jQuery(document).on('elementor/popup/show', function(event, id, instance) {
       });
     });
   }, 500);
-});
+}
 
 // Release the widgets of a popup that is closing. Elementor throws the popup DOM away and rebuilds
 // it from its cached string on the next open, so without this the widgets stay registered against
 // detached nodes for the rest of the page life. Deferred so the widget does not blink out of the
 // popup mid exit-animation - removing a detached container works just as well.
-jQuery(document).on('elementor/popup/hide', function(event, id) {
+function cfturnstile_elementor_popup_hide(event, id) {
   var modal = document.getElementById('elementor-popup-modal-' + id);
   if (!modal || !window.turnstile) return;
   var widgets = Array.prototype.slice.call(modal.querySelectorAll('.cf-turnstile'));
@@ -331,7 +361,7 @@ jQuery(document).on('elementor/popup/hide', function(event, id) {
       try { turnstile.remove(widget); } catch (e) {}
     });
   }, 1000);
-});
+}
 
 /* ---------------------------------------------------------------------------
  * Elementor Atomic Forms (Elementor 4 "e-form" elements)
