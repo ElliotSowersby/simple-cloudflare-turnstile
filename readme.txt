@@ -209,7 +209,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.44.0 - 28th September 2026 =
+= Version 1.44.0 - 29th September 2026 =
 - New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
 - Tweak: Improved compatibility with "Delay JavaScript" in performance plugins such as LiteSpeed Cache and Perfmatters, which could stop the Turnstile widget from displaying on the WooCommerce block checkout, and could stop the Turnstile widget from displaying on Elementor forms and popups or from resetting after a failed submission.
 - Tweak: Improved support for stores with a classic (shortcode) checkout page while the main checkout page uses the Checkout block, where the Turnstile widget could fail to display.
