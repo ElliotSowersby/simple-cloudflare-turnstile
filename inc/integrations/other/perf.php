@@ -36,6 +36,7 @@ function cfturnstile_autoptimize_js_exclude( $exclude ) {
         'wpdiscuzEditorOptions',
         'wpdiscuz-combo',
         'simple-cloudflare-turnstile/js/integrations/elementor-forms.js',
+        'simple-cloudflare-turnstile/js/integrations/breakdance-forms.js',
         'simple-cloudflare-turnstile/js/disable-submit.js',
     );
     foreach ( $patterns as $p ) {
@@ -78,6 +79,7 @@ function cfturnstile_wprocket_exclude( $list ) {
     $list[] = 'wpdiscuzEditorOptions';
     $list[] = 'wpdiscuz-combo';
     $list[] = 'simple-cloudflare-turnstile/js/integrations/elementor-forms.js';
+    $list[] = 'simple-cloudflare-turnstile/js/integrations/breakdance-forms.js';
     $list[] = 'simple-cloudflare-turnstile/js/disable-submit.js';
     return $list;
 }

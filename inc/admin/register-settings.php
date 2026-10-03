@@ -214,6 +214,11 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_elementor_global_scope',
             'cfturnstile_elementor_global_pages',
         ),
+        'breakdance/plugin.php' => array(
+            'cfturnstile_breakdance',
+            'cfturnstile_breakdance_pos',
+            'cfturnstile_breakdance_align',
+        ),
         'ultimate-member/ultimate-member.php' => array(
             'cfturnstile_um_login',
             'cfturnstile_um_register',

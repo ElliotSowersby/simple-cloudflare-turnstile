@@ -102,6 +102,7 @@ Turnstile is Cloudflare's free, privacy-preserving CAPTCHA alternative. This plu
 | BuddyPress | [`inc/integrations/community/buddypress.php`](inc/integrations/community/buddypress.php) |
 | wpDiscuz | [`inc/integrations/community/wpdiscuz.php`](inc/integrations/community/wpdiscuz.php) |
 | Elementor Pro Forms | [`inc/integrations/other/elementor.php`](inc/integrations/other/elementor.php) |
+| Breakdance Forms | [`inc/integrations/other/breakdance.php`](inc/integrations/other/breakdance.php) |
 | Clean Login | [`inc/integrations/other/clean-login.php`](inc/integrations/other/clean-login.php) |
 | FluentAuth | [`inc/integrations/other/fluent-auth.php`](inc/integrations/other/fluent-auth.php) |
 | Wordfence (2FA co-existence) | [`inc/integrations/other/wordfence.php`](inc/integrations/other/wordfence.php) |
@@ -565,7 +566,7 @@ uninstall.php                     Option cleanup on delete
 ├── js/
 │   ├── disable-submit.js         Submit-button gating
 │   ├── interaction-label.js      Interaction-only appearance label
-│   └── integrations/             Per-plugin front-end glue (Woo, Elementor, MailPoet, Blocksy)
+│   └── integrations/             Per-plugin front-end glue (Woo, Elementor, Breakdance, MailPoet, Blocksy)
 └── css/
 ```
 

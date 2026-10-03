@@ -1805,6 +1805,66 @@ function cfturnstile_settings_page() {
 				array_push($not_installed, '<a href="https://elementor.com/features/form-builder/?utm_source=simplecloudflareturnstile" target="_blank">' . esc_html__('Elementor Forms', 'simple-cloudflare-turnstile') . '</a>');
 			}
 			?>
+
+			<?php // Breakdance Forms
+			if (cft_is_plugin_active('breakdance/plugin.php')) { ?>
+				<button type="button" class="sct-accordion"><?php echo esc_html__('Breakdance Forms', 'simple-cloudflare-turnstile'); ?></button>
+				<div class="sct-panel">
+
+					<table class="form-table" style="margin-top: -15px; margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row">
+								<?php echo esc_html__('Enable Breakdance Forms', 'simple-cloudflare-turnstile'); ?>
+							</th>
+							<td><input type="checkbox" name="cfturnstile_breakdance" <?php if (get_option('cfturnstile_breakdance')) { ?>checked<?php } ?>></td>
+						</tr>
+
+					</table>
+
+					<?php echo esc_html__('When enabled, Turnstile will be added to your Breakdance Form Builder, Login, Register and Forgot Password forms. Scripts are only loaded on pages that display one of these forms.', 'simple-cloudflare-turnstile'); ?>
+
+					<table class="form-table" style="margin-bottom: -10px;">
+
+						<tr valign="top">
+							<th scope="row"><?php echo esc_html__('Widget Location', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<select name="cfturnstile_breakdance_pos">
+									<option value="before" <?php if (!get_option('cfturnstile_breakdance_pos') || get_option('cfturnstile_breakdance_pos') == "before") { ?>selected<?php } ?>>
+										<?php esc_html_e('Before Button', 'simple-cloudflare-turnstile'); ?>
+									</option>
+									<option value="after" <?php if (get_option('cfturnstile_breakdance_pos') == "after") { ?>selected<?php } ?>>
+										<?php esc_html_e('After Button', 'simple-cloudflare-turnstile'); ?>
+									</option>
+								</select>
+							</td>
+						</tr>
+
+						<tr valign="top">
+							<th scope="row"><?php echo esc_html__('Alignment', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<select name="cfturnstile_breakdance_align">
+									<option value="left" <?php if (!get_option('cfturnstile_breakdance_align') || get_option('cfturnstile_breakdance_align') == "left") { ?>selected<?php } ?>>
+										<?php esc_html_e('Left', 'simple-cloudflare-turnstile'); ?>
+									</option>
+									<option value="center" <?php if (get_option('cfturnstile_breakdance_align') == "center") { ?>selected<?php } ?>>
+										<?php esc_html_e('Center', 'simple-cloudflare-turnstile'); ?>
+									</option>
+									<option value="right" <?php if (get_option('cfturnstile_breakdance_align') == "right") { ?>selected<?php } ?>>
+										<?php esc_html_e('Right', 'simple-cloudflare-turnstile'); ?>
+									</option>
+								</select>
+							</td>
+						</tr>
+
+					</table>
+
+				</div>
+			<?php
+			} else {
+				array_push($not_installed, '<a href="https://breakdance.com/?utm_source=simplecloudflareturnstile" target="_blank">' . esc_html__('Breakdance Forms', 'simple-cloudflare-turnstile') . '</a>');
+			}
+			?>
 	
 			<?php // Mailchimp for WordPress
 			if (cft_is_plugin_active('mailchimp-for-wp/mailchimp-for-wp.php')) { ?>
