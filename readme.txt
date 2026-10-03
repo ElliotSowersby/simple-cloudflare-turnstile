@@ -51,6 +51,7 @@ You can currently enable Turnstile on the following forms:
 **Other Integrations**
 
 * Elementor Pro Forms
+* Breakdance Forms
 * Easy Digital Downloads Forms
 * Paid Memberships Pro Forms
 * Mailchimp for WordPress Forms
@@ -208,6 +209,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Unreleased =
+- New: Added support for Breakdance forms, including the Form Builder, Login, Register and Forgot Password forms. Enable it in the new "Breakdance Forms" section, which also has options for the widget location and alignment. Turnstile is only loaded on pages that display a Breakdance form.
+- Fix: Fixed an issue where the Breakdance Login and Register forms could not be submitted while the WordPress login or registration check was enabled, as the forms had no Turnstile widget. This is resolved when the Breakdance integration is enabled.
 
 = Version 1.44.0 - 29th September 2026 =
 - New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
