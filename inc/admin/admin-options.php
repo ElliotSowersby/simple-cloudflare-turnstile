@@ -1748,6 +1748,16 @@ function cfturnstile_settings_page() {
 							</td>
 						</tr>
 
+						<tr valign="top">
+							<th scope="row"><?php echo esc_html__('Exclude Forms', 'simple-cloudflare-turnstile'); ?></th>
+							<td>
+								<input type="text" name="cfturnstile_elementor_skip_forms" id="cfturnstile_elementor_skip_forms" value="<?php echo esc_attr( get_option('cfturnstile_elementor_skip_forms', '') ); ?>" placeholder="e.g. 0kz0n8n,1chijtn" style="width:100%; max-width:400px;">
+								<p style="margin-top:6px; font-size:10px; font-style: italic;">
+									<?php echo esc_html__('Comma-separated IDs of Elementor forms that should not show Turnstile. Use the element ID of each form: the data-id of the <form> for Atomic forms, or the data-id of the Form widget for classic forms.', 'simple-cloudflare-turnstile'); ?>
+								</p>
+							</td>
+						</tr>
+
 					</table>
 
 					<table class="form-table" style="margin-bottom: -10px;">

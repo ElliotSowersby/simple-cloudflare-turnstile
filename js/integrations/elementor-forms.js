@@ -57,6 +57,27 @@ function cfturnstile_elementor_widget_is_live(widget) {
   }
 }
 
+/**
+ * True when the form is listed under "Exclude Forms" (or the cfturnstile_elementor_skip_forms filter).
+ *
+ * The ID is the one Elementor posts as form_id, so it matches the server-side check: the data-id
+ * of an Atomic form, or the data-id of the Form widget around a classic form.
+ */
+function cfturnstile_elementor_is_skipped(form) {
+  var ids = (window.cfturnstileElementorSettings || {}).skipForms || [];
+  if (!ids.length || !form) return false;
+  var id = form.getAttribute('data-id') || '';
+  if (!id) {
+    var widget = form.closest ? form.closest('.elementor-widget-form') : null;
+    id = widget ? (widget.getAttribute('data-id') || '') : '';
+  }
+  if (!id) {
+    var input = form.querySelector('input[name="form_id"]');
+    id = input ? input.value : '';
+  }
+  return !!id && ids.indexOf(id) !== -1;
+}
+
 function cfturnstile_init_elementor_forms() {
   var settings = window.cfturnstileElementorSettings || {};
   var sitekey = settings.sitekey || '';
@@ -70,6 +91,11 @@ function cfturnstile_init_elementor_forms() {
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
   elementorForms.forEach(function(form) {
     if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
+    if (cfturnstile_elementor_is_skipped(form)) {
+      form.classList.add('cft-processed');
+      return;
+    }
 
     var index = window._cft_elementor_idx++;
     if (form.querySelector('.cf-turnstile') || form.querySelector('.g-recaptcha') || form.querySelector('input[name="cfturnstile_failsafe"]')) {
@@ -447,6 +473,9 @@ function cfturnstile_init_elementor_atomic_forms() {
     // Same popup caching trap as the classic forms above - wait until the popup is actually shown,
     // at which point the observer below picks the form up with its atomic render options intact.
     if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
+    // Not marked as processed: the release step above would only pick it up again.
+    if (cfturnstile_elementor_is_skipped(form)) { return; }
 
     if (form.querySelector('.cf-turnstile, .g-recaptcha, input[name="cfturnstile_failsafe"]')) {
       form.classList.add('cft-processed');

@@ -5,6 +5,29 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if(get_option('cfturnstile_elementor')) {
 
+  /**
+   * Elementor forms that should not get Turnstile.
+   *
+   * Each entry is the element ID that Elementor posts as form_id: the data-id of an
+   * Atomic (Elementor 4) form, or the data-id of the Form widget for classic forms.
+   * Comes from the "Exclude Forms" setting and can be extended with the
+   * cfturnstile_elementor_skip_forms filter. The same list drives both the widget
+   * and the server-side check, so the two cannot disagree.
+   *
+   * @return string[]
+   */
+  function cfturnstile_elementor_skip_forms() {
+    $ids = explode( ',', (string) get_option( 'cfturnstile_elementor_skip_forms', '' ) );
+    $ids = (array) apply_filters( 'cfturnstile_elementor_skip_forms', $ids );
+    $ids = array_map( function( $id ) { return preg_replace( '/[^A-Za-z0-9_-]/', '', (string) $id ); }, $ids );
+    return array_values( array_unique( array_filter( $ids ) ) );
+  }
+
+  function cfturnstile_elementor_is_skipped_form( $form_id ) {
+    $form_id = (string) $form_id;
+    return $form_id !== '' && in_array( $form_id, cfturnstile_elementor_skip_forms(), true );
+  }
+
   // Always load scripts globally (with scope controls).
   add_action('wp_enqueue_scripts', 'cfturnstile_elementor_enqueue_scripts', 99);
 
@@ -105,7 +128,8 @@ if(get_option('cfturnstile_elementor')) {
         'recaptchaSiteKey' => get_option('cfturnstile_recaptcha_site_key'),
         'disableSubmit' => get_option('cfturnstile_disable_button') ? true : false,
         'labelEnable' => $label_enable,
-        'labelText' => $label_text
+        'labelText' => $label_text,
+        'skipForms' => cfturnstile_elementor_skip_forms()
       ));
     }
   }
@@ -223,6 +247,13 @@ if(get_option('cfturnstile_elementor')) {
   // Elementor Forms Check
   add_action('elementor_pro/forms/validation', 'cfturnstile_elementor_check', 10, 2);
   function cfturnstile_elementor_check($record, $ajax_handler){
+    $form_id = $record->get_form_settings('id');
+    if ( ! $form_id && isset($_POST['form_id']) ) {
+      $form_id = sanitize_text_field( wp_unslash( $_POST['form_id'] ) );
+    }
+    if ( cfturnstile_elementor_is_skipped_form( $form_id ) ) {
+      return;
+    }
     if(!cfturnstile_whitelisted()) {
       $error_message = cfturnstile_failed_message();
     if ( 'POST' === $_SERVER['REQUEST_METHOD'] ) {
@@ -255,6 +286,11 @@ if(get_option('cfturnstile_elementor')) {
   add_action('wp_ajax_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
   add_action('wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
   function cfturnstile_elementor_atomic_check(){
+    $form_id = isset($_POST['form_id']) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
+    if ( cfturnstile_elementor_is_skipped_form( $form_id ) ) {
+      return;
+    }
+
     if ( 'POST' !== ( isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
       wp_send_json_error( array( 'message' => cfturnstile_failed_message() ) );
     }

@@ -200,6 +200,7 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_elementor_align',
             'cfturnstile_elementor_global_pages',
             'cfturnstile_elementor_global_scope',
+            'cfturnstile_elementor_skip_forms',
         ),
         'mailpoet/mailpoet.php' => array(
             'cfturnstile_mailpoet',
@@ -212,6 +213,7 @@ function cfturnstile_settings_list($all = false) {
             'cfturnstile_elementor_pos',
             'cfturnstile_elementor_align',
             'cfturnstile_elementor_global_scope',
+            'cfturnstile_elementor_skip_forms',
             'cfturnstile_elementor_global_pages',
         ),
         'ultimate-member/ultimate-member.php' => array(
