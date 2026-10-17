@@ -1753,7 +1753,7 @@ function cfturnstile_settings_page() {
 							<td>
 								<input type="text" name="cfturnstile_elementor_skip_forms" id="cfturnstile_elementor_skip_forms" value="<?php echo esc_attr( get_option('cfturnstile_elementor_skip_forms', '') ); ?>" placeholder="e.g. newsletter-footer,newsletter-block" style="width:100%; max-width:400px;">
 								<p style="margin-top:6px; font-size:10px; font-style: italic;">
-									<?php echo esc_html__('Comma-separated IDs of Elementor forms that should not show Turnstile. Set the ID on the form in the Elementor editor first: Form ID (under Additional Options) on a classic Form widget, or the CSS ID on an Atomic form. One ID covers every copy of that form.', 'simple-cloudflare-turnstile'); ?>
+									<?php echo esc_html__('Comma-separated IDs of Elementor forms that should not show Turnstile. Set the ID on the form in the Elementor editor first: Form ID under Additional Options on a classic Form widget, or ID under Settings on an Atomic form. One ID covers every copy of that form.', 'simple-cloudflare-turnstile'); ?>
 								</p>
 							</td>
 						</tr>

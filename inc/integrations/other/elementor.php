@@ -7,7 +7,8 @@ if(get_option('cfturnstile_elementor')) {
 
   /**
    * Elementor forms that should not get Turnstile, by the ID set in the editor:
-   * "Form ID" on a classic Form widget, or the CSS ID of an Atomic (Elementor 4) form.
+   * "Form ID" under Additional Options on a classic Form widget, or "ID" under Settings
+   * on an Atomic (Elementor 4) form (stored as _cssid).
    *
    * That ID is chosen by whoever builds the form and survives rebuilds, and one entry
    * covers every copy of the form, including every placement of an Elementor component.
@@ -35,12 +36,12 @@ if(get_option('cfturnstile_elementor')) {
   }
 
   /**
-   * The CSS ID set in the editor for an Atomic form, looked up the way Elementor finds the form.
+   * The ID set under Settings on an Atomic form (_cssid), looked up the way Elementor finds the form.
    *
-   * The browser only posts the element ID. Reading the CSS ID from the stored document rather
+   * The browser only posts the generated element ID. Reading the ID from the stored document rather
    * than from the request means a visitor cannot claim an excluded ID for a different form.
    * For a form inside a component, get_elements_data() returns the expanded placement, which
-   * carries the CSS ID of the form in the component.
+   * carries the ID of the form in the component.
    *
    * @param int    $post_id Document the form belongs to, as posted by Elementor.
    * @param string $form_id Element ID, as posted by Elementor.

@@ -61,7 +61,7 @@ function cfturnstile_elementor_widget_is_live(widget) {
  * True when the form is listed under "Exclude Forms" (or the cfturnstile_elementor_skip_forms filter).
  *
  * The list holds the ID set in the editor, which Elementor renders as the id of the <form>:
- * "Form ID" on a classic form, CSS ID on an Atomic form.
+ * "Form ID" on a classic form, "ID" under Settings on an Atomic form.
  */
 function cfturnstile_elementor_is_skipped(form) {
   var ids = (window.cfturnstileElementorSettings || {}).skipForms || [];
