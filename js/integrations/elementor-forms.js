@@ -60,21 +60,12 @@ function cfturnstile_elementor_widget_is_live(widget) {
 /**
  * True when the form is listed under "Exclude Forms" (or the cfturnstile_elementor_skip_forms filter).
  *
- * The ID is the one Elementor posts as form_id, so it matches the server-side check: the data-id
- * of an Atomic form, or the data-id of the Form widget around a classic form.
+ * The list holds the ID set in the editor, which Elementor renders as the id of the <form>:
+ * "Form ID" on a classic form, CSS ID on an Atomic form.
  */
 function cfturnstile_elementor_is_skipped(form) {
   var ids = (window.cfturnstileElementorSettings || {}).skipForms || [];
-  if (!ids.length || !form) return false;
-  var id = form.getAttribute('data-id') || '';
-  if (!id) {
-    var widget = form.closest ? form.closest('.elementor-widget-form') : null;
-    id = widget ? (widget.getAttribute('data-id') || '') : '';
-  }
-  if (!id) {
-    var input = form.querySelector('input[name="form_id"]');
-    id = input ? input.value : '';
-  }
+  var id = form ? form.getAttribute('id') : '';
   return !!id && ids.indexOf(id) !== -1;
 }
 

@@ -6,10 +6,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(get_option('cfturnstile_elementor')) {
 
   /**
-   * Elementor forms that should not get Turnstile.
+   * Elementor forms that should not get Turnstile, by the ID set in the editor:
+   * "Form ID" on a classic Form widget, or the CSS ID of an Atomic (Elementor 4) form.
    *
-   * Each entry is the element ID that Elementor posts as form_id: the data-id of an
-   * Atomic (Elementor 4) form, or the data-id of the Form widget for classic forms.
+   * That ID is chosen by whoever builds the form and survives rebuilds, and one entry
+   * covers every copy of the form, including every placement of an Elementor component.
    * Comes from the "Exclude Forms" setting and can be extended with the
    * cfturnstile_elementor_skip_forms filter. The same list drives both the widget
    * and the server-side check, so the two cannot disagree.
@@ -23,9 +24,46 @@ if(get_option('cfturnstile_elementor')) {
     return array_values( array_unique( array_filter( $ids ) ) );
   }
 
-  function cfturnstile_elementor_is_skipped_form( $form_id ) {
-    $form_id = (string) $form_id;
-    return $form_id !== '' && in_array( $form_id, cfturnstile_elementor_skip_forms(), true );
+  /**
+   * Is this editor ID on the skip list?
+   *
+   * @param string $id
+   * @return bool
+   */
+  function cfturnstile_elementor_is_skipped_form( $id ) {
+    return (string) $id !== '' && in_array( (string) $id, cfturnstile_elementor_skip_forms(), true );
+  }
+
+  /**
+   * The CSS ID set in the editor for an Atomic form, looked up the way Elementor finds the form.
+   *
+   * The browser only posts the element ID. Reading the CSS ID from the stored document rather
+   * than from the request means a visitor cannot claim an excluded ID for a different form.
+   * For a form inside a component, get_elements_data() returns the expanded placement, which
+   * carries the CSS ID of the form in the component.
+   *
+   * @param int    $post_id Document the form belongs to, as posted by Elementor.
+   * @param string $form_id Element ID, as posted by Elementor.
+   * @return string
+   */
+  function cfturnstile_elementor_atomic_css_id( $post_id, $form_id ) {
+    if ( ! $post_id || $form_id === '' || ! class_exists( '\Elementor\Plugin' ) || ! class_exists( '\Elementor\Utils' ) ) {
+      return '';
+    }
+    $document = \Elementor\Plugin::$instance->documents->get( $post_id );
+    if ( ! $document ) {
+      return '';
+    }
+    $element = \Elementor\Utils::find_element_recursive( $document->get_elements_data(), $form_id );
+    if ( empty( $element ) ) {
+      return '';
+    }
+    $instance = \Elementor\Plugin::$instance->elements_manager->create_element_instance( $element );
+    if ( $instance && method_exists( $instance, 'get_atomic_setting' ) ) {
+      $css_id = $instance->get_atomic_setting( '_cssid' );
+      return is_string( $css_id ) ? $css_id : '';
+    }
+    return '';
   }
 
   // Always load scripts globally (with scope controls).
@@ -247,11 +285,8 @@ if(get_option('cfturnstile_elementor')) {
   // Elementor Forms Check
   add_action('elementor_pro/forms/validation', 'cfturnstile_elementor_check', 10, 2);
   function cfturnstile_elementor_check($record, $ajax_handler){
-    $form_id = $record->get_form_settings('id');
-    if ( ! $form_id && isset($_POST['form_id']) ) {
-      $form_id = sanitize_text_field( wp_unslash( $_POST['form_id'] ) );
-    }
-    if ( cfturnstile_elementor_is_skipped_form( $form_id ) ) {
+    // "Form ID" from the editor, taken from the stored widget settings rather than the request.
+    if ( cfturnstile_elementor_is_skipped_form( $record->get_form_settings('form_id') ) ) {
       return;
     }
     if(!cfturnstile_whitelisted()) {
@@ -286,9 +321,13 @@ if(get_option('cfturnstile_elementor')) {
   add_action('wp_ajax_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
   add_action('wp_ajax_nopriv_elementor_pro_atomic_forms_send_form', 'cfturnstile_elementor_atomic_check', 5);
   function cfturnstile_elementor_atomic_check(){
-    $form_id = isset($_POST['form_id']) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
-    if ( cfturnstile_elementor_is_skipped_form( $form_id ) ) {
-      return;
+    // Only look the form up when there is something to match, so sites without exclusions pay nothing.
+    if ( cfturnstile_elementor_skip_forms() ) {
+      $form_id = isset($_POST['form_id']) ? sanitize_text_field( wp_unslash( $_POST['form_id'] ) ) : '';
+      $post_id = isset($_POST['post_id']) ? absint( $_POST['post_id'] ) : 0;
+      if ( cfturnstile_elementor_is_skipped_form( cfturnstile_elementor_atomic_css_id( $post_id, $form_id ) ) ) {
+        return;
+      }
     }
 
     if ( 'POST' !== ( isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '' ) ) {
