@@ -210,7 +210,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 == Changelog ==
 
 = Version 1.44.1 - 28th October 2026 =
-- Security: Turnstile tokens longer than Cloudflare's 2,048-character maximum, or not sent as text, are now rejected before they are sent to Cloudflare for verification. With Failsafe Mode set to "Allow submissions", an oversized token could make the verification request fail, which was treated as a Cloudflare outage and let the form be submitted without solving Turnstile. These rejections are also now recorded in the debug log and analytics.
+- Security: Turnstile tokens longer than Cloudflare's 2,048-character maximum, or not sent as text, are now rejected before they are sent to Cloudflare for verification.
 - Security: Fixed an issue where Contact Form 7 forms protected with the Turnstile form-tag could be submitted without solving Turnstile. (Reported by "mroccon" via Patchstack)
 
 = Version 1.44.0 - 29th September 2026 =
