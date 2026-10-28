@@ -1,0 +1,9 @@
+# Release zips are built from a commit with `git archive` (Ctrl+Shift+B in
+# VS Code runs bin/build-release-zip.ps1), which leaves out every path marked
+# export-ignore below. Anything only needed for development belongs here.
+
+/bin                export-ignore
+/.vscode            export-ignore
+/.claude            export-ignore
+/CLAUDE.md          export-ignore
+/.gitattributes     export-ignore
