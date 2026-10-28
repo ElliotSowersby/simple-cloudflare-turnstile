@@ -280,6 +280,21 @@ function cfturnstile_check($postdata = "", $form_action = "") {
 
 	if ($key && $secret) {
 
+		// Refuse tokens over Cloudflare's documented 2,048-character maximum before calling siteverify,
+		// so an oversized request cannot provoke a 5xx or timeout that the failsafe would treat as an outage.
+		// Some integrations pass the posted value unsanitized, so an array (cf-turnstile-response[]=...)
+		// is refused too, rather than cast to "Array" and sent on at full size.
+		if ( null === $postdata ) {
+			$postdata = '';
+		}
+		if ( ! is_scalar( $postdata ) || strlen( (string) $postdata ) > 2048 ) {
+			$results['success'] = false;
+			$results['error_code'] = 'invalid-input-response';
+			$response = (object) array( 'success' => false, 'error-codes' => array( 'invalid-input-response' ) );
+			do_action('cfturnstile_after_check', $response, $results, $form_action);
+			return $results;
+		}
+
 		$headers = array(
 			'body' => [
 				'secret' => $secret,

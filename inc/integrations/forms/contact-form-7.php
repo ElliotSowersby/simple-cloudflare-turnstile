@@ -105,8 +105,6 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 
 	$post = WPCF7_Submission::get_instance();
 
-	$_wpcf7 = !empty($_POST['_wpcf7']) ? absint($_POST['_wpcf7']) : 0;
-
 	if (!empty($post)) {
 
 		// Skip entirely for whitelisted users so we never invalidate their submission.
@@ -119,15 +117,16 @@ function cfturnstile_cf7_verify_recaptcha($result) {
 		// Check if "Enable on all CF7 Forms" option is enabled
 		$cf7_all_enabled = !empty(get_option('cfturnstile_cf7_all')) && get_option('cfturnstile_cf7_all');
 		
-		// Check if the form uses our Turnstile form-tag
-		$form_has_shortcode = false;
-		if ($_wpcf7 && class_exists('WPCF7_ContactForm')) {
-			$contact_form = WPCF7_ContactForm::get_instance($_wpcf7);
-			if ($contact_form) {
-				$form_content = $contact_form->prop('form');
-				$form_has_shortcode = cfturnstile_cf7_form_has_tag($form_content);
-			}
+		// Check if the form uses our Turnstile form-tag. Take the form from the submission, which is the
+		// one CF7 is processing (from the REST route), never from the posted _wpcf7 field: CF7 does not
+		// use that field, so a visitor could omit it or point it at another form to skip the check.
+		// get_contact_form() was added in CF7 5.0; older versions set the processed form as current.
+		if (method_exists($post, 'get_contact_form')) {
+			$contact_form = $post->get_contact_form();
+		} else {
+			$contact_form = class_exists('WPCF7_ContactForm') ? WPCF7_ContactForm::get_current() : null;
 		}
+		$form_has_shortcode = $contact_form ? cfturnstile_cf7_form_has_tag($contact_form->prop('form')) : false;
 		
 		// Only validate if SCT is enabled for this form (either via "all forms" option or shortcode)
 		if (!$cf7_all_enabled && !$form_has_shortcode) {

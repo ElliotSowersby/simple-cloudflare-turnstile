@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.44.0
+Stable Tag: 1.44.1
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,10 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.44.1 - 28th October 2026 =
+- Security: Turnstile tokens longer than Cloudflare's 2,048-character maximum, or not sent as text, are now rejected before they are sent to Cloudflare for verification. With Failsafe Mode set to "Allow submissions", an oversized token could make the verification request fail, which was treated as a Cloudflare outage and let the form be submitted without solving Turnstile. These rejections are also now recorded in the debug log and analytics.
+- Security: Fixed an issue where Contact Form 7 forms protected with the Turnstile form-tag could be submitted without solving Turnstile. (Reported by "mroccon" via Patchstack)
 
 = Version 1.44.0 - 29th September 2026 =
 - New: Added support for FluentAuth 3.0's two-factor authentication, including passkeys and authenticator apps. The second step of the login previously failed with "There has an error when log you in" when Turnstile was enabled on the WordPress login form.
