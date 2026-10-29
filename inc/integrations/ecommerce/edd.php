@@ -76,6 +76,7 @@ function cfturnstile_edd_default_login_check( $skip = false ) {
 
 // EDD Login Form: skip the WP login check only inside EDD's own login handler (edd_action=user_login).
 // The EDD Login check above verifies it when enabled. A public edd_login_nonce must never skip any other login.
+// Also skip inside EDD's registration handler, which only logs in the account it has just created.
 add_filter('cfturnstile_wp_login_checks', 'cfturnstile_edd_skip_wp_login_check', 10, 1);
 function cfturnstile_edd_skip_wp_login_check( $skip ) {
     if (
@@ -83,6 +84,9 @@ function cfturnstile_edd_skip_wp_login_check( $skip ) {
         && isset( $_POST['edd_login_nonce'] )
         && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['edd_login_nonce'] ) ), 'edd-login-nonce' )
     ) {
+        return true;
+    }
+    if ( doing_action( 'edd_user_register' ) ) {
         return true;
     }
     return $skip;

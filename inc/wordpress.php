@@ -183,6 +183,9 @@ if(get_option('cfturnstile_register')) {
 		// Check skip
 		if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) { return $errors; } // Skip XMLRPC
 		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) { return $errors; } // Skip REST API
+		// Skip only while WooCommerce or EDD is processing its own registration (e.g. a plugin passing their errors through registration_errors), never on a posted nonce.
+		if ( doing_action( 'woocommerce_register_post' ) || doing_filter( 'woocommerce_registration_errors' ) || doing_filter( 'woocommerce_process_registration_errors' ) ) { return $errors; } // Skip Woo
+		if ( doing_action( 'edd_user_register' ) ) { return $errors; } // Skip EDD
 
 		// Skip if not on login page
 		if(get_option('cfturnstile_register_only', 0)) {
