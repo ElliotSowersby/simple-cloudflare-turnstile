@@ -64,15 +64,28 @@ if(get_option('cfturnstile_edd_login')) {
 
 // EDD Default Login Check
 add_filter('cfturnstile_wp_login_checks','cfturnstile_edd_default_login_check');
-function cfturnstile_edd_default_login_check() {
-    // Return true if any EDD purchase process has occurred.
-    return (
-        function_exists( 'did_action' ) && (
-            did_action( 'edd_purchase' ) ||
-            did_action( 'edd_straight_to_gateway' ) ||
-            did_action( 'edd_free_download_process' )
-        )
+function cfturnstile_edd_default_login_check( $skip = false ) {
+    // Return true while an EDD purchase process is logging the customer in.
+    // doing_action(), not did_action(): any edd_action can be fired on /wp-login.php, so did_action() would skip its login.
+    return $skip || (
+        doing_action( 'edd_purchase' ) ||
+        doing_action( 'edd_straight_to_gateway' ) ||
+        doing_action( 'edd_free_download_process' )
     );
+}
+
+// EDD Login Form: skip the WP login check only inside EDD's own login handler (edd_action=user_login).
+// The EDD Login check above verifies it when enabled. A public edd_login_nonce must never skip any other login.
+add_filter('cfturnstile_wp_login_checks', 'cfturnstile_edd_skip_wp_login_check', 10, 1);
+function cfturnstile_edd_skip_wp_login_check( $skip ) {
+    if (
+        doing_action( 'edd_user_login' )
+        && isset( $_POST['edd_login_nonce'] )
+        && wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['edd_login_nonce'] ) ), 'edd-login-nonce' )
+    ) {
+        return true;
+    }
+    return $skip;
 }
 
 // EDD Register Check

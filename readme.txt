@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.44.1
+Stable Tag: 1.44.2
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.44.2 - 29th October 2026 =
+- Security: Fixed an issue where the Turnstile check on the WordPress login and registration forms could be skipped on sites using Easy Digital Downloads or WooCommerce, and where the "Clean Login" registration form was not verified. (Reported by Tai Nguyen via Patchstack)
 
 = Version 1.44.1 - 28th October 2026 =
 - Security: Turnstile tokens longer than Cloudflare's 2,048-character maximum, or not sent as text, are now rejected before they are sent to Cloudflare for verification.
