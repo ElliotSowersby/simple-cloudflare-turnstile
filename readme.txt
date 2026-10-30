@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.44.3
+Stable Tag: 1.44.4
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,9 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.44.4 - 30th October 2026 =
+- Security: Improved sanitisation in the Gravity Forms integration shortcode. (Reported by Osvaldo Noe Gonzalez Del Rio via Wordfence.)
 
 = Version 1.44.3 - 29th October 2026 =
 - Fix: Fixed WooCommerce and Easy Digital Downloads registration forms failing with "Please verify that you are human" on some sites, and new Easy Digital Downloads accounts not being logged in after registering when WordPress login protection is enabled.
