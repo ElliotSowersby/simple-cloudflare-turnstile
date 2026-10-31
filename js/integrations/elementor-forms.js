@@ -57,6 +57,18 @@ function cfturnstile_elementor_widget_is_live(widget) {
   }
 }
 
+/**
+ * True when the form is listed under "Exclude Forms" (or the cfturnstile_elementor_skip_forms filter).
+ *
+ * The list holds the ID set in the editor, which Elementor renders as the id of the <form>:
+ * "Form ID" on a classic form, "ID" under Settings on an Atomic form.
+ */
+function cfturnstile_elementor_is_skipped(form) {
+  var ids = (window.cfturnstileElementorSettings || {}).skipForms || [];
+  var id = form ? form.getAttribute('id') : '';
+  return !!id && ids.indexOf(id) !== -1;
+}
+
 function cfturnstile_init_elementor_forms() {
   var settings = window.cfturnstileElementorSettings || {};
   var sitekey = settings.sitekey || '';
@@ -70,6 +82,11 @@ function cfturnstile_init_elementor_forms() {
   var elementorForms = document.querySelectorAll('.elementor-form:not(.cft-processed)');
   elementorForms.forEach(function(form) {
     if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
+    if (cfturnstile_elementor_is_skipped(form)) {
+      form.classList.add('cft-processed');
+      return;
+    }
 
     var index = window._cft_elementor_idx++;
     if (form.querySelector('.cf-turnstile') || form.querySelector('.g-recaptcha') || form.querySelector('input[name="cfturnstile_failsafe"]')) {
@@ -447,6 +464,9 @@ function cfturnstile_init_elementor_atomic_forms() {
     // Same popup caching trap as the classic forms above - wait until the popup is actually shown,
     // at which point the observer below picks the form up with its atomic render options intact.
     if (cfturnstile_elementor_is_unshown_popup(form)) { return; }
+
+    // Not marked as processed: the release step above would only pick it up again.
+    if (cfturnstile_elementor_is_skipped(form)) { return; }
 
     if (form.querySelector('.cf-turnstile, .g-recaptcha, input[name="cfturnstile_failsafe"]')) {
       form.classList.add('cft-processed');
