@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.44.4
+Stable Tag: 1.44.5
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -208,6 +208,11 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.44.5 - 31st October 2026 =
+- Tweak: The "Sunshine Login" option is now always enabled while the "WordPress Login" option is enabled (unless it is set to only enable on wp-login.php), so the Sunshine login forms are protected too.
+- Security: Fixed an issue where the Turnstile check on the WordPress login and registration forms could be skipped on sites using Sunshine Photo Cart. (Reported by Mateusz Będziński via Patchstack)
+- Security: Fixed an issue where one solved Turnstile challenge on the Ultimate Member login form could be reused for multiple login attempts. (Reported by Mateusz Będziński via Patchstack)
 
 = Version 1.44.4 - 30th October 2026 =
 - Security: Improved sanitisation in the Gravity Forms integration shortcode. (Reported by Osvaldo Noe Gonzalez Del Rio via Wordfence.)

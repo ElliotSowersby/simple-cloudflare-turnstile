@@ -18,11 +18,16 @@ if(get_option('cfturnstile_um_password')) { add_action( 'um_reset_password_error
 function cfturnstile_um_check( $args, $form_data = array() ) {
 
   $is_login = cfturnstile_um_is_login_context( $form_data );
-  $user_id = $is_login ? cfturnstile_um_get_login_user_id( $args ) : 0;
   $verified_key = cfturnstile_um_verified_key( $form_data );
 
   // Check if already validated (cache-friendly, no PHP session)
-  if( cfturnstile_get_verified( $verified_key ) || ( $user_id && cfturnstile_get_verified( 'cfturnstile_login_checked_' . $user_id ) ) ) {
+  // Login only remembers a pass for this request: UM checks the password after this (priority 10),
+  // so a stored flag would let one token cover any number of password guesses.
+  if ( $is_login ) {
+    if ( ! empty( $GLOBALS['cfturnstile_um_login_passed'] ) ) {
+      return;
+    }
+  } elseif ( cfturnstile_get_verified( $verified_key ) ) {
     return;
   }
 
@@ -41,13 +46,11 @@ function cfturnstile_um_check( $args, $form_data = array() ) {
         cfturnstile_um_block_login_validation();
       }
     } else {
-      cfturnstile_set_verified( $verified_key );
-
       if ( $is_login ) {
+        $GLOBALS['cfturnstile_um_login_passed'] = true;
         $GLOBALS['cfturnstile_um_login_verified'] = true;
-        if ( $user_id ) {
-          cfturnstile_set_verified( 'cfturnstile_login_checked_' . $user_id, '', 300 );
-        }
+      } else {
+        cfturnstile_set_verified( $verified_key );
       }
     }
   } else {
@@ -93,48 +96,15 @@ function cfturnstile_um_is_login_context( $form_data = array() ) {
   return true;
 }
 
-function cfturnstile_um_get_login_user_id( $args ) {
-  $args = is_array( $args ) ? $args : array();
-  $login = '';
-  $login_field = '';
-  $fields = array( 'username', 'user_login', 'log', 'user_email', 'email' );
-
-  foreach ( $fields as $field ) {
-    if ( isset( $args[ $field ] ) && ! is_array( $args[ $field ] ) ) {
-      $login = sanitize_text_field( wp_unslash( $args[ $field ] ) );
-      $login_field = $field;
-      break;
-    }
-
-    if ( isset( $_POST[ $field ] ) && ! is_array( $_POST[ $field ] ) ) {
-      $login = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
-      $login_field = $field;
-      break;
-    }
-  }
-
-  if ( ! $login ) {
-    return 0;
-  }
-
-  if ( 'user_email' === $login_field || 'email' === $login_field || ( 'username' === $login_field && is_email( $login ) ) ) {
-    $user = get_user_by( 'email', $login );
-  } else {
-    $user = get_user_by( 'login', $login );
-  }
-
-  return $user ? (int) $user->ID : 0;
-}
-
+// Skip the WP login check for the authenticate call UM makes while checking the password, once UM's own check has passed in this request.
 add_filter( 'cfturnstile_wp_login_checks', 'cfturnstile_um_skip_wp_login_check', 10, 1 );
 function cfturnstile_um_skip_wp_login_check( $skip ) {
   if ( $skip ) {
     return $skip;
   }
 
-  if ( ! empty( $GLOBALS['cfturnstile_um_login_verified'] ) && get_option( 'cfturnstile_um_login' ) && cfturnstile_get_verified( 'cfturnstile_um_login_checked' ) ) {
+  if ( ! empty( $GLOBALS['cfturnstile_um_login_verified'] ) && get_option( 'cfturnstile_um_login' ) && doing_action( 'um_submit_form_errors_hook_login' ) ) {
     unset( $GLOBALS['cfturnstile_um_login_verified'] );
-    cfturnstile_clear_verified( 'cfturnstile_um_login_checked' );
     return true;
   }
 
@@ -144,9 +114,4 @@ function cfturnstile_um_skip_wp_login_check( $skip ) {
 // Get Error Message
 function cfturnstile_um_error_message() {
   echo '<p style="color: red; font-weight: bold;">' . cfturnstile_failed_message() . '</p>';
-}
-// Clear verification flag on login
-add_action('um_user_login', 'cfturnstile_um_login_clear', 10, 1);
-function cfturnstile_um_login_clear($args) { 
-	cfturnstile_clear_verified( 'cfturnstile_um_login_checked' );
 }

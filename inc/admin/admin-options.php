@@ -1149,8 +1149,33 @@ function cfturnstile_settings_page() {
 							<th scope="row">
 								<?php echo esc_html__('Sunshine Login', 'simple-cloudflare-turnstile'); ?>
 							</th>
-							<td><input type="checkbox" name="cfturnstile_sunshine_login" <?php if (get_option('cfturnstile_sunshine_login')) { ?>checked<?php } ?>></td>
+							<?php
+							// Always on while "WordPress Login" covers every login form (see cfturnstile_sunshine_login_enabled).
+							$sct_sunshine_login_own = (bool) get_option('cfturnstile_sunshine_login');
+							$sct_sunshine_login_forced = get_option('cfturnstile_login') && ! get_option('cfturnstile_login_only');
+							?>
+							<td>
+								<input type="checkbox" name="cfturnstile_sunshine_login" id="cfturnstile_sunshine_login" <?php if ($sct_sunshine_login_own || $sct_sunshine_login_forced) { ?>checked<?php } ?> <?php if ($sct_sunshine_login_forced) { ?>disabled<?php } ?>
+								title="<?php echo esc_attr__('Always enabled while the "WordPress Login" option is enabled (unless it is set to only enable on wp-login.php).', 'simple-cloudflare-turnstile'); ?>">
+								<?php // A disabled checkbox isn't submitted, so keep its own setting while it is locked. ?>
+								<input type="hidden" name="cfturnstile_sunshine_login" id="cfturnstile_sunshine_login_keep" value="on" <?php if (! ($sct_sunshine_login_forced && $sct_sunshine_login_own)) { ?>disabled<?php } ?>>
+							</td>
 						</tr>
+						<script>
+						jQuery(document).ready(function(){
+							var $cb = jQuery('#cfturnstile_sunshine_login');
+							var own = <?php echo $sct_sunshine_login_own ? 'true' : 'false'; ?>;
+							function sctSunshineLoginSync() {
+								var forced = jQuery("input[name='cfturnstile_login']").is(':checked') && !jQuery("input[name='cfturnstile_login_only']").is(':checked');
+								if (!$cb.prop('disabled')) {
+									own = $cb.is(':checked');
+								}
+								$cb.prop('disabled', forced).prop('checked', forced || own);
+								jQuery('#cfturnstile_sunshine_login_keep').prop('disabled', !(forced && own));
+							}
+							jQuery("input[name='cfturnstile_login'], input[name='cfturnstile_login_only']").change(sctSunshineLoginSync);
+						});
+						</script>
 
 						<tr valign="top">
 							<th scope="row">
