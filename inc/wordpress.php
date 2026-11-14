@@ -4,16 +4,41 @@ if (!defined('ABSPATH')) {
 }
 
 /**
+ * Whether this request is on the WordPress login page, for the "Only enable on default wp-login.php page" options.
+ *
+ * wp-login.php is detected by it actually running, never by the request URL: /wp-login.ph%70 and
+ * //wp-login.php still run it, but no longer match the wp_login_url() path, which skipped the check.
+ * Custom login URL plugins (WPS Hide Login, Perfmatters) load wp-login.php, so they count too.
+ *
+ * A page that wp_login_url() has been pointed at instead (e.g. MemberPress's forced login page)
+ * still counts when the request path matches it exactly, as before.
+ *
+ * @return bool
+ */
+function cfturnstile_is_wp_login_page() {
+	global $pagenow;
+
+	if ( did_action( 'login_init' ) || 'wp-login.php' === $pagenow ) {
+		return true;
+	}
+
+	if ( empty( $_SERVER['REQUEST_URI'] ) ) {
+		return false;
+	}
+
+	$login_url_path   = wp_parse_url( wp_login_url(), PHP_URL_PATH );
+	$current_url_path = wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH );
+
+	return $login_url_path && $current_url_path === $login_url_path;
+}
+
+/**
  * Display the turnstile field on the login form.
  */
 function cfturnstile_field_login() {
 	cfturnstile_clear_verified( 'cfturnstile_login_checked' );
-	if(get_option('cfturnstile_login_only', 0)) {
-		$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
-		$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-		if ($current_url_path !== $login_url_path) {
-			return;
-		}
+	if ( get_option('cfturnstile_login_only', 0) && ! cfturnstile_is_wp_login_page() ) {
+		return;
 	}
 	cfturnstile_field_show('#wp-submit', 'turnstileWPCallback', 'wordpress-login', '-' . wp_rand());
 }
@@ -46,12 +71,8 @@ if(get_option('cfturnstile_login')) {
 		if(is_wp_error($user) && isset($user->errors['empty_username']) && isset($user->errors['empty_password']) ) {return $user; } // Skip Errors
 
 		// Skip if not on login page
-		if(get_option('cfturnstile_login_only', 0)) {
-			$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
-			$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-			if ($current_url_path !== $login_url_path) {
-				return $user;
-			}
+		if ( get_option('cfturnstile_login_only', 0) && ! cfturnstile_is_wp_login_page() ) {
+			return $user;
 		}
 
 		// Custom skip filter (integrations can return true to bypass global WP login check)
@@ -188,12 +209,8 @@ if(get_option('cfturnstile_register')) {
 		if ( doing_action( 'edd_user_register' ) ) { return $errors; } // Skip EDD
 
 		// Skip if not on login page
-		if(get_option('cfturnstile_register_only', 0)) {
-			$login_url_path = wp_parse_url(wp_login_url(), PHP_URL_PATH);
-			$current_url_path = wp_parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-			if ($current_url_path !== $login_url_path) {
-				return $errors;
-			}
+		if ( get_option('cfturnstile_register_only', 0) && ! cfturnstile_is_wp_login_page() ) {
+			return $errors;
 		}
 
 		// Custom skip filter

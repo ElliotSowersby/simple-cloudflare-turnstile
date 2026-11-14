@@ -2,14 +2,14 @@
 /**
  * Plugin Name: Simple CAPTCHA with Cloudflare Turnstile
  * Description: Easily add Cloudflare Turnstile to your WordPress forms. The user-friendly, privacy-preserving CAPTCHA alternative.
- * Version: 1.44.5
+ * Version: 1.44.6
  * Author: Elliot Sowersby, RelyWP
  * Author URI: https://www.relywp.com
  * License: GPLv3 or later
  * Text Domain: simple-cloudflare-turnstile
  *
  * WC requires at least: 3.4
- * WC tested up to: 10.9
+ * WC tested up to: 11.3
  **/
 
 // Include Admin Files
@@ -67,14 +67,13 @@ function cfturnstile_api_url() {
 }
 
 /**
- * Widget render queue, drained by Cloudflare's onload callback. Also exposes
- * window.cfturnstileOpts(), which maps a widget's data-*-callback attributes to functions.
- * Each queued id claims one container, so a form printed twice gets both widgets.
- *
+ * Widget render queue, drained by Cloudflare's onload callback.
+ * Drains the queue of Turnstile widgets and ensures they are rendered when visible.
+ * 
  * @return string
  */
 function cfturnstile_api_bootstrap() {
-	return '(function(w,d){var q=w.cfturnstileQueue=w.cfturnstileQueue||[];if(w.cfturnstileRender)return;var ready=false,hooked=false,ticks=0,timer=null;var cbs=["callback","error-callback","expired-callback","timeout-callback","unsupported-callback","before-interactive-callback","after-interactive-callback"];function opts(e){var p={};for(var i=0;i<cbs.length;i++){(function(n){var v=e.getAttribute("data-"+n);if(!v)return;p[n]=function(){var f=w[v];if(typeof f==="function")return f.apply(w,arguments);};})(cbs[i]);}return p;}w.cfturnstileOpts=function(e){if(typeof e==="string")e=d.querySelector(e);return e&&e.getAttribute?opts(e):{};};function one(id){var n="cf-turnstile"+id,e=d.getElementById(n);if(e&&e.cfturnstileQueued){e=null;var l=d.querySelectorAll(".cf-turnstile");for(var i=0;i<l.length;i++){if(l[i].id===n&&!l[i].cfturnstileQueued){e=l[i];break;}}}if(!e)return false;if(!e.firstElementChild){try{w.turnstile.render(e,opts(e));}catch(_){return false;}}e.cfturnstileQueued=1;return true;}function drain(){if(!ready)return;for(var i=q.length-1;i>=0;i--){if(one(q[i]))q.splice(i,1);}if(q.length&&!hooked&&d.readyState==="loading"){hooked=true;d.addEventListener("DOMContentLoaded",function(){hooked=false;drain();});}}function watch(){timer=null;if(!q.length)return;if(!ready&&w.turnstile&&typeof w.turnstile.render==="function")ready=true;drain();if(q.length&&++ticks<170)timer=setTimeout(watch,ticks<20?100:2000);}w.cfturnstileRender=function(){drain();if(q.length&&!timer)timer=setTimeout(watch,100);};w.cfturnstileOnload=function(){ready=true;w.cfturnstileRender();};w.cfturnstileRender();})(window,document);';
+	return '(function(w,d){var q=w.cfturnstileQueue=w.cfturnstileQueue||[];if(w.cfturnstileRender)return;var ready=false,hooked=false,ticks=0,timer=null,io=null,mo=null,live=[];var cbs=["callback","error-callback","expired-callback","timeout-callback","unsupported-callback","before-interactive-callback","after-interactive-callback"];function opts(e){var p={};for(var i=0;i<cbs.length;i++){(function(n){var v=e.getAttribute("data-"+n);if(!v)return;p[n]=function(){var f=w[v];if(typeof f==="function")return f.apply(w,arguments);};})(cbs[i]);}return p;}w.cfturnstileOpts=function(e){if(typeof e==="string")e=d.querySelector(e);return e&&e.getAttribute?opts(e):{};};function shown(e){return e.getClientRects().length>0;}function track(e){if(live.indexOf(e)<0)live.push(e);if(mo||!w.MutationObserver)return;mo=new MutationObserver(moved);mo.observe(d.documentElement,{childList:true,subtree:true});}function reset(e){e.cfturnstileMoved=0;try{w.turnstile.reset(e);}catch(_){}}function draw(e){if(e.cfturnstileMoved)reset(e);else if(!e.firstElementChild){try{w.turnstile.render(e,opts(e));}catch(_){}}track(e);}function later(e){if(!w.IntersectionObserver)return false;if(!io)io=new IntersectionObserver(function(l){for(var i=0;i<l.length;i++){var e=l[i].target;if(l[i].isIntersecting&&e.isConnected){io.unobserve(e);draw(e);}}},{rootMargin:"9999px"});io.observe(e);return true;}function moved(r){var i,j,k,n,e;for(i=0;i<r.length;i++){for(j=0;j<r[i].removedNodes.length;j++){n=r[i].removedNodes[j];if(n.nodeType!==1)continue;for(k=0;k<live.length;k++){if(n===live[k]||n.contains(live[k]))live[k].cfturnstileMoved=1;}}}for(k=0;k<live.length;k++){e=live[k];if(e.cfturnstileMoved&&e.isConnected&&(shown(e)||!later(e)))reset(e);}}function one(id){var n="cf-turnstile"+id,e=d.getElementById(n);if(e&&e.cfturnstileQueued){e=null;var l=d.querySelectorAll(".cf-turnstile");for(var i=0;i<l.length;i++){if(l[i].id===n&&!l[i].cfturnstileQueued){e=l[i];break;}}}if(!e)return false;if(!e.firstElementChild){if(!shown(e)&&w.getComputedStyle(e).display!=="none"&&later(e)){e.cfturnstileQueued=1;return true;}try{w.turnstile.render(e,opts(e));}catch(_){return false;}}e.cfturnstileQueued=1;track(e);return true;}function drain(){if(!ready)return;for(var i=q.length-1;i>=0;i--){if(one(q[i]))q.splice(i,1);}if(q.length&&!hooked&&d.readyState==="loading"){hooked=true;d.addEventListener("DOMContentLoaded",function(){hooked=false;drain();});}}function watch(){timer=null;if(!q.length)return;if(!ready&&w.turnstile&&typeof w.turnstile.render==="function")ready=true;drain();if(q.length&&++ticks<170)timer=setTimeout(watch,ticks<20?100:2000);}w.cfturnstileRender=function(){drain();if(q.length&&!timer)timer=setTimeout(watch,100);};w.cfturnstileOnload=function(){ready=true;w.cfturnstileRender();};w.cfturnstileRender();})(window,document);';
 }
 
 /**
@@ -120,7 +119,7 @@ function cfturnstile_admin_script_enqueue() {
 	if (isset($_GET['page']) && $_GET['page'] == 'cfturnstile') {
 		$defer = get_option('cfturnstile_defer_scripts', 1) ? array('strategy' => 'defer') : array();
 		wp_enqueue_script('cfturnstile-admin-js', plugins_url('/js/admin-scripts.js', __FILE__), '', '2.10', true);
-		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.12');
+		wp_enqueue_style('cfturnstile-admin-css', plugins_url('/css/admin-style.css', __FILE__), array(), '2.13');
 		// Load Turnstile API without defer on the settings page for reliable admin test rendering
 		cfturnstile_register_api(array());
 		wp_enqueue_script('cfturnstile');

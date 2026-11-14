@@ -4,7 +4,7 @@ Tags: cloudflare,turnstile,captcha,protect,spam
 Donate link: https://www.elliotsowersby.com/donate/
 Requires at least: 4.7
 Tested up to: 7.1
-Stable Tag: 1.44.5
+Stable Tag: 1.44.6
 License: GPLv3 or later.
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -91,7 +91,7 @@ It's super quick and easy to get started with Cloudflare Turnstile!
 3. Finally, click the "TEST API RESPONSE" button to make sure the Turnstile API response is working OK.
 4. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=wordpress-org&utm_medium=readme-guide" target="_blank">setup guide</a>.
 
 ## What is Cloudflare Turnstile? ##
 
@@ -137,7 +137,7 @@ If you would like to support the continued development and support of this plugi
 6. Finally, you will be required to complete a quick test of the widget by clicking "TEST API RESPONSE", to confirm it's working correctly.
 7. A new Cloudflare Turnstile challenge will then be displayed on your selected forms to protect them from spam!
 
-For more detailed instructions, please see our <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a>.
+For more detailed instructions, please see our <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=wordpress-org&utm_medium=readme-guide" target="_blank">setup guide</a>.
 
 https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
@@ -155,7 +155,7 @@ https://www.youtube.com/watch?v=Yn8X_GsTFnU
 
 = Do you have a setup guide? =
 
-Yes, you can view a setup guide for the plugin <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">here</a>.
+Yes, you can view a setup guide for the plugin <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=wordpress-org&utm_medium=readme-guide" target="_blank">here</a>.
 
 = Will there be more integrations be added in the future? =
 
@@ -163,7 +163,7 @@ More integrations may be added in the future, based on user feedback. So if you 
 
 = I need help, can I get support? =
 
-Please bare in mind, the <a href="https://simpleturnstile.com/">Simple CAPTCHA with Cloudflare Turnstile</a> plugin is 100% free, developed as a way to give back to the WordPress community.
+Please bare in mind, the <a href="https://relywp.com/plugins/simple-captcha-cloudflare-turnstile/">Simple CAPTCHA with Cloudflare Turnstile</a> plugin is 100% free, developed as a way to give back to the WordPress community.
 
 You can post a support thread on the WordPress.org forums to get help from the community, and we will also keep an eye on this quite frequently, providing support and answers where possible. However, we can not guarantee an answer every single support ticket.
 
@@ -199,7 +199,7 @@ For details on errors codes being displayed in your browser console, please refe
 
 = The Turnstile Challenge is not appearing, what should I do? =
 
-Firstly, make sure you have completed the <a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide" target="_blank">setup guide</a> correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
+Firstly, make sure you have completed the <a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=wordpress-org&utm_medium=readme-guide" target="_blank">setup guide</a> correctly, and that you have completed the "TEST API RESPONSE" on the settings page.
 
 If you are still having issues, please post a <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0">support topic</a> on the WordPress.org forums.
 
@@ -208,6 +208,13 @@ If you are still having issues, please post a <a href="https://wordpress.org/sup
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/simple-cloudflare-turnstile)
 
 == Changelog ==
+
+= Version 1.44.6 - 14th November 2026 =
+- Tweak: When the "Only enable on default wp-login.php page" option is enabled on sites where another plugin changes the login page URL (such as Paid Memberships Pro or MemberPress), the default wp-login.php login and registration forms are now protected too.
+- Tweak: Widgets inside a hidden popup, modal, tab or form step are now only loaded once they are shown.
+- Fix: Fixed the Turnstile widget showing as a blank box inside some popups and modals, such as the Flatsome theme's login popup, after it was opened (or opened a second time). The widget is now refreshed whenever it is moved on the page, which also covers the comment form when clicking "Reply".
+- Fix: The -15px left margin that lines the widget up on the wp-login.php page is no longer added to forms on other pages (such as a theme's login popup on shop, blog or archive pages), or to the compact widget size.
+- Security: Fixed an issue where the Turnstile check on the WordPress login and registration forms could be skipped when the "Only enable on default wp-login.php page" option was enabled, by writing the wp-login.php address differently.
 
 = Version 1.44.5 - 31st October 2026 =
 - Tweak: The "Sunshine Login" option is now always enabled while the "WordPress Login" option is enabled (unless it is set to only enable on wp-login.php), so the Sunshine login forms are protected too.

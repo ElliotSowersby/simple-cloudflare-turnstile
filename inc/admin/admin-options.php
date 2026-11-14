@@ -298,7 +298,7 @@ function cfturnstile_settings_page() {
 		<div class="sct-admin-promo-top">
 
 			<p>
-				<a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=settings-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo esc_html__('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo esc_html__('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
+				<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=settings-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?><span class="dashicons dashicons-external" style="margin-left: 2px; text-decoration: none;"></span></a> &nbsp;&#x2022;&nbsp; <?php echo esc_html__('Like this plugin?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>"><?php echo esc_html__('Please submit a review', 'simple-cloudflare-turnstile'); ?></a> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/reviews/#new-post" target="_blank" title="<?php echo esc_html__('Review on WordPress.org', 'simple-cloudflare-turnstile'); ?>" style="text-decoration: none;">
 					<span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span><span class="dashicons dashicons-star-filled"></span>
 				</a>
 			</p>
@@ -336,7 +336,7 @@ function cfturnstile_settings_page() {
 			<?php settings_fields('cfturnstile-settings-group'); ?>
 			<?php do_settings_sections('cfturnstile-settings-group'); ?>
 
-			<hr style="margin: 20px 0 0 0;">
+			<hr style="margin: 5px 0 0 0; border: 0;">
 
 			<table class="form-table">
 
@@ -2256,12 +2256,12 @@ function cfturnstile_settings_page() {
 
 					<p>
 						- <?php echo esc_html__('Not sure how to setup this plugin?', 'simple-cloudflare-turnstile'); ?>
-						<a href="https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=settings-sidebar-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?></a>
+						<a href="https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=settings-sidebar-guide" title="View our Turnstile plugin setup guide." target="_blank"><?php echo esc_html__('View setup guide', 'simple-cloudflare-turnstile'); ?></a>
 					</p>
 
 					<p>
 						- <?php echo esc_html__('Want to learn more about the plugin features?', 'simple-cloudflare-turnstile'); ?>
-						<a href="https://simpleturnstile.com/documentation/" target="_blank" title="View our Turnstile plugin documentation."><?php echo esc_html__('View documentation', 'simple-cloudflare-turnstile'); ?></a>
+						<a href="https://relywp.com/docs/simple-captcha-with-cloudflare-turnstile/" target="_blank" title="View our Turnstile plugin documentation."><?php echo esc_html__('View documentation', 'simple-cloudflare-turnstile'); ?></a>
 					</p>
 
 					<p>- <?php echo esc_html__('Need help? Have a suggestion?', 'simple-cloudflare-turnstile'); ?> <a href="https://wordpress.org/support/plugin/simple-cloudflare-turnstile/#new-topic-0" target="_blank" title="<?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?>."><?php echo esc_html__('Create a support topic', 'simple-cloudflare-turnstile'); ?></a></p>
@@ -2315,12 +2315,75 @@ function cfturnstile_settings_page() {
 
 				<p style="margin: 0; display: flex; align-items: center; justify-content: space-between;">
 					<span><?php echo esc_html__('100% free plugin by', 'simple-cloudflare-turnstile'); ?> <a href="https://elliotsowersby.com/?utm_source=simplecloudflareturnstile&utm_medium=promo" target="_blank">Elliot Sowersby</a></span>
-					<a href="https://relywp.com/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=promo" target="_blank" style="margin-left: 8px; flex-shrink: 0;">
-						<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . '../../inc/images/relywp.png' ); ?>" alt="RelyWP" style="height: 42px; width: auto; vertical-align: middle; display: inline-block; margin-right: 5px;" />
+					<a href="https://relywp.com/?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=promo" target="_blank" style="margin-left: 8px; flex-shrink: 0; line-height: 0;">
+						<img src="<?php echo esc_url( plugin_dir_url( __FILE__ ) . '../../inc/images/relywp.png' ); ?>" alt="RelyWP" style="height: 42px; width: auto; display: block;" />
 					</a>
 				</p>
-
 			</div>
+
+			<?php
+			if ( cft_is_plugin_active('woocommerce/woocommerce.php') ) {
+				$sct_woo_utm = '?utm_campaign=simple-turnstile-plugin&utm_source=plugin-settings&utm_medium=woo-promo';
+				$sct_woo_plugins = array(
+					array(
+						'name'    => __('Coupon Affiliates', 'simple-cloudflare-turnstile'),
+						'desc'    => __('Coupon affiliate program', 'simple-cloudflare-turnstile'),
+						'url'     => 'https://couponaffiliates.com/' . $sct_woo_utm,
+						'icon'    => 'dashicons-groups',
+						'plugins' => array('woo-coupon-usage/woo-coupon-usage.php', 'woo-coupon-usage-pro/woo-coupon-usage.php'),
+					),
+					array(
+						'name'    => __('Simple Points and Rewards', 'simple-cloudflare-turnstile'),
+						'desc'    => __('Loyalty points for customers', 'simple-cloudflare-turnstile'),
+						'url'     => 'https://relywp.com/plugins/simple-points-rewards-woocommerce/' . $sct_woo_utm,
+						'icon'    => 'dashicons-awards',
+						'plugins' => array('simple-points-and-rewards/simple-points-and-rewards.php', 'simple-points-and-rewards-pro/simple-points-and-rewards.php'),
+					),
+					array(
+						'name'    => __('Simple Store Credit', 'simple-cloudflare-turnstile'),
+						'desc'    => __('Store credit and vouchers', 'simple-cloudflare-turnstile'),
+						'url'     => 'https://relywp.com/plugins/simple-store-credit-woocommerce/' . $sct_woo_utm,
+						'icon'    => 'dashicons-money-alt',
+						'plugins' => array('simple-store-credit/simple-store-credit.php', 'relywp-store-credit-wallet/relywp-store-credit-wallet.php', 'relywp-store-credit-wallet-pro/relywp-store-credit-wallet.php'),
+					),
+					array(
+						'name'    => __('Tax Exemption', 'simple-cloudflare-turnstile'),
+						'desc'    => __('Tax-exempt customers', 'simple-cloudflare-turnstile'),
+						'url'     => 'https://relywp.com/plugins/tax-exemption-woocommerce/' . $sct_woo_utm,
+						'icon'    => 'dashicons-clipboard',
+						'plugins' => array('tax-exemption-woo/tax-exemption-woo.php', 'tax-exemption-woo-pro/tax-exemption-woo.php'),
+					),
+				);
+				// Hide any the site already runs.
+				$sct_woo_plugins = array_filter( $sct_woo_plugins, function( $item ) {
+					foreach ( $item['plugins'] as $basename ) {
+						if ( cft_is_plugin_active( $basename ) ) {
+							return false;
+						}
+					}
+					return true;
+				} );
+				if ( ! empty( $sct_woo_plugins ) ) { ?>
+			<div class="sct-admin-promo sct-woo-promo">
+				<p class="sct-woo-promo-title"><?php echo esc_html__('More WooCommerce plugins from the developer:', 'simple-cloudflare-turnstile'); ?></p>
+				<ul class="sct-woo-promo-list">
+					<?php foreach ( $sct_woo_plugins as $item ) { ?>
+					<li>
+						<a href="<?php echo esc_url( $item['url'] ); ?>" target="_blank">
+							<span class="dashicons <?php echo esc_attr( $item['icon'] ); ?>" aria-hidden="true"></span>
+							<span class="sct-woo-promo-text">
+								<strong><?php echo esc_html( $item['name'] ); ?></strong>
+								<span><?php echo esc_html( $item['desc'] ); ?></span>
+							</span>
+						</a>
+					</li>
+					<?php } ?>
+				</ul>
+			</div>
+			<?php
+				}
+			}
+			?>
 
 		</div>
 

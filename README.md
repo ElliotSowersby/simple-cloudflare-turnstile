@@ -14,7 +14,7 @@ The user-friendly, privacy-preserving reCAPTCHA alternative. 100% free.
 [![Last Commit](https://img.shields.io/github/last-commit/ElliotSowersby/simple-cloudflare-turnstile?style=flat-square)](https://github.com/ElliotSowersby/simple-cloudflare-turnstile/commits/master)
 
 [Download on WordPress.org](https://wordpress.org/plugins/simple-cloudflare-turnstile/) &nbsp;·&nbsp;
-[Setup Guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide) &nbsp;·&nbsp;
+[Setup Guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=github&utm_medium=readme-guide) &nbsp;·&nbsp;
 [Support Forum](https://wordpress.org/support/plugin/simple-cloudflare-turnstile/) &nbsp;·&nbsp;
 [Changelog](./readme.txt)
 
@@ -119,9 +119,9 @@ Turnstile is Cloudflare's free, privacy-preserving CAPTCHA alternative. This plu
 4. Click **TEST API RESPONSE** to confirm the keys verify correctly.
 
 > [!TIP]
-> Step 4 is not optional in practice — an untested secret key is the most common cause of "the widget shows but submissions fail". A wrong secret surfaces as the `invalid-input-secret` error code, which also triggers an admin email notice.
+> Step 4 is not optional in practice - an untested secret key is the most common cause of "the widget shows but submissions fail". A wrong secret surfaces as the `invalid-input-secret` error code, which also triggers an admin email notice.
 
-Full walkthrough: [setup guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide) · [video](https://www.youtube.com/watch?v=Yn8X_GsTFnU)
+Full walkthrough: [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=github&utm_medium=readme-guide) · [video](https://www.youtube.com/watch?v=Yn8X_GsTFnU)
 
 ---
 
@@ -643,7 +643,7 @@ The plugin is 100% free, with no paid tier, developed as a way to give back to t
 <br>
 
 **The widget isn't appearing.**
-Work through the [setup guide](https://elliotsowersby.com/blog/setup-guide-turnstile/?utm_source=simplecloudflareturnstile&utm_medium=readme-guide) and run **TEST API RESPONSE** on the settings page. If the site uses a caching or optimisation plugin, confirm the Turnstile scripts aren't being deferred, combined or delayed.
+Work through the [setup guide](https://relywp.com/blog/how-to-add-cloudflare-turnstile-to-wordpress/?utm_campaign=simple-turnstile-plugin&utm_source=github&utm_medium=readme-guide) and run **TEST API RESPONSE** on the settings page. If the site uses a caching or optimisation plugin, confirm the Turnstile scripts aren't being deferred, combined or delayed.
 
 **I see a 401 in the browser console.**
 Safe to ignore — it's a request for a Private Access Token that the device or browser doesn't support yet. [Cloudflare's explanation](https://developers.cloudflare.com/turnstile/frequently-asked-questions/#i-am-seeing-a-401-error-in-your-console-during-a-turnstile-security-check-is-this-a-problem).

@@ -112,7 +112,11 @@ function cfturnstile_always_br($unique_id) {
 }
 
 /**
- * Extra Styles if WP Admin
+ * Extra Styles on wp-login.php
+ *
+ * The login form box is 270px wide inside its padding, so the 300px widget is pulled left to sit
+ * centred. Only on wp-login.php (including custom login URLs, which load it): anywhere else, such
+ * as a theme's login modal on a shop or archive page, the offset pushes the widget out of line.
  *
  * @return bool
  */
@@ -121,8 +125,11 @@ function cfturnstile_admin_styles($unique_id) {
 	if(defined('DOING_AJAX') || is_admin()) {
 		return;
 	}
-	$is_checkout = (function_exists('is_checkout') && is_checkout()) ? true : false;
-	if ((!is_page() && !is_single() && !$is_checkout) || strpos($_SERVER['PHP_SELF'], 'wp-login.php') !== false) {
+	// The compact widget is 150px wide and already fits.
+	if ( 'compact' === get_option('cfturnstile_size') ) {
+		return;
+	}
+	if ( did_action('login_init') || strpos($_SERVER['PHP_SELF'], 'wp-login.php') !== false ) {
 		?>
 		<style>#cf-turnstile<?php echo esc_html($unique_id); ?> { margin-left: -15px; }</style>
 		<?php
