@@ -209,7 +209,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= Version 1.44.6 - 14th November 2026 =
+= Version 1.44.6 - 16th November 2026 =
 - Tweak: When the "Only enable on default wp-login.php page" option is enabled on sites where another plugin changes the login page URL (such as Paid Memberships Pro or MemberPress), the default wp-login.php login and registration forms are now protected too.
 - Tweak: Widgets inside a hidden popup, modal, tab or form step are now only loaded once they are shown.
 - Tweak: Made a few small changes to the settings page.
