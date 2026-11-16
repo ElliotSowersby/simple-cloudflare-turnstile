@@ -216,6 +216,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 - Fix: Fixed the Turnstile widget showing as a blank box inside some popups and modals, such as the Flatsome theme's login popup, after it was opened (or opened a second time). The widget is now refreshed whenever it is moved on the page, which also covers the comment form when clicking "Reply".
 - Fix: The -15px left margin that lines the widget up on the wp-login.php page is no longer added to forms on other pages (such as a theme's login popup on shop, blog or archive pages), or to the compact widget size.
 - Security: Fixed an issue where the Turnstile check on the WordPress login and registration forms could be skipped when the "Only enable on default wp-login.php page" option was enabled, by writing the wp-login.php address differently.
+- Security: Fixed an issue where the WooCommerce login form was not checked when the "WordPress Login" and "WooCommerce Login" options were both enabled along with "Only enable on default wp-login.php page".
 
 = Version 1.44.5 - 31st October 2026 =
 - Tweak: The "Sunshine Login" option is now always enabled while the "WordPress Login" option is enabled (unless it is set to only enable on wp-login.php), so the Sunshine login forms are protected too.
