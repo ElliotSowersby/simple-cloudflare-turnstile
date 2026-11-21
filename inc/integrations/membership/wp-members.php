@@ -7,6 +7,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 if(get_option('cfturnstile_register')) {
 	add_filter( 'wpmem_pre_validate_form', 'cfturnstile_wpmem_register_check', 10, 2 );
 	function cfturnstile_wpmem_register_check($fields, $tag) {
+		// Also fires for profile updates ('update'), where no widget is rendered.
+		if ( 'register' !== $tag ) {
+			return $fields;
+		}
 		$check = cfturnstile_check('', 'wordpress-register');
 		$success = $check['success'];
 		if($success != true) {
